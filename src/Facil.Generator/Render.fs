@@ -124,7 +124,7 @@ let private renderTableTypes cfg (types: TableType list) =
         yield! indent [
           ""
           ""
-          "[<Browsable(EditorBrowsableState.Never)>]"
+          "[<EditorBrowsable(EditorBrowsableState.Never)>]"
           "type DoNotUseConstructor = | DoNotUseConstructor"
           "[<EditorBrowsable(EditorBrowsableState.Never)>]"
           "let doNotUseConstructorValue = DoNotUseConstructor"
