@@ -112,7 +112,8 @@ for:
   -
     matrix:
       only:
-        - job_group: Build/test
+        - job_name: Build/test SQL Server 2012
+        - job_name: Build/test SQL Server 2019
 
     build_script:
       # Create package output directory first since this is used as a NuGet source, otherwise build fails
