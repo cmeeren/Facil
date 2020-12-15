@@ -5,7 +5,6 @@
     <PackageId>Facil</PackageId>
     <PackageOutputPath>..\..\nupkg</PackageOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <DebugType>Embedded</DebugType>

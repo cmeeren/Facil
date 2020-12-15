@@ -109,6 +109,8 @@ for:
       - cmd: dotnet build -c Release src\Facil.Generator
       # Then build the package project, which includes the generator output
       - cmd: dotnet build -c Release src\Facil.Package
+      # Then pack (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
+      - cmd: dotnet pack -c Release src\Facil.Package
       # Finally build the tests, which due to the nuget.config should restore the locally
       # built package
       - cmd: dotnet build -c Release src\DbTests
