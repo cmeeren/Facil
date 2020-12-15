@@ -50,8 +50,8 @@ for:
       - cmd:  msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
 
     artifacts:
-    - path: "**/*.dacpac"
-      name: Dacpac
+      - path: "**/*.dacpac"
+        name: Dacpac
 
     deploy:
       - provider: SqlDatabase
@@ -71,8 +71,8 @@ for:
       - cmd:  msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
 
     artifacts:
-    - path: "**/*.dacpac"
-      name: Dacpac
+      - path: "**/*.dacpac"
+        name: Dacpac
 
     deploy:
       - provider: SqlDatabase
