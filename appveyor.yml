@@ -47,7 +47,7 @@ for:
       - mssql2012sp1
 
     build_script:
-      - cmd:  msbuild src\TestDb /property:Configuration=Release
+      - cmd:  msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
 
     artifacts:
     - path: "**/*.dacpac"
@@ -68,7 +68,7 @@ for:
       - net start MSSQL$SQL2019
 
     build_script:
-      - cmd:  msbuild src\TestDb /property:Configuration=Release
+      - cmd:  msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
 
     artifacts:
     - path: "**/*.dacpac"
