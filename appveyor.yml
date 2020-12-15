@@ -3,79 +3,40 @@ image: Visual Studio 2019
 build:
   verbosity: normal
 
-matrix:
-  fast_finish: true
-
 environment:
 
   FACIL_FORCE_REGENERATE: ""
   FACIL_FAIL_ON_CHANGED_OUTPUT: ""
   connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
 
-  matrix:
+init:
+  - net start MSSQL$SQL2019
 
-  - job_name: DB build/deploy
+build_script:
+  # Create package output directory first since this is used as a NuGet source, otherwise build fails
+  - cmd: mkdir nupkg
+  # Build DB
+  - cmd: msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
+  # Publish DB
+  - cmd: sqlpackage.exe /Action:Publish /SourceFile:"src\TestDb\bin\Release\TestDb.dacpac" /TargetConnectionString:"Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI"
+  # Build generator
+  - cmd: dotnet build -c Release src\Facil.Generator
+  # Build the package project, which includes the generator output
+  - cmd: dotnet build -c Release src\Facil.Package
+  # Pack in a separate step (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
+  - cmd: dotnet pack -c Release src\Facil.Package
+  # Build tests, which due to nuget.config should restore the locally built package
+  - cmd: dotnet build -c Release src\DbTests
 
-  - job_name: Build/test/push
-    job_depends_on: DB build/deploy
-    appveyor_build_worker_image: Visual Studio 2019
-    connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
+test_script:
+  - cmd: dotnet test -c Release --no-build
 
+artifacts:
+  - path: /nupkg/*.nupkg
 
-for:
-
-
-  -
-    matrix:
-      only:
-        - job_name: DB build/deploy
-
-    init:
-      - net start MSSQL$SQL2019
-
-    build_script:
-      - cmd:  msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
-
-    artifacts:
-      - path: "**/*.dacpac"
-        name: Dacpac
-
-    deploy:
-      - provider: SqlDatabase
-        artifact: Dacpac
-        connection_string: $(connectionString)
-
-
-  -
-    matrix:
-      only:
-        - job_name: Build/test/push
-
-    init:
-      - net start MSSQL$SQL2019
-
-    build_script:
-      # Create package output directory first since this is used as a NuGet source, otherwise build fails
-      - cmd: mkdir nupkg
-      # First build generator
-      - cmd: dotnet build -c Release src\Facil.Generator
-      # Then build the package project, which includes the generator output
-      - cmd: dotnet build -c Release src\Facil.Package
-      # Then pack (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
-      - cmd: dotnet pack -c Release src\Facil.Package
-      # Finally build the tests, which due to the nuget.config should restore the locally
-      # built package
-      - cmd: dotnet build -c Release src\DbTests
-
-    test_script:
-      - cmd: dotnet test -c Release --no-build
-
-    artifacts:
-      - path: /nupkg/*.nupkg
-
-    deploy:
-      - provider: NuGet
-        api_key:
-          secure: OFv8kufIt1T3pwGdeXnw4ihnZxl/xVNuIU3CE3J70qjedx0REMXJ0HS0UpJpO9Gp
-        on:
-          appveyor_repo_tag: true
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: OFv8kufIt1T3pwGdeXnw4ihnZxl/xVNuIU3CE3J70qjedx0REMXJ0HS0UpJpO9Gp
+    on:
+      appveyor_repo_tag: true
