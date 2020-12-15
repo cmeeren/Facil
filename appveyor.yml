@@ -29,7 +29,8 @@ build_script:
   - cmd: dotnet build -c Release src\DbTests
 
 test_script:
-  - cmd: dotnet test -c Release --no-build
+  - cmd: dotnet src\DbTests\bin\Release\net5.0\DbTests.dll --fail-on-focused-tests
+  - cmd: dotnet src\DbTests\bin\Release\netcoreapp2.1\DbTests.dll --fail-on-focused-tests
 
 artifacts:
   - path: /nupkg/*.nupkg
