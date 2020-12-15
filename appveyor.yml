@@ -103,6 +103,8 @@ for:
         - job_group: Build/test
 
     build_script:
+      # Create package output directory first since this is used as a NuGet source, otherwise build fails
+      - cmd: mkdir nupkg
       # First build generator
       - cmd: dotnet build -c Release src\Facil.Generator
       # Then build the package project, which includes the generator output
