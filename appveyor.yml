@@ -85,6 +85,9 @@ for:
       only:
         - job_name: Build/test SQL Server 2012
 
+    services:
+      - mssql2012sp1
+
     install:
       ps: |
         Write-Host "Installing .NET Core 3.1 SDK..." -ForegroundColor Cyan
@@ -95,6 +98,15 @@ for:
         cmd /c start /wait "$exePath" /quiet /norestart
         del $exePath
         Write-Host "Installed" -ForegroundColor Green
+
+
+  -
+    matrix:
+      only:
+        - job_group: Build/test SQL Server 2019
+
+    init:
+      - net start MSSQL$SQL2019
 
 
   -
