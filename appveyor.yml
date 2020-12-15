@@ -1,3 +1,5 @@
+image: Visual Studio 2019
+
 build:
   verbosity: normal
 
@@ -8,31 +10,16 @@ environment:
 
   FACIL_FORCE_REGENERATE: ""
   FACIL_FAIL_ON_CHANGED_OUTPUT: ""
+  connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
 
   matrix:
 
-  - job_name: DB build/deploy SQL Server 2012
-    connectionString: Server=(local)\SQL2012SP1;Database=FacilTest;Integrated Security=SSPI
-    appveyor_build_worker_image: Visual Studio 2015
+  - job_name: DB build/deploy
 
-  - job_name: DB build/deploy SQL Server 2019
+  - job_name: Build/test/push
+    job_depends_on: DB build/deploy
     appveyor_build_worker_image: Visual Studio 2019
     connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
-
-  - job_name: Build/test SQL Server 2012
-    job_group: Build/test
-    job_depends_on: DB build/deploy SQL Server 2012
-    appveyor_build_worker_image: Visual Studio 2015
-    connectionString: Server=(local)\SQL2012SP1;Database=FacilTest;Integrated Security=SSPI
-
-  - job_name: Build/test SQL Server 2019
-    job_group: Build/test
-    job_depends_on: DB build/deploy SQL Server 2019
-    appveyor_build_worker_image: Visual Studio 2019
-    connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
-
-  - job_name: Push
-    job_depends_on: Build/test
 
 
 for:
@@ -41,28 +28,7 @@ for:
   -
     matrix:
       only:
-        - job_name: DB build/deploy SQL Server 2012
-
-    services:
-      - mssql2012sp1
-
-    build_script:
-      - cmd:  msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
-
-    artifacts:
-      - path: "**/*.dacpac"
-        name: Dacpac
-
-    deploy:
-      - provider: SqlDatabase
-        artifact: Dacpac
-        connection_string: $(connectionString)
-
-
-  -
-    matrix:
-      only:
-        - job_name: DB build/deploy SQL Server 2019
+        - job_name: DB build/deploy
 
     init:
       - net start MSSQL$SQL2019
@@ -83,43 +49,7 @@ for:
   -
     matrix:
       only:
-        - job_name: Build/test SQL Server 2012
-
-    services:
-      - mssql2012sp1
-
-    install:
-      ps: |
-        Write-Host "Installing .NET Core 3.1 SDK..." -ForegroundColor Cyan
-        Write-Host "Downloading..."
-        $exePath = "$env:TEMP\dotnet-sdk-3.1.100-win-x64.exe"
-        (New-Object Net.WebClient).DownloadFile('https://download.visualstudio.microsoft.com/download/pr/639f7cfa-84f8-48e8-b6c9-82634314e28f/8eb04e1b5f34df0c840c1bffa363c101/dotnet-sdk-3.1.100-win-x64.exe', $exePath)
-        Write-Host "Installing..."
-        cmd /c start /wait "$exePath" /quiet /norestart
-        del $exePath
-        Write-Host "Installed" -ForegroundColor Green
-
-    build_script:
-      # Create package output directory first since this is used as a NuGet source, otherwise build fails
-      - cmd: mkdir nupkg
-      # First build generator
-      - cmd: dotnet build -c Release src\Facil.Generator
-      # Then build the package project, which includes the generator output
-      - cmd: dotnet build -c Release src\Facil.Package
-      # Then pack (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
-      - cmd: dotnet pack -c Release src\Facil.Package
-      # Finally build the tests, which due to the nuget.config should restore the locally
-      # built package
-      - cmd: dotnet build -c Release src\DbTests
-
-    test_script:
-      - cmd: dotnet test -c Release --no-build
-
-
-  -
-    matrix:
-      only:
-        - job_name: Build/test SQL Server 2019
+        - job_name: Build/test/push
 
     init:
       - net start MSSQL$SQL2019
@@ -139,12 +69,6 @@ for:
 
     test_script:
       - cmd: dotnet test -c Release --no-build
-
-
-  -
-    matrix:
-      only:
-        - job_name: Push
 
     artifacts:
       - path: /nupkg/*.nupkg
