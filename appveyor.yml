@@ -1,5 +1,5 @@
 build:
-  verbosity: detailed
+  verbosity: normal
 
 matrix:
   fast_finish: true
