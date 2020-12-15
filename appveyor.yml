@@ -1,13 +1,5 @@
-image: Visual Studio 2019
-
 build:
   verbosity: detailed
-
-services:
-  - mssql2012sp1
-
-init:
-  - net start MSSQL$SQL2019
 
 matrix:
   fast_finish: true
@@ -19,20 +11,28 @@ environment:
 
   matrix:
 
-  - job_name: DB build/deploy
+  - job_name: DB build/deploy SQL Server 2012
+    connectionString: Server=(local)\SQL2012SP1;Database=FacilTest;Integrated Security=SSPI
+    appveyor_build_worker_image: Visual Studio 2015
+
+  - job_name: DB build/deploy SQL Server 2019
+    appveyor_build_worker_image: Visual Studio 2019
+    connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
 
   - job_name: Build/test SQL Server 2012
     job_group: Build/test
-    job_depends_on: DB build/deploy
+    job_depends_on: DB build/deploy SQL Server 2012
+    appveyor_build_worker_image: Visual Studio 2015
     connectionString: Server=(local)\SQL2012SP1;Database=FacilTest;Integrated Security=SSPI
 
   - job_name: Build/test SQL Server 2019
     job_group: Build/test
-    job_depends_on: Build/test SQL Server 2012
+    job_depends_on: DB build/deploy SQL Server 2019
+    appveyor_build_worker_image: Visual Studio 2019
     connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
 
   - job_name: Push
-    job_depends_on: Build/test SQL Server 2019
+    job_depends_on: Build/test
 
 
 for:
@@ -41,7 +41,10 @@ for:
   -
     matrix:
       only:
-        - job_name: DB build/deploy
+        - job_name: DB build/deploy SQL Server 2012
+
+    services:
+      - mssql2012sp1
 
     build_script:
       - cmd:  msbuild src\TestDb /property:Configuration=Release
@@ -59,7 +62,28 @@ for:
   -
     matrix:
       only:
-        - job_group: Build/test
+        - job_name: DB build/deploy SQL Server 2019
+
+    init:
+      - net start MSSQL$SQL2019
+
+    build_script:
+      - cmd:  msbuild src\TestDb /property:Configuration=Release
+
+    artifacts:
+    - path: "**/*.dacpac"
+      name: Dacpac
+
+    deploy:
+      - provider: SqlDatabase
+        artifact: Dacpac
+        connection_string: $(connectionString)
+
+
+  -
+    matrix:
+      only:
+        - job_name: Build/test
 
     build_script:
       # First build generator
