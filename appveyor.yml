@@ -99,6 +99,22 @@ for:
         del $exePath
         Write-Host "Installed" -ForegroundColor Green
 
+    build_script:
+      # Create package output directory first since this is used as a NuGet source, otherwise build fails
+      - cmd: mkdir nupkg
+      # First build generator
+      - cmd: dotnet build -c Release src\Facil.Generator
+      # Then build the package project, which includes the generator output
+      - cmd: dotnet build -c Release src\Facil.Package
+      # Then pack (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
+      - cmd: dotnet pack -c Release src\Facil.Package
+      # Finally build the tests, which due to the nuget.config should restore the locally
+      # built package
+      - cmd: dotnet build -c Release src\DbTests
+
+    test_script:
+      - cmd: dotnet test -c Release --no-build
+
 
   -
     matrix:
@@ -107,13 +123,6 @@ for:
 
     init:
       - net start MSSQL$SQL2019
-
-
-  -
-    matrix:
-      only:
-        - job_name: Build/test SQL Server 2012
-        - job_name: Build/test SQL Server 2019
 
     build_script:
       # Create package output directory first since this is used as a NuGet source, otherwise build fails
