@@ -103,7 +103,7 @@ for:
   -
     matrix:
       only:
-        - job_group: Build/test SQL Server 2019
+        - job_name: Build/test SQL Server 2019
 
     init:
       - net start MSSQL$SQL2019
