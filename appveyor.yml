@@ -9,6 +9,9 @@ services:
 init:
   - net start MSSQL$SQL2019
 
+matrix:
+  fast_finish: true
+
 environment:
 
   FACIL_FORCE_REGENERATE: ""
