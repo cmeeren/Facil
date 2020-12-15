@@ -52,6 +52,11 @@ Contributions and ideas are welcome! Please see [Contributing.md](https://github
 Quick start
 -----------
 
+#### 0. Requirements
+
+* SQL Server 2012 at build-time (may work with older versions at runtime; untested)
+* .NET Core 3.1 or later at build-time
+
 #### 1. Install
 
 Install Facil from [NuGet](https://www.nuget.org/packages/Facil).
