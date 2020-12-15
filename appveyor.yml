@@ -83,7 +83,7 @@ for:
   -
     matrix:
       only:
-        - job_name: Build/test
+        - job_group: Build/test
 
     build_script:
       # First build generator
