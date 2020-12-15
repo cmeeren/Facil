@@ -1,0 +1,120 @@
+﻿namespace Facil
+
+open System
+open System.IO
+open Microsoft.Data.SqlClient
+
+
+module Program =
+
+
+  let envvar_force_regenerate = "FACIL_FORCE_REGENERATE"
+  let envvar_fail_on_changed_output = "FACIL_FAIL_ON_CHANGED_OUTPUT"
+
+
+  [<EntryPoint>]
+  let main argv =
+    try
+
+      let projectDir = if argv.Length = 0 then @"..\..\..\..\TestOutput" else argv.[0]
+
+      let yamlFile1 = FileInfo(Path.Combine(projectDir, "facil.yaml"))
+      let yamlFile2 = FileInfo(Path.Combine(projectDir, "facil.yml"))
+
+      let yamlFilePath =
+        match yamlFile1.Exists, yamlFile2.Exists with
+        | true, true ->
+            logWarning $"Found both %s{yamlFile1.Name} and %s{yamlFile2.Name}; using %s{yamlFile1.Name}"
+            yamlFile1.FullName
+        | true, false -> yamlFile1.FullName
+        | false, true -> yamlFile2.FullName
+        | false, false ->
+            let execDir = Path.GetDirectoryName(Reflection.Assembly.GetExecutingAssembly().Location)
+            File.Copy(Path.Combine(execDir, "facil_minimal.yaml"), yamlFile1.FullName)
+            failwithError $"No config file found. A minimal config file has been placed in the project directory ({yamlFile1.FullName}). Re-build after editing the config."
+
+
+      let assemblyHash =
+        use sha = System.Security.Cryptography.SHA256.Create()
+        File.ReadAllBytes(Reflection.Assembly.GetExecutingAssembly().Location)
+        |> sha.ComputeHash
+        |> BitConverter.ToString
+
+
+      for cfg in FacilConfig.getRuleSets projectDir yamlFilePath do
+
+        let scriptsWithoutParamsOrResultSets =
+          cfg.Scripts
+          |> List.collect (fun rule -> Set.toList rule.IncludeMatches)
+          |> List.map (fun globOutput ->
+              {
+                GlobMatchOutput = globOutput
+                RelativePathSegments =
+                  let segmentsWithName = globOutput.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileNameWithoutExtension globOutput
+                Source = File.ReadAllText (Path.Combine(projectDir, globOutput))
+                Parameters = []
+                ResultSet = None
+              }
+          )
+
+        let hash =
+          use sha = System.Security.Cryptography.SHA256.Create()
+          [
+            assemblyHash
+            sprintf "%A" cfg
+            yield! scriptsWithoutParamsOrResultSets |> List.map (fun s -> s.GlobMatchOutput + s.Source)
+          ]
+          |> String.concat ""
+          |> Text.Encoding.UTF8.GetBytes
+          |> sha.ComputeHash
+          |> BitConverter.ToString
+          |> fun s -> s.Replace("-", "").ToLowerInvariant()
+
+        let outFile = Path.Combine(projectDir, cfg.Filename)
+
+        let regenerate () =
+          Console.WriteLine($"Facil : Regenerating {outFile}")
+          let sw = Diagnostics.Stopwatch.StartNew()
+          use conn =
+            try
+              new SqlConnection(cfg.ConnectionString)
+            with :? ArgumentException ->
+              failwithError "Invalid connection string"
+          conn.Open()
+          let everything = Db.getEverything cfg yamlFilePath scriptsWithoutParamsOrResultSets conn
+          let lines = Render.renderDocument cfg hash everything
+
+          if Environment.GetEnvironmentVariable(envvar_fail_on_changed_output) |> isNull |> not then
+            let existingLines = if File.Exists outFile then File.ReadAllLines(outFile) |> Array.toList else []
+            if lines <> existingLines then
+              failwithError $"The generated code has changed and the environment variable {envvar_fail_on_changed_output} is set. Failing build."
+
+
+          File.WriteAllLines(outFile, lines, Text.Encoding.UTF8)
+          sw.Stop()
+          Console.WriteLine($"Facil : Completed regeneration of {outFile} in %.3f{sw.Elapsed.TotalSeconds}s")
+
+        if Environment.GetEnvironmentVariable(envvar_force_regenerate) |> isNull |> not then
+          Console.WriteLine($"Facil : Found environment variable {envvar_force_regenerate}")
+          regenerate()
+        elif File.Exists(outFile) then
+          let lines = File.ReadAllLines(outFile)
+          let firstLineOk = lines |> Array.tryItem 0 = Some Render.firstLine
+          let hashOk = lines |> Array.tryItem 1 = Some (Render.secondLineWithHash hash)
+          if firstLineOk && hashOk then
+            Console.WriteLine($"Facil : Skipping regeneration of up-to-date file {outFile}")
+          else regenerate()
+        else regenerate()
+
+      0
+
+    with
+    | FacilException logError ->
+        logError ()
+        1
+    | ex ->
+        logError (string ex)
+        1

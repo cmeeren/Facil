@@ -1,0 +1,216 @@
+# This document explains everything you can specify in facil.yaml. You can of course often
+# get away with a much simpler config file. Click the link below to view the minimal
+# config file that is added to your project if you build without an existing config file:
+# https://github.com/cmeeren/Facil/blob/master/src/Facil.Generator/facil_minimal.yaml
+
+
+# The optional 'configs' section allows you to specify where variables are resolved from.
+# Each array item translates more or less exactly into a call to the corresponding
+# Microsoft.Extensions.Configuration.ConfigurationBuilder.Add* method, in the order you
+# specify here (i.e., later config sources will override already added config sources if
+# there are collisions). Any config type may be added multiple times. This section is only
+# required if you are using variables (e.g. for the connection string). For more
+# information, see:
+# - https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration
+# - https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.configurationbuilder
+configs:
+  # 'appSettings' allow you to use configuration values from appsettings.json.
+  - appSettings: path/from/project/to/appsettings.json
+
+  # 'userSecrets' allow you to use configuration values from user secrets.
+  - userSecrets: 80d5e7ec-f577-4360-b60a-f10ea004da1d
+
+  # 'envVars' allow you to use configuration values from environment varibles. Supply the
+  # prefix that environment variable names must start with. The prefix will be removed
+  # from the environment variable names.
+  - envVars: ""
+
+
+# Rulesets allow you to specify what you should generate. Each ruleset may only use a
+# single DB and generates a single file. You will often only need one ruleset.
+rulesets:
+    # 'connectionString' is the only required property of a ruleset. You may use a
+    # variable here with the syntax $(VariableName).
+  - connectionString: $(ConnectionStrings:Db)
+
+    # The filename and namespace/module declaration of the generated file. The values
+    # below are the defaults.
+    filename: DbGen.fs
+    namespaceOrModuleDeclaration: module internal DbGen
+
+    # 'prelude' contains anything you want to insert at the top of the generated file.
+    # This can for example be preprocessor directives to disable compiler warnings.
+    # (#nowarn "49" is always inserted by Facil and is just shown as an example.) You
+    # don't have to think about the initial indentation; all lines will be deindented so
+    # that the least indented line is not intended in the generated file.
+    prelude: |
+      #nowarn "49"
+
+    # Rules to specify which stored procedures are included in the generation and how they
+    # are generated. Each rule requires either 'include' or 'for'. All other properties
+    # are optional. The effective config of any stored procedure is taken from all
+    # matching rules, with values from later rules overriding values from earlier rules.
+    procedures:
+
+      # 'include' contains a regex to be matched against the schema-qualified procedure
+      # name (e.g. dbo.MyProcedure). All procedures that match the 'include' pattern for
+      # any rule will be included in generation, unless they are also matched by a
+      # corresponding 'except' pattern.
+      #
+      # The rule below specifies that all procedures should be included in generation,
+      # except the procedure 'dbo.ProcToExclude', and that all the matched procedures
+      # should use ValueOption instead of Option for nullable output columns (unless
+      # overridden by later rules).
+      - include: .*
+        except: ^dbo\\.ProcToExclude$
+        voptionOut: true
+
+      # 'for' contains a regex that specifies which already included procedures (also from
+      # 'include' in later rules) this rule applies to. It will not cause additional
+      # procedures to be included.
+      #
+      # The rule below applies to all procedures containing 'dbo.User_' except those
+      # containing 'dbo.User_Id'.
+      - for: dbo\\.User_
+        except: dbo\\.User_Id
+
+        # 'result' specifies the type of the returned rows. Valid values:
+        #  - "auto" (default): If a single matching table DTO (see later) is found, use
+        #    that. Otherwise, use anonyomus records. Will warn and fall back to anonyomus
+        #    records if there are multiple matching table DTOs. Will not match
+        #    voption-enabled table DTOs if voptionOut if false, and vice versa.
+        #  - "anonymous": Use anonymous records.
+        #  - A qualified table name, e.g. "dbo.User": If the name matches an included
+        #    table DTO (see later), use that. Otherwise, treat as a custom record type as
+        #    described in the next point.
+        #  - A (sufficiently qualified) user record type, e.g. "MyModule.MyDto". This must
+        #    be a record whose record constructor is accessible by the generated code.
+        result: dbo.User
+
+        # Whether to use ValueOption instead of Option for nullable parameters. Default
+        # false.
+        voptionIn: true
+
+        # Whether to use ValueOption instead of Option for nullable columns in returned
+        # records. Note that if the result is a table DTO, that table DTO must have a
+        # matching 'voption' configuration. Defalt false.
+        voptionOut: true
+
+        # If true and the result set consists of a single named column, return a record
+        # with a single field (e.g. {| col: int |}). If false, returns the scalar value
+        # directly (just 'int' in this example). Default false.
+        recordIfSingleCol: true
+
+        # If true, will skip the 'WithParameters' overload that acceps a generic DTO type.
+        # If you have many procedures and generally don't use these overloads, removing
+        # them may improve IDE performance and compilation times. Default false.
+        skipParamDto: true
+
+        # If true, the return value of the procedure will be made available (except when
+        # using lazy execution).
+        useReturnValue: true
+
+        # 'params' allows you to specify settings for individual parameters.
+        params:
+          # The keys are the names of the parameters without '@'. The special value ""
+          # (empty string) specifies base rules inherited by all parameters in this rule,
+          # though currently it's not relevant for procedure parameters, only scripts (see
+          # later).
+          "": {}
+
+          someParam:
+            # The property name for this parameter if passing parameters using a DTO
+            # object. By default, it's equal to the actual parameter name with the first
+            # letter upper-cased.
+            dtoName: SOMEparam
+
+
+    # Rules for which SQL script files are included. These work just like stored procedure
+    # rules, except that 'include', 'for', and 'except' are glob patterns, not regex
+    # patterns. For supported patterns, see the glob implementation Facil uses:
+    # https://github.com/kthompson/glob Note that the SQL files must exist under the
+    # project directory. (The SQL files do not need to be included in the build output;
+    # the script contents will be inlined in the generated code.)
+    scripts:
+      - include: "**/*.sql"
+        except: "SQL/ScriptToExclude.sql"
+
+        # The following work exactly like they do in stored procedure rules.
+        result: anonymous
+        voptionIn: true
+        voptionOut: true
+        recordIfSingleCol: true
+        skipParamDto: true
+
+      - for: SQL/MyScript.sql
+        # 'params' allows you to specify settings for individual parameters.
+        #
+        # Type inference in scripts is limited due to limitations in SQL Server's
+        # sp_describe_undeclared_parameters, which Facil uses to get parameter information
+        # for sripts. Notably, the following does not work out of the box:
+        #   - Parameters used multiple times will give errors
+        #   - Table-valued parameters will give errors
+        #   - Nullability is not inferred (by default, Facil assumes all script parameters
+        #     are non-nullable)
+        #
+        # To work around this, script rules also supports a 'params' property that allows
+        # you to specify, for each problematic parameter (you don't have to specify the
+        # ones that work), which SQL type it is and whether it is nullable.
+        params:
+          # The keys are the names of the parameters without '@'. The special value ""
+          # (empty string) specifies base rules inherited by all parameters in this rule.
+          "":
+            # Whether the parameter is nullable. Default false.
+            nullable: true
+          someParam:
+            # The type of parameter. This is required if the parameter is used more than
+            # once in the script or if it is a table-valued parameter (see below).
+            type: NVARCHAR(50)
+            # The property name for this parameter if passing parameters using a DTO
+            # object. By default, it's equal to the actual parameter name with the first
+            # letter upper-cased.
+            dtoName: SOMEparam
+          anotherParam:
+            # For table-valued parameters, specify the schema-qualified name of a
+            # user-defined table type. Note that table-valued parameters can not be
+            # nullable.
+            type: dbo.MultiColNull
+        
+
+    # Facil can generate DTO record types for tables. These can then (automatically or
+    # manually) be used as the return types of procedures and scripts. This can make it
+    # easier for you to map between the DTO and your domain types, because you can just
+    # write functions that convert to/from this table DTO, instead of having to write a
+    # type annotation with all the fields of the corresponding anonymous record (or use
+    # SRTPs).
+    tableDtos:
+
+      # 'include', 'for', and 'except' work just like in stored procedure rules, and are
+      # matched against the schema-qualified table name.
+      - include: .*
+        except: dbo\\.SomeTable
+
+        # Whether to use ValueOption instead of Option for nullable columns. Default
+        # false.
+        voption: true
+        
+
+    # Facil automatically generates table type constructors for table types used as a
+    # parameter in any included stored procedure or script.
+    tableTypes:
+
+      # 'for' and 'except' work just like in stored procedure rules, and are matched
+      # against the schema-qualified table type name. Note that 'include' is not
+      # supported; Facil always generates wrappers for the table types used in included
+      # procedure and script parameters.
+      - for: .*
+        except: dbo\\.SomeTableType
+
+        # Whether to use ValueOption instead of Option for nullable columns. Default
+        # false.
+        voption: true
+
+        # If true, will skip the 'create' overload that acceps a generic DTO type. If you
+        # have many table types and generally don't use these overloads, removing them may
+        # improve IDE performance and compilation times. Default false.
+        skipParamDto: true

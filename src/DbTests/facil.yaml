@@ -1,0 +1,127 @@
+configs:
+  - appSettings: appsettings.json
+  - envVars: ""
+
+rulesets:
+  - connectionString: $(connectionString)
+    filename: DbGen.fs
+    namespaceOrModuleDeclaration: module DbGen
+
+    prelude: |
+      module MyPreludeModule =
+        let x = 2
+
+
+    procedures:
+      - include: .*
+
+      - for: WithoutDto
+        result: anonymous
+
+      - for: ProcVoptionIn
+        voptionIn: true
+
+      - for: ProcVoption.*Out
+        voptionOut: true
+
+      - for: ProcWithSingleRecordCol
+        recordIfSingleCol: true
+
+      - for: ProcWithOverriddenDtoParamName
+        params:
+          nameToBeOverridden:
+            dtoName: newDtoParamName
+
+      - for: RetVal
+        useReturnValue: true
+
+      - for: RetValVoption
+        voptionIn: true
+        voptionOut: true
+
+
+    scripts:
+      - include: "**/*.sql"
+
+      - for: "**/*WithoutDto.sql"
+        result: anonymous
+
+      - for: SQL/ParamsUsedTwice.sql
+        params:
+          col1:
+            nullable: true
+            type: NVARCHAR(50)
+
+      - for: SQL/UserDefinedTableType.sql
+        params:
+          tvp:
+            type: dbo.MultiColNull
+
+      - for: SQL/Voption/In.sql
+        voptionIn: true
+        params:
+          param1:
+            nullable: true
+            type: NVARCHAR(50)
+
+      - for: SQL/Voption/Out.sql
+        voptionOut: true
+        params:
+          param1:
+            nullable: true
+            type: NVARCHAR(50)
+
+      - for: SQL/Voption/TableOutWithDto.sql
+        voptionOut: true
+
+      - for: SQL/Voption/TableOutWithoutDto.sql
+        voptionOut: true
+
+      - for: SQL/Voption/TvpInOut.sql
+        voptionOut: true
+        params:
+          tvp:
+            type: dbo.MultiColNullVoption
+
+      - for: SQL/Option/In.sql
+        params:
+          param1:
+            nullable: true
+            type: NVARCHAR(50)
+
+      - for: SQL/Option/Out.sql
+        params:
+          param1:
+            nullable: true
+            type: NVARCHAR(50)
+
+      - for: SQL/Option/TvpInOut.sql
+        params:
+          tvp:
+            type: dbo.MultiColNull
+
+      - for: SQL/SingleRecordCol.sql
+        recordIfSingleCol: true
+
+      - for: SQL/OverriddenDtoParamName.sql
+        params:
+          nameToBeOverridden:
+            type: INT
+            dtoName: newDtoParamName
+
+      - for: SQL/DynamicSqlWithoutDeclaration.sql
+        params:
+          col1Filter:
+            type: NVARCHAR(42)
+
+    tableDtos:
+      - include: .*
+        except: WithoutDto
+
+      - for: Voption
+        voption: true
+
+
+    tableTypes:
+      - for: Voption
+        voption: true

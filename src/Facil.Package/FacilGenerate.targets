@@ -1,0 +1,5 @@
+<Project>
+  <Target Name="FacilGenerate" BeforeTargets="CoreCompile">
+    <Exec Command="dotnet &quot;$(MSBuildThisFileDirectory)netcoreapp3.1\Facil.Generator.dll&quot; &quot;$(MSBuildProjectDirectory)&quot;" />
+  </Target>
+</Project>

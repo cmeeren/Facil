@@ -1,0 +1,17 @@
+# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+
+[*]
+indent_style = space
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+guidelines = 90
+
+[*.fs;*.yaml;*.html;*.sql]
+indent_size = 2
+
+[*.cs]
+indent_size = 4
+
+[spec.yaml]
+trim_trailing_whitespace = false
