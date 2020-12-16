@@ -120,13 +120,13 @@ Facil, by generating plain old F# code that you check in, sidesteps all of these
 
 ### When does Facil regenerate files?
 
-Facil will regenerate (hitting your DB) on the next build after:
+Facil will regenerate (hitting your DB) before the compilation step of your build if any of the following are true:
 
-* Changes to the two first lines of the generated file(s) (this is the simplest way to manually force a rebuild)
-* Changes in included SQL scripts
-* Changes in effective config (including variable contents)
-* Changes to Facil itself (i.e., when updating Facil)
-* If the environment variable `FACIL_FORCE_REGENERATE` exists
+* There are changes to the two first lines of the generated file(s) (this is the simplest way to manually force a rebuild)
+* There are changes in included SQL scripts
+* There are changes in effective config (including resolved variable contents)
+* There are changes to Facil itself (i.e., when updating Facil)
+* The environment variable `FACIL_FORCE_REGENERATE` exists
 
 When there are no changes as described above, Facil will skip its build step and thus not hit your DB.
 
