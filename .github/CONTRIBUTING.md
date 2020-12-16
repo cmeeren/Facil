@@ -62,7 +62,34 @@ More on rebasing and squashing can be found in [this guide](https://robots.thoug
 Development
 -----------
 
-TODO: Mention build order for testing
+#### Solution structure
+
+* `Facil.Generator` is the generator console app. The build output is copied as-is into the nupkg as a build tool.
+* `Facil.Runtime` and `Facil.Runtime.CSharp` contain runtime utilities used by the generated code.
+* ` Facil.Package` is the project that pulls together the generator, build tasks and runtime components into a single package, and also specify all the package dependencies. It does not contain any code itself.
+* `DbTests` is the unit test project. In order to test the build tasks, it references Facil using `PackageReference`, which after building `Facil.Package` exists and (due to the solution’s `nuget.config`) is restored from the `nupkg` directory in the solution root.
+* `TestOutput` is the output project for the generated code if you run `Facil.Generator` directly in VS, and makes it easier to check generator output when debugging or developing new features. It does not test the build task.
+* `TestDb`: This is the database project that contains the schema used by `DbTests` and `TestOutput`.
+
+#### Dev workflow: Quick testing of generator output:
+
+* Set `Facil.Generator` as the startup project
+* Run it when needed and verify the output in the `TestOutput` project
+
+#### Dev workflow: Updating test project and running tests
+
+After making changes in the generator, runtime, or package projects:
+
+* Set `DbTests` as the startup project
+* Right-click `Facil.Package` and choose Build
+* Right-click `Facil.Package` and choose Pack
+* Right-click `DbTests` and choose Rebuild (not Build)
+* Run the test project as a normal console app (orders of magnitude faster than using the test explorer, and there seems to be some issues where tests lock up in the test explorer)
+
+Notes about this workflow:
+
+* Build before Pack is needed due to what looks like some timing issues where Pack alone doesn’t (always) pick up the most recent generator/runtime files (this includes using `<GeneratePackageOnBuild>`).
+* The Pack step will also remove the cached Facil version in the solution’s NuGet package cache (as well as all existing nupkg files in the nupkg output folder), ensuring that when `DbTests` is rebuilt, it restores the most recently built package.
 
 ## Deployment checklist
 
