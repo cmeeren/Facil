@@ -9,7 +9,7 @@ Facil is a friendly, flexible, and full-featured fabricator of files for fluent 
 
 (“Facts” referring to data stored in SQL server. It would be better if SQL started with an F. Oh well.)
 
-Okay, elevator pitch without the alliteration: Facil works similarly to type providers like [FSharp.Data.SqlClient](https://github.com/fsprojects/FSharp.Data.SqlClient/) by letting you call SQL scripts and stored procedures in a strongly typed manner, but it avoids a range of type provider issues and hiccups by not being a type provider and actually generating F# code that you check in. (Why not a type provider, you ask? See the FAQ.)
+Okay, elevator pitch without the alliteration: Facil works similarly to type providers like [FSharp.Data.SqlClient](https://github.com/fsprojects/FSharp.Data.SqlClient/) by letting you call SQL scripts and stored procedures in a strongly typed manner, but it avoids a range of type provider issues and hiccups by not being a type provider and actually generating F# code that you check in. (Why not a type provider, you ask? [See the FAQ.](#why-not-a-type-provider))
 
 #### Core features
 
