@@ -172,7 +172,7 @@ For each table type (automatically included by Facil if used in included procedu
 
 ### Type inference limitations in scripts
 
-Type inference in scripts is limited due to limitations in SQL Server's `sp_describe_undeclared_parameters`, which Facil uses to get parameter information for scripts. Notably, the following does not work out of the box:
+Type inference in scripts is limited due to limitations in SQL Server's [sp_describe_undeclared_parameters](https://docs.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-describe-undeclared-parameters-transact-sql), which Facil uses to get parameter information for scripts. Notably, the following does not work out of the box:
 
 * Parameters used multiple times will give errors
 * Table-valued parameters will give errors
