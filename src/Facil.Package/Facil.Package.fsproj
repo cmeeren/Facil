@@ -14,8 +14,6 @@
     <Authors>Christer van der Meeren</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>f# fsharp data typeprovider type-provider sql tsql sql-server generator code-generator</PackageTags>
-    <!-- TODO: Keep version in sync with Facil.Generator using Directory.build.props? -->
-    <Version>0.1.0</Version>
     <PackageReleaseNotes>https://github.com/cmeeren/Facil/blob/master/RELEASE_NOTES.md</PackageReleaseNotes>
   </PropertyGroup>
 

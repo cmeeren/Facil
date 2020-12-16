@@ -3,8 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <!-- Note: Keep version in sync with Facil.Package -->
-    <Version>0.1.0</Version>
     <!-- Allow tool to be run by more recent .NET runtimes -->
     <RollForward>Major</RollForward>
   </PropertyGroup>

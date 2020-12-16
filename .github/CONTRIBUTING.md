@@ -97,6 +97,6 @@ For maintainers.
 
 * Make necessary changes to the code
 * Update the changelog
-* Update the version and release notes in the fsproj files
+* Update the version in `Directory.Build.props`
 * Commit and tag the commit in the format `v/x.y.z` (this is what triggers deployment from AppVeyor)
 * Push the changes and the tag to the repo. If the AppVeyor build succeeds, the package is automatically published to NuGet.
