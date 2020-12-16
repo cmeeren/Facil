@@ -101,7 +101,7 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
 
 ### 5. Profit!
 
-That’s it! For regenerating, see the FAQ entry [When does Facil regenerate files?]().
+That’s it! For regenerating, see the FAQ entry [When does Facil regenerate files?](#when-does-facil-regenerate-files).
 
 FAQ
 ---
