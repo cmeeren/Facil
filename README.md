@@ -22,10 +22,10 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 * Highly configurable with simple, yet flexible [YAML configuration](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml)
 * Helpful build-time error messages and warnings
 * At runtime, supply a connection string for simplicity or use your own managed connections
-* Can be configured to use `ValueOption` instead of `Option` (potentially specific to single procedure/script inputs and outputs)
+* Can be configured to use `ValueOption` instead of `Option` (separately for inputs and outputs, for some or all procedures/scripts)
 * Can create DTOs for tables and automatically (or manually) use those DTOs as return values for matching result sets, simplifying your mapping to domain entities
-* Can also map directly to any record type you specify
-* Can accept suitable DTOs instead of a list of parameters, e.g. you can just pass your `UserDto` to your `SaveUser` procedure instead of explicitly supplying all parameters from the DTO
+* Can also map directly to any record type you specify (as mentioned previously)
+* Can accept suitable DTOs instead of a list of parameters, e.g. you can just pass your `UserDto` to your `SaveUser` procedure instead of explicitly supplying all parameters from the DTO – less noise, and one less thing to update each time you add parameters
 * Supports table-valued parameters in both procedures and scripts
 * Supports stored procedure output parameters and return values
 * Supports lazy execution, both sync (returns `seq`) and async (if your target supports .NET Standard 2.1 – returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
@@ -42,7 +42,7 @@ It’s still at 0.x because it's still new and I may still be discovering improv
 
 While at 0.x, I’ll try to increment the minor version for breaking changes and the patch version for anything else.
 
-Note on what a “breaking change” is: There is a lot of the generated code that needs to be public to support inlining, but that is still considered implementation details. These parts of the API are hidden from the IDE using the `[<EditorBrowsable>]` attribute to ensure you won’t use them by accident, but there’s nothing stopping you from looking at the generated code and referencing these parts of the API in your code. Don’t do that. These are implementation details and may change at any time.
+Note on what a “breaking change” is: A lot of the generated code needs to be public to support inlining, but is still considered implementation details. These parts of the API are hidden from the IDE using the `[<EditorBrowsable>]` attribute to ensure you won’t use them by accident, but there’s nothing stopping you from looking at the generated code and referencing these parts of the API in your own code. Don’t do that. These are implementation details and may change at any time.
 
 Contributing
 ------------
@@ -93,6 +93,7 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
       GetUserById
         .WithConnection(connStr)
         // You can load parameters from any object with the right members
+        // instead of passing each parameter manually
         .WithParameters(dtoWithPrimitiveParams)
         .AsyncExecute()
 	}
@@ -100,7 +101,7 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
 
 ### 5. Profit!
 
-That’s it! For regenerating, see the FAQ entry “When does Facil regenerate files?”.
+That’s it! For regenerating, see the FAQ entry [When does Facil regenerate files?]().
 
 FAQ
 ---
@@ -121,10 +122,11 @@ Facil, by generating plain old F# code (that you check in and don’t have to ma
 
 Facil will regenerate (hitting your DB) on the next build after:
 
-* Changes to the two first lines of the generated file(s) (the simplest way to manually force a rebuild)
+* Changes to the two first lines of the generated file(s) (this is the simplest way to manually force a rebuild)
 * Changes in included SQL scripts
 * Changes in effective config (including variable contents)
 * Changes to Facil itself (i.e., when updating Facil)
+* If the environment variable `FACIL_FORCE_REGENERATE` exists
 
 When there are no changes as described above, Facil will skip its build step and thus not hit your DB.
 
