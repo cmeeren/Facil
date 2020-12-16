@@ -178,7 +178,7 @@ Type inference in scripts is limited due to limitations in SQL Server's [sp_desc
 * Table-valued parameters will give errors
 * Nullability is not inferred (by default, Facil assumes all script parameters are non-nullable)
 
-To work around this, for each problematic parameter (you don't have to specify the ones that work), you can specify in the config which SQL type the parameter is and whether it is nullable. You can also override all parameters at once.
+To work around this, for each problematic parameter (you don't have to specify the ones that work), you can specify in the config which SQL type the parameter is and whether it is nullable. You can also set this for all parameters at once (and override specific parameters).
 
 ### How is default and nullable parameter values handled?
 
@@ -188,13 +188,13 @@ While parameters with default values could conceivably be generated as optional 
 
 If Facil’s current approach does not work for you, please open an issue and describe your use-case.
 
-### Can you support user-defined functions?
+### Can Facil support user-defined functions?
 
 If you need this, I’m willing to hear you out, but this isn’t high on my priority list right now. A simple workaround is to simply call the function from a script or stored procedure, and then use Facil with that script/procedure instead.
 
 ### Can Facil generate SQL, too?
 
-No, this is not currently supported and not planned. While it may sound useful to generate boilerplate scripts for “select from table by primary key” or “update/insert/merge table”, there are in my experience enough considerations and slight variants of these patterns to take into account that I’m not convinced it would be terribly useful. Facil is focused on allowing you to call your existing TSQL in the simplest fashion possible; it won’t generate TSQL For you.
+No, this is not currently supported and not planned. While it may sound useful to generate boilerplate scripts for “select from table by primary key” or “update/insert/merge table”, there are in my experience enough considerations and slight variants of these patterns to take into account that I’m not convinced it would be all that useful. Facil is focused on allowing you to call your existing TSQL in the simplest fashion possible; it won’t generate TSQL for you.
 
 Release notes
 -------------
