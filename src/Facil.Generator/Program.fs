@@ -92,8 +92,20 @@ module Program =
             if lines <> existingLines then
               failwithError $"The generated code has changed and the environment variable {envvar_fail_on_changed_output} is set. Failing build."
 
+          // Writing the file may fail if the target projects has multiple target
+          // frameworks that are built in parallel, such as is the case with Facil's own
+          // unit test project. A simple wait-and-retry with jitter fixes that.
+          let rec tryWrite retriesLeft =
+            try
+              File.WriteAllLines(outFile, lines, Text.Encoding.UTF8)
+            with :? IOException when retriesLeft > 0 ->
+              Console.WriteLine($"Facil : Unable to access file {outFile}, retrying {retriesLeft} more times")
+              let msToWait = Random().Next(300, 700)
+              Threading.Thread.Sleep msToWait
+              tryWrite (retriesLeft - 1)
 
-          File.WriteAllLines(outFile, lines, Text.Encoding.UTF8)
+          tryWrite 5
+
           sw.Stop()
           Console.WriteLine($"Facil : Completed regeneration of {outFile} in %.3f{sw.Elapsed.TotalSeconds}s")
 
