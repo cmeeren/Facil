@@ -116,7 +116,7 @@ Type providers are great in theory, and to a large extent also in practice, but 
 * Limitations for what kind of types can be provided (no union types being a well-known example, though not itself relevant for Facil)
 * May need to reload projects to force the TP to update after changes to external schema
 
-Facil, by generating plain old F# code (that you check in and don’t have to maintain), sidesteps all of these issues.
+Facil, by generating plain old F# code that you check in, sidesteps all of these issues (but still optionally supports forced generation on CI and also optionally failing the build if the generated code has changed).
 
 ### When does Facil regenerate files?
 
