@@ -13,8 +13,6 @@ init:
   - net start MSSQL$SQL2019
 
 build_script:
-  # Create package output directory first since this is used as a NuGet source, otherwise build fails
-  - cmd: mkdir nupkg
   # Build DB
   - cmd: msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
   # Publish DB
