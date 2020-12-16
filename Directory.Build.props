@@ -4,4 +4,8 @@
     <Version>0.1.0</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(CI)' == 'True'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
 </Project>
