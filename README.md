@@ -11,7 +11,7 @@ Facil is a friendly, flexible, and full-featured fabricator of files for fluent 
 
 Okay, elevator pitch without the alliteration: Facil works similarly to type providers like [FSharp.Data.SqlClient](https://github.com/fsprojects/FSharp.Data.SqlClient/) by letting you call SQL scripts and stored procedures in a strongly typed manner, but it avoids a range of type provider issues and hiccups by not being a type provider and actually generating F# code that you check in. (Why not a type provider, you ask? See the FAQ.)
 
-Core features:
+#### Core features
 
 * Primary goal: Provide the simplest way (yet highly configurable) to call stored procedures and SQL scripts as if they were F# functions, and otherwise get out of your way and let you get on with providing actual business value
 * Good API ergonomics – succinct and discoverable fluent-style syntax, no boilerplate
@@ -52,24 +52,24 @@ Contributions and ideas are welcome! Please see [Contributing.md](https://github
 Quick start
 -----------
 
-#### 0. Requirements
+### 0. Requirements
 
 * SQL Server 2012 or later at build-time (may work with older versions at runtime; untested)
 * .NET Core 3.1 or later at build-time
 
-#### 1. Install
+### 1. Install
 
 Install Facil from [NuGet](https://www.nuget.org/packages/Facil).
 
-#### 2. Build and edit the new config file
+### 2. Build and edit the new config file
 
 Start a build. It will fail. Facil will place [a minimal config](https://github.com/cmeeren/Facil/blob/master/src/Facil.Generator/facil_minimal.yaml) file in your project directory. Edit it – you should at least set a connection string. For more details, you can find [the full config reference here](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml). You might consider adding the config file to your project for easy access in Visual Studio.
 
-#### 3. Build again and add the generated file
+### 3. Build again and add the generated file
 
 Start a new build. Facil will now generate the code. Add the generated file to your project.
 
-#### 4. Use the generated code
+### 4. Use the generated code
 
 For example:
 
@@ -98,14 +98,14 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
 	}
 ```
 
-#### 5. Profit!
+### 5. Profit!
 
 That’s it! For regenerating, see the FAQ entry “When does Facil regenerate files?”.
 
 FAQ
 ---
 
-#### Why not a type provider?
+### Why not a type provider?
 
 Type providers are great in theory, and to a large extent also in practice, but have some notable drawbacks:
 
@@ -117,7 +117,7 @@ Type providers are great in theory, and to a large extent also in practice, but 
 
 Facil, by generating plain old F# code (that you check in and don’t have to maintain), sidesteps all of these issues.
 
-#### When does Facil regenerate files?
+### When does Facil regenerate files?
 
 Facil will regenerate (hitting your DB) on the next build after:
 
@@ -130,14 +130,14 @@ When there are no changes as described above, Facil will skip its build step and
 
 Notably, this means that Facil **will not pick up changes to your database**. This is by design. If you update the DB that Facil connects to during build, just open the generated file and delete the first line and Facil will re-generate it on the next build.
 
-#### Can I force Facil to run during CI build and fail if the generated file is not up to date?
+### Can I force Facil to run during CI build and fail if the generated file is not up to date?
 
 Yes. There are two environment variables you can set. You can use either of them on their own, or together:
 
 * `FACIL_FORCE_REGENERATE`: Set this to force Facil to always regenerate during build. Alone, this variable will effectively make Facil mimick a type provider without caching/offline capabilities.
 * `FACIL_FAIL_ON_CHANGED_OUTPUT`: Set this to make Facil fail the build if the output has changed. You can use this to reject commits that does not include up-to-date generated code.
 
-#### What can I configure?
+### What can I configure?
 
 See [the full YAML config reference for details](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml). Note that you can generate multiple source files with separate configs (e.g. to generate from multiple DBs). Here are some highlights of what you can configure.
 
@@ -168,7 +168,7 @@ For each table type (automatically included by Facil if used in included procedu
 * Whether to use `ValueOption` instead of `Option`
 * Whether to skip the `inline` DTO parameter overloads (for faster compilation if you don’t use them)
 
-#### Type inference limitations in scripts
+### Type inference limitations in scripts
 
 Type inference in scripts is limited due to limitations in SQL Server's `sp_describe_undeclared_parameters`, which Facil uses to get parameter information for scripts. Notably, the following does not work out of the box:
 
@@ -178,7 +178,7 @@ Type inference in scripts is limited due to limitations in SQL Server's `sp_desc
 
 To work around this, for each problematic parameter (you don't have to specify the ones that work), you can specify in the config which SQL type the parameter is and whether it is nullable. You can also override all parameters at once.
 
-#### How is default and nullable parameter values handled?
+### How is default and nullable parameter values handled?
 
 All stored procedure parameters that have `null` as the default value are treated as nullable and wrapped in `option` (or `voption`). All other default values for stored procedure parameters are ignored; the parameters will be required and non-nullable.
 
@@ -186,11 +186,11 @@ While parameters with default values could conceivably be generated as optional 
 
 If Facil’s current approach does not work for you, please open an issue and describe your use-case.
 
-#### Can you support user-defined functions?
+### Can you support user-defined functions?
 
 If you need this, I’m willing to hear you out, but this isn’t high on my priority list right now. A simple workaround is to simply call the function from a script or stored procedure, and then use Facil with that script/procedure instead.
 
-#### Can Facil generate SQL, too?
+### Can Facil generate SQL, too?
 
 No, this is not currently supported and not planned. While it may sound useful to generate boilerplate scripts for “select from table by primary key” or “update/insert/merge table”, there are in my experience enough considerations and slight variants of these patterns to take into account that I’m not convinced it would be terribly useful. Facil is focused on allowing you to call your existing TSQL in the simplest fashion possible; it won’t generate TSQL For you.
 
