@@ -147,19 +147,19 @@ For each file, you can configure:
 
 * The generated filename
 * The generated namespace/module
-* Arbitrary code to put that the top of the generated file
+* Arbitrary code to put at the top of the generated file
 * Which stored procedures (regex matching) or scripts (glob matching) to generate code for
 * Which tables to generate DTO records for (which can be used, automatically or manually, for matching procedure/script result sets)
 
-For each procedure/script (or any set that matches a specified pattern), you can configure:
+For each procedure/script (or any set of these that matches a specified regex/glob pattern), you can configure:
 
 * The result type: Anonymous record, auto-pick best table DTO (with fallback to anonymous records), or any record type you specify (a table DTO or your own custom type) that is constructible by the generated code
 * Whether to use `ValueOption` instead of `Option` for inputs and/or outputs
 * For single-column results, whether to return a record (as with multiple columns) or just return the scalar value
 * Whether to skip the `inline` DTO parameter overloads (for faster compilation if you don’t use them)
 * Whether to use return values (stored procedures only)
-* For each stored procedure parameter: The name to use in parameter DTO objects
-* For each script parameter: The name to use in parameter DTO objects, as well as its type and nullability (to work around type inference limitations for scripts, see below)
+* For each parameter: The name to use in parameter DTO objects
+* For each script parameter: Its type and nullability (to work around type inference limitations for scripts, see below)
 
 For each table DTO, you can configure:
 
