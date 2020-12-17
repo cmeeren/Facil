@@ -32,7 +32,9 @@ rulesets:
       - include: "**/*.sql"
 ```
 
-For more details about configuration, you can find [the full config reference here](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml). You might consider adding the config file to your project for easy access in Visual Studio.
+You might consider adding the config file to your project for easy access in Visual Studio.
+
+For more details about configuration, you can find [the full config reference here](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml).
 
 ### 3. Build your project and add the generated file
 
