@@ -71,6 +71,6 @@
     <ProjectReference Include="..\Facil.Runtime\Facil.Runtime.fsproj" />
   </ItemGroup>
   <Target Name="CodeGen" AfterTargets="BeforeBuild">
-    <Exec Command="dotnet run -p $(MSBuildThisFileDirectory)..\Facil.Generator -- $(MSBuildThisFileDirectory)" ConsoleToMsBuild="false" />
+    <Exec Command="dotnet run -p $(MSBuildThisFileDirectory)..\Facil.Generator -- $(MSBuildThisFileDirectory)" ConsoleToMsBuild="false" IgnoreExitCode="true" />
   </Target>
 </Project>
