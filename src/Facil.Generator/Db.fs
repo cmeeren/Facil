@@ -121,8 +121,11 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
 
     parameters |> Seq.toList
 
-  with ex ->
-    raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}", ex)
+  with
+  | :? SqlException as ex when ex.Message.Contains "Procedure or function" && ex.Message.Contains "has too many arguments specified" ->
+      raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. If you are using EXEC statements, all parameters passed to the procedure/function you execute may need to be declared in the script or Facil config file.", ex)
+  | ex ->
+      raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}", ex)
 
 
 

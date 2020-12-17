@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 197c3761ba608a87e08b90c343cc62f08a4d51f2b1915a2e84f75fab33b1151e
+// Hash: e1badbe0d1b730023661b4697b89a0d4f549df541e522ef152515f2a31f7d8b2
 
 //////////////////////////////////////////
 //
@@ -8072,14 +8072,6 @@ module Scripts =
 
             EXEC sp_executesql @sql, @paramList, @_col1Filter
 
-            WITH RESULT SETS
-            (
-              (
-                TableCol1 NVARCHAR (42) NOT NULL,
-                TableCol2 INT NULL
-              )
-            )
-
           """
           cmd.Parameters.AddRange sqlParams
           userConfigureCmd cmd
@@ -8203,14 +8195,6 @@ module Scripts =
               '@col1Filter NVARCHAR(42)'
 
             EXEC sp_executesql @sql, @paramList, @col1Filter
-
-            WITH RESULT SETS
-            (
-              (
-                TableCol1 NVARCHAR (42) NOT NULL,
-                TableCol2 INT NULL
-              )
-            )
 
           """
           cmd.Parameters.AddRange sqlParams
