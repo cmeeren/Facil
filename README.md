@@ -5,53 +5,6 @@ Facil
 
 **Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.**
 
-### Elevator pitch
-
-Facil is a friendly, flexible, and full-featured fabricator of files for fluent and frictionless facades facilitating the facile and functional fetching of facts.
-
-(“Facts” referring to data stored in SQL server. It would be better if SQL started with an F. Oh well.)
-
-Okay, elevator pitch without the alliteration: Facil works similarly to type providers like [FSharp.Data.SqlClient](https://github.com/fsprojects/FSharp.Data.SqlClient/) by letting you call SQL scripts and stored procedures in a strongly typed manner, but it avoids a range of type provider issues and hiccups by not being a type provider and actually generating F# code that you check in. (Why not a type provider, you ask? [See the FAQ.](#why-not-a-type-provider))
-
-#### Core features
-
-* Primary goal: Provide the simplest way (yet highly configurable) to call stored procedures and SQL scripts as if they were F# functions, and otherwise get out of your way and let you get on with providing actual business value
-* Good API ergonomics – succinct and discoverable fluent-style syntax, no boilerplate
-* Supports SQL Server 2012 and up
-* Built for the future, compatible with .NET Standard 2.0
-* Thoroughly tested
-* Built for speed – inner async read loops written in C# using its native `async`/`await`; allows you to read directly to your chosen DTO records to minimize allocations for heavy queries
-* Highly configurable with simple, yet flexible [YAML configuration](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml)
-* Helpful build-time error messages and warnings
-* At runtime, supply a connection string for simplicity or use your own managed connections
-* Can be configured to use `ValueOption` instead of `Option` (separately for inputs and outputs, for some or all procedures/scripts)
-* Can create DTOs for tables and automatically (or manually) use those DTOs as return values for matching result sets, simplifying your mapping to domain entities
-* Can also map directly to any record type you specify (as mentioned previously)
-* Can accept suitable DTOs instead of a list of parameters, e.g. you can just pass your `UserDto` to your `SaveUser` procedure instead of explicitly supplying all parameters from the DTO – less noise, and one less thing to update each time you add parameters
-* Supports table-valued parameters in both procedures and scripts
-* Supports stored procedure output parameters and return values
-* Supports lazy execution, both sync (returns `seq`) and async (if your target supports .NET Standard 2.1 – returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
-* Supports inferring dynamic SQL result sets without `WITH RESULT SETS`
-
-### Production readiness
-
-Facil is production ready.
-
-Facil contains almost 2000 tests verifying most functionality in many different combinations, and will soon be used in several mission-critical production services at our company. I’m not claiming it’s perfect, or even bug-free, but it’s well tested, and I have a vested interest in keeping it working properly.
-
-It’s still at 0.x because it's still new and I may still be discovering improvements that require breaking changes every now and then. However, do not take 0.x to mean that it’s a buggy mess, or that the API will radically change every other week. Breaking changes will cause a lot of churn for me, too.
-
-### A note on versioning
-
-While at 0.x, I’ll try to increment the minor version for breaking changes and the patch version for anything else.
-
-Note on what a “breaking change” is: A lot of the generated code needs to be public to support inlining, but is still considered implementation details. These parts of the API are hidden from the IDE using the `[<EditorBrowsable>]` attribute to ensure you won’t use them by accident, but there’s nothing stopping you from looking at the generated code and referencing these parts of the API in your own code. Don’t do that. These are implementation details and may change at any time.
-
-Contributing
-------------
-
-Contributions and ideas are welcome! Please see [Contributing.md](https://github.com/cmeeren/Facil/blob/master/.github/CONTRIBUTING.md) for details.
-
 Quick start
 -----------
 
@@ -105,6 +58,42 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
 ### 5. Profit!
 
 That’s it! For regenerating, see the FAQ entry [When does Facil regenerate files?](#when-does-facil-regenerate-files).
+
+## Elevator pitch
+
+Facil is a friendly, flexible, and full-featured fabricator of files for fluent and frictionless facades facilitating the facile and functional fetching of facts.
+
+(“Facts” referring to data stored in SQL server. It would be better if SQL started with an F. Oh well.)
+
+Okay, elevator pitch without the alliteration: Facil works similarly to type providers like [FSharp.Data.SqlClient](https://github.com/fsprojects/FSharp.Data.SqlClient/) by letting you call SQL scripts and stored procedures in a strongly typed manner, but it avoids a range of type provider issues and hiccups by not being a type provider and actually generating F# code that you check in. (Why not a type provider, you ask? [See the FAQ.](#why-not-a-type-provider))
+
+#### Core features
+
+* Primary goal: Provide the simplest way (yet highly configurable) to call stored procedures and SQL scripts as if they were F# functions, and otherwise get out of your way and let you get on with providing actual business value
+* Good API ergonomics – succinct and discoverable fluent-style syntax, no boilerplate
+* Supports SQL Server 2012 and up
+* Built for the future, compatible with .NET Standard 2.0
+* Thoroughly tested
+* Built for speed – inner async read loops written in C# using its native `async`/`await`; allows you to read directly to your chosen DTO records to minimize allocations for heavy queries
+* Highly configurable with simple, yet flexible [YAML configuration](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml)
+* Helpful build-time error messages and warnings
+* At runtime, supply a connection string for simplicity or use your own managed connections
+* Can be configured to use `ValueOption` instead of `Option` (separately for inputs and outputs, for some or all procedures/scripts)
+* Can create DTOs for tables and automatically (or manually) use those DTOs as return values for matching result sets, simplifying your mapping to domain entities
+* Can also map directly to any record type you specify (as mentioned previously)
+* Can accept suitable DTOs instead of a list of parameters, e.g. you can just pass your `UserDto` to your `SaveUser` procedure instead of explicitly supplying all parameters from the DTO – less noise, and one less thing to update each time you add parameters
+* Supports table-valued parameters in both procedures and scripts
+* Supports stored procedure output parameters and return values
+* Supports lazy execution, both sync (returns `seq`) and async (if your target supports .NET Standard 2.1 – returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
+* Supports inferring dynamic SQL result sets without `WITH RESULT SETS`
+
+### Production readiness
+
+Facil is production ready.
+
+Facil contains almost 2000 tests verifying most functionality in many different combinations, and will soon be used in several mission-critical production services at our company. I’m not claiming it’s perfect, or even bug-free, but it’s well tested, and I have a vested interest in keeping it working properly.
+
+It’s still at 0.x because it's still new and I may still be discovering improvements that require breaking changes every now and then. However, do not take 0.x to mean that it’s a buggy mess, or that the API will radically change every other week. Breaking changes will cause a lot of churn for me, too.
 
 FAQ
 ---
@@ -208,3 +197,13 @@ Release notes
 
 [RELEASE_NOTES.md](https://github.com/cmeeren/Facil/blob/master/RELEASE_NOTES.md)
 
+### A note on versioning
+
+While at 0.x, I’ll try to increment the minor version for breaking changes and the patch version for anything else.
+
+Note on what a “breaking change” is: A lot of the generated code needs to be public to support inlining, but is still considered implementation details. These parts of the API are hidden from the IDE using the `[<EditorBrowsable>]` attribute to ensure you won’t use them by accident, but there’s nothing stopping you from looking at the generated code and referencing these parts of the API in your own code. Don’t do that. These are implementation details and may change at any time.
+
+Contributing
+------------
+
+Contributions and ideas are welcome! Please see [Contributing.md](https://github.com/cmeeren/Facil/blob/master/.github/CONTRIBUTING.md) for details.
