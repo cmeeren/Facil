@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 197c3761ba608a87e08b90c343cc62f08a4d51f2b1915a2e84f75fab33b1151e
+// Hash: 232f82c1537c813c1bd2ad8222c087b1e271131fc0145fe51191478e3d1bdc5a
 
 //////////////////////////////////////////
 //
@@ -21,7 +21,6 @@ open Microsoft.Data.SqlClient
 open Microsoft.Data.SqlClient.Server
 open Facil.Runtime.GeneratedCodeUtils
 
-
 module MyPreludeModule =
   let x = 2
 
@@ -40,17 +39,17 @@ module TableDtos =
       }
 
 
-    type ``VoptionTableWithDto`` =
-      {
-        Col1: string voption
-        Col2: int voption
-      }
-
-
     type ``Table1`` =
       {
         TableCol1: string
         TableCol2: int option
+      }
+
+
+    type ``VoptionTableWithDto`` =
+      {
+        Col1: string voption
+        Col2: int voption
       }
 
 
@@ -64,143 +63,6 @@ module TableTypes =
 
 
   module ``dbo`` =
-
-
-    type ``MultiColNullVoption`` (__: DoNotUseConstructor) =
-      inherit SqlDataRecord ([|
-        SqlMetaData("Foo", SqlDbType.Int)
-        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |])
-
-      static member create
-        (
-          ``Foo``: int voption,
-          ``Bar``: string voption
-        ) =
-        let x = ``MultiColNullVoption``(doNotUseConstructorValue)
-        x.SetValues(
-          ValueOption.toDbNull ``Foo``,
-          ValueOption.toDbNull ``Bar``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``MultiColNullVoption``(doNotUseConstructorValue)
-        x.SetValues(
-          ValueOption.toDbNull (^a: (member ``Foo``: int voption) dto),
-          ValueOption.toDbNull (^a: (member ``Bar``: string voption) dto)
-        )
-        |> ignore
-        x
-
-
-    type ``MultiColNonNull`` (__: DoNotUseConstructor) =
-      inherit SqlDataRecord ([|
-        SqlMetaData("Foo", SqlDbType.Int)
-        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |])
-
-      static member create
-        (
-          ``Foo``: int,
-          ``Bar``: string
-        ) =
-        let x = ``MultiColNonNull``(doNotUseConstructorValue)
-        x.SetValues(
-          ``Foo``,
-          ``Bar``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``MultiColNonNull``(doNotUseConstructorValue)
-        x.SetValues(
-          (^a: (member ``Foo``: int) dto),
-          (^a: (member ``Bar``: string) dto)
-        )
-        |> ignore
-        x
-
-
-    type ``MultiColNull`` (__: DoNotUseConstructor) =
-      inherit SqlDataRecord ([|
-        SqlMetaData("Foo", SqlDbType.Int)
-        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |])
-
-      static member create
-        (
-          ``Foo``: int option,
-          ``Bar``: string option
-        ) =
-        let x = ``MultiColNull``(doNotUseConstructorValue)
-        x.SetValues(
-          Option.toDbNull ``Foo``,
-          Option.toDbNull ``Bar``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``MultiColNull``(doNotUseConstructorValue)
-        x.SetValues(
-          Option.toDbNull (^a: (member ``Foo``: int option) dto),
-          Option.toDbNull (^a: (member ``Bar``: string option) dto)
-        )
-        |> ignore
-        x
-
-
-    type ``SingleColNonNull`` (__: DoNotUseConstructor) =
-      inherit SqlDataRecord ([|
-        SqlMetaData("Foo", SqlDbType.Int)
-      |])
-
-      static member create
-        (
-          ``Foo``: int
-        ) =
-        let x = ``SingleColNonNull``(doNotUseConstructorValue)
-        x.SetValues(
-          ``Foo``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``SingleColNonNull``(doNotUseConstructorValue)
-        x.SetValues(
-          (^a: (member ``Foo``: int) dto)
-        )
-        |> ignore
-        x
-
-
-    type ``SingleColNull`` (__: DoNotUseConstructor) =
-      inherit SqlDataRecord ([|
-        SqlMetaData("Foo", SqlDbType.Int)
-      |])
-
-      static member create
-        (
-          ``Foo``: int option
-        ) =
-        let x = ``SingleColNull``(doNotUseConstructorValue)
-        x.SetValues(
-          Option.toDbNull ``Foo``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``SingleColNull``(doNotUseConstructorValue)
-        x.SetValues(
-          Option.toDbNull (^a: (member ``Foo``: int option) dto)
-        )
-        |> ignore
-        x
 
 
     type ``AllTypesNonNull`` (__: DoNotUseConstructor) =
@@ -464,6 +326,143 @@ module TableTypes =
           Option.toDbNull (^a: (member ``varbinary``: byte [] option) dto),
           Option.toDbNull (^a: (member ``varchar``: string option) dto),
           Option.toDbNull (^a: (member ``xml``: string option) dto)
+        )
+        |> ignore
+        x
+
+
+    type ``MultiColNonNull`` (__: DoNotUseConstructor) =
+      inherit SqlDataRecord ([|
+        SqlMetaData("Foo", SqlDbType.Int)
+        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
+      |])
+
+      static member create
+        (
+          ``Foo``: int,
+          ``Bar``: string
+        ) =
+        let x = ``MultiColNonNull``(doNotUseConstructorValue)
+        x.SetValues(
+          ``Foo``,
+          ``Bar``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``MultiColNonNull``(doNotUseConstructorValue)
+        x.SetValues(
+          (^a: (member ``Foo``: int) dto),
+          (^a: (member ``Bar``: string) dto)
+        )
+        |> ignore
+        x
+
+
+    type ``MultiColNull`` (__: DoNotUseConstructor) =
+      inherit SqlDataRecord ([|
+        SqlMetaData("Foo", SqlDbType.Int)
+        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
+      |])
+
+      static member create
+        (
+          ``Foo``: int option,
+          ``Bar``: string option
+        ) =
+        let x = ``MultiColNull``(doNotUseConstructorValue)
+        x.SetValues(
+          Option.toDbNull ``Foo``,
+          Option.toDbNull ``Bar``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``MultiColNull``(doNotUseConstructorValue)
+        x.SetValues(
+          Option.toDbNull (^a: (member ``Foo``: int option) dto),
+          Option.toDbNull (^a: (member ``Bar``: string option) dto)
+        )
+        |> ignore
+        x
+
+
+    type ``MultiColNullVoption`` (__: DoNotUseConstructor) =
+      inherit SqlDataRecord ([|
+        SqlMetaData("Foo", SqlDbType.Int)
+        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
+      |])
+
+      static member create
+        (
+          ``Foo``: int voption,
+          ``Bar``: string voption
+        ) =
+        let x = ``MultiColNullVoption``(doNotUseConstructorValue)
+        x.SetValues(
+          ValueOption.toDbNull ``Foo``,
+          ValueOption.toDbNull ``Bar``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``MultiColNullVoption``(doNotUseConstructorValue)
+        x.SetValues(
+          ValueOption.toDbNull (^a: (member ``Foo``: int voption) dto),
+          ValueOption.toDbNull (^a: (member ``Bar``: string voption) dto)
+        )
+        |> ignore
+        x
+
+
+    type ``SingleColNonNull`` (__: DoNotUseConstructor) =
+      inherit SqlDataRecord ([|
+        SqlMetaData("Foo", SqlDbType.Int)
+      |])
+
+      static member create
+        (
+          ``Foo``: int
+        ) =
+        let x = ``SingleColNonNull``(doNotUseConstructorValue)
+        x.SetValues(
+          ``Foo``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``SingleColNonNull``(doNotUseConstructorValue)
+        x.SetValues(
+          (^a: (member ``Foo``: int) dto)
+        )
+        |> ignore
+        x
+
+
+    type ``SingleColNull`` (__: DoNotUseConstructor) =
+      inherit SqlDataRecord ([|
+        SqlMetaData("Foo", SqlDbType.Int)
+      |])
+
+      static member create
+        (
+          ``Foo``: int option
+        ) =
+        let x = ``SingleColNull``(doNotUseConstructorValue)
+        x.SetValues(
+          Option.toDbNull ``Foo``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``SingleColNull``(doNotUseConstructorValue)
+        x.SetValues(
+          Option.toDbNull (^a: (member ``Foo``: int option) dto)
         )
         |> ignore
         x
@@ -8797,6 +8796,127 @@ module Scripts =
           match configureConnection with
           | None -> ()
           | Some config -> this.configureConn <- config
+          this
+
+        member this.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member this.Execute() =
+          executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member this.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member this.LazyExecute() =
+          executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+
+        member this.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member this.ExecuteSingle() =
+          executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+
+
+      type ``TempTable`` private (connStr: string, conn: SqlConnection) =
+
+        let configureCmd userConfigureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            SELECT Id, [Name] FROM #Temp
+
+          """
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Id`` = 0
+        let mutable ``ordinal_Name`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Id`` <- reader.GetOrdinal "Id"
+          ``ordinal_Name`` <- reader.GetOrdinal "Name"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Id`` = reader.GetInt32 ``ordinal_Id``
+            ``Name`` = reader.GetString ``ordinal_Name``
+          |}
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``TempTable``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``TempTable``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.GetConnection() = conn
+
+        member inline this.BulkLoadTempTable(data: ^a seq) =
+          let conn = this.GetConnection()
+          if not (conn.State.HasFlag ConnectionState.Open) then conn.Open()
+          use cmd = conn.CreateCommand()
+          cmd.CommandText <- """
+            CREATE TABLE #Temp (
+              Id INT NOT NULL,
+              [Name] NVARCHAR(100) NOT NULL
+            )
+
+          """
+          cmd.ExecuteNonQuery() |> ignore
+          let rows = 
+            data
+            |> Seq.map(fun row ->
+              box [|
+                box (^a: (member ``Id``: int) row)
+                box (^a: (member ``Name``: string) row)
+              |]
+            )
+          use reader = new TempTableLoader(2, rows)
+          use bulkCopy = new SqlBulkCopy(conn)
+          bulkCopy.BulkCopyTimeout <- 0
+          bulkCopy.BatchSize <- 5000
+          bulkCopy.DestinationTableName <- "#Temp"
+          bulkCopy.WriteToServer(reader)
           this
 
         member this.ExecuteAsync(?cancellationToken) =

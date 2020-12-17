@@ -6,6 +6,7 @@ open System.Data
 open System.IO
 open Microsoft.Data.SqlClient
 open Microsoft.SqlServer.TransactSql.ScriptDom
+open System.Text.RegularExpressions
 
 
 let adjustSizeForDbType (dbType: SqlDbType) (size: int16) =
@@ -126,13 +127,14 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
 
 
 
-let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (executable: Choice<StoredProcedure, Script>) (conn: SqlConnection) =
+let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
   use cmd = conn.CreateCommand()
   cmd.CommandText <- "sys.sp_describe_first_result_set"
   cmd.CommandType <- CommandType.StoredProcedure
   match executable with
-  | Choice1Of2 sproc -> cmd.Parameters.AddWithValue("@tsql", sproc.SchemaName + "." + sproc.Name) |> ignore
-  | Choice2Of2 script -> cmd.Parameters.AddWithValue("@tsql", script.Source) |> ignore
+  | Choice1Of3 sproc -> cmd.Parameters.AddWithValue("@tsql", sproc.SchemaName + "." + sproc.Name) |> ignore
+  | Choice2Of3 script -> cmd.Parameters.AddWithValue("@tsql", script.Source) |> ignore
+  | Choice3Of3 temp -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM #{temp.Name}") |> ignore
   use reader = cmd.ExecuteReader()
   let cols = ResizeArray()
   while reader.Read() do
@@ -160,22 +162,24 @@ let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (
   if cols.Count = 0 then None else Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumnsFromSetFmtOnlyOn (executable: Choice<StoredProcedure, Script>) (conn: SqlConnection) =
+let getColumnsFromSetFmtOnlyOn (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
   use cmd = conn.CreateCommand()
   match executable with
-  | Choice1Of2 sproc ->
+  | Choice1Of3 sproc ->
       cmd.CommandText <- sproc.SchemaName + "." + sproc.Name
       cmd.CommandType <- CommandType.StoredProcedure
       for param in sproc.Parameters do
         match param.TypeInfo with
         | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
-  | Choice2Of2 script ->
+  | Choice2Of3 script ->
       cmd.CommandText <- script.Source
       for param in script.Parameters do
         match param.TypeInfo with
         | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+  | Choice3Of3 temp ->
+      cmd.CommandText <- $"SELECT * FROM #{temp.Name}"
   use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)
   match reader.GetSchemaTable() with
   | null -> None
@@ -210,8 +214,9 @@ let getColumns (conn: SqlConnection) sysTypeIdLookup executable =
   with ex ->
     let executableName =
       match executable with
-      | Choice1Of2 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
-      | Choice2Of2 s -> $"script {s.GlobMatchOutput}"
+      | Choice1Of3 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
+      | Choice2Of3 s -> $"script {s.GlobMatchOutput}"
+      | Choice3Of3 t -> $"temp table {t.Name}"
     raise <| Exception($"Error getting output columns for {executableName}", ex)
 
 
@@ -408,7 +413,7 @@ let getStoredProcedures sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>
   )
   // Add result sets
   |> List.map (fun sproc ->
-      { sproc with ResultSet = getColumns conn sysTypeIdLookup (Choice1Of2 sproc) }
+      { sproc with ResultSet = getColumns conn sysTypeIdLookup (Choice1Of3 sproc) }
   )
 
 
@@ -472,6 +477,35 @@ let getTableDtos (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
     raise <| Exception("Error getting table DTOs", ex)
 
 
+let getTempTable (fullYamlPath : string) (cfg: RuleSet) sysTypeIdLookup (script: Script) (conn: SqlConnection) =
+  let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+
+  match rule.TempTable with
+  | Some tempTablePath ->
+    let tempTable =
+      let projectDir = Path.GetDirectoryName(fullYamlPath)
+      let path = Path.Combine(projectDir, tempTablePath.Replace("/", "\\"))
+      let source = File.ReadAllText (path)
+
+      { TempTable.Name = Regex("(#[a-z0-9\\-_]+)", RegexOptions.IgnoreCase).Match(source).Groups.[1].Value
+        Source = source
+        Columns = []}
+
+    use cmd = conn.CreateCommand()
+    cmd.CommandText <-
+      let src = tempTable.Source.Replace(tempTable.Name, "#" + tempTable.Name)
+      $"IF OBJECT_ID('tempdb.dbo.#{tempTable.Name}', 'U') IS NOT NULL DROP TABLE #{tempTable.Name};\n\r{src}"
+
+    cmd.ExecuteNonQuery() |> ignore
+
+    { tempTable with
+        Columns = getColumns conn sysTypeIdLookup (Choice3Of3 tempTable) |> Option.defaultValue [] }
+
+    |> Some
+
+  | _ ->
+    None
+
 let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSets: Script list) (conn: SqlConnection) =
 
   let sysTypeIdLookup = getSysTypeIdLookup conn
@@ -482,13 +516,29 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSets:
 
   let scripts =
     scriptsWithoutParamsOrResultSets
+    |> List.map(fun script ->
+        match getTempTable fullYamlPath cfg sysTypeIdLookup script conn with
+        | Some tempTable ->
+          { script with
+              TempTable = Some tempTable
+              Source = script.Source.Replace(tempTable.Name, "#" + tempTable.Name) }
+        | _ -> script
+    )
     |> List.map (fun script ->
         let parameters = getScriptParameters cfg sysTypeIdLookup tableTypesByUserId script conn
         { script with Parameters = parameters }
     )
     |> List.map (fun script ->
-        let resultSet = getColumns conn sysTypeIdLookup (Choice2Of2 script)
+        let resultSet = getColumns conn sysTypeIdLookup (Choice2Of3 script)
         { script with ResultSet = resultSet }
+    )
+    |> List.map(fun script ->
+        // Clean up any temp tables name swapping.
+        match script.TempTable with
+        | Some tempTable ->
+          { script with
+              Source = script.Source.Replace( "#" + tempTable.Name, tempTable.Name) }
+        | _ -> script
     )
     |> List.filter (fun s ->
 

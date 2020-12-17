@@ -228,6 +228,55 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
       ""
     ]
 
+  let tempTable =
+    match executable with
+    | Choice2Of2 { TempTable = Some tempTable } -> [
+      // Needed to get around inlining issues
+      "[<EditorBrowsable(EditorBrowsableState.Never)>]"
+      "member this.GetConnection() = conn"
+      ""
+      $"member inline this.BulkLoadTempTable(data: ^a seq) ="
+      yield! indent [
+            "let conn = this.GetConnection()"
+            "if not (conn.State.HasFlag ConnectionState.Open) then conn.Open()"
+            "use cmd = conn.CreateCommand()"
+            "cmd.CommandText <- \"\"\""
+            yield! indent (tempTable.Source.Split "\n" |> Array.map (fun s -> s.TrimEnd '\r') |> Array.toList)
+            "\"\"\""
+            "cmd.ExecuteNonQuery() |> ignore"
+
+            "let rows = "
+            yield! indent [
+              "data"
+              "|> Seq.map(fun row ->"
+              yield! indent [
+                "box [|"
+
+                yield! indent [
+                  for column in tempTable.Columns do
+                    let dtoName = column.Name.Value
+                    $"box (^a: (member ``{dtoName}``: {column.TypeInfo.FSharpTypeString}) row)"
+                ]
+                "|]"
+              ]
+              ")"
+            ]
+
+            $"use reader = new TempTableLoader({tempTable.Columns.Length}, rows)"
+            "use bulkCopy = new SqlBulkCopy(conn)"
+            "bulkCopy.BulkCopyTimeout <- 0"
+            "bulkCopy.BatchSize <- 5000"
+            $"bulkCopy.DestinationTableName <- \"{tempTable.Name}\""
+            "bulkCopy.WriteToServer(reader)"
+
+            "this"
+
+          ]
+      ""
+      ]
+    | _ -> []
+
+
   if parameters.IsEmpty then
     [
       ""
@@ -318,6 +367,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
           "this"
         ]
         ""
+
+        yield! tempTable
 
         // Execute methods
 
@@ -599,6 +650,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
         ]
         ""
 
+        yield! tempTable
+
         // Parameter methods
 
         //  - Individual params
@@ -691,6 +744,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)"
           ]
 
+
       ]
   ]
 
@@ -781,6 +835,7 @@ let renderDocument (cfg: RuleSet) hash (everything: Everything) =
   [
     firstLine
     secondLineWithHash hash
+
     ""
     "//////////////////////////////////////////"
     "//"
@@ -801,7 +856,6 @@ let renderDocument (cfg: RuleSet) hash (everything: Everything) =
     "open Microsoft.Data.SqlClient"
     "open Microsoft.Data.SqlClient.Server"
     "open Facil.Runtime.GeneratedCodeUtils"
-    ""
     ""
     match cfg.Prelude with
     | None -> ()

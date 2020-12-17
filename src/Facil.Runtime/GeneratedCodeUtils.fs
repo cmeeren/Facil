@@ -6,6 +6,7 @@ open System.Threading.Tasks
 open Microsoft.Data.SqlClient
 open Microsoft.Data.SqlClient.Server
 open type Facil.Runtime.CSharp.GeneratedCodeUtils
+open System.Data
 
 
 [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -62,6 +63,44 @@ module GeneratedCodeUtils =
   let inline executeNonQuery connStr conn configureConn configureCmd =
     ExecuteNonQuery(conn, connStr, Action<_> configureConn, Action<_> configureCmd)
 
+  type TempTableLoader(fieldCount, items: obj seq) =
+    let enumerator = items.GetEnumerator()
+    interface IDataReader with
+      member this.FieldCount: int = fieldCount
+      member this.Read(): bool = enumerator.MoveNext()
+      member this.GetValue(i: int): obj =
+        let row : obj[] = unbox enumerator.Current
+        row.[i]
+      member this.Dispose(): unit = ()
+      member __.Close(): unit = invalidOp "NotImplementedException"
+      member __.Depth: int = invalidOp "NotImplementedException"
+      member __.GetBoolean(_: int): bool = invalidOp "NotImplementedException"
+      member __.GetByte(_ : int): byte = invalidOp "NotImplementedException"
+      member __.GetBytes(_ : int, _ : int64, _ : byte [], _ : int, _ : int): int64 = invalidOp "NotImplementedException"
+      member __.GetChar(_ : int): char = invalidOp "NotImplementedException"
+      member __.GetChars(_ : int, _ : int64, _ : char [], _ : int, _ : int): int64 = invalidOp "NotImplementedException"
+      member __.GetData(_ : int): IDataReader = invalidOp "NotImplementedException"
+      member __.GetDataTypeName(_ : int): string = invalidOp "NotImplementedException"
+      member __.GetDateTime(_ : int): System.DateTime = invalidOp "NotImplementedException"
+      member __.GetDecimal(_ : int): decimal = invalidOp "NotImplementedException"
+      member __.GetDouble(_ : int): float = invalidOp "NotImplementedException"
+      member __.GetFieldType(_ : int): System.Type = invalidOp "NotImplementedException"
+      member __.GetFloat(_ : int): float32 = invalidOp "NotImplementedException"
+      member __.GetGuid(_ : int): System.Guid = invalidOp "NotImplementedException"
+      member __.GetInt16(_ : int): int16 = invalidOp "NotImplementedException"
+      member __.GetInt32(_ : int): int = invalidOp "NotImplementedException"
+      member __.GetInt64(_ : int): int64 = invalidOp "NotImplementedException"
+      member __.GetName(_ : int): string = invalidOp "NotImplementedException"
+      member __.GetOrdinal(_ : string): int = invalidOp "NotImplementedException"
+      member __.GetSchemaTable(): DataTable = invalidOp "NotImplementedException"
+      member __.GetString(_ : int): string = invalidOp "NotImplementedException"
+      member __.GetValues(_ : obj []): int = invalidOp "NotImplementedException"
+      member __.IsClosed: bool = invalidOp "NotImplementedException"
+      member __.IsDBNull(_ : int): bool = invalidOp "NotImplementedException"
+      member __.Item with get (_ : int): obj = invalidOp "NotImplementedException"
+      member __.Item with get (_ : string): obj = invalidOp "NotImplementedException"
+      member __.NextResult(): bool = invalidOp "NotImplementedException"
+      member __.RecordsAffected: int = invalidOp "NotImplementedException"
 
 
   type SqlDataRecord with

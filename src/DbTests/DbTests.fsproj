@@ -36,6 +36,8 @@
     <None Include="SQL\OverriddenDtoParamName.sql" />
     <None Include="SQL\DynamicSqlWithDeclaration.sql" />
     <None Include="SQL\DynamicSqlWithoutDeclaration.sql" />
+    <Content Include="SQL\TempTable.sql" />
+    <Content Include="SQL\TempTable_Temp.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />
@@ -47,12 +49,12 @@
     <Compile Include="ConfigTests.fs" />
     <Compile Include="OutParameterAndReturnValueTests.fs" />
     <Compile Include="MiscTests.fs" />
+    <Compile Include="TempTableTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Expecto" Version="9.0.2" />
-    <PackageReference Include="Facil" Version="*" />
     <PackageReference Condition="'$(TargetFramework)' == 'net5.0'" Include="FSharp.Control.AsyncSeq" Version="3.0.3" />
     <PackageReference Include="Hedgehog" Version="0.8.4" />
     <PackageReference Include="Hedgehog.Experimental" Version="0.2.3" />
@@ -62,6 +64,13 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="Unquote" Version="5.0.0" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.9.2" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Facil.Runtime\Facil.Runtime.fsproj" />
+  </ItemGroup>
+  <Target Name="CodeGen" AfterTargets="BeforeBuild">
+    <Exec Command="dotnet run -p $(MSBuildThisFileDirectory)..\Facil.Generator -- $(MSBuildThisFileDirectory)" ConsoleToMsBuild="false" />
+  </Target>
 </Project>

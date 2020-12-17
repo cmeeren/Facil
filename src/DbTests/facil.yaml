@@ -42,6 +42,7 @@ rulesets:
 
     scripts:
       - include: "**/*.sql"
+        except: "**/*_Temp.sql"
 
       - for: "**/*WithoutDto.sql"
         result: anonymous
@@ -113,6 +114,9 @@ rulesets:
         params:
           col1Filter:
             type: NVARCHAR(42)
+
+      - for: SQL/TempTable.sql
+        tempTable: SQL/TempTable_Temp.sql
 
     tableDtos:
       - include: .*
