@@ -19,11 +19,24 @@ Install Facil from [NuGet](https://www.nuget.org/packages/Facil).
 
 ### 2. Build and edit the new config file
 
-Start a build. It will fail. Facil will place [a minimal config](https://github.com/cmeeren/Facil/blob/master/src/Facil.Generator/facil_minimal.yaml) file in your project directory. Edit it – you should at least set a connection string. For more details, you can find [the full config reference here](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml). You might consider adding the config file to your project for easy access in Visual Studio.
+Start a build. It will fail. Facil will place [a simple facil.yaml](https://github.com/cmeeren/Facil/blob/master/src/Facil.Generator/facil_minimal.yaml) file in your project directory. Edit it – you should at least set a connection string.
 
-### 3. Build again and add the generated file
+As an example, the following is the minimum config for generating code for all stored procedures and all scripts in your project directory:
 
-Start a new build. Facil will now generate the code. Add the generated file to your project.
+```yaml
+rulesets:
+  - connectionString: YOUR CONNECTION STRING HERE
+    procedures:
+      - include: .*
+    scripts:
+      - include: "**/*.sql"
+```
+
+For more details about configuration, you can find [the full config reference here](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml). You might consider adding the config file to your project for easy access in Visual Studio.
+
+### 3. Build your project and add the generated file
+
+Build your project again. Facil will now generate the code. Add the generated file to your project.
 
 ### 4. Use the generated code
 
@@ -57,7 +70,9 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
 
 ### 5. Profit!
 
-That’s it! For regenerating, see the FAQ entry [When does Facil regenerate files?](#when-does-facil-regenerate-files).
+That’s it! Whenever you want to regenerate, simply delete the first line of the generated file and build your project.
+
+Facil will automatically regenerate if you change the configuration or any scripts. For details, see the FAQ entry [When does Facil regenerate files?](#when-does-facil-regenerate-files).
 
 ## Elevator pitch
 
