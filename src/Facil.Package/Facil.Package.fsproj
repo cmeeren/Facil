@@ -9,7 +9,7 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <DebugType>Embedded</DebugType>
     <EmbedAllSources>True</EmbedAllSources>
-    <Description>Boilerplate-free, strongly typed SQL without the drawbacks of type providers. Optimized for developer happiness.</Description>
+    <Description>Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.</Description>
     <PackageProjectUrl>https://github.com/cmeeren/Facil</PackageProjectUrl>
     <Authors>Christer van der Meeren</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
