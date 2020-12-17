@@ -17,7 +17,7 @@ Quick start
 
 Install Facil from [NuGet](https://www.nuget.org/packages/Facil).
 
-### 2. Build and edit the new config file
+### 2. Build your project and edit the new config file
 
 Start a build. It will fail. Facil will place [a simple facil.yaml](https://github.com/cmeeren/Facil/blob/master/src/Facil.Generator/facil_minimal.yaml) file in your project directory. Edit it – you should at least set a connection string.
 
