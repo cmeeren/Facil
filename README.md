@@ -197,6 +197,10 @@ If you need this, I’m willing to hear you out, but this isn’t high on my pri
 
 No, this is not currently supported and not planned. While it may sound useful to generate boilerplate scripts for “select from table by primary key” or “update/insert/merge table”, there are in my experience enough considerations and slight variants of these patterns to take into account that I’m not convinced it would be all that useful. Facil is focused on allowing you to call your existing TSQL in the simplest fashion possible; it won’t generate TSQL for you.
 
+### Does Facil use column names or ordinals?
+
+Facil uses column names at runtime. This means that you are free to reorder the columns returned by stored procedures and scripts (either directly, or by reordering table columns returned in a `SELECT *` query). This does not require re-compilation and will not break existing running apps.
+
 Release notes
 -------------
 
