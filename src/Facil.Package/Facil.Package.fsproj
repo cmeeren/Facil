@@ -14,6 +14,7 @@
     <Authors>Christer van der Meeren</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>f# fsharp data typeprovider type-provider sql tsql sql-server generator code-generator</PackageTags>
+    <PackageIcon>facil-logo-128x128.png</PackageIcon>
     <PackageReleaseNotes>https://github.com/cmeeren/Facil/blob/master/RELEASE_NOTES.md</PackageReleaseNotes>
   </PropertyGroup>
 
@@ -59,6 +60,10 @@
       <PackagePath>lib\</PackagePath>
       <Visible>false</Visible>
     </Content>
+    <None Include="facil-logo-128x128.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <Target Name="DeleteOldNupkgFiles" BeforeTargets="GenerateNuspec">

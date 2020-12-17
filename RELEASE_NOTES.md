@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.1.2 (2020-12-17)
+
+* Added package logo
+
 ### 0.1.1 (2020-12-17)
 
 * Improved error message for scripts with undeclared parameters used in EXEC

@@ -1,6 +1,8 @@
 Facil
 ==============
 
+<img src="https://raw.githubusercontent.com/cmeeren/Facil/master/logo/facil-logo-docs.png" width="300" align="right" />
+
 **Boilerplate-free, strongly typed SQL without the drawbacks of type providers. Optimized for developer happiness.**
 
 ### Elevator pitch
