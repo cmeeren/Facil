@@ -29,6 +29,7 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 * Supports table-valued parameters in both procedures and scripts
 * Supports stored procedure output parameters and return values
 * Supports lazy execution, both sync (returns `seq`) and async (if your target supports .NET Standard 2.1 – returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
+* Supports inferring dynamic SQL result sets without `WITH RESULT SETS`
 
 ### Production readiness
 
