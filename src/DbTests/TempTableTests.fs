@@ -2,19 +2,20 @@ module TempTableTests
 
 open Expecto
 open Hedgehog
-open Microsoft.Data.SqlClient
-
 
 [<Tests>]
 let tests =
   testList "TempTable tests" [
     testCase "Load and read from the temp table" <| fun () ->
-      use conn = new SqlConnection(Config.connStr)
+      let data =
+        seq {
+          {| Id = 1; Name = "name" |}
+        }
 
       let res =
         DbGen.Scripts.SQL.TempTable
-          .WithConnection(conn)
-          .BulkLoadTempTable([{| Id = 1; Name = "name" |}])
+          .WithConnection(Config.connStr)
+          .WithParameters({| data = data |})
           .Execute()
         |> Seq.toList
 

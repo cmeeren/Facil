@@ -42,7 +42,6 @@ rulesets:
 
     scripts:
       - include: "**/*.sql"
-        except: "**/*_Temp.sql"
 
       - for: "**/*WithoutDto.sql"
         result: anonymous
@@ -116,7 +115,9 @@ rulesets:
             type: NVARCHAR(42)
 
       - for: SQL/TempTable.sql
-        tempTable: SQL/TempTable_Temp.sql
+        params:
+          data:
+            tempTable: "CREATE TABLE #Temp (Id INT NOT NULL, [Name] NVARCHAR(100) NOT NULL)"
 
     tableDtos:
       - include: .*

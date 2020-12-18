@@ -1,4 +1,4 @@
-﻿module internal Facil.Db
+﻿module internal rec Facil.Db
 
 open System
 open System.Collections.Generic
@@ -52,21 +52,43 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
     let sourceToUse =
       (script.Source, (Map.toList rule.Parameters))
       ||> List.fold (fun source (paramName, p) ->
-            if not (paramsWithFirstUsageOffset.ContainsKey $"@{paramName}") then
-              logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '@{paramName}' that is not used in the script. Ignoring parameter."
-              source
-            else
-              match p.Type with
-              | None -> source
-              | Some typeDef -> $"DECLARE @{paramName} {typeDef} = {facilTempVarPrefix}{paramName}\n{source}"
+          if not (paramsWithFirstUsageOffset.ContainsKey $"@{paramName}") then
+            logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '@{paramName}' that is not used in the script. Ignoring parameter."
+            source
+          else
+            match p.Type with
+            | None -> source
+            | Some typeDef -> $"DECLARE @{paramName} {typeDef} = {facilTempVarPrefix}{paramName}\n{source}"
       )
+    let parameters = ResizeArray()
+
+    rule.Parameters
+    |> Map.iter(fun paramName value ->
+      match value.TempTable with
+      | Some source ->
+          let t = getTempTable2 sysTypeIdLookup source conn
+
+          parameters.Add(
+            { 
+              Name = paramName
+              SortKey = 0
+              Size = 0s
+              Precision = 0uy
+              Scale = 0uy
+              FSharpDefaultValueString = None
+              TypeInfo = TempTable t
+              IsOutput = false
+              IsCursorRef = false
+            }
+          )
+      | _ -> ()
+    )
     
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "sys.sp_describe_undeclared_parameters"
     cmd.CommandType <- CommandType.StoredProcedure
     cmd.Parameters.AddWithValue("@tsql", sourceToUse) |> ignore
     use reader = cmd.ExecuteReader()
-    let parameters = ResizeArray()
     while reader.Read() do
 
       let paramName =
@@ -107,7 +129,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
           Size =
             reader.["suggested_max_length"]
             |> unbox<int16>
-            |> adjustSizeForDbType (match typeInfo with Scalar ti -> ti.SqlDbType | Table _ -> SqlDbType.Structured)
+            |> adjustSizeForDbType (match typeInfo with Scalar ti -> ti.SqlDbType | Table _ -> SqlDbType.Structured | TempTable _ -> SqlDbType.Structured)
           Precision = reader.["suggested_precision"] |> unbox<byte>
           Scale = reader.["suggested_scale"] |> unbox<byte>
           FSharpDefaultValueString =
@@ -175,12 +197,14 @@ let getColumnsFromSetFmtOnlyOn (executable: Choice<StoredProcedure, Script, Temp
         match param.TypeInfo with
         | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+        | TempTable _ -> ()
   | Choice2Of3 script ->
       cmd.CommandText <- script.Source
       for param in script.Parameters do
         match param.TypeInfo with
         | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+        | TempTable _ -> ()
   | Choice3Of3 temp ->
       cmd.CommandText <- $"SELECT * FROM #{temp.Name}"
   use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)
@@ -365,7 +389,7 @@ let getStoredProcedures sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>
             Size = 
               reader.["max_length"]
               |> unbox<int16>
-              |> adjustSizeForDbType (match typeInfo with Scalar ti -> ti.SqlDbType | Table _ -> SqlDbType.Structured)
+              |> adjustSizeForDbType (match typeInfo with Scalar ti -> ti.SqlDbType | Table _ -> SqlDbType.Structured | TempTable _ -> SqlDbType.Structured)
             Precision = reader.["precision"] |> unbox<byte>
             Scale = reader.["scale"] |> unbox<byte>
             FSharpDefaultValueString = None  // Added later
@@ -480,34 +504,23 @@ let getTableDtos (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
     raise <| Exception("Error getting table DTOs", ex)
 
 
-let getTempTable (fullYamlPath : string) (cfg: RuleSet) sysTypeIdLookup (script: Script) (conn: SqlConnection) =
-  let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
 
-  match rule.TempTable with
-  | Some tempTablePath ->
-    let tempTable =
-      let projectDir = Path.GetDirectoryName(fullYamlPath)
-      let path = Path.Combine(projectDir, tempTablePath.Replace("/", "\\"))
-      let source = File.ReadAllText (path)
+let getTempTable2 sysTypeIdLookup (source : string) (conn: SqlConnection) =
+  let tempTable =
+    { TempTable.Name = Regex("(#[a-z0-9\\-_]+)", RegexOptions.IgnoreCase).Match(source).Groups.[1].Value
+      Source = source
+      Columns = []}
 
-      { TempTable.Name = Regex("(#[a-z0-9\\-_]+)", RegexOptions.IgnoreCase).Match(source).Groups.[1].Value
-        Source = source
-        Columns = []}
+  use cmd = conn.CreateCommand()
+  cmd.CommandText <-
+    let src = tempTable.Source.Replace(tempTable.Name, "#" + tempTable.Name)
+    $"IF OBJECT_ID('tempdb.dbo.#{tempTable.Name}', 'U') IS NOT NULL DROP TABLE #{tempTable.Name};\n\r{src}"
 
-    use cmd = conn.CreateCommand()
-    cmd.CommandText <-
-      let src = tempTable.Source.Replace(tempTable.Name, "#" + tempTable.Name)
-      $"IF OBJECT_ID('tempdb.dbo.#{tempTable.Name}', 'U') IS NOT NULL DROP TABLE #{tempTable.Name};\n\r{src}"
+  cmd.ExecuteNonQuery() |> ignore
 
-    cmd.ExecuteNonQuery() |> ignore
+  { tempTable with
+      Columns = getColumns conn sysTypeIdLookup (Choice3Of3 tempTable) |> Option.defaultValue [] }
 
-    { tempTable with
-        Columns = getColumns conn sysTypeIdLookup (Choice3Of3 tempTable) |> Option.defaultValue [] }
-
-    |> Some
-
-  | _ ->
-    None
 
 let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSets: Script list) (conn: SqlConnection) =
 
@@ -520,12 +533,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSets:
   let scripts =
     scriptsWithoutParamsOrResultSets
     |> List.map(fun script ->
-        match getTempTable fullYamlPath cfg sysTypeIdLookup script conn with
-        | Some tempTable ->
-          { script with
-              TempTable = Some tempTable
-              Source = script.Source.Replace(tempTable.Name, "#" + tempTable.Name) }
-        | _ -> script
+        { script with Source = script.Source.Replace("#", "##") }
     )
     |> List.map (fun script ->
         let parameters = getScriptParameters cfg sysTypeIdLookup tableTypesByUserId script conn
@@ -537,11 +545,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSets:
     )
     |> List.map(fun script ->
         // Clean up any temp tables name swapping.
-        match script.TempTable with
-        | Some tempTable ->
-          { script with
-              Source = script.Source.Replace( "#" + tempTable.Name, tempTable.Name) }
-        | _ -> script
+        { script with Source = script.Source.Replace("##", "#") }
     )
     |> List.filter (fun s ->
 

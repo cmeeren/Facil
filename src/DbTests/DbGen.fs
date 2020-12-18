@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 232f82c1537c813c1bd2ad8222c087b1e271131fc0145fe51191478e3d1bdc5a
+// Hash: 67ba71d895b4607a299388d7d60b13574746e649f9b9444dc3f99a4df1807ab1
 
 //////////////////////////////////////////
 //
@@ -8829,13 +8829,26 @@ module Scripts =
           executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
 
 
-      type ``TempTable`` private (connStr: string, conn: SqlConnection) =
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``TempTable_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTabledata : obj[] seq) =
 
-        let configureCmd userConfigureCmd (cmd: SqlCommand) =
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            CREATE TABLE #Temp (Id INT NOT NULL, [Name] NVARCHAR(100) NOT NULL)
+          """
+          cmd.ExecuteNonQuery() |> ignore
+
+          use reader = new TempTableLoader(2, tempTabledata)
+          use bulkCopy = new SqlBulkCopy(cmd.Connection)
+          bulkCopy.BulkCopyTimeout <- 0
+          bulkCopy.BatchSize <- 5000
+          bulkCopy.DestinationTableName <- "#Temp"
+          bulkCopy.WriteToServer(reader)
           cmd.CommandText <- """
             SELECT Id, [Name] FROM #Temp
 
           """
+          cmd.Parameters.AddRange sqlParams
           userConfigureCmd cmd
 
         let mutable ``ordinal_Id`` = 0
@@ -8850,6 +8863,61 @@ module Scripts =
             ``Id`` = reader.GetInt32 ``ordinal_Id``
             ``Name`` = reader.GetString ``ordinal_Name``
           |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+
+
+      type ``TempTable`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
         member val configureConn : SqlConnection -> unit = ignore with get, set
@@ -8872,82 +8940,29 @@ module Scripts =
           | Some config -> this.configureConn <- config
           this
 
-        [<EditorBrowsable(EditorBrowsableState.Never)>]
-        member this.GetConnection() = conn
+        member this.WithParameters
+          (
+            ``data``
+          ) =
+          let sqlParams =
+            [|
+            |]
+          // Hack for now
+          ``TempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, ``data``)
 
-        member inline this.BulkLoadTempTable(data: ^a seq) =
-          let conn = this.GetConnection()
-          if not (conn.State.HasFlag ConnectionState.Open) then conn.Open()
-          use cmd = conn.CreateCommand()
-          cmd.CommandText <- """
-            CREATE TABLE #Temp (
-              Id INT NOT NULL,
-              [Name] NVARCHAR(100) NOT NULL
-            )
-
-          """
-          cmd.ExecuteNonQuery() |> ignore
-          let rows = 
-            data
-            |> Seq.map(fun row ->
-              box [|
-                box (^a: (member ``Id``: int) row)
-                box (^a: (member ``Name``: string) row)
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+            |]
+          let tempTabledata = 
+            (^a: (member ``data``: _) dto)
+            |> Seq.map(fun (row : ^b) ->
+              [|
+                box (^b: (member ``Id``: int) row)
+                box (^b: (member ``Name``: string) row)
               |]
             )
-          use reader = new TempTableLoader(2, rows)
-          use bulkCopy = new SqlBulkCopy(conn)
-          bulkCopy.BulkCopyTimeout <- 0
-          bulkCopy.BatchSize <- 5000
-          bulkCopy.DestinationTableName <- "#Temp"
-          bulkCopy.WriteToServer(reader)
-          this
-
-        member this.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
-
-        member this.AsyncExecute() =
-          async {
-            let! ct = Async.CancellationToken
-            return! this.ExecuteAsync(ct) |> Async.AwaitTask
-          }
-
-        member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
-
-        member this.AsyncExecuteWithSyncRead() =
-          async {
-            let! ct = Async.CancellationToken
-            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
-          }
-
-        member this.Execute() =
-          executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
-
-        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
-
-        member this.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
-
-        member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
-
-        #endif
-
-        member this.LazyExecute() =
-          executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
-
-        member this.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
-
-        member this.AsyncExecuteSingle() =
-          async {
-            let! ct = Async.CancellationToken
-            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
-          }
-
-        member this.ExecuteSingle() =
-          executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+          ``TempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTabledata)
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]

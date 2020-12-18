@@ -122,6 +122,7 @@ type ScriptParameterDto = {
   nullable: bool option
   ``type``: string option
   dtoName: string option
+  tempTable: string option
 }
 
 
@@ -129,6 +130,7 @@ type ScriptParameter = {
   Nullable: bool option
   Type: string option
   DtoName: string option
+  TempTable: string option
 }
 
 
@@ -143,7 +145,6 @@ type ScriptRuleDto = {
   recordIfSingleCol: bool option
   skipParamDto: bool option
   ``params``: Map<string, ScriptParameterDto> option
-  tempTable: string option
 }
 
 
@@ -158,7 +159,6 @@ type ScriptRule = {
   RecordIfSingleCol: bool option
   SkipParamDto: bool option
   Parameters: Map<string, ScriptParameter>
-  TempTable: string option
 }
 
 
@@ -169,7 +169,6 @@ type EffectiveScriptRule = {
   RecordIfSingleCol: bool
   SkipParamDto: bool
   Parameters: Map<string, ScriptParameter>
-  TempTable: string option
 }
 
 
@@ -419,6 +418,7 @@ module ScriptParameter =
     Nullable = dto.nullable
     Type = dto.``type``
     DtoName = dto.dtoName
+    TempTable = dto.tempTable
   }
 
 
@@ -426,6 +426,7 @@ module ScriptParameter =
     Nullable = p2.Nullable |> Option.orElse p1.Nullable
     Type = p2.Type |> Option.orElse p1.Type
     DtoName = p2.DtoName |> Option.orElse p1.DtoName
+    TempTable = p2.TempTable |> Option.orElse p1.TempTable
   }
 
 
@@ -435,10 +436,6 @@ module ScriptRule =
   let fromDto (projectDir: string) fullYamlPath (dto: ScriptRuleDto) : ScriptRule =
     let exceptMatches =
       match dto.except with
-      | Some pattern when pattern.StartsWith("{") && pattern.EndsWith("}") -> // List glob pattern
-        pattern.Substring(1, pattern.Length - 2).Split(",")
-        |> Seq.collect(fun item -> Glob.Files(projectDir, item))
-        |> set
       | Some pattern -> Glob.Files(projectDir, pattern) |> set
       | None -> Set.empty
     {
@@ -472,7 +469,6 @@ module ScriptRule =
         dto.``params``
         |> Option.defaultValue Map.empty
         |> Map.map (fun _ -> ScriptParameter.fromDto)
-      TempTable = dto.tempTable
     }
 
 
@@ -483,7 +479,6 @@ module ScriptRule =
     RecordIfSingleCol = false
     SkipParamDto = false
     Parameters = Map.empty
-    TempTable = None
   }
 
 
@@ -505,7 +500,6 @@ module ScriptRule =
           | None -> rule.Parameters
           | Some baseParam -> rule.Parameters |> Map.map (fun _ param -> ScriptParameter.merge baseParam param)
         Map.merge ScriptParameter.merge eff.Parameters paramsToMerge
-      TempTable = rule.TempTable |> Option.orElse eff.TempTable
     }
 
 

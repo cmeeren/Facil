@@ -270,10 +270,16 @@ type TableType = {
   Columns: TableTypeColumn list
 }
 
+type TempTable = {
+  Name : string
+  Source : string
+  Columns: OutputColumn list
+}
 
 type ParameterTypeInfo =
   | Scalar of SqlTypeInfo
   | Table of TableType
+  | TempTable of TempTable
 
 
 /// A parameter for a stored procedure, script, or similar.
@@ -302,11 +308,6 @@ type StoredProcedure = {
   ResultSet: OutputColumn list option
 }
 
-type TempTable = {
-  Name : string
-  Source : string
-  Columns: OutputColumn list
-}
 
 type Script = {
   GlobMatchOutput: string
@@ -315,7 +316,6 @@ type Script = {
   Source: string
   Parameters: Parameter list
   ResultSet: OutputColumn list option
-  TempTable : TempTable option
 }
 
 

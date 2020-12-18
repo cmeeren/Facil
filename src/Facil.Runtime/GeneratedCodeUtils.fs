@@ -63,13 +63,13 @@ module GeneratedCodeUtils =
   let inline executeNonQuery connStr conn configureConn configureCmd =
     ExecuteNonQuery(conn, connStr, Action<_> configureConn, Action<_> configureCmd)
 
-  type TempTableLoader(fieldCount, items: obj seq) =
+  type TempTableLoader(fieldCount, items: obj[] seq) =
     let enumerator = items.GetEnumerator()
     interface IDataReader with
       member this.FieldCount: int = fieldCount
       member this.Read(): bool = enumerator.MoveNext()
       member this.GetValue(i: int): obj =
-        let row : obj[] = unbox enumerator.Current
+        let row = enumerator.Current
         row.[i]
       member this.Dispose(): unit = ()
       member __.Close(): unit = invalidOp "NotImplementedException"

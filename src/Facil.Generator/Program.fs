@@ -57,7 +57,6 @@ module Program =
                 Source = File.ReadAllText (Path.Combine(projectDir, globOutput))
                 Parameters = []
                 ResultSet = None
-                TempTable = None
               }
           )
 

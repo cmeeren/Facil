@@ -216,6 +216,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                         match p.TypeInfo with
                         | Scalar ti -> ti
                         | Table _ -> failwith $"Parsed parameter '{p.Name}' as both table and output, which is impossible"
+                        | TempTable _ -> failwith $"Parsed parameter '{p.Name}' as both table and output, which is impossible"
                       $"``{p.FSharpParamName}`` = if sqlParams.[{i}].Value = box DBNull.Value then {outOptionNone} else sqlParams.[{i}].Value |> unbox<{typeInfo.FSharpTypeString}> |> {outOptionSome}"
                   )
               ]
@@ -227,55 +228,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
       ]
       ""
     ]
-
-  let tempTable =
-    match executable with
-    | Choice2Of2 { TempTable = Some tempTable } -> [
-      // Needed to get around inlining issues
-      "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-      "member this.GetConnection() = conn"
-      ""
-      $"member inline this.BulkLoadTempTable(data: ^a seq) ="
-      yield! indent [
-            "let conn = this.GetConnection()"
-            "if not (conn.State.HasFlag ConnectionState.Open) then conn.Open()"
-            "use cmd = conn.CreateCommand()"
-            "cmd.CommandText <- \"\"\""
-            yield! indent (tempTable.Source.Split "\n" |> Array.map (fun s -> s.TrimEnd '\r') |> Array.toList)
-            "\"\"\""
-            "cmd.ExecuteNonQuery() |> ignore"
-
-            "let rows = "
-            yield! indent [
-              "data"
-              "|> Seq.map(fun row ->"
-              yield! indent [
-                "box [|"
-
-                yield! indent [
-                  for column in tempTable.Columns do
-                    let dtoName = column.Name.Value
-                    $"box (^a: (member ``{dtoName}``: {column.TypeInfo.FSharpTypeString}) row)"
-                ]
-                "|]"
-              ]
-              ")"
-            ]
-
-            $"use reader = new TempTableLoader({tempTable.Columns.Length}, rows)"
-            "use bulkCopy = new SqlBulkCopy(conn)"
-            "bulkCopy.BulkCopyTimeout <- 0"
-            "bulkCopy.BatchSize <- 5000"
-            $"bulkCopy.DestinationTableName <- \"{tempTable.Name}\""
-            "bulkCopy.WriteToServer(reader)"
-
-            "this"
-
-          ]
-      ""
-      ]
-    | _ -> []
-
 
   if parameters.IsEmpty then
     [
@@ -368,8 +320,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
         ]
         ""
 
-        yield! tempTable
-
         // Execute methods
 
         let asyncOverTaskFor (taskMethodName: string) (asyncMethodName: string) =
@@ -460,15 +410,37 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
     ]
 
   else  // Has parameters
+    let tempTableParams =
+      match parameters |> List.choose(function { TypeInfo = TempTable _; Name = name } -> Some ($"tempTable{name} : obj[] seq") | _ -> None) with
+      | [] ->  ""
+      | tts ->
+        ", " + (tts |> String.concat ", ")
+
+
     [
       ""
       ""
       "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-      $"type ``{className}_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) ="
+      $"type ``{className}_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []{tempTableParams}) ="
       ""
       yield! indent [
         "let configureCmd (cmd: SqlCommand) ="
         yield! indent [
+          for (name, tempTable) in parameters |> List.choose(function { Name = name; TypeInfo = TempTable tempTable } -> Some (name, tempTable) | _ -> None) do
+            let source = tempTable.Source 
+            "cmd.CommandText <- \"\"\""
+            yield! indent (source.Split "\n" |> Array.map (fun s -> s.TrimEnd '\r') |> Array.toList)
+            "\"\"\""
+            "cmd.ExecuteNonQuery() |> ignore"
+            ""
+            $"use reader = new TempTableLoader({tempTable.Columns.Length}, tempTable{name})"
+            "use bulkCopy = new SqlBulkCopy(cmd.Connection)"
+            "bulkCopy.BulkCopyTimeout <- 0"
+            "bulkCopy.BatchSize <- 5000"
+            $"bulkCopy.DestinationTableName <- \"{tempTable.Name}\""
+            "bulkCopy.WriteToServer(reader)"
+
+
           match executable with
           | Choice1Of2 sp ->
               "cmd.CommandType <- CommandType.StoredProcedure"
@@ -650,8 +622,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
         ]
         ""
 
-        yield! tempTable
-
         // Parameter methods
 
         //  - Individual params
@@ -667,6 +637,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                     $"""{if p.IsOutput then "?" else ""}``{p.FSharpParamName}``: {ti.FSharpTypeString}{if p.FSharpDefaultValueString = Some "null" then $" {inOptionType}" else ""}"""
                 | Table tt ->
                     $"``{p.FSharpParamName}``: seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>"
+                | TempTable _ ->
+                    $"``{p.FSharpParamName}``"
               )
               |> List.mapAllExceptLast (fun s -> s + ",")
           ]
@@ -697,13 +669,22 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                     $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {scalarParamValueExpr})"""
                 | Table tt ->
                     $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = ``{p.FSharpParamName}``)"""
+                | TempTable _ -> ()
 
               if useRetVal then
                 "SqlParameter(\"ReturnValue\", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)"
             ]
             "|]"
           ]
-          $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)"
+
+          match parameters |> List.choose(function { Name = name; TypeInfo = TempTable _ } -> Some name | _ -> None) with
+          | [] ->
+            $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)"
+          | tts ->
+            "// Hack for now"
+            let names = tts |> List.map (fun (n) -> $"``{n}``") |> String.concat ", "
+            $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, {names})"
+            
         ]
         ""
 
@@ -735,13 +716,40 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                       $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {scalarParamValueExpr ti})"""
                   | Table tt ->
                       $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = (^a: (member ``{dtoName}``: #seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>) dto))"""
+                  | TempTable _ -> ()
 
                 if useRetVal then
                   "SqlParameter(\"ReturnValue\", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)"
               ]
               "|]"
             ]
-            $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)"
+
+            match parameters |> List.choose(function { Name = name; TypeInfo = TempTable tempTable } -> Some (name, tempTable) | _ -> None) with
+            | [] ->
+              $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)"
+            | tts ->
+              for (name, tempTable) in tts do
+                $"let tempTable{name} = "
+                yield! indent [
+
+                  $"(^a: (member ``{name}``: _) dto)"
+                  "|> Seq.map(fun (row : ^b) ->"
+                  yield! indent [
+                    "[|"
+                    yield! indent [
+                      for column in tempTable.Columns do
+                        let dtoName = column.Name.Value
+                        $"box (^b: (member ``{dtoName}``: {column.TypeInfo.FSharpTypeString}) row)"
+                    ]
+                    "|]"
+                  ]
+                  ")"
+                ]
+
+              let names = tts |> List.map (fun (n, _) -> "tempTable" + n) |> String.concat ", "
+
+              $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, {names})"
+
           ]
 
 

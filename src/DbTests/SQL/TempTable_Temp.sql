@@ -1,4 +1,0 @@
-﻿CREATE TABLE #Temp (
-  Id INT NOT NULL,
-  [Name] NVARCHAR(100) NOT NULL
-)
