@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 67ba71d895b4607a299388d7d60b13574746e649f9b9444dc3f99a4df1807ab1
+// Hash: adae1d7fa315860617fc06aec50cb51a5d74cbfad73003710f56d776ddf75ce7
 
 //////////////////////////////////////////
 //
@@ -8910,6 +8910,9 @@ module Scripts =
         member _.ExecuteSingle() =
           executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
 
+      type ``TempTabledata`` (Id : int, Name : string) =
+        member val values = [| box Id; box Name |]
+
 
       type ``TempTable`` private (connStr: string, conn: SqlConnection) =
 
@@ -8942,13 +8945,13 @@ module Scripts =
 
         member this.WithParameters
           (
-            ``data``
+            ``data`` : TempTabledata seq
           ) =
           let sqlParams =
             [|
             |]
-          // Hack for now
-          ``TempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, ``data``)
+          let tempTabledata = ``data`` |> Seq.map(fun row -> row.values)
+          ``TempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTabledata)
 
         member inline this.WithParameters(dto: ^a) =
           let sqlParams =

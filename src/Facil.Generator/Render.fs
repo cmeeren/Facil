@@ -581,6 +581,28 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ]
       ]
       ""
+
+      for name, tempTable in parameters |> List.choose(function { Name = name; TypeInfo = TempTable tempTable } -> Some (name, tempTable) | _ -> None) do
+        let col1s =
+          tempTable.Columns
+          |> List.map(fun c ->
+            $"{c.StringEscapedName.Value} : {c.TypeInfo.FSharpTypeString}"
+          )
+          |> String.concat ", "
+
+        let col2s =
+          tempTable.Columns
+          |> List.map(fun c ->
+            $"box {c.StringEscapedName.Value}"
+          )
+          |> String.concat "; "
+
+        $"type ``{className}{name}`` ({col1s}) ="
+        yield! indent [
+          $"member val values = [| {col2s} |]"
+        ]
+        ""
+
       ""
       $"type ``{className}`` private (connStr: string, conn: SqlConnection) ="
       ""
@@ -638,7 +660,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                 | Table tt ->
                     $"``{p.FSharpParamName}``: seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>"
                 | TempTable _ ->
-                    $"``{p.FSharpParamName}``"
+                    $"``{p.FSharpParamName}`` : {className}{p.Name} seq"
               )
               |> List.mapAllExceptLast (fun s -> s + ",")
           ]
@@ -677,12 +699,14 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             "|]"
           ]
 
-          match parameters |> List.choose(function { Name = name; TypeInfo = TempTable _ } -> Some name | _ -> None) with
+          match parameters |> List.choose(function { Name = name; TypeInfo = TempTable _ } -> Some (name) | _ -> None) with
           | [] ->
             $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)"
           | tts ->
-            "// Hack for now"
-            let names = tts |> List.map (fun (n) -> $"``{n}``") |> String.concat ", "
+            for (name) in tts do
+              $"let tempTable{name} = ``{name}`` |> Seq.map(fun row -> row.values)"
+
+            let names = tts |> List.map (fun (n) -> $"tempTable{n}") |> String.concat ", "
             $"``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, {names})"
             
         ]
