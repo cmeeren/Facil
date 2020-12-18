@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <!-- Target a framework compatible with netstandard2.1 and one only compatible with netstandard2.0 -->
@@ -37,7 +37,6 @@
     <None Include="SQL\DynamicSqlWithDeclaration.sql" />
     <None Include="SQL\DynamicSqlWithoutDeclaration.sql" />
     <Content Include="SQL\TempTable.sql" />
-    <Content Include="SQL\TempTable_Temp.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />
