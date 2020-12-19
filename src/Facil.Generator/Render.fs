@@ -52,9 +52,9 @@ let private renderTableType cfg (t: TableType) =
   [
     ""
     ""
-    $"type ``{t.Name}`` (__: InternalUseOnly) ="
+    $"let private ``{t.Name}_meta`` = "
     yield! indent [
-      $"inherit SqlDataRecord ([|"
+      "[|"
       yield! indent [
         for c in t.Columns do
           if isPrecisionAndScaleRelevantForSqlMetaData c.TypeInfo.SqlDbType then
@@ -64,7 +64,13 @@ let private renderTableType cfg (t: TableType) =
           else
             $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.{c.TypeInfo.SqlDbType})"""
       ]
-      "|])"
+      "|]"
+    ]
+    ""
+    ""
+    $"type ``{t.Name}`` (__: InternalUseOnly) ="
+    yield! indent [
+      $"inherit SqlDataRecord (``{t.Name}_meta``)"
       ""
       $"static member create"
       yield! indent [

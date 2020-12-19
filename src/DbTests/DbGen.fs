@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 746c5aee9987dc0a52a673aac37bb9f95664584e861f5e1b96d7e3e1c8d4a435
+// Hash: 2401a83763c849c092c078b9cfaeac38751c15dfea47fbb6b180852327d00596
 
 //////////////////////////////////////////
 //
@@ -67,11 +67,15 @@ module TableTypes =
   module ``dbo`` =
 
 
-    type ``MultiColNullVoption`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``MultiColNullVoption_meta`` = 
+      [|
         SqlMetaData("Foo", SqlDbType.Int)
         SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |])
+      |]
+
+
+    type ``MultiColNullVoption`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``MultiColNullVoption_meta``)
 
       static member create
         (
@@ -96,11 +100,15 @@ module TableTypes =
         x
 
 
-    type ``MultiColNonNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``MultiColNonNull_meta`` = 
+      [|
         SqlMetaData("Foo", SqlDbType.Int)
         SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |])
+      |]
+
+
+    type ``MultiColNonNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``MultiColNonNull_meta``)
 
       static member create
         (
@@ -125,11 +133,15 @@ module TableTypes =
         x
 
 
-    type ``MultiColNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``MultiColNull_meta`` = 
+      [|
         SqlMetaData("Foo", SqlDbType.Int)
         SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |])
+      |]
+
+
+    type ``MultiColNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``MultiColNull_meta``)
 
       static member create
         (
@@ -154,10 +166,14 @@ module TableTypes =
         x
 
 
-    type ``SingleColNonNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``SingleColNonNull_meta`` = 
+      [|
         SqlMetaData("Foo", SqlDbType.Int)
-      |])
+      |]
+
+
+    type ``SingleColNonNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``SingleColNonNull_meta``)
 
       static member create
         (
@@ -179,10 +195,14 @@ module TableTypes =
         x
 
 
-    type ``SingleColNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``SingleColNull_meta`` = 
+      [|
         SqlMetaData("Foo", SqlDbType.Int)
-      |])
+      |]
+
+
+    type ``SingleColNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``SingleColNull_meta``)
 
       static member create
         (
@@ -204,15 +224,19 @@ module TableTypes =
         x
 
 
-    type ``LengthTypes`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``LengthTypes_meta`` = 
+      [|
         SqlMetaData("binary", SqlDbType.Binary, 3L)
         SqlMetaData("char", SqlDbType.Char, 3L)
         SqlMetaData("nchar", SqlDbType.NChar, 3L)
         SqlMetaData("nvarchar", SqlDbType.NVarChar, 3L)
         SqlMetaData("varbinary", SqlDbType.VarBinary, 3L)
         SqlMetaData("varchar", SqlDbType.VarChar, 3L)
-      |])
+      |]
+
+
+    type ``LengthTypes`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``LengthTypes_meta``)
 
       static member create
         (
@@ -249,8 +273,8 @@ module TableTypes =
         x
 
 
-    type ``AllTypesNonNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``AllTypesNonNull_meta`` = 
+      [|
         SqlMetaData("bigint", SqlDbType.BigInt)
         SqlMetaData("binary", SqlDbType.Binary, 42L)
         SqlMetaData("bit", SqlDbType.Bit)
@@ -279,7 +303,11 @@ module TableTypes =
         SqlMetaData("varbinary", SqlDbType.VarBinary, 42L)
         SqlMetaData("varchar", SqlDbType.VarChar, 42L)
         SqlMetaData("xml", SqlDbType.Xml)
-      |])
+      |]
+
+
+    type ``AllTypesNonNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``AllTypesNonNull_meta``)
 
       static member create
         (
@@ -382,8 +410,8 @@ module TableTypes =
         x
 
 
-    type ``AllTypesNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord ([|
+    let private ``AllTypesNull_meta`` = 
+      [|
         SqlMetaData("bigint", SqlDbType.BigInt)
         SqlMetaData("binary", SqlDbType.Binary, 42L)
         SqlMetaData("bit", SqlDbType.Bit)
@@ -412,7 +440,11 @@ module TableTypes =
         SqlMetaData("varbinary", SqlDbType.VarBinary, 42L)
         SqlMetaData("varchar", SqlDbType.VarChar, 42L)
         SqlMetaData("xml", SqlDbType.Xml)
-      |])
+      |]
+
+
+    type ``AllTypesNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``AllTypesNull_meta``)
 
       static member create
         (
