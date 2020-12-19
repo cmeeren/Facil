@@ -102,7 +102,8 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 * Supports table-valued parameters in both procedures and scripts
 * Supports stored procedure output parameters and return values
 * Supports lazy execution, both sync (returns `seq`) and async (if your target supports .NET Standard 2.1 – returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
-* Supports inferring dynamic SQL result sets without `WITH RESULT SETS`
+* Supports inferring dynamic SQL result sets *without* `WITH RESULT SETS`
+* Supports [temp tables](#can-i-use-temp-tables)
 
 ### Production readiness
 
@@ -208,6 +209,67 @@ No, this is not currently supported and not planned. While it may sound useful t
 ### Does Facil use column names or ordinals?
 
 Facil uses column names at runtime. This means that you are free to reorder the columns returned by stored procedures and scripts (either directly, or by reordering table columns returned in a `SELECT *` query). This does not require re-compilation and will not break existing running apps.
+
+### Can I use temp tables?
+
+Yes, Facil supports temp tables in scripts. In short, configure your script like this:
+
+```yaml
+scripts:
+  - include: "MyScriptUsingTempTables.sql"
+    tempTables:
+      # You can supply the definition directly as a string.
+      - definition: |
+          CREATE TABLE #myTempTable1(
+            Col1 INT NOT NULL PRIMARY KEY,
+            Col2 NVARCHAR(100) NULL
+          )
+
+      # If using a single line, remember to enclose in quotes since '#' starts a YAML comment
+      - definition: "CREATE TABLE #myTempTable2(Col1 INT NOT NULL)"
+
+      # You can also specify a path to a SQL file containing the definition
+      - definition: path/from/project/to/myTempTable3.sql
+```
+
+Then temp tables will work similarly to TVPs:
+
+```f#
+MyScriptUsingTempTables
+  .WithConnection(connStr)
+  .WithParameters(
+    tempTable1 = [
+      MyScriptUsingTempTables.tempTable1.create(
+        Col1 = 1,
+        Col2 = Some "test"
+      )
+    ],
+    tempTable2 = [
+      MyScriptUsingTempTables.tempTable2.create(
+        Col1 = 1
+      )
+    ],
+    ..
+  )
+```
+
+Just like with TVPs, you can use matching DTOs in the calls to `create` (instead of explicitly passing column parameters as shown above).
+
+Facil uses `SqlBulkCopy` to load temp tables. You can configure the created `SqlBulkCopy` using `ConfigureBulkCopy`.
+
+```f#
+MyScriptUsingTempTables
+  .WithConnection(connStr)
+  .ConfigureBulkCopy(fun bc ->
+    bc.BatchSize <- 1000
+    bc.BulkCopyTimeout <- 0
+    bc.NotifyAfter <- 2000
+    bc.SqlRowsCopied.Add (fun e -> printfn "%i rows copied so far" e.RowsCopied)
+  )
+  .WithParameters(..)
+```
+
+The configuration will apply to the loading of all temp tables for the script; please open an issue if you need separate configuration per temp table.
 
 Release notes
 -------------
