@@ -93,4 +93,83 @@ let tests =
           )
       ]
 
+      testList "Truncation behavior" [
+
+        // This functionality is incidental, not a requirement; the test is here to pick
+        // up potentially breaking changes, in order to ensure that any change is
+        // deliberate.
+        testCase "Normal parameters that are too long are silently truncated" <| fun () ->
+          let res =
+            DbGen.Procedures.dbo.ProcWithLengthTypes
+              .WithConnection(Config.connStr)
+              .WithParameters(
+                binary = [| 1uy; 2uy; 3uy; 4uy |],
+                char = "1234",
+                nchar = "1234",
+                nvarchar = "1234",
+                varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                varchar = "1234"
+              )
+              .ExecuteSingle()
+
+          test <@ res.Value.binary = Some [| 1uy; 2uy; 3uy |] @>
+          test <@ res.Value.char = Some "123" @>
+          test <@ res.Value.nchar = Some "123" @>
+          test <@ res.Value.nvarchar = Some "123" @>
+          test <@ res.Value.varbinary = Some [| 1uy; 2uy; 3uy |] @>
+          test <@ res.Value.varchar = Some "123" @>
+
+
+        // This functionality is incidental, not a requirement; the test is here to pick
+        // up potentially breaking changes, in order to ensure that any change is
+        // deliberate.
+        testCase "TVP parameters that are too long are silently truncated" <| fun () ->
+          let res =
+            DbGen.Procedures.dbo.ProcWithLengthTypesFromTvp
+              .WithConnection(Config.connStr)
+              .WithParameters([
+                DbGen.TableTypes.dbo.LengthTypes.create(
+                  binary = [| 1uy; 2uy; 3uy; 4uy |],
+                  char = "1234",
+                  nchar = "1234",
+                  nvarchar = "1234",
+                  varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                  varchar = "1234"
+                )
+              ])
+              .ExecuteSingle()
+
+          test <@ res.Value.binary = [| 1uy; 2uy; 3uy |] @>
+          test <@ res.Value.char = "123" @>
+          test <@ res.Value.nchar = "123" @>
+          test <@ res.Value.nvarchar = "123" @>
+          test <@ res.Value.varbinary = [| 1uy; 2uy; 3uy |] @>
+          test <@ res.Value.varchar = "123" @>
+
+
+        // This functionality is incidental, not a requirement; the test is here to pick
+        // up potentially breaking changes, in order to ensure that any change is
+        // deliberate.
+        testCase "Temp table parameters that are too long raise exceptions" <| fun () ->
+          let run () =
+            DbGen.Scripts.SQL.TempTableWithLengthTypes
+              .WithConnection(Config.connStr)
+              .WithParameters([
+                DbGen.Scripts.SQL.TempTableWithLengthTypes.tempTableWithLengthTypes.create(
+                  binary = [| 1uy; 2uy; 3uy; 4uy |],
+                  char = "1234",
+                  nchar = "1234",
+                  nvarchar = "1234",
+                  varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                  varchar = "1234"
+                )
+              ])
+              .ExecuteSingle()
+              |> ignore
+          Expect.throws run "Should throw"
+
+
+      ]
+
+
   ]

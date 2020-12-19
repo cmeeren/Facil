@@ -147,6 +147,18 @@ rulesets:
           - definition: "CREATE TABLE #tempTable1 (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
           - definition: "CREATE TABLE #tempTable2 (Col1 INT NOT NULL, Col3 NVARCHAR(42) NOT NULL)"
 
+      - for: SQL/TempTableWithLengthTypes.sql
+        tempTables:
+          - definition: |
+              CREATE TABLE #tempTableWithLengthTypes (
+                [binary] BINARY(3) NOT NULL,
+                [char] CHAR(3) NOT NULL,
+                [nchar] NCHAR(3) NOT NULL,
+                [nvarchar] NVARCHAR(3) NOT NULL,
+                [varbinary] VARBINARY(3) NOT NULL,
+                [varchar] VARCHAR(3) NOT NULL
+              )
+
 
     tableDtos:
       - include: .*

@@ -45,6 +45,7 @@
     <None Include="SQL\TempTableInlinedDynamic.sql" />
     <None Include="SQL\TempTableInlinedWithOtherParams.sql" />
     <None Include="SQL\MultipleTempTables.sql" />
+    <None Include="SQL\TempTableWithLengthTypes.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />

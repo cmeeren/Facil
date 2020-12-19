@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{ce4f177f-6835-498a-b29e-0d86e329f2cf}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -140,6 +140,9 @@
     <Build Include="dbo\Stored Procedures\ProcWithRetValExtended.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithResultsAndRetVal.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithResultsAndRetValExtended.sql" />
+    <Build Include="dbo\Stored Procedures\ProcWithLengthTypes.sql" />
+    <Build Include="dbo\User Defined Types\LengthTypes.sql" />
+    <Build Include="dbo\Stored Procedures\ProcWithLengthTypesFromTvp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDB.publish.xml" />
