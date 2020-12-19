@@ -592,8 +592,15 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     |> List.map (fun script ->
         let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
         let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition.[tt.Definition])
+
         if tempTables |> List.countBy (fun tt -> tt.Name) |> List.exists (fun (_, count) -> count > 1) then
           failwithError $"The rule for script '%s{script.GlobMatchOutput}' contains multiple temp table definitions using the same temp table name. This is not supported."
+
+        let paramNames = script.Parameters |> List.map (fun p -> p.FSharpParamName |> String.firstLower) |> set
+        let tempTableNames = tempTables |> List.map (fun tt -> tt.FSharpName |> String.firstLower) |> set
+        if Set.intersect paramNames tempTableNames |> Set.isEmpty |> not then
+          failwithError $"Script '%s{script.GlobMatchOutput}' has a temp table with the same name as a parameter. This is not supported."
+
         { script with TempTables = tempTables }
     )
     |> List.map (fun script ->
