@@ -581,7 +581,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
   let tempTablesByDefinition =
     cfg.Scripts
-    |> List.collect (fun s -> s.TempTables)
+    |> List.collect (fun s -> s.TempTables |> Option.defaultValue [])
     |> List.map (fun rule -> rule.Definition)
     |> List.distinct
     |> List.map (fun definition -> definition, getTempTable sysTypeIdLookup definition conn)
