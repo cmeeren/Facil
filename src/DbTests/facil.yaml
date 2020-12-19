@@ -42,6 +42,7 @@ rulesets:
 
     scripts:
       - include: "**/*.sql"
+        except: "**/TempTableDefinitions/**/*.sql"
 
       - for: "**/*WithoutDto.sql"
         result: anonymous
@@ -113,6 +114,39 @@ rulesets:
         params:
           col1Filter:
             type: NVARCHAR(42)
+
+      - for: SQL/TempTableAllTypesNonNull.sql
+        tempTables:
+          - definition: SQL/TempTableDefinitions/TempTableAllTypesNonNull.sql
+
+      - for: SQL/TempTableAllTypesNull.sql
+        tempTables:
+          - definition: SQL/TempTableDefinitions/TempTableAllTypesNull.sql
+
+      - for: SQL/TempTableAllTypesNullVoption.sql
+        voptionIn: true
+        tempTables:
+          - definition: SQL/TempTableDefinitions/TempTableAllTypesNull.sql
+
+      - for: SQL/TempTableInlined.sql
+        tempTables:
+            # Deliberately uses the same temp table name as at least one other script to
+            # ensure temp tables are dropped when parsing
+          - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+
+      - for: SQL/TempTableInlinedDynamic.sql
+        tempTables:
+          - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+
+      - for: SQL/TempTableInlinedWithOtherParams.sql
+        tempTables:
+          - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+
+      - for: SQL/MultipleTempTables.sql
+        tempTables:
+          - definition: "CREATE TABLE #tempTable1 (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+          - definition: "CREATE TABLE #tempTable2 (Col1 INT NOT NULL, Col3 NVARCHAR(42) NOT NULL)"
+
 
     tableDtos:
       - include: .*

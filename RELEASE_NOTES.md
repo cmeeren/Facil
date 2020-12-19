@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Support temp tables for scripts (thanks [@davidtme](davidtme)!) (#2, #3)
+
 ### 0.1.2 (2020-12-17)
 
 * Added package logo

@@ -17,6 +17,8 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="SQL\TempTableDefinitions\TempTableAllTypesNull.sql" />
+    <None Include="SQL\TempTableDefinitions\TempTableAllTypesNonNull.sql" />
     <None Include="SQL\Option\In.sql" />
     <None Include="SQL\Option\Out.sql" />
     <None Include="SQL\Option\TableOutWithDto.sql" />
@@ -36,6 +38,13 @@
     <None Include="SQL\OverriddenDtoParamName.sql" />
     <None Include="SQL\DynamicSqlWithDeclaration.sql" />
     <None Include="SQL\DynamicSqlWithoutDeclaration.sql" />
+    <None Include="SQL\TempTableAllTypesNonNull.sql" />
+    <None Include="SQL\TempTableAllTypesNull.sql" />
+    <None Include="SQL\TempTableAllTypesNullVoption.sql" />
+    <None Include="SQL\TempTableInlined.sql" />
+    <None Include="SQL\TempTableInlinedDynamic.sql" />
+    <None Include="SQL\TempTableInlinedWithOtherParams.sql" />
+    <None Include="SQL\MultipleTempTables.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />
@@ -46,6 +55,7 @@
     <Compile Include="ConnectionAndDisposalTests.fs" />
     <Compile Include="ConfigTests.fs" />
     <Compile Include="OutParameterAndReturnValueTests.fs" />
+    <Compile Include="TempTableTests.fs" />
     <Compile Include="MiscTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

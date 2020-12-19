@@ -13,54 +13,54 @@ module GeneratedCodeUtils =
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem ct : Task<ResizeArray<_>> =
-    ExecuteQueryEagerAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, ct)
+  let inline executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct : Task<ResizeArray<_>> =
+    ExecuteQueryEagerAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem ct : Task<ResizeArray<_>> =
-    ExecuteQueryEagerAsyncWithSyncRead(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, ct)
+  let inline executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct : Task<ResizeArray<_>> =
+    ExecuteQueryEagerAsyncWithSyncRead(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem : ResizeArray<_> =
-    ExecuteQueryEager(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem)
+  let inline executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData : ResizeArray<_> =
+    ExecuteQueryEager(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData)
 
   #if !NETSTANDARD2_0
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem ct =
-    ExecuteQueryLazyAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, ct)
+  let inline executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct =
+    ExecuteQueryLazyAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem ct =
-    ExecuteQueryLazyAsyncWithSyncRead(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, ct)
+  let inline executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct =
+    ExecuteQueryLazyAsyncWithSyncRead(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
   #endif
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem =
-    ExecuteQueryLazy(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem)
+  let inline executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData =
+    ExecuteQueryLazy(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem ct : Task<_ option> =
-    ExecuteQuerySingleAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, ct)
+  let inline executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct : Task<_ option> =
+    ExecuteQuerySingleAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem ct : Task<_ voption> =
-    ExecuteQuerySingleAsyncVoption(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, ct)
+  let inline executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct : Task<_ voption> =
+    ExecuteQuerySingleAsyncVoption(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem : _ option =
-    ExecuteQuerySingle(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem)
+  let inline executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData : _ option =
+    ExecuteQuerySingle(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem : _ voption =
-    ExecuteQuerySingleVoption(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem)
+  let inline executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData : _ voption =
+    ExecuteQuerySingleVoption(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeNonQueryAsync connStr conn configureConn configureCmd ct =
-    ExecuteNonQueryAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, ct)
+  let inline executeNonQueryAsync connStr conn configureConn configureCmd tempTableData ct =
+    ExecuteNonQueryAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, tempTableData, ct)
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let inline executeNonQuery connStr conn configureConn configureCmd =
-    ExecuteNonQuery(conn, connStr, Action<_> configureConn, Action<_> configureCmd)
+  let inline executeNonQuery connStr conn configureConn configureCmd tempTableData =
+    ExecuteNonQuery(conn, connStr, Action<_> configureConn, Action<_> configureCmd, tempTableData)
 
 
 

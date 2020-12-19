@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Facil.Config
 
+open System.IO
 open System.Text.RegularExpressions
 open GlobExpressions
 
@@ -131,6 +132,16 @@ type ScriptParameter = {
   DtoName: string option
 }
 
+[<CLIMutable>]
+type ScriptTempTableRuleDto = {
+  definition: string
+}
+
+
+type ScriptTempTableRule = {
+  Definition: string
+}
+
 
 [<CLIMutable>]
 type ScriptRuleDto = {
@@ -143,6 +154,7 @@ type ScriptRuleDto = {
   recordIfSingleCol: bool option
   skipParamDto: bool option
   ``params``: Map<string, ScriptParameterDto> option
+  tempTables: ScriptTempTableRuleDto list option
 }
 
 
@@ -157,6 +169,7 @@ type ScriptRule = {
   RecordIfSingleCol: bool option
   SkipParamDto: bool option
   Parameters: Map<string, ScriptParameter>
+  TempTables: ScriptTempTableRule list option
 }
 
 
@@ -167,6 +180,7 @@ type EffectiveScriptRule = {
   RecordIfSingleCol: bool
   SkipParamDto: bool
   Parameters: Map<string, ScriptParameter>
+  TempTables: ScriptTempTableRule list
 }
 
 
@@ -426,6 +440,19 @@ module ScriptParameter =
   }
 
 
+module ScriptTempTableRule =
+
+
+  let fromDto projectDir (dto: ScriptTempTableRuleDto) =
+    {
+      Definition =
+        if dto.definition.EndsWith ".sql" && File.Exists(Path.Combine(projectDir, dto.definition)) then
+          File.ReadAllText(Path.Combine(projectDir, dto.definition))
+        else
+          dto.definition
+    }
+
+
 module ScriptRule =
 
 
@@ -465,6 +492,7 @@ module ScriptRule =
         dto.``params``
         |> Option.defaultValue Map.empty
         |> Map.map (fun _ -> ScriptParameter.fromDto)
+      TempTables = dto.tempTables |> Option.map (List.map (ScriptTempTableRule.fromDto projectDir))
     }
 
 
@@ -475,6 +503,7 @@ module ScriptRule =
     RecordIfSingleCol = false
     SkipParamDto = false
     Parameters = Map.empty
+    TempTables = []
   }
 
 
@@ -496,6 +525,7 @@ module ScriptRule =
           | None -> rule.Parameters
           | Some baseParam -> rule.Parameters |> Map.map (fun _ param -> ScriptParameter.merge baseParam param)
         Map.merge ScriptParameter.merge eff.Parameters paramsToMerge
+      TempTables = rule.TempTables |> Option.defaultValue eff.TempTables
     }
 
 
@@ -510,19 +540,7 @@ module RuleSet =
       |> resolveVariable
     Filename = dto.filename |> Option.defaultValue "DbGen.fs"
     NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module internal DbGen"
-    Prelude =
-      match dto.prelude with
-      | None -> None
-      | Some prelude ->
-          let prelude =
-            prelude.Split('\n')
-            |> Array.toList
-            |> List.map (fun s -> s.TrimEnd('\r').Replace("\t", "  "))
-          let minIndent =
-            prelude
-            |> List.map (fun s -> s |> Seq.takeWhile ((=) ' ') |> Seq.length)
-            |> List.min
-          prelude |> List.map (fun s -> s.Substring(minIndent)) |> Some
+    Prelude = dto.prelude |> Option.map String.getDeindentedLines
     TableDtos =
       dto.tableDtos
       |> Option.defaultValue []
@@ -593,7 +611,6 @@ module RuleSet =
 
 module FacilConfig =
 
-  open System.IO
   open Microsoft.Extensions.Configuration
   open Legivel.Serialization
 

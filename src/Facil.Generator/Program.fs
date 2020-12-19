@@ -16,7 +16,9 @@ module Program =
   let main argv =
     try
 
-      let projectDir = if argv.Length = 0 then @"..\..\..\..\TestOutput" else argv.[0]
+      let projectDir =
+        if argv.Length = 0 then @"..\..\..\..\TestOutput" else argv.[0]
+        |> Path.GetFullPath
 
       let yamlFile1 = FileInfo(Path.Combine(projectDir, "facil.yaml"))
       let yamlFile2 = FileInfo(Path.Combine(projectDir, "facil.yml"))
@@ -43,7 +45,7 @@ module Program =
 
       for cfg in FacilConfig.getRuleSets projectDir yamlFilePath do
 
-        let scriptsWithoutParamsOrResultSets =
+        let scriptsWithoutParamsOrResultSetsOrTempTables =
           cfg.Scripts
           |> List.collect (fun rule -> Set.toList rule.IncludeMatches)
           |> List.map (fun globOutput ->
@@ -57,6 +59,7 @@ module Program =
                 Source = File.ReadAllText (Path.Combine(projectDir, globOutput))
                 Parameters = []
                 ResultSet = None
+                TempTables = []
               }
           )
 
@@ -65,7 +68,7 @@ module Program =
           [
             assemblyHash
             sprintf "%A" cfg
-            yield! scriptsWithoutParamsOrResultSets |> List.map (fun s -> s.GlobMatchOutput + s.Source)
+            yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.GlobMatchOutput + s.Source)
           ]
           |> String.concat ""
           |> Text.Encoding.UTF8.GetBytes
@@ -84,7 +87,7 @@ module Program =
             with :? ArgumentException ->
               failwithError "Invalid connection string"
           conn.Open()
-          let everything = Db.getEverything cfg yamlFilePath scriptsWithoutParamsOrResultSets conn
+          let everything = Db.getEverything cfg yamlFilePath scriptsWithoutParamsOrResultSetsOrTempTables conn
           let lines = Render.renderDocument cfg hash everything
 
           if Environment.GetEnvironmentVariable(envvar_fail_on_changed_output) |> isNull |> not then

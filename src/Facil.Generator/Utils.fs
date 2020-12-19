@@ -45,6 +45,17 @@ module String =
   let trimStart (trim: char) (s: string) =
     s.TrimStart(trim)
 
+  let getDeindentedLines (s: string) =
+    let s =
+      s.Split('\n')
+      |> Array.toList
+      |> List.map (fun s -> s.TrimEnd('\r').Replace("\t", "  "))
+    let minIndent =
+      s
+      |> List.map (fun s -> s |> Seq.takeWhile ((=) ' ') |> Seq.length)
+      |> List.min
+    s |> List.map (fun s -> s.Substring(minIndent))
+
 
 
 module Map =

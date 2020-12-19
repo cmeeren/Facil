@@ -14,13 +14,51 @@ using Microsoft.FSharp.Core;
 
 namespace Facil.Runtime.CSharp
 {
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class GeneratedCodeUtils
     {
-        public static async Task<List<T>> ExecuteQueryEagerAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, CancellationToken ct)
+        private static async Task LoadTempTablesAsync(SqlConnection conn, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
+        {
+            foreach (var data in tempTableData)
+            {
+                using var cmd = conn.CreateCommand();
+                // Note: If there is ever a need for letting users configure the command,
+                // do not use the configureCmd parameter passed to methods on this class,
+                // which also sets any parameters.
+                cmd.CommandText = data.Definition;
+                await cmd.ExecuteNonQueryAsync(ct);
+
+                using var bulkCopy = new SqlBulkCopy(conn) { DestinationTableName = data.DestinationTableName };
+                data.ConfigureBulkCopy(bulkCopy);
+                var reader = new TempTableLoader(data.NumFields, data.Data);
+                await bulkCopy.WriteToServerAsync(reader, ct);
+            }
+        }
+
+        private static void LoadTempTables(SqlConnection conn, IEnumerable<TempTableData> tempTableData)
+        {
+            foreach (var data in tempTableData)
+            {
+                using var cmd = conn.CreateCommand();
+                // Note: If there is ever a need for letting users configure the command,
+                // do not use the configureCmd parameter passed to methods on this class,
+                // which also sets any parameters.
+                cmd.CommandText = data.Definition;
+                cmd.ExecuteNonQuery();
+
+                using var bulkCopy = new SqlBulkCopy(conn) { DestinationTableName = data.DestinationTableName };
+                data.ConfigureBulkCopy(bulkCopy);
+                var reader = new TempTableLoader(data.NumFields, data.Data);
+                bulkCopy.WriteToServer(reader);
+            }
+        }
+
+        public static async Task<List<T>> ExecuteQueryEagerAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
         {
             if (existingConn is not null)
             {
+                await LoadTempTablesAsync(existingConn, tempTableData, ct);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -39,6 +77,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 await conn.OpenAsync(ct).ConfigureAwait(false);
+                await LoadTempTablesAsync(conn, tempTableData, ct);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -59,10 +98,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static async Task<List<T>> ExecuteQueryEagerAsyncWithSyncRead<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, CancellationToken ct)
+        public static async Task<List<T>> ExecuteQueryEagerAsyncWithSyncRead<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
         {
             if (existingConn is not null)
             {
+                await LoadTempTablesAsync(existingConn, tempTableData, ct);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -82,6 +122,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 await conn.OpenAsync(ct).ConfigureAwait(false);
+                await LoadTempTablesAsync(conn, tempTableData, ct);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -102,10 +143,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static List<T> ExecuteQueryEager<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem)
+        public static List<T> ExecuteQueryEager<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
         {
             if (existingConn is not null)
             {
+                LoadTempTables(existingConn, tempTableData);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
@@ -125,6 +167,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 conn.Open();
+                LoadTempTables(conn, tempTableData);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
@@ -145,10 +188,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 #if !NETSTANDARD2_0
-        public static async IAsyncEnumerable<T> ExecuteQueryLazyAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, [EnumeratorCancellation] CancellationToken ct)
+        public static async IAsyncEnumerable<T> ExecuteQueryLazyAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, [EnumeratorCancellation] CancellationToken ct)
         {
             if (existingConn is not null)
             {
+                await LoadTempTablesAsync(existingConn, tempTableData, ct);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -166,6 +210,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 await conn.OpenAsync(ct).ConfigureAwait(false);
+                await LoadTempTablesAsync(conn, tempTableData, ct);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -184,10 +229,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static async IAsyncEnumerable<T> ExecuteQueryLazyAsyncWithSyncRead<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, [EnumeratorCancellation] CancellationToken ct)
+        public static async IAsyncEnumerable<T> ExecuteQueryLazyAsyncWithSyncRead<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, [EnumeratorCancellation] CancellationToken ct)
         {
             if (existingConn is not null)
             {
+                await LoadTempTablesAsync(existingConn, tempTableData, ct);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -205,6 +251,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 await conn.OpenAsync(ct).ConfigureAwait(false);
+                await LoadTempTablesAsync(conn, tempTableData, ct);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
@@ -224,10 +271,11 @@ namespace Facil.Runtime.CSharp
         }
         #endif
 
-        public static IEnumerable<T> ExecuteQueryLazy<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem)
+        public static IEnumerable<T> ExecuteQueryLazy<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
         {
             if (existingConn is not null)
             {
+                LoadTempTables(existingConn, tempTableData);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
@@ -245,6 +293,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 conn.Open();
+                LoadTempTables(conn, tempTableData);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
@@ -263,10 +312,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static async Task<FSharpOption<T>> ExecuteQuerySingleAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, CancellationToken ct)
+        public static async Task<FSharpOption<T>> ExecuteQuerySingleAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
         {
             if (existingConn is not null)
             {
+                await LoadTempTablesAsync(existingConn, tempTableData, ct);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
@@ -282,6 +332,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 await conn.OpenAsync(ct).ConfigureAwait(false);
+                await LoadTempTablesAsync(conn, tempTableData, ct);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
@@ -298,10 +349,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static async Task<FSharpValueOption<T>> ExecuteQuerySingleAsyncVoption<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, CancellationToken ct)
+        public static async Task<FSharpValueOption<T>> ExecuteQuerySingleAsyncVoption<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
         {
             if (existingConn is not null)
             {
+                await LoadTempTablesAsync(existingConn, tempTableData, ct);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
@@ -317,6 +369,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 await conn.OpenAsync(ct).ConfigureAwait(false);
+                await LoadTempTablesAsync(conn, tempTableData, ct);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
@@ -333,10 +386,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static FSharpOption<T> ExecuteQuerySingle<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem)
+        public static FSharpOption<T> ExecuteQuerySingle<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
         {
             if (existingConn is not null)
             {
+                LoadTempTables(existingConn, tempTableData);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
@@ -352,6 +406,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 conn.Open();
+                LoadTempTables(conn, tempTableData);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
@@ -368,10 +423,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static FSharpValueOption<T> ExecuteQuerySingleVoption<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem)
+        public static FSharpValueOption<T> ExecuteQuerySingleVoption<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
         {
             if (existingConn is not null)
             {
+                LoadTempTables(existingConn, tempTableData);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
@@ -387,6 +443,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 conn.Open();
+                LoadTempTables(conn, tempTableData);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
@@ -403,10 +460,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static async Task<int> ExecuteNonQueryAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, CancellationToken ct)
+        public static async Task<int> ExecuteNonQueryAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
         {
             if (existingConn is not null)
             {
+                await LoadTempTablesAsync(existingConn, tempTableData, ct);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 return await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
@@ -416,6 +474,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 conn.Open();
+                await LoadTempTablesAsync(conn, tempTableData, ct);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 return await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
@@ -426,10 +485,11 @@ namespace Facil.Runtime.CSharp
             }
         }
 
-        public static int ExecuteNonQuery<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd)
+        public static int ExecuteNonQuery<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData)
         {
             if (existingConn is not null)
             {
+                LoadTempTables(existingConn, tempTableData);
                 using var cmd = existingConn.CreateCommand();
                 configureCmd(cmd);
                 return cmd.ExecuteNonQuery();
@@ -439,6 +499,7 @@ namespace Facil.Runtime.CSharp
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
                 conn.Open();
+                LoadTempTables(conn, tempTableData);
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 return cmd.ExecuteNonQuery();

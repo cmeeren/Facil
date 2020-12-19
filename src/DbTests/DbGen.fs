@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: a99bcfcbf70877650f952a3921ae81c3a1e5a5200928dadac50dc0455faf748c
+// Hash: 23c8d2bfeab97a38a2773870559bf3520382009749f06cfbc58c9ac177d8718a
 
 //////////////////////////////////////////
 //
@@ -19,12 +19,19 @@ open System.Data
 open System.Threading
 open Microsoft.Data.SqlClient
 open Microsoft.Data.SqlClient.Server
+open Facil.Runtime.CSharp
 open Facil.Runtime.GeneratedCodeUtils
 
 
 module MyPreludeModule =
   let x = 2
 
+
+
+[<EditorBrowsable(EditorBrowsableState.Never)>]
+type InternalUseOnly = private | InternalUseOnly
+[<EditorBrowsable(EditorBrowsableState.Never)>]
+let internalUseOnlyValue = InternalUseOnly
 
 
 module TableDtos =
@@ -57,16 +64,10 @@ module TableDtos =
 module TableTypes =
 
 
-  [<EditorBrowsable(EditorBrowsableState.Never)>]
-  type DoNotUseConstructor = | DoNotUseConstructor
-  [<EditorBrowsable(EditorBrowsableState.Never)>]
-  let doNotUseConstructorValue = DoNotUseConstructor
-
-
   module ``dbo`` =
 
 
-    type ``MultiColNullVoption`` (__: DoNotUseConstructor) =
+    type ``MultiColNullVoption`` (__: InternalUseOnly) =
       inherit SqlDataRecord ([|
         SqlMetaData("Foo", SqlDbType.Int)
         SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
@@ -77,7 +78,7 @@ module TableTypes =
           ``Foo``: int voption,
           ``Bar``: string voption
         ) =
-        let x = ``MultiColNullVoption``(doNotUseConstructorValue)
+        let x = ``MultiColNullVoption``(internalUseOnlyValue)
         x.SetValues(
           ValueOption.toDbNull ``Foo``,
           ValueOption.toDbNull ``Bar``
@@ -86,7 +87,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``MultiColNullVoption``(doNotUseConstructorValue)
+        let x = ``MultiColNullVoption``(internalUseOnlyValue)
         x.SetValues(
           ValueOption.toDbNull (^a: (member ``Foo``: int voption) dto),
           ValueOption.toDbNull (^a: (member ``Bar``: string voption) dto)
@@ -95,7 +96,7 @@ module TableTypes =
         x
 
 
-    type ``MultiColNonNull`` (__: DoNotUseConstructor) =
+    type ``MultiColNonNull`` (__: InternalUseOnly) =
       inherit SqlDataRecord ([|
         SqlMetaData("Foo", SqlDbType.Int)
         SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
@@ -106,7 +107,7 @@ module TableTypes =
           ``Foo``: int,
           ``Bar``: string
         ) =
-        let x = ``MultiColNonNull``(doNotUseConstructorValue)
+        let x = ``MultiColNonNull``(internalUseOnlyValue)
         x.SetValues(
           ``Foo``,
           ``Bar``
@@ -115,7 +116,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``MultiColNonNull``(doNotUseConstructorValue)
+        let x = ``MultiColNonNull``(internalUseOnlyValue)
         x.SetValues(
           (^a: (member ``Foo``: int) dto),
           (^a: (member ``Bar``: string) dto)
@@ -124,7 +125,7 @@ module TableTypes =
         x
 
 
-    type ``MultiColNull`` (__: DoNotUseConstructor) =
+    type ``MultiColNull`` (__: InternalUseOnly) =
       inherit SqlDataRecord ([|
         SqlMetaData("Foo", SqlDbType.Int)
         SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
@@ -135,7 +136,7 @@ module TableTypes =
           ``Foo``: int option,
           ``Bar``: string option
         ) =
-        let x = ``MultiColNull``(doNotUseConstructorValue)
+        let x = ``MultiColNull``(internalUseOnlyValue)
         x.SetValues(
           Option.toDbNull ``Foo``,
           Option.toDbNull ``Bar``
@@ -144,7 +145,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``MultiColNull``(doNotUseConstructorValue)
+        let x = ``MultiColNull``(internalUseOnlyValue)
         x.SetValues(
           Option.toDbNull (^a: (member ``Foo``: int option) dto),
           Option.toDbNull (^a: (member ``Bar``: string option) dto)
@@ -153,7 +154,7 @@ module TableTypes =
         x
 
 
-    type ``SingleColNonNull`` (__: DoNotUseConstructor) =
+    type ``SingleColNonNull`` (__: InternalUseOnly) =
       inherit SqlDataRecord ([|
         SqlMetaData("Foo", SqlDbType.Int)
       |])
@@ -162,7 +163,7 @@ module TableTypes =
         (
           ``Foo``: int
         ) =
-        let x = ``SingleColNonNull``(doNotUseConstructorValue)
+        let x = ``SingleColNonNull``(internalUseOnlyValue)
         x.SetValues(
           ``Foo``
         )
@@ -170,7 +171,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``SingleColNonNull``(doNotUseConstructorValue)
+        let x = ``SingleColNonNull``(internalUseOnlyValue)
         x.SetValues(
           (^a: (member ``Foo``: int) dto)
         )
@@ -178,7 +179,7 @@ module TableTypes =
         x
 
 
-    type ``SingleColNull`` (__: DoNotUseConstructor) =
+    type ``SingleColNull`` (__: InternalUseOnly) =
       inherit SqlDataRecord ([|
         SqlMetaData("Foo", SqlDbType.Int)
       |])
@@ -187,7 +188,7 @@ module TableTypes =
         (
           ``Foo``: int option
         ) =
-        let x = ``SingleColNull``(doNotUseConstructorValue)
+        let x = ``SingleColNull``(internalUseOnlyValue)
         x.SetValues(
           Option.toDbNull ``Foo``
         )
@@ -195,7 +196,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``SingleColNull``(doNotUseConstructorValue)
+        let x = ``SingleColNull``(internalUseOnlyValue)
         x.SetValues(
           Option.toDbNull (^a: (member ``Foo``: int option) dto)
         )
@@ -203,7 +204,7 @@ module TableTypes =
         x
 
 
-    type ``AllTypesNonNull`` (__: DoNotUseConstructor) =
+    type ``AllTypesNonNull`` (__: InternalUseOnly) =
       inherit SqlDataRecord ([|
         SqlMetaData("bigint", SqlDbType.BigInt)
         SqlMetaData("binary", SqlDbType.Binary, 42L)
@@ -266,7 +267,7 @@ module TableTypes =
           ``varchar``: string,
           ``xml``: string
         ) =
-        let x = ``AllTypesNonNull``(doNotUseConstructorValue)
+        let x = ``AllTypesNonNull``(internalUseOnlyValue)
         x.SetValues(
           ``bigint``,
           ``binary``,
@@ -301,7 +302,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``AllTypesNonNull``(doNotUseConstructorValue)
+        let x = ``AllTypesNonNull``(internalUseOnlyValue)
         x.SetValues(
           (^a: (member ``bigint``: int64) dto),
           (^a: (member ``binary``: byte []) dto),
@@ -336,7 +337,7 @@ module TableTypes =
         x
 
 
-    type ``AllTypesNull`` (__: DoNotUseConstructor) =
+    type ``AllTypesNull`` (__: InternalUseOnly) =
       inherit SqlDataRecord ([|
         SqlMetaData("bigint", SqlDbType.BigInt)
         SqlMetaData("binary", SqlDbType.Binary, 42L)
@@ -399,7 +400,7 @@ module TableTypes =
           ``varchar``: string option,
           ``xml``: string option
         ) =
-        let x = ``AllTypesNull``(doNotUseConstructorValue)
+        let x = ``AllTypesNull``(internalUseOnlyValue)
         x.SetValues(
           Option.toDbNull ``bigint``,
           Option.toDbNull ``binary``,
@@ -434,7 +435,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``AllTypesNull``(doNotUseConstructorValue)
+        let x = ``AllTypesNull``(internalUseOnlyValue)
         x.SetValues(
           Option.toDbNull (^a: (member ``bigint``: int64 option) dto),
           Option.toDbNull (^a: (member ``binary``: byte [] option) dto),
@@ -504,7 +505,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -513,11 +514,11 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeNonQuery connStr conn this.configureConn (configureCmd this.userConfigureCmd)
+        executeNonQuery connStr conn this.configureConn (configureCmd this.userConfigureCmd) []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcOptionIn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcOptionIn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -531,7 +532,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetString 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -540,7 +541,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -549,23 +550,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -574,7 +575,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcOptionIn`` private (connStr: string, conn: SqlConnection) =
@@ -614,18 +615,18 @@ module Procedures =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``param1``)
           |]
-        ``ProcOptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcOptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Param1``: string option) dto))
           |]
-        ``ProcOptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcOptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcOptionOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcOptionOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -639,7 +640,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetString 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -648,7 +649,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -657,23 +658,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -682,7 +683,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcOptionOut`` private (connStr: string, conn: SqlConnection) =
@@ -722,14 +723,14 @@ module Procedures =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``param1``)
           |]
-        ``ProcOptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcOptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Param1``: string option) dto))
           |]
-        ``ProcOptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcOptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     type ``ProcOptionTableOutWithDto`` private (connStr: string, conn: SqlConnection) =
@@ -774,7 +775,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -783,7 +784,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -792,23 +793,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -817,7 +818,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcOptionTableOutWithoutDto`` private (connStr: string, conn: SqlConnection) =
@@ -862,7 +863,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -871,7 +872,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -880,23 +881,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -905,11 +906,11 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcOptionTvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcOptionTvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -931,7 +932,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -940,7 +941,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -949,23 +950,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -974,7 +975,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcOptionTvpInOut`` private (connStr: string, conn: SqlConnection) =
@@ -1014,14 +1015,14 @@ module Procedures =
           [|
             SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = ``tvp``)
           |]
-        ``ProcOptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcOptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = (^a: (member ``Tvp``: #seq<TableTypes.``dbo``.``MultiColNull``>) dto))
           |]
-        ``ProcOptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcOptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     type ``ProcSelectFromTable`` private (connStr: string, conn: SqlConnection) =
@@ -1066,7 +1067,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1075,7 +1076,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1084,23 +1085,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1109,7 +1110,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcSelectFromTableExtended`` private (connStr: string, conn: SqlConnection) =
@@ -1154,7 +1155,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1163,7 +1164,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1172,23 +1173,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1197,7 +1198,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcToBeModified`` private (connStr: string, conn: SqlConnection) =
@@ -1242,7 +1243,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1251,7 +1252,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1260,23 +1261,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1285,11 +1286,11 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcVoptionIn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcVoptionIn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -1303,7 +1304,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetString 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1312,7 +1313,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1321,23 +1322,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1346,7 +1347,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcVoptionIn`` private (connStr: string, conn: SqlConnection) =
@@ -1386,18 +1387,18 @@ module Procedures =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = ValueOption.toDbNull ``param1``)
           |]
-        ``ProcVoptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcVoptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = ValueOption.toDbNull (^a: (member ``Param1``: string voption) dto))
           |]
-        ``ProcVoptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcVoptionIn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcVoptionOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcVoptionOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -1411,7 +1412,7 @@ module Procedures =
         if reader.IsDBNull 0 then ValueNone else reader.GetString 0 |> ValueSome
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1420,7 +1421,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1429,23 +1430,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1454,7 +1455,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcVoptionOut`` private (connStr: string, conn: SqlConnection) =
@@ -1494,14 +1495,14 @@ module Procedures =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``param1``)
           |]
-        ``ProcVoptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcVoptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Param1``: string option) dto))
           |]
-        ``ProcVoptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcVoptionOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     type ``ProcVoptionTableOutWithDto`` private (connStr: string, conn: SqlConnection) =
@@ -1546,7 +1547,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1555,7 +1556,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1564,23 +1565,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1589,7 +1590,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcVoptionTableOutWithoutDto`` private (connStr: string, conn: SqlConnection) =
@@ -1634,7 +1635,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1643,7 +1644,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1652,23 +1653,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1677,11 +1678,11 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcVoptionTvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcVoptionTvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -1703,7 +1704,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1712,7 +1713,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1721,23 +1722,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1746,7 +1747,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcVoptionTvpInOut`` private (connStr: string, conn: SqlConnection) =
@@ -1786,18 +1787,18 @@ module Procedures =
           [|
             SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNullVoption", Value = ``tvp``)
           |]
-        ``ProcVoptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcVoptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNullVoption", Value = (^a: (member ``Tvp``: #seq<TableTypes.``dbo``.``MultiColNullVoption``>) dto))
           |]
-        ``ProcVoptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcVoptionTvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypes_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypes_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -1903,7 +1904,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -1912,7 +1913,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -1921,23 +1922,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -1946,7 +1947,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypes`` private (connStr: string, conn: SqlConnection) =
@@ -2044,7 +2045,7 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = ``varchar``)
             SqlParameter("@xml", SqlDbType.Xml, Value = ``xml``)
           |]
-        ``ProcWithAllTypes_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypes_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -2080,11 +2081,11 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = (^a: (member ``Varchar``: string) dto))
             SqlParameter("@xml", SqlDbType.Xml, Value = (^a: (member ``Xml``: string) dto))
           |]
-        ``ProcWithAllTypes_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypes_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypesExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypesExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -2190,7 +2191,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -2199,7 +2200,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -2208,23 +2209,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -2233,7 +2234,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypesExtended`` private (connStr: string, conn: SqlConnection) =
@@ -2331,7 +2332,7 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = ``varchar``)
             SqlParameter("@xml", SqlDbType.Xml, Value = ``xml``)
           |]
-        ``ProcWithAllTypesExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -2367,11 +2368,11 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = (^a: (member ``Varchar``: string) dto))
             SqlParameter("@xml", SqlDbType.Xml, Value = (^a: (member ``Xml``: string) dto))
           |]
-        ``ProcWithAllTypesExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypesFromTvpNonNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypesFromTvpNonNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -2471,7 +2472,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -2480,7 +2481,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -2489,23 +2490,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -2514,7 +2515,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNonNull`` private (connStr: string, conn: SqlConnection) =
@@ -2554,18 +2555,18 @@ module Procedures =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNonNull", Value = ``params``)
           |]
-        ``ProcWithAllTypesFromTvpNonNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNonNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNonNull", Value = (^a: (member ``Params``: #seq<TableTypes.``dbo``.``AllTypesNonNull``>) dto))
           |]
-        ``ProcWithAllTypesFromTvpNonNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNonNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypesFromTvpNonNullExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypesFromTvpNonNullExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -2665,7 +2666,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -2674,7 +2675,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -2683,23 +2684,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -2708,7 +2709,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNonNullExtended`` private (connStr: string, conn: SqlConnection) =
@@ -2748,18 +2749,18 @@ module Procedures =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNonNull", Value = ``params``)
           |]
-        ``ProcWithAllTypesFromTvpNonNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNonNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNonNull", Value = (^a: (member ``Params``: #seq<TableTypes.``dbo``.``AllTypesNonNull``>) dto))
           |]
-        ``ProcWithAllTypesFromTvpNonNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNonNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypesFromTvpNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypesFromTvpNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -2859,7 +2860,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -2868,7 +2869,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -2877,23 +2878,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -2902,7 +2903,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNull`` private (connStr: string, conn: SqlConnection) =
@@ -2942,18 +2943,18 @@ module Procedures =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNull", Value = ``params``)
           |]
-        ``ProcWithAllTypesFromTvpNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNull", Value = (^a: (member ``Params``: #seq<TableTypes.``dbo``.``AllTypesNull``>) dto))
           |]
-        ``ProcWithAllTypesFromTvpNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypesFromTvpNullExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypesFromTvpNullExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -3053,7 +3054,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -3062,7 +3063,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -3071,23 +3072,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -3096,7 +3097,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNullExtended`` private (connStr: string, conn: SqlConnection) =
@@ -3136,18 +3137,18 @@ module Procedures =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNull", Value = ``params``)
           |]
-        ``ProcWithAllTypesFromTvpNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.AllTypesNull", Value = (^a: (member ``Params``: #seq<TableTypes.``dbo``.``AllTypesNull``>) dto))
           |]
-        ``ProcWithAllTypesFromTvpNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesFromTvpNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypesNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypesNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -3253,7 +3254,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -3262,7 +3263,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -3271,23 +3272,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -3296,7 +3297,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypesNull`` private (connStr: string, conn: SqlConnection) =
@@ -3394,7 +3395,7 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = Option.toDbNull ``varchar``)
             SqlParameter("@xml", SqlDbType.Xml, Value = Option.toDbNull ``xml``)
           |]
-        ``ProcWithAllTypesNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -3430,11 +3431,11 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = Option.toDbNull (^a: (member ``Varchar``: string option) dto))
             SqlParameter("@xml", SqlDbType.Xml, Value = Option.toDbNull (^a: (member ``Xml``: string option) dto))
           |]
-        ``ProcWithAllTypesNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithAllTypesNullExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithAllTypesNullExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -3540,7 +3541,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -3549,7 +3550,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -3558,23 +3559,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -3583,7 +3584,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithAllTypesNullExtended`` private (connStr: string, conn: SqlConnection) =
@@ -3681,7 +3682,7 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = Option.toDbNull ``varchar``)
             SqlParameter("@xml", SqlDbType.Xml, Value = Option.toDbNull ``xml``)
           |]
-        ``ProcWithAllTypesNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -3717,7 +3718,7 @@ module Procedures =
             SqlParameter("@varchar", SqlDbType.VarChar, Size = 42, Value = Option.toDbNull (^a: (member ``Varchar``: string option) dto))
             SqlParameter("@xml", SqlDbType.Xml, Value = Option.toDbNull (^a: (member ``Xml``: string option) dto))
           |]
-        ``ProcWithAllTypesNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithAllTypesNullExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     type ``ProcWithMultipleColumnsAndNoParams`` private (connStr: string, conn: SqlConnection) =
@@ -3762,7 +3763,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -3771,7 +3772,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -3780,23 +3781,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -3805,7 +3806,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcWithMultipleColumnsAndNoParamsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -3850,7 +3851,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -3859,7 +3860,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -3868,23 +3869,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -3893,11 +3894,11 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndSimpleDefaultParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndSimpleDefaultParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -3919,7 +3920,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -3928,7 +3929,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -3937,23 +3938,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -3962,7 +3963,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleDefaultParams`` private (connStr: string, conn: SqlConnection) =
@@ -4004,7 +4005,7 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = ``bar``)
           |]
-        ``ProcWithMultipleColumnsAndSimpleDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4012,11 +4013,11 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = (^a: (member ``Bar``: string) dto))
           |]
-        ``ProcWithMultipleColumnsAndSimpleDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4038,7 +4039,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4047,7 +4048,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4056,23 +4057,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4081,7 +4082,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -4123,7 +4124,7 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = ``bar``)
           |]
-        ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4131,11 +4132,11 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = (^a: (member ``Bar``: string) dto))
           |]
-        ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndSimpleNonDefaultParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndSimpleNonDefaultParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4157,7 +4158,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4166,7 +4167,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4175,23 +4176,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4200,7 +4201,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNonDefaultParams`` private (connStr: string, conn: SqlConnection) =
@@ -4242,7 +4243,7 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = ``bar``)
           |]
-        ``ProcWithMultipleColumnsAndSimpleNonDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNonDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4250,11 +4251,11 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = (^a: (member ``Bar``: string) dto))
           |]
-        ``ProcWithMultipleColumnsAndSimpleNonDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNonDefaultParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4276,7 +4277,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4285,7 +4286,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4294,23 +4295,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4319,7 +4320,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -4361,7 +4362,7 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = ``bar``)
           |]
-        ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4369,11 +4370,11 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = (^a: (member ``Bar``: string) dto))
           |]
-        ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndSimpleNullParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndSimpleNullParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4395,7 +4396,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4404,7 +4405,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4413,23 +4414,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4438,7 +4439,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNullParams`` private (connStr: string, conn: SqlConnection) =
@@ -4480,7 +4481,7 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull ``foo``)
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``bar``)
           |]
-        ``ProcWithMultipleColumnsAndSimpleNullParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNullParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4488,11 +4489,11 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull (^a: (member ``Foo``: int option) dto))
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Bar``: string option) dto))
           |]
-        ``ProcWithMultipleColumnsAndSimpleNullParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNullParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndSimpleNullParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndSimpleNullParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4514,7 +4515,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4523,7 +4524,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4532,23 +4533,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4557,7 +4558,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNullParamsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -4599,7 +4600,7 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull ``foo``)
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``bar``)
           |]
-        ``ProcWithMultipleColumnsAndSimpleNullParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNullParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4607,11 +4608,11 @@ module Procedures =
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull (^a: (member ``Foo``: int option) dto))
             SqlParameter("@bar", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Bar``: string option) dto))
           |]
-        ``ProcWithMultipleColumnsAndSimpleNullParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndSimpleNullParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndTvpParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndTvpParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4633,7 +4634,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4642,7 +4643,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4651,23 +4652,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4676,7 +4677,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndTvpParams`` private (connStr: string, conn: SqlConnection) =
@@ -4718,7 +4719,7 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNonNull", Value = ``single``)
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNonNull", Value = ``multi``)
           |]
-        ``ProcWithMultipleColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4726,11 +4727,11 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNonNull", Value = (^a: (member ``Single``: #seq<TableTypes.``dbo``.``SingleColNonNull``>) dto))
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNonNull", Value = (^a: (member ``Multi``: #seq<TableTypes.``dbo``.``MultiColNonNull``>) dto))
           |]
-        ``ProcWithMultipleColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleColumnsAndTvpParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleColumnsAndTvpParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4752,7 +4753,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4761,7 +4762,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4770,23 +4771,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4795,7 +4796,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleColumnsAndTvpParamsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -4837,7 +4838,7 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNonNull", Value = ``single``)
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNonNull", Value = ``multi``)
           |]
-        ``ProcWithMultipleColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4845,11 +4846,11 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNonNull", Value = (^a: (member ``Single``: #seq<TableTypes.``dbo``.``SingleColNonNull``>) dto))
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNonNull", Value = (^a: (member ``Multi``: #seq<TableTypes.``dbo``.``MultiColNonNull``>) dto))
           |]
-        ``ProcWithMultipleColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleNullableColumnsAndTvpParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleNullableColumnsAndTvpParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4871,7 +4872,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4880,7 +4881,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -4889,23 +4890,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -4914,7 +4915,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleNullableColumnsAndTvpParams`` private (connStr: string, conn: SqlConnection) =
@@ -4956,7 +4957,7 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNull", Value = ``single``)
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = ``multi``)
           |]
-        ``ProcWithMultipleNullableColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleNullableColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -4964,11 +4965,11 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNull", Value = (^a: (member ``Single``: #seq<TableTypes.``dbo``.``SingleColNull``>) dto))
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = (^a: (member ``Multi``: #seq<TableTypes.``dbo``.``MultiColNull``>) dto))
           |]
-        ``ProcWithMultipleNullableColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleNullableColumnsAndTvpParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithMultipleNullableColumnsAndTvpParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithMultipleNullableColumnsAndTvpParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -4990,7 +4991,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -4999,7 +5000,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -5008,23 +5009,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -5033,7 +5034,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithMultipleNullableColumnsAndTvpParamsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -5075,7 +5076,7 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNull", Value = ``single``)
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = ``multi``)
           |]
-        ``ProcWithMultipleNullableColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleNullableColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -5083,11 +5084,11 @@ module Procedures =
             SqlParameter("@single", SqlDbType.Structured, TypeName = "dbo.SingleColNull", Value = (^a: (member ``Single``: #seq<TableTypes.``dbo``.``SingleColNull``>) dto))
             SqlParameter("@multi", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = (^a: (member ``Multi``: #seq<TableTypes.``dbo``.``MultiColNull``>) dto))
           |]
-        ``ProcWithMultipleNullableColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithMultipleNullableColumnsAndTvpParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithNoResults_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithNoResults_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5096,7 +5097,7 @@ module Procedures =
         userConfigureCmd cmd
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -5105,7 +5106,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
 
 
     type ``ProcWithNoResults`` private (connStr: string, conn: SqlConnection) =
@@ -5145,18 +5146,18 @@ module Procedures =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
           |]
-        ``ProcWithNoResults_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithNoResults_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
           |]
-        ``ProcWithNoResults_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithNoResults_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithNoResultsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithNoResultsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5165,7 +5166,7 @@ module Procedures =
         userConfigureCmd cmd
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -5174,7 +5175,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
 
 
     type ``ProcWithNoResultsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -5214,14 +5215,14 @@ module Procedures =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
           |]
-        ``ProcWithNoResultsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithNoResultsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
           |]
-        ``ProcWithNoResultsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithNoResultsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     type ``ProcWithNonFSharpFriendlyNames`` private (connStr: string, conn: SqlConnection) =
@@ -5266,7 +5267,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -5275,7 +5276,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -5284,23 +5285,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -5309,7 +5310,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcWithNonFSharpFriendlyNamesExtended`` private (connStr: string, conn: SqlConnection) =
@@ -5354,7 +5355,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -5363,7 +5364,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -5372,23 +5373,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -5397,11 +5398,11 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithOutParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithOutParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5420,7 +5421,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -5430,7 +5431,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
         |> wrapResultWithOutParams
 
 
@@ -5477,7 +5478,7 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = ``setOut2``)
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = (``out2`` |> Option.map Option.toDbNull |> Option.defaultValue (box DBNull.Value)))
           |]
-        ``ProcWithOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -5487,11 +5488,11 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = (^a: (member ``SetOut2``: bool) dto))
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = Option.toDbNull (^a: (member ``Out2``: string option) dto))
           |]
-        ``ProcWithOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithOutParamsAndRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithOutParamsAndRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5511,7 +5512,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -5521,7 +5522,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
         |> wrapResultWithOutParams
 
 
@@ -5571,7 +5572,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -5583,11 +5584,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithOutParamsAndRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithOutParamsAndRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5607,7 +5608,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -5617,7 +5618,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
         |> wrapResultWithOutParams
 
 
@@ -5667,7 +5668,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -5679,11 +5680,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithOutParamsAndRetValVoption_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithOutParamsAndRetValVoption_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5703,7 +5704,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -5713,7 +5714,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
         |> wrapResultWithOutParams
 
 
@@ -5763,7 +5764,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithOutParamsAndRetValVoption_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsAndRetValVoption_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -5775,11 +5776,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithOutParamsAndRetValVoption_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsAndRetValVoption_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithOutParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithOutParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5798,7 +5799,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -5808,7 +5809,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
         |> wrapResultWithOutParams
 
 
@@ -5855,7 +5856,7 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = ``setOut2``)
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = (``out2`` |> Option.map Option.toDbNull |> Option.defaultValue (box DBNull.Value)))
           |]
-        ``ProcWithOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -5865,11 +5866,11 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = (^a: (member ``SetOut2``: bool) dto))
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = Option.toDbNull (^a: (member ``Out2``: string option) dto))
           |]
-        ``ProcWithOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithOverriddenDtoParamName_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithOverriddenDtoParamName_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -5883,7 +5884,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetInt32 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -5892,7 +5893,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -5901,23 +5902,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -5926,7 +5927,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithOverriddenDtoParamName`` private (connStr: string, conn: SqlConnection) =
@@ -5966,18 +5967,18 @@ module Procedures =
           [|
             SqlParameter("@nameToBeOverridden", SqlDbType.Int, Value = ``nameToBeOverridden``)
           |]
-        ``ProcWithOverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@nameToBeOverridden", SqlDbType.Int, Value = (^a: (member ``newDtoParamName``: int) dto))
           |]
-        ``ProcWithOverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithOverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithResultsAndOutParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithResultsAndOutParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6009,7 +6010,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6019,7 +6020,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteWithSyncRead() =
@@ -6029,24 +6030,24 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteSingle() =
@@ -6056,7 +6057,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6103,7 +6104,7 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = ``setOut2``)
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = (``out2`` |> Option.map Option.toDbNull |> Option.defaultValue (box DBNull.Value)))
           |]
-        ``ProcWithResultsAndOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6113,11 +6114,11 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = (^a: (member ``SetOut2``: bool) dto))
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = Option.toDbNull (^a: (member ``Out2``: string option) dto))
           |]
-        ``ProcWithResultsAndOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithResultsAndOutParamsAndRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithResultsAndOutParamsAndRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6150,7 +6151,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6160,7 +6161,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteWithSyncRead() =
@@ -6170,24 +6171,24 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteSingle() =
@@ -6197,7 +6198,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6247,7 +6248,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6259,11 +6260,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParamsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithResultsAndOutParamsAndRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithResultsAndOutParamsAndRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6296,7 +6297,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6306,7 +6307,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteWithSyncRead() =
@@ -6316,24 +6317,24 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteSingle() =
@@ -6343,7 +6344,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6393,7 +6394,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6405,11 +6406,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParamsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithResultsAndOutParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithResultsAndOutParamsExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6441,7 +6442,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6451,7 +6452,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteWithSyncRead() =
@@ -6461,24 +6462,24 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteSingle() =
@@ -6488,7 +6489,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6535,7 +6536,7 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = ``setOut2``)
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = (``out2`` |> Option.map Option.toDbNull |> Option.defaultValue (box DBNull.Value)))
           |]
-        ``ProcWithResultsAndOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6545,11 +6546,11 @@ module Procedures =
             SqlParameter("@setOut2", SqlDbType.Bit, Value = (^a: (member ``SetOut2``: bool) dto))
             SqlParameter("@out2", SqlDbType.NVarChar, Size = 50, Direction = ParameterDirection.InputOutput, Value = Option.toDbNull (^a: (member ``Out2``: string option) dto))
           |]
-        ``ProcWithResultsAndOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndOutParamsExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithResultsAndRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithResultsAndRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6577,7 +6578,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6587,7 +6588,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteWithSyncRead() =
@@ -6597,24 +6598,24 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteSingle() =
@@ -6624,7 +6625,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6666,7 +6667,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6674,11 +6675,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithResultsAndRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithResultsAndRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6706,7 +6707,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6716,7 +6717,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteWithSyncRead() =
@@ -6726,24 +6727,24 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecuteSingle() =
@@ -6753,7 +6754,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6795,7 +6796,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6803,11 +6804,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithResultsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithResultsAndRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithRetVal_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6822,7 +6823,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6832,7 +6833,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6874,7 +6875,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6882,11 +6883,11 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithRetVal_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithRetValExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -6901,7 +6902,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeNonQueryAsync connStr conn configureConn configureCmd (defaultArg cancellationToken CancellationToken.None)
+        executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)
         |> Task.map wrapResultWithOutParams
 
       member this.AsyncExecute() =
@@ -6911,7 +6912,7 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeNonQuery connStr conn configureConn configureCmd
+        executeNonQuery connStr conn configureConn configureCmd tempTableData
         |> wrapResultWithOutParams
 
 
@@ -6953,7 +6954,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = ``baseRetVal``)
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -6961,7 +6962,7 @@ module Procedures =
             SqlParameter("@baseRetVal", SqlDbType.Int, Value = (^a: (member ``BaseRetVal``: int) dto))
             SqlParameter("ReturnValue", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)
           |]
-        ``ProcWithRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithRetValExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     type ``ProcWithSingleColumnAndNoParams`` private (connStr: string, conn: SqlConnection) =
@@ -6998,7 +6999,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7007,7 +7008,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7016,23 +7017,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7041,7 +7042,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcWithSingleColumnAndNoParamsExtended`` private (connStr: string, conn: SqlConnection) =
@@ -7078,7 +7079,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7087,7 +7088,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7096,23 +7097,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7121,7 +7122,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcWithSingleNamelessColumn`` private (connStr: string, conn: SqlConnection) =
@@ -7158,7 +7159,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7167,7 +7168,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7176,23 +7177,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7201,7 +7202,7 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     type ``ProcWithSingleNamelessColumnExtended`` private (connStr: string, conn: SqlConnection) =
@@ -7238,7 +7239,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7247,7 +7248,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7256,23 +7257,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7281,11 +7282,11 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithSingleNonNullColumn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithSingleNonNullColumn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -7299,7 +7300,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetInt32 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7308,7 +7309,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7317,23 +7318,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7342,7 +7343,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithSingleNonNullColumn`` private (connStr: string, conn: SqlConnection) =
@@ -7382,18 +7383,18 @@ module Procedures =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
           |]
-        ``ProcWithSingleNonNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNonNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
           |]
-        ``ProcWithSingleNonNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNonNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithSingleNonNullColumnExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithSingleNonNullColumnExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -7407,7 +7408,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetInt32 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7416,7 +7417,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7425,23 +7426,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7450,7 +7451,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithSingleNonNullColumnExtended`` private (connStr: string, conn: SqlConnection) =
@@ -7490,18 +7491,18 @@ module Procedures =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = ``foo``)
           |]
-        ``ProcWithSingleNonNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNonNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = (^a: (member ``Foo``: int) dto))
           |]
-        ``ProcWithSingleNonNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNonNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithSingleNullColumn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithSingleNullColumn_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -7515,7 +7516,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetInt32 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7524,7 +7525,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7533,23 +7534,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7558,7 +7559,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithSingleNullColumn`` private (connStr: string, conn: SqlConnection) =
@@ -7598,18 +7599,18 @@ module Procedures =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull ``foo``)
           |]
-        ``ProcWithSingleNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull (^a: (member ``Foo``: int option) dto))
           |]
-        ``ProcWithSingleNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNullColumn_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithSingleNullColumnExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithSingleNullColumnExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -7623,7 +7624,7 @@ module Procedures =
         if reader.IsDBNull 0 then None else reader.GetInt32 0 |> Some
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7632,7 +7633,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7641,23 +7642,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7666,7 +7667,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithSingleNullColumnExtended`` private (connStr: string, conn: SqlConnection) =
@@ -7706,14 +7707,14 @@ module Procedures =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull ``foo``)
           |]
-        ``ProcWithSingleNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
           [|
             SqlParameter("@foo", SqlDbType.Int, Value = Option.toDbNull (^a: (member ``Foo``: int option) dto))
           |]
-        ``ProcWithSingleNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSingleNullColumnExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     type ``ProcWithSingleRecordCol`` private (connStr: string, conn: SqlConnection) =
@@ -7755,7 +7756,7 @@ module Procedures =
         this
 
       member this.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7764,7 +7765,7 @@ module Procedures =
         }
 
       member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7773,23 +7774,23 @@ module Procedures =
         }
 
       member this.Execute() =
-        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member this.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member this.LazyExecute() =
-        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
       member this.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7798,11 +7799,11 @@ module Procedures =
         }
 
       member this.ExecuteSingle() =
-        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithSpecialCasing_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithSpecialCasing_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -7827,7 +7828,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7836,7 +7837,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7845,23 +7846,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7870,7 +7871,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithSpecialCasing`` private (connStr: string, conn: SqlConnection) =
@@ -7914,7 +7915,7 @@ module Procedures =
             SqlParameter("@Param2", SqlDbType.Int, Value = ``Param2``)
             SqlParameter("@param3", SqlDbType.Int, Value = ``param3``)
           |]
-        ``ProcWithSpecialCasing_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSpecialCasing_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -7923,11 +7924,11 @@ module Procedures =
             SqlParameter("@Param2", SqlDbType.Int, Value = (^a: (member ``Param2``: int) dto))
             SqlParameter("@param3", SqlDbType.Int, Value = (^a: (member ``Param3``: int) dto))
           |]
-        ``ProcWithSpecialCasing_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSpecialCasing_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    type ``ProcWithSpecialCasingExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+    type ``ProcWithSpecialCasingExtended_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
       let configureCmd (cmd: SqlCommand) =
         cmd.CommandType <- CommandType.StoredProcedure
@@ -7952,7 +7953,7 @@ module Procedures =
         |}
 
       member _.ExecuteAsync(?cancellationToken) =
-        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecute() =
         async {
@@ -7961,7 +7962,7 @@ module Procedures =
         }
 
       member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteWithSyncRead() =
         async {
@@ -7970,23 +7971,23 @@ module Procedures =
         }
 
       member _.Execute() =
-        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
       member _.LazyExecuteAsync(?cancellationToken) =
-        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       #endif
 
       member _.LazyExecute() =
-        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+        executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
       member _.ExecuteSingleAsync(?cancellationToken) =
-        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+        executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       member this.AsyncExecuteSingle() =
         async {
@@ -7995,7 +7996,7 @@ module Procedures =
         }
 
       member _.ExecuteSingle() =
-        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+        executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
     type ``ProcWithSpecialCasingExtended`` private (connStr: string, conn: SqlConnection) =
@@ -8039,7 +8040,7 @@ module Procedures =
             SqlParameter("@Param2", SqlDbType.Int, Value = ``Param2``)
             SqlParameter("@param3", SqlDbType.Int, Value = ``param3``)
           |]
-        ``ProcWithSpecialCasingExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSpecialCasingExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
       member inline this.WithParameters(dto: ^a) =
         let sqlParams =
@@ -8048,7 +8049,7 @@ module Procedures =
             SqlParameter("@Param2", SqlDbType.Int, Value = (^a: (member ``Param2``: int) dto))
             SqlParameter("@param3", SqlDbType.Int, Value = (^a: (member ``Param3``: int) dto))
           |]
-        ``ProcWithSpecialCasingExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+        ``ProcWithSpecialCasingExtended_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
 module Scripts =
@@ -8058,7 +8059,7 @@ module Scripts =
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
-      type ``DynamicSqlWithDeclaration_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+      type ``DynamicSqlWithDeclaration_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
         let configureCmd (cmd: SqlCommand) =
           cmd.CommandText <- """
@@ -8090,7 +8091,7 @@ module Scripts =
           }
 
         member _.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8099,7 +8100,7 @@ module Scripts =
           }
 
         member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8108,23 +8109,23 @@ module Scripts =
           }
 
         member _.Execute() =
-          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member _.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member _.LazyExecute() =
-          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         member _.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8133,7 +8134,7 @@ module Scripts =
           }
 
         member _.ExecuteSingle() =
-          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
       type ``DynamicSqlWithDeclaration`` private (connStr: string, conn: SqlConnection) =
@@ -8173,18 +8174,18 @@ module Scripts =
             [|
               SqlParameter("@col1Filter", SqlDbType.NVarChar, Size = 42, Value = ``col1Filter``)
             |]
-          ``DynamicSqlWithDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``DynamicSqlWithDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
         member inline this.WithParameters(dto: ^a) =
           let sqlParams =
             [|
               SqlParameter("@col1Filter", SqlDbType.NVarChar, Size = 42, Value = (^a: (member ``Col1Filter``: string) dto))
             |]
-          ``DynamicSqlWithDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``DynamicSqlWithDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
-      type ``DynamicSqlWithoutDeclaration_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+      type ``DynamicSqlWithoutDeclaration_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
         let configureCmd (cmd: SqlCommand) =
           cmd.CommandText <- """
@@ -8214,7 +8215,7 @@ module Scripts =
           }
 
         member _.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8223,7 +8224,7 @@ module Scripts =
           }
 
         member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8232,23 +8233,23 @@ module Scripts =
           }
 
         member _.Execute() =
-          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member _.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member _.LazyExecute() =
-          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         member _.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8257,7 +8258,7 @@ module Scripts =
           }
 
         member _.ExecuteSingle() =
-          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
       type ``DynamicSqlWithoutDeclaration`` private (connStr: string, conn: SqlConnection) =
@@ -8297,18 +8298,242 @@ module Scripts =
             [|
               SqlParameter("@col1Filter", SqlDbType.NVarChar, Size = 42, Value = ``col1Filter``)
             |]
-          ``DynamicSqlWithoutDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``DynamicSqlWithoutDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
         member inline this.WithParameters(dto: ^a) =
           let sqlParams =
             [|
               SqlParameter("@col1Filter", SqlDbType.NVarChar, Size = 42, Value = (^a: (member ``Col1Filter``: string) dto))
             |]
-          ``DynamicSqlWithoutDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``DynamicSqlWithoutDeclaration_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
-      type ``NormalParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+      type ``MultipleTempTables_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            SELECT
+              t1.Col1,
+              t1.Col2,
+              t2.Col3
+            FROM
+              #tempTable1 t1
+            INNER JOIN
+              #tempTable2 t2
+                ON t2.Col1 = t1.Col1
+
+          """
+          cmd.Parameters.AddRange sqlParams
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Col1`` = 0
+        let mutable ``ordinal_Col2`` = 0
+        let mutable ``ordinal_Col3`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
+          ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
+          ``ordinal_Col3`` <- reader.GetOrdinal "Col3"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+            ``Col3`` = reader.GetString ``ordinal_Col3``
+          |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+      module ``MultipleTempTables`` =
+
+
+        type ``tempTable1`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Col1``: int,
+              ``Col2``: string option
+            ) : ``tempTable1`` =
+            [|
+              ``Col1`` |> box
+              Option.toDbNull ``Col2`` |> box
+            |]
+            |> fun fields -> ``tempTable1``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``tempTable1`` =
+            [|
+              (^a: (member ``Col1``: int) dto) |> box
+              Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
+            |]
+            |> fun fields -> ``tempTable1``(internalUseOnlyValue, fields)
+
+
+        type ``tempTable2`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Col1``: int,
+              ``Col3``: string
+            ) : ``tempTable2`` =
+            [|
+              ``Col1`` |> box
+              ``Col3`` |> box
+            |]
+            |> fun fields -> ``tempTable2``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``tempTable2`` =
+            [|
+              (^a: (member ``Col1``: int) dto) |> box
+              (^a: (member ``Col3``: string) dto) |> box
+            |]
+            |> fun fields -> ``tempTable2``(internalUseOnlyValue, fields)
+
+
+      type ``MultipleTempTables`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+          this.userConfigureBulkCopy <- configureBulkCopy
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``MultipleTempTables``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``MultipleTempTables``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.CreateTempTableData
+          (
+            ``tempTable1``: seq<``MultipleTempTables``.``tempTable1``>,
+            ``tempTable2``: seq<``MultipleTempTables``.``tempTable2``>
+          ) =
+          [
+            TempTableData
+              (
+                "#tempTable1",
+                """
+                CREATE TABLE #tempTable1 (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
+                """,
+                (``tempTable1`` |> Seq.map (fun x -> x.Fields)),
+                2,
+                Action<_> this.userConfigureBulkCopy
+              )
+            TempTableData
+              (
+                "#tempTable2",
+                """
+                CREATE TABLE #tempTable2 (Col1 INT NOT NULL, Col3 NVARCHAR(42) NOT NULL)
+                """,
+                (``tempTable2`` |> Seq.map (fun x -> x.Fields)),
+                2,
+                Action<_> this.userConfigureBulkCopy
+              )
+          ]
+        member this.WithParameters
+          (
+            ``tempTable1``: seq<``MultipleTempTables``.``tempTable1``>,
+            ``tempTable2``: seq<``MultipleTempTables``.``tempTable2``>
+          ) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              ``tempTable1``,
+              ``tempTable2``
+            )
+          ``MultipleTempTables_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              (^a: (member ``TempTable1``: #seq<``MultipleTempTables``.``tempTable1``>) dto),
+              (^a: (member ``TempTable2``: #seq<``MultipleTempTables``.``tempTable2``>) dto)
+            )
+          ``MultipleTempTables_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``NormalParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
         let configureCmd (cmd: SqlCommand) =
           cmd.CommandText <- """
@@ -8332,7 +8557,7 @@ module Scripts =
           }
 
         member _.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8341,7 +8566,7 @@ module Scripts =
           }
 
         member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8350,23 +8575,23 @@ module Scripts =
           }
 
         member _.Execute() =
-          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member _.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member _.LazyExecute() =
-          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         member _.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8375,7 +8600,7 @@ module Scripts =
           }
 
         member _.ExecuteSingle() =
-          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
       type ``NormalParams`` private (connStr: string, conn: SqlConnection) =
@@ -8415,18 +8640,18 @@ module Scripts =
             [|
               SqlParameter("@col1", SqlDbType.NVarChar, Size = 42, Value = ``col1``)
             |]
-          ``NormalParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``NormalParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
         member inline this.WithParameters(dto: ^a) =
           let sqlParams =
             [|
               SqlParameter("@col1", SqlDbType.NVarChar, Size = 42, Value = (^a: (member ``Col1``: string) dto))
             |]
-          ``NormalParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``NormalParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
-      type ``OverriddenDtoParamName_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+      type ``OverriddenDtoParamName_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
         let configureCmd (cmd: SqlCommand) =
           cmd.CommandText <- """
@@ -8442,7 +8667,7 @@ module Scripts =
           if reader.IsDBNull 0 then None else reader.GetInt32 0 |> Some
 
         member _.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8451,7 +8676,7 @@ module Scripts =
           }
 
         member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8460,23 +8685,23 @@ module Scripts =
           }
 
         member _.Execute() =
-          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member _.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member _.LazyExecute() =
-          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         member _.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8485,7 +8710,7 @@ module Scripts =
           }
 
         member _.ExecuteSingle() =
-          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
       type ``OverriddenDtoParamName`` private (connStr: string, conn: SqlConnection) =
@@ -8525,18 +8750,18 @@ module Scripts =
             [|
               SqlParameter("@nameToBeOverridden", SqlDbType.Int, Value = ``nameToBeOverridden``)
             |]
-          ``OverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``OverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
         member inline this.WithParameters(dto: ^a) =
           let sqlParams =
             [|
               SqlParameter("@nameToBeOverridden", SqlDbType.Int, Value = (^a: (member ``newDtoParamName``: int) dto))
             |]
-          ``OverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``OverriddenDtoParamName_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
-      type ``ParamsUsedTwice_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+      type ``ParamsUsedTwice_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
         let configureCmd (cmd: SqlCommand) =
           cmd.CommandText <- """
@@ -8560,7 +8785,7 @@ module Scripts =
           }
 
         member _.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8569,7 +8794,7 @@ module Scripts =
           }
 
         member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8578,23 +8803,23 @@ module Scripts =
           }
 
         member _.Execute() =
-          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member _.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member _.LazyExecute() =
-          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         member _.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8603,7 +8828,7 @@ module Scripts =
           }
 
         member _.ExecuteSingle() =
-          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
       type ``ParamsUsedTwice`` private (connStr: string, conn: SqlConnection) =
@@ -8643,14 +8868,14 @@ module Scripts =
             [|
               SqlParameter("@col1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``col1``)
             |]
-          ``ParamsUsedTwice_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``ParamsUsedTwice_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
         member inline this.WithParameters(dto: ^a) =
           let sqlParams =
             [|
               SqlParameter("@col1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Col1``: string option) dto))
             |]
-          ``ParamsUsedTwice_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``ParamsUsedTwice_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
       type ``SelectAllFromTable`` private (connStr: string, conn: SqlConnection) =
@@ -8697,7 +8922,7 @@ module Scripts =
           this
 
         member this.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8706,7 +8931,7 @@ module Scripts =
           }
 
         member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8715,23 +8940,23 @@ module Scripts =
           }
 
         member this.Execute() =
-          executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+          executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member this.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member this.LazyExecute() =
-          executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+          executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
         member this.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8740,7 +8965,7 @@ module Scripts =
           }
 
         member this.ExecuteSingle() =
-          executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+          executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
       type ``SingleRecordCol`` private (connStr: string, conn: SqlConnection) =
@@ -8784,7 +9009,7 @@ module Scripts =
           this
 
         member this.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8793,7 +9018,7 @@ module Scripts =
           }
 
         member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8802,23 +9027,23 @@ module Scripts =
           }
 
         member this.Execute() =
-          executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+          executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member this.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member this.LazyExecute() =
-          executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+          executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
         member this.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8827,11 +9052,1627 @@ module Scripts =
           }
 
         member this.ExecuteSingle() =
-          executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+          executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
-      type ``UserDefinedTableType_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+      type ``TempTableAllTypesNonNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            SELECT * FROM #AllTypesNonNull
+
+          """
+          cmd.Parameters.AddRange sqlParams
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Bigint`` = 0
+        let mutable ``ordinal_Binary`` = 0
+        let mutable ``ordinal_Bit`` = 0
+        let mutable ``ordinal_Char`` = 0
+        let mutable ``ordinal_Date`` = 0
+        let mutable ``ordinal_Datetime`` = 0
+        let mutable ``ordinal_Datetime2`` = 0
+        let mutable ``ordinal_Datetimeoffset`` = 0
+        let mutable ``ordinal_Decimal`` = 0
+        let mutable ``ordinal_Float`` = 0
+        let mutable ``ordinal_Image`` = 0
+        let mutable ``ordinal_Int`` = 0
+        let mutable ``ordinal_Money`` = 0
+        let mutable ``ordinal_Nchar`` = 0
+        let mutable ``ordinal_Ntext`` = 0
+        let mutable ``ordinal_Numeric`` = 0
+        let mutable ``ordinal_Nvarchar`` = 0
+        let mutable ``ordinal_Real`` = 0
+        let mutable ``ordinal_Smalldatetime`` = 0
+        let mutable ``ordinal_Smallint`` = 0
+        let mutable ``ordinal_Smallmoney`` = 0
+        let mutable ``ordinal_Text`` = 0
+        let mutable ``ordinal_Time`` = 0
+        let mutable ``ordinal_Tinyint`` = 0
+        let mutable ``ordinal_Uniqueidentifier`` = 0
+        let mutable ``ordinal_Varbinary`` = 0
+        let mutable ``ordinal_Varchar`` = 0
+        let mutable ``ordinal_Xml`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Bigint`` <- reader.GetOrdinal "Bigint"
+          ``ordinal_Binary`` <- reader.GetOrdinal "Binary"
+          ``ordinal_Bit`` <- reader.GetOrdinal "Bit"
+          ``ordinal_Char`` <- reader.GetOrdinal "Char"
+          ``ordinal_Date`` <- reader.GetOrdinal "Date"
+          ``ordinal_Datetime`` <- reader.GetOrdinal "Datetime"
+          ``ordinal_Datetime2`` <- reader.GetOrdinal "Datetime2"
+          ``ordinal_Datetimeoffset`` <- reader.GetOrdinal "Datetimeoffset"
+          ``ordinal_Decimal`` <- reader.GetOrdinal "Decimal"
+          ``ordinal_Float`` <- reader.GetOrdinal "Float"
+          ``ordinal_Image`` <- reader.GetOrdinal "Image"
+          ``ordinal_Int`` <- reader.GetOrdinal "Int"
+          ``ordinal_Money`` <- reader.GetOrdinal "Money"
+          ``ordinal_Nchar`` <- reader.GetOrdinal "Nchar"
+          ``ordinal_Ntext`` <- reader.GetOrdinal "Ntext"
+          ``ordinal_Numeric`` <- reader.GetOrdinal "Numeric"
+          ``ordinal_Nvarchar`` <- reader.GetOrdinal "Nvarchar"
+          ``ordinal_Real`` <- reader.GetOrdinal "Real"
+          ``ordinal_Smalldatetime`` <- reader.GetOrdinal "Smalldatetime"
+          ``ordinal_Smallint`` <- reader.GetOrdinal "Smallint"
+          ``ordinal_Smallmoney`` <- reader.GetOrdinal "Smallmoney"
+          ``ordinal_Text`` <- reader.GetOrdinal "Text"
+          ``ordinal_Time`` <- reader.GetOrdinal "Time"
+          ``ordinal_Tinyint`` <- reader.GetOrdinal "Tinyint"
+          ``ordinal_Uniqueidentifier`` <- reader.GetOrdinal "Uniqueidentifier"
+          ``ordinal_Varbinary`` <- reader.GetOrdinal "Varbinary"
+          ``ordinal_Varchar`` <- reader.GetOrdinal "Varchar"
+          ``ordinal_Xml`` <- reader.GetOrdinal "Xml"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Bigint`` = reader.GetInt64 ``ordinal_Bigint``
+            ``Binary`` = reader.GetBytes ``ordinal_Binary``
+            ``Bit`` = reader.GetBoolean ``ordinal_Bit``
+            ``Char`` = reader.GetString ``ordinal_Char``
+            ``Date`` = reader.GetDateTime ``ordinal_Date``
+            ``Datetime`` = reader.GetDateTime ``ordinal_Datetime``
+            ``Datetime2`` = reader.GetDateTime ``ordinal_Datetime2``
+            ``Datetimeoffset`` = reader.GetDateTimeOffset ``ordinal_Datetimeoffset``
+            ``Decimal`` = reader.GetDecimal ``ordinal_Decimal``
+            ``Float`` = reader.GetDouble ``ordinal_Float``
+            ``Image`` = reader.GetBytes ``ordinal_Image``
+            ``Int`` = reader.GetInt32 ``ordinal_Int``
+            ``Money`` = reader.GetDecimal ``ordinal_Money``
+            ``Nchar`` = reader.GetString ``ordinal_Nchar``
+            ``Ntext`` = reader.GetString ``ordinal_Ntext``
+            ``Numeric`` = reader.GetDecimal ``ordinal_Numeric``
+            ``Nvarchar`` = reader.GetString ``ordinal_Nvarchar``
+            ``Real`` = reader.GetFloat ``ordinal_Real``
+            ``Smalldatetime`` = reader.GetDateTime ``ordinal_Smalldatetime``
+            ``Smallint`` = reader.GetInt16 ``ordinal_Smallint``
+            ``Smallmoney`` = reader.GetDecimal ``ordinal_Smallmoney``
+            ``Text`` = reader.GetString ``ordinal_Text``
+            ``Time`` = reader.GetTimeSpan ``ordinal_Time``
+            ``Tinyint`` = reader.GetByte ``ordinal_Tinyint``
+            ``Uniqueidentifier`` = reader.GetGuid ``ordinal_Uniqueidentifier``
+            ``Varbinary`` = reader.GetBytes ``ordinal_Varbinary``
+            ``Varchar`` = reader.GetString ``ordinal_Varchar``
+            ``Xml`` = reader.GetString ``ordinal_Xml``
+          |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+      module ``TempTableAllTypesNonNull`` =
+
+
+        type ``AllTypesNonNull`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Bigint``: int64,
+              ``Binary``: byte [],
+              ``Bit``: bool,
+              ``Char``: string,
+              ``Date``: DateTime,
+              ``Datetime``: DateTime,
+              ``Datetime2``: DateTime,
+              ``Datetimeoffset``: DateTimeOffset,
+              ``Decimal``: decimal,
+              ``Float``: float,
+              ``Image``: byte [],
+              ``Int``: int,
+              ``Money``: decimal,
+              ``Nchar``: string,
+              ``Ntext``: string,
+              ``Numeric``: decimal,
+              ``Nvarchar``: string,
+              ``Real``: float32,
+              ``Smalldatetime``: DateTime,
+              ``Smallint``: int16,
+              ``Smallmoney``: decimal,
+              ``Text``: string,
+              ``Time``: TimeSpan,
+              ``Tinyint``: byte,
+              ``Uniqueidentifier``: Guid,
+              ``Varbinary``: byte [],
+              ``Varchar``: string,
+              ``Xml``: string
+            ) : ``AllTypesNonNull`` =
+            [|
+              ``Bigint`` |> box
+              ``Binary`` |> box
+              ``Bit`` |> box
+              ``Char`` |> box
+              ``Date`` |> box
+              ``Datetime`` |> box
+              ``Datetime2`` |> box
+              ``Datetimeoffset`` |> box
+              ``Decimal`` |> box
+              ``Float`` |> box
+              ``Image`` |> box
+              ``Int`` |> box
+              ``Money`` |> box
+              ``Nchar`` |> box
+              ``Ntext`` |> box
+              ``Numeric`` |> box
+              ``Nvarchar`` |> box
+              ``Real`` |> box
+              ``Smalldatetime`` |> box
+              ``Smallint`` |> box
+              ``Smallmoney`` |> box
+              ``Text`` |> box
+              ``Time`` |> box
+              ``Tinyint`` |> box
+              ``Uniqueidentifier`` |> box
+              ``Varbinary`` |> box
+              ``Varchar`` |> box
+              ``Xml`` |> box
+            |]
+            |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``AllTypesNonNull`` =
+            [|
+              (^a: (member ``Bigint``: int64) dto) |> box
+              (^a: (member ``Binary``: byte []) dto) |> box
+              (^a: (member ``Bit``: bool) dto) |> box
+              (^a: (member ``Char``: string) dto) |> box
+              (^a: (member ``Date``: DateTime) dto) |> box
+              (^a: (member ``Datetime``: DateTime) dto) |> box
+              (^a: (member ``Datetime2``: DateTime) dto) |> box
+              (^a: (member ``Datetimeoffset``: DateTimeOffset) dto) |> box
+              (^a: (member ``Decimal``: decimal) dto) |> box
+              (^a: (member ``Float``: float) dto) |> box
+              (^a: (member ``Image``: byte []) dto) |> box
+              (^a: (member ``Int``: int) dto) |> box
+              (^a: (member ``Money``: decimal) dto) |> box
+              (^a: (member ``Nchar``: string) dto) |> box
+              (^a: (member ``Ntext``: string) dto) |> box
+              (^a: (member ``Numeric``: decimal) dto) |> box
+              (^a: (member ``Nvarchar``: string) dto) |> box
+              (^a: (member ``Real``: float32) dto) |> box
+              (^a: (member ``Smalldatetime``: DateTime) dto) |> box
+              (^a: (member ``Smallint``: int16) dto) |> box
+              (^a: (member ``Smallmoney``: decimal) dto) |> box
+              (^a: (member ``Text``: string) dto) |> box
+              (^a: (member ``Time``: TimeSpan) dto) |> box
+              (^a: (member ``Tinyint``: byte) dto) |> box
+              (^a: (member ``Uniqueidentifier``: Guid) dto) |> box
+              (^a: (member ``Varbinary``: byte []) dto) |> box
+              (^a: (member ``Varchar``: string) dto) |> box
+              (^a: (member ``Xml``: string) dto) |> box
+            |]
+            |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
+
+
+      type ``TempTableAllTypesNonNull`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+          this.userConfigureBulkCopy <- configureBulkCopy
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``TempTableAllTypesNonNull``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``TempTableAllTypesNonNull``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.CreateTempTableData
+          (
+            ``AllTypesNonNull``: seq<``TempTableAllTypesNonNull``.``AllTypesNonNull``>
+          ) =
+          [
+            TempTableData
+              (
+                "#AllTypesNonNull",
+                """
+                CREATE TABLE #AllTypesNonNull (
+                  [Bigint] BIGINT NOT NULL,
+                  [Binary] BINARY(42) NOT NULL,
+                  [Bit] BIT NOT NULL,
+                  [Char] CHAR(42) NOT NULL,
+                  [Date] DATE NOT NULL,
+                  [Datetime] DATETIME NOT NULL,
+                  [Datetime2] DATETIME2(3) NOT NULL,
+                  [Datetimeoffset] DATETIMEOFFSET(1) NOT NULL,
+                  [Decimal] DECIMAL(10, 5) NOT NULL,
+                  [Float] FLOAT(42) NOT NULL,
+                  [Image] IMAGE NOT NULL,
+                  [Int] INT NOT NULL,
+                  [Money] MONEY NOT NULL,
+                  [Nchar] NCHAR(42) NOT NULL,
+                  [Ntext] NTEXT NOT NULL,
+                  [Numeric] NUMERIC(8, 3) NOT NULL,
+                  [Nvarchar] NVARCHAR(42) NOT NULL,
+                  [Real] REAL NOT NULL,
+                  [Smalldatetime] SMALLDATETIME NOT NULL,
+                  [Smallint] SMALLINT NOT NULL,
+                  [Smallmoney] SMALLMONEY NOT NULL,
+                  [Text] TEXT NOT NULL,
+                  [Time] TIME(1) NOT NULL,
+                  [Tinyint] TINYINT NOT NULL,
+                  [Uniqueidentifier] UNIQUEIDENTIFIER NOT NULL,
+                  [Varbinary] VARBINARY(42) NOT NULL,
+                  [Varchar] VARCHAR(42) NOT NULL,
+                  [Xml] XML NOT NULL
+                )
+
+                """,
+                (``AllTypesNonNull`` |> Seq.map (fun x -> x.Fields)),
+                28,
+                Action<_> this.userConfigureBulkCopy
+              )
+          ]
+        member this.WithParameters
+          (
+            ``allTypesNonNull``: seq<``TempTableAllTypesNonNull``.``AllTypesNonNull``>
+          ) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              ``allTypesNonNull``
+            )
+          ``TempTableAllTypesNonNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              (^a: (member ``AllTypesNonNull``: #seq<``TempTableAllTypesNonNull``.``AllTypesNonNull``>) dto)
+            )
+          ``TempTableAllTypesNonNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``TempTableAllTypesNull_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            SELECT * FROM #AllTypesNull
+
+          """
+          cmd.Parameters.AddRange sqlParams
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Bigint`` = 0
+        let mutable ``ordinal_Binary`` = 0
+        let mutable ``ordinal_Bit`` = 0
+        let mutable ``ordinal_Char`` = 0
+        let mutable ``ordinal_Date`` = 0
+        let mutable ``ordinal_Datetime`` = 0
+        let mutable ``ordinal_Datetime2`` = 0
+        let mutable ``ordinal_Datetimeoffset`` = 0
+        let mutable ``ordinal_Decimal`` = 0
+        let mutable ``ordinal_Float`` = 0
+        let mutable ``ordinal_Image`` = 0
+        let mutable ``ordinal_Int`` = 0
+        let mutable ``ordinal_Money`` = 0
+        let mutable ``ordinal_Nchar`` = 0
+        let mutable ``ordinal_Ntext`` = 0
+        let mutable ``ordinal_Numeric`` = 0
+        let mutable ``ordinal_Nvarchar`` = 0
+        let mutable ``ordinal_Real`` = 0
+        let mutable ``ordinal_Smalldatetime`` = 0
+        let mutable ``ordinal_Smallint`` = 0
+        let mutable ``ordinal_Smallmoney`` = 0
+        let mutable ``ordinal_Text`` = 0
+        let mutable ``ordinal_Time`` = 0
+        let mutable ``ordinal_Tinyint`` = 0
+        let mutable ``ordinal_Uniqueidentifier`` = 0
+        let mutable ``ordinal_Varbinary`` = 0
+        let mutable ``ordinal_Varchar`` = 0
+        let mutable ``ordinal_Xml`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Bigint`` <- reader.GetOrdinal "Bigint"
+          ``ordinal_Binary`` <- reader.GetOrdinal "Binary"
+          ``ordinal_Bit`` <- reader.GetOrdinal "Bit"
+          ``ordinal_Char`` <- reader.GetOrdinal "Char"
+          ``ordinal_Date`` <- reader.GetOrdinal "Date"
+          ``ordinal_Datetime`` <- reader.GetOrdinal "Datetime"
+          ``ordinal_Datetime2`` <- reader.GetOrdinal "Datetime2"
+          ``ordinal_Datetimeoffset`` <- reader.GetOrdinal "Datetimeoffset"
+          ``ordinal_Decimal`` <- reader.GetOrdinal "Decimal"
+          ``ordinal_Float`` <- reader.GetOrdinal "Float"
+          ``ordinal_Image`` <- reader.GetOrdinal "Image"
+          ``ordinal_Int`` <- reader.GetOrdinal "Int"
+          ``ordinal_Money`` <- reader.GetOrdinal "Money"
+          ``ordinal_Nchar`` <- reader.GetOrdinal "Nchar"
+          ``ordinal_Ntext`` <- reader.GetOrdinal "Ntext"
+          ``ordinal_Numeric`` <- reader.GetOrdinal "Numeric"
+          ``ordinal_Nvarchar`` <- reader.GetOrdinal "Nvarchar"
+          ``ordinal_Real`` <- reader.GetOrdinal "Real"
+          ``ordinal_Smalldatetime`` <- reader.GetOrdinal "Smalldatetime"
+          ``ordinal_Smallint`` <- reader.GetOrdinal "Smallint"
+          ``ordinal_Smallmoney`` <- reader.GetOrdinal "Smallmoney"
+          ``ordinal_Text`` <- reader.GetOrdinal "Text"
+          ``ordinal_Time`` <- reader.GetOrdinal "Time"
+          ``ordinal_Tinyint`` <- reader.GetOrdinal "Tinyint"
+          ``ordinal_Uniqueidentifier`` <- reader.GetOrdinal "Uniqueidentifier"
+          ``ordinal_Varbinary`` <- reader.GetOrdinal "Varbinary"
+          ``ordinal_Varchar`` <- reader.GetOrdinal "Varchar"
+          ``ordinal_Xml`` <- reader.GetOrdinal "Xml"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Bigint`` = if reader.IsDBNull ``ordinal_Bigint`` then None else reader.GetInt64 ``ordinal_Bigint`` |> Some
+            ``Binary`` = if reader.IsDBNull ``ordinal_Binary`` then None else reader.GetBytes ``ordinal_Binary`` |> Some
+            ``Bit`` = if reader.IsDBNull ``ordinal_Bit`` then None else reader.GetBoolean ``ordinal_Bit`` |> Some
+            ``Char`` = if reader.IsDBNull ``ordinal_Char`` then None else reader.GetString ``ordinal_Char`` |> Some
+            ``Date`` = if reader.IsDBNull ``ordinal_Date`` then None else reader.GetDateTime ``ordinal_Date`` |> Some
+            ``Datetime`` = if reader.IsDBNull ``ordinal_Datetime`` then None else reader.GetDateTime ``ordinal_Datetime`` |> Some
+            ``Datetime2`` = if reader.IsDBNull ``ordinal_Datetime2`` then None else reader.GetDateTime ``ordinal_Datetime2`` |> Some
+            ``Datetimeoffset`` = if reader.IsDBNull ``ordinal_Datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_Datetimeoffset`` |> Some
+            ``Decimal`` = if reader.IsDBNull ``ordinal_Decimal`` then None else reader.GetDecimal ``ordinal_Decimal`` |> Some
+            ``Float`` = if reader.IsDBNull ``ordinal_Float`` then None else reader.GetDouble ``ordinal_Float`` |> Some
+            ``Image`` = if reader.IsDBNull ``ordinal_Image`` then None else reader.GetBytes ``ordinal_Image`` |> Some
+            ``Int`` = if reader.IsDBNull ``ordinal_Int`` then None else reader.GetInt32 ``ordinal_Int`` |> Some
+            ``Money`` = if reader.IsDBNull ``ordinal_Money`` then None else reader.GetDecimal ``ordinal_Money`` |> Some
+            ``Nchar`` = if reader.IsDBNull ``ordinal_Nchar`` then None else reader.GetString ``ordinal_Nchar`` |> Some
+            ``Ntext`` = if reader.IsDBNull ``ordinal_Ntext`` then None else reader.GetString ``ordinal_Ntext`` |> Some
+            ``Numeric`` = if reader.IsDBNull ``ordinal_Numeric`` then None else reader.GetDecimal ``ordinal_Numeric`` |> Some
+            ``Nvarchar`` = if reader.IsDBNull ``ordinal_Nvarchar`` then None else reader.GetString ``ordinal_Nvarchar`` |> Some
+            ``Real`` = if reader.IsDBNull ``ordinal_Real`` then None else reader.GetFloat ``ordinal_Real`` |> Some
+            ``Smalldatetime`` = if reader.IsDBNull ``ordinal_Smalldatetime`` then None else reader.GetDateTime ``ordinal_Smalldatetime`` |> Some
+            ``Smallint`` = if reader.IsDBNull ``ordinal_Smallint`` then None else reader.GetInt16 ``ordinal_Smallint`` |> Some
+            ``Smallmoney`` = if reader.IsDBNull ``ordinal_Smallmoney`` then None else reader.GetDecimal ``ordinal_Smallmoney`` |> Some
+            ``Text`` = if reader.IsDBNull ``ordinal_Text`` then None else reader.GetString ``ordinal_Text`` |> Some
+            ``Time`` = if reader.IsDBNull ``ordinal_Time`` then None else reader.GetTimeSpan ``ordinal_Time`` |> Some
+            ``Tinyint`` = if reader.IsDBNull ``ordinal_Tinyint`` then None else reader.GetByte ``ordinal_Tinyint`` |> Some
+            ``Uniqueidentifier`` = if reader.IsDBNull ``ordinal_Uniqueidentifier`` then None else reader.GetGuid ``ordinal_Uniqueidentifier`` |> Some
+            ``Varbinary`` = if reader.IsDBNull ``ordinal_Varbinary`` then None else reader.GetBytes ``ordinal_Varbinary`` |> Some
+            ``Varchar`` = if reader.IsDBNull ``ordinal_Varchar`` then None else reader.GetString ``ordinal_Varchar`` |> Some
+            ``Xml`` = if reader.IsDBNull ``ordinal_Xml`` then None else reader.GetString ``ordinal_Xml`` |> Some
+          |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+      module ``TempTableAllTypesNull`` =
+
+
+        type ``AllTypesNull`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Bigint``: int64 option,
+              ``Binary``: byte [] option,
+              ``Bit``: bool option,
+              ``Char``: string option,
+              ``Date``: DateTime option,
+              ``Datetime``: DateTime option,
+              ``Datetime2``: DateTime option,
+              ``Datetimeoffset``: DateTimeOffset option,
+              ``Decimal``: decimal option,
+              ``Float``: float option,
+              ``Image``: byte [] option,
+              ``Int``: int option,
+              ``Money``: decimal option,
+              ``Nchar``: string option,
+              ``Ntext``: string option,
+              ``Numeric``: decimal option,
+              ``Nvarchar``: string option,
+              ``Real``: float32 option,
+              ``Smalldatetime``: DateTime option,
+              ``Smallint``: int16 option,
+              ``Smallmoney``: decimal option,
+              ``Text``: string option,
+              ``Time``: TimeSpan option,
+              ``Tinyint``: byte option,
+              ``Uniqueidentifier``: Guid option,
+              ``Varbinary``: byte [] option,
+              ``Varchar``: string option,
+              ``Xml``: string option
+            ) : ``AllTypesNull`` =
+            [|
+              Option.toDbNull ``Bigint`` |> box
+              Option.toDbNull ``Binary`` |> box
+              Option.toDbNull ``Bit`` |> box
+              Option.toDbNull ``Char`` |> box
+              Option.toDbNull ``Date`` |> box
+              Option.toDbNull ``Datetime`` |> box
+              Option.toDbNull ``Datetime2`` |> box
+              Option.toDbNull ``Datetimeoffset`` |> box
+              Option.toDbNull ``Decimal`` |> box
+              Option.toDbNull ``Float`` |> box
+              Option.toDbNull ``Image`` |> box
+              Option.toDbNull ``Int`` |> box
+              Option.toDbNull ``Money`` |> box
+              Option.toDbNull ``Nchar`` |> box
+              Option.toDbNull ``Ntext`` |> box
+              Option.toDbNull ``Numeric`` |> box
+              Option.toDbNull ``Nvarchar`` |> box
+              Option.toDbNull ``Real`` |> box
+              Option.toDbNull ``Smalldatetime`` |> box
+              Option.toDbNull ``Smallint`` |> box
+              Option.toDbNull ``Smallmoney`` |> box
+              Option.toDbNull ``Text`` |> box
+              Option.toDbNull ``Time`` |> box
+              Option.toDbNull ``Tinyint`` |> box
+              Option.toDbNull ``Uniqueidentifier`` |> box
+              Option.toDbNull ``Varbinary`` |> box
+              Option.toDbNull ``Varchar`` |> box
+              Option.toDbNull ``Xml`` |> box
+            |]
+            |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``AllTypesNull`` =
+            [|
+              Option.toDbNull (^a: (member ``Bigint``: int64 option) dto) |> box
+              Option.toDbNull (^a: (member ``Binary``: byte [] option) dto) |> box
+              Option.toDbNull (^a: (member ``Bit``: bool option) dto) |> box
+              Option.toDbNull (^a: (member ``Char``: string option) dto) |> box
+              Option.toDbNull (^a: (member ``Date``: DateTime option) dto) |> box
+              Option.toDbNull (^a: (member ``Datetime``: DateTime option) dto) |> box
+              Option.toDbNull (^a: (member ``Datetime2``: DateTime option) dto) |> box
+              Option.toDbNull (^a: (member ``Datetimeoffset``: DateTimeOffset option) dto) |> box
+              Option.toDbNull (^a: (member ``Decimal``: decimal option) dto) |> box
+              Option.toDbNull (^a: (member ``Float``: float option) dto) |> box
+              Option.toDbNull (^a: (member ``Image``: byte [] option) dto) |> box
+              Option.toDbNull (^a: (member ``Int``: int option) dto) |> box
+              Option.toDbNull (^a: (member ``Money``: decimal option) dto) |> box
+              Option.toDbNull (^a: (member ``Nchar``: string option) dto) |> box
+              Option.toDbNull (^a: (member ``Ntext``: string option) dto) |> box
+              Option.toDbNull (^a: (member ``Numeric``: decimal option) dto) |> box
+              Option.toDbNull (^a: (member ``Nvarchar``: string option) dto) |> box
+              Option.toDbNull (^a: (member ``Real``: float32 option) dto) |> box
+              Option.toDbNull (^a: (member ``Smalldatetime``: DateTime option) dto) |> box
+              Option.toDbNull (^a: (member ``Smallint``: int16 option) dto) |> box
+              Option.toDbNull (^a: (member ``Smallmoney``: decimal option) dto) |> box
+              Option.toDbNull (^a: (member ``Text``: string option) dto) |> box
+              Option.toDbNull (^a: (member ``Time``: TimeSpan option) dto) |> box
+              Option.toDbNull (^a: (member ``Tinyint``: byte option) dto) |> box
+              Option.toDbNull (^a: (member ``Uniqueidentifier``: Guid option) dto) |> box
+              Option.toDbNull (^a: (member ``Varbinary``: byte [] option) dto) |> box
+              Option.toDbNull (^a: (member ``Varchar``: string option) dto) |> box
+              Option.toDbNull (^a: (member ``Xml``: string option) dto) |> box
+            |]
+            |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+
+
+      type ``TempTableAllTypesNull`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+          this.userConfigureBulkCopy <- configureBulkCopy
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``TempTableAllTypesNull``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``TempTableAllTypesNull``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.CreateTempTableData
+          (
+            ``AllTypesNull``: seq<``TempTableAllTypesNull``.``AllTypesNull``>
+          ) =
+          [
+            TempTableData
+              (
+                "#AllTypesNull",
+                """
+                CREATE TABLE #AllTypesNull (
+                  [Bigint] BIGINT NULL,
+                  [Binary] BINARY(42) NULL,
+                  [Bit] BIT NULL,
+                  [Char] CHAR(42) NULL,
+                  [Date] DATE NULL,
+                  [Datetime] DATETIME NULL,
+                  [Datetime2] DATETIME2(3) NULL,
+                  [Datetimeoffset] DATETIMEOFFSET(1) NULL,
+                  [Decimal] DECIMAL(10, 5) NULL,
+                  [Float] FLOAT(42) NULL,
+                  [Image] IMAGE NULL,
+                  [Int] INT NULL,
+                  [Money] MONEY NULL,
+                  [Nchar] NCHAR(42) NULL,
+                  [Ntext] NTEXT NULL,
+                  [Numeric] NUMERIC(8, 3) NULL,
+                  [Nvarchar] NVARCHAR(42) NULL,
+                  [Real] REAL NULL,
+                  [Smalldatetime] SMALLDATETIME NULL,
+                  [Smallint] SMALLINT NULL,
+                  [Smallmoney] SMALLMONEY NULL,
+                  [Text] TEXT NULL,
+                  [Time] TIME(1) NULL,
+                  [Tinyint] TINYINT NULL,
+                  [Uniqueidentifier] UNIQUEIDENTIFIER NULL,
+                  [Varbinary] VARBINARY(42) NULL,
+                  [Varchar] VARCHAR(42) NULL,
+                  [Xml] XML NULL
+                )
+
+                """,
+                (``AllTypesNull`` |> Seq.map (fun x -> x.Fields)),
+                28,
+                Action<_> this.userConfigureBulkCopy
+              )
+          ]
+        member this.WithParameters
+          (
+            ``allTypesNull``: seq<``TempTableAllTypesNull``.``AllTypesNull``>
+          ) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              ``allTypesNull``
+            )
+          ``TempTableAllTypesNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              (^a: (member ``AllTypesNull``: #seq<``TempTableAllTypesNull``.``AllTypesNull``>) dto)
+            )
+          ``TempTableAllTypesNull_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``TempTableAllTypesNullVoption_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            SELECT * FROM #AllTypesNull
+
+          """
+          cmd.Parameters.AddRange sqlParams
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Bigint`` = 0
+        let mutable ``ordinal_Binary`` = 0
+        let mutable ``ordinal_Bit`` = 0
+        let mutable ``ordinal_Char`` = 0
+        let mutable ``ordinal_Date`` = 0
+        let mutable ``ordinal_Datetime`` = 0
+        let mutable ``ordinal_Datetime2`` = 0
+        let mutable ``ordinal_Datetimeoffset`` = 0
+        let mutable ``ordinal_Decimal`` = 0
+        let mutable ``ordinal_Float`` = 0
+        let mutable ``ordinal_Image`` = 0
+        let mutable ``ordinal_Int`` = 0
+        let mutable ``ordinal_Money`` = 0
+        let mutable ``ordinal_Nchar`` = 0
+        let mutable ``ordinal_Ntext`` = 0
+        let mutable ``ordinal_Numeric`` = 0
+        let mutable ``ordinal_Nvarchar`` = 0
+        let mutable ``ordinal_Real`` = 0
+        let mutable ``ordinal_Smalldatetime`` = 0
+        let mutable ``ordinal_Smallint`` = 0
+        let mutable ``ordinal_Smallmoney`` = 0
+        let mutable ``ordinal_Text`` = 0
+        let mutable ``ordinal_Time`` = 0
+        let mutable ``ordinal_Tinyint`` = 0
+        let mutable ``ordinal_Uniqueidentifier`` = 0
+        let mutable ``ordinal_Varbinary`` = 0
+        let mutable ``ordinal_Varchar`` = 0
+        let mutable ``ordinal_Xml`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Bigint`` <- reader.GetOrdinal "Bigint"
+          ``ordinal_Binary`` <- reader.GetOrdinal "Binary"
+          ``ordinal_Bit`` <- reader.GetOrdinal "Bit"
+          ``ordinal_Char`` <- reader.GetOrdinal "Char"
+          ``ordinal_Date`` <- reader.GetOrdinal "Date"
+          ``ordinal_Datetime`` <- reader.GetOrdinal "Datetime"
+          ``ordinal_Datetime2`` <- reader.GetOrdinal "Datetime2"
+          ``ordinal_Datetimeoffset`` <- reader.GetOrdinal "Datetimeoffset"
+          ``ordinal_Decimal`` <- reader.GetOrdinal "Decimal"
+          ``ordinal_Float`` <- reader.GetOrdinal "Float"
+          ``ordinal_Image`` <- reader.GetOrdinal "Image"
+          ``ordinal_Int`` <- reader.GetOrdinal "Int"
+          ``ordinal_Money`` <- reader.GetOrdinal "Money"
+          ``ordinal_Nchar`` <- reader.GetOrdinal "Nchar"
+          ``ordinal_Ntext`` <- reader.GetOrdinal "Ntext"
+          ``ordinal_Numeric`` <- reader.GetOrdinal "Numeric"
+          ``ordinal_Nvarchar`` <- reader.GetOrdinal "Nvarchar"
+          ``ordinal_Real`` <- reader.GetOrdinal "Real"
+          ``ordinal_Smalldatetime`` <- reader.GetOrdinal "Smalldatetime"
+          ``ordinal_Smallint`` <- reader.GetOrdinal "Smallint"
+          ``ordinal_Smallmoney`` <- reader.GetOrdinal "Smallmoney"
+          ``ordinal_Text`` <- reader.GetOrdinal "Text"
+          ``ordinal_Time`` <- reader.GetOrdinal "Time"
+          ``ordinal_Tinyint`` <- reader.GetOrdinal "Tinyint"
+          ``ordinal_Uniqueidentifier`` <- reader.GetOrdinal "Uniqueidentifier"
+          ``ordinal_Varbinary`` <- reader.GetOrdinal "Varbinary"
+          ``ordinal_Varchar`` <- reader.GetOrdinal "Varchar"
+          ``ordinal_Xml`` <- reader.GetOrdinal "Xml"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Bigint`` = if reader.IsDBNull ``ordinal_Bigint`` then None else reader.GetInt64 ``ordinal_Bigint`` |> Some
+            ``Binary`` = if reader.IsDBNull ``ordinal_Binary`` then None else reader.GetBytes ``ordinal_Binary`` |> Some
+            ``Bit`` = if reader.IsDBNull ``ordinal_Bit`` then None else reader.GetBoolean ``ordinal_Bit`` |> Some
+            ``Char`` = if reader.IsDBNull ``ordinal_Char`` then None else reader.GetString ``ordinal_Char`` |> Some
+            ``Date`` = if reader.IsDBNull ``ordinal_Date`` then None else reader.GetDateTime ``ordinal_Date`` |> Some
+            ``Datetime`` = if reader.IsDBNull ``ordinal_Datetime`` then None else reader.GetDateTime ``ordinal_Datetime`` |> Some
+            ``Datetime2`` = if reader.IsDBNull ``ordinal_Datetime2`` then None else reader.GetDateTime ``ordinal_Datetime2`` |> Some
+            ``Datetimeoffset`` = if reader.IsDBNull ``ordinal_Datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_Datetimeoffset`` |> Some
+            ``Decimal`` = if reader.IsDBNull ``ordinal_Decimal`` then None else reader.GetDecimal ``ordinal_Decimal`` |> Some
+            ``Float`` = if reader.IsDBNull ``ordinal_Float`` then None else reader.GetDouble ``ordinal_Float`` |> Some
+            ``Image`` = if reader.IsDBNull ``ordinal_Image`` then None else reader.GetBytes ``ordinal_Image`` |> Some
+            ``Int`` = if reader.IsDBNull ``ordinal_Int`` then None else reader.GetInt32 ``ordinal_Int`` |> Some
+            ``Money`` = if reader.IsDBNull ``ordinal_Money`` then None else reader.GetDecimal ``ordinal_Money`` |> Some
+            ``Nchar`` = if reader.IsDBNull ``ordinal_Nchar`` then None else reader.GetString ``ordinal_Nchar`` |> Some
+            ``Ntext`` = if reader.IsDBNull ``ordinal_Ntext`` then None else reader.GetString ``ordinal_Ntext`` |> Some
+            ``Numeric`` = if reader.IsDBNull ``ordinal_Numeric`` then None else reader.GetDecimal ``ordinal_Numeric`` |> Some
+            ``Nvarchar`` = if reader.IsDBNull ``ordinal_Nvarchar`` then None else reader.GetString ``ordinal_Nvarchar`` |> Some
+            ``Real`` = if reader.IsDBNull ``ordinal_Real`` then None else reader.GetFloat ``ordinal_Real`` |> Some
+            ``Smalldatetime`` = if reader.IsDBNull ``ordinal_Smalldatetime`` then None else reader.GetDateTime ``ordinal_Smalldatetime`` |> Some
+            ``Smallint`` = if reader.IsDBNull ``ordinal_Smallint`` then None else reader.GetInt16 ``ordinal_Smallint`` |> Some
+            ``Smallmoney`` = if reader.IsDBNull ``ordinal_Smallmoney`` then None else reader.GetDecimal ``ordinal_Smallmoney`` |> Some
+            ``Text`` = if reader.IsDBNull ``ordinal_Text`` then None else reader.GetString ``ordinal_Text`` |> Some
+            ``Time`` = if reader.IsDBNull ``ordinal_Time`` then None else reader.GetTimeSpan ``ordinal_Time`` |> Some
+            ``Tinyint`` = if reader.IsDBNull ``ordinal_Tinyint`` then None else reader.GetByte ``ordinal_Tinyint`` |> Some
+            ``Uniqueidentifier`` = if reader.IsDBNull ``ordinal_Uniqueidentifier`` then None else reader.GetGuid ``ordinal_Uniqueidentifier`` |> Some
+            ``Varbinary`` = if reader.IsDBNull ``ordinal_Varbinary`` then None else reader.GetBytes ``ordinal_Varbinary`` |> Some
+            ``Varchar`` = if reader.IsDBNull ``ordinal_Varchar`` then None else reader.GetString ``ordinal_Varchar`` |> Some
+            ``Xml`` = if reader.IsDBNull ``ordinal_Xml`` then None else reader.GetString ``ordinal_Xml`` |> Some
+          |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+      module ``TempTableAllTypesNullVoption`` =
+
+
+        type ``AllTypesNull`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Bigint``: int64 voption,
+              ``Binary``: byte [] voption,
+              ``Bit``: bool voption,
+              ``Char``: string voption,
+              ``Date``: DateTime voption,
+              ``Datetime``: DateTime voption,
+              ``Datetime2``: DateTime voption,
+              ``Datetimeoffset``: DateTimeOffset voption,
+              ``Decimal``: decimal voption,
+              ``Float``: float voption,
+              ``Image``: byte [] voption,
+              ``Int``: int voption,
+              ``Money``: decimal voption,
+              ``Nchar``: string voption,
+              ``Ntext``: string voption,
+              ``Numeric``: decimal voption,
+              ``Nvarchar``: string voption,
+              ``Real``: float32 voption,
+              ``Smalldatetime``: DateTime voption,
+              ``Smallint``: int16 voption,
+              ``Smallmoney``: decimal voption,
+              ``Text``: string voption,
+              ``Time``: TimeSpan voption,
+              ``Tinyint``: byte voption,
+              ``Uniqueidentifier``: Guid voption,
+              ``Varbinary``: byte [] voption,
+              ``Varchar``: string voption,
+              ``Xml``: string voption
+            ) : ``AllTypesNull`` =
+            [|
+              ValueOption.toDbNull ``Bigint`` |> box
+              ValueOption.toDbNull ``Binary`` |> box
+              ValueOption.toDbNull ``Bit`` |> box
+              ValueOption.toDbNull ``Char`` |> box
+              ValueOption.toDbNull ``Date`` |> box
+              ValueOption.toDbNull ``Datetime`` |> box
+              ValueOption.toDbNull ``Datetime2`` |> box
+              ValueOption.toDbNull ``Datetimeoffset`` |> box
+              ValueOption.toDbNull ``Decimal`` |> box
+              ValueOption.toDbNull ``Float`` |> box
+              ValueOption.toDbNull ``Image`` |> box
+              ValueOption.toDbNull ``Int`` |> box
+              ValueOption.toDbNull ``Money`` |> box
+              ValueOption.toDbNull ``Nchar`` |> box
+              ValueOption.toDbNull ``Ntext`` |> box
+              ValueOption.toDbNull ``Numeric`` |> box
+              ValueOption.toDbNull ``Nvarchar`` |> box
+              ValueOption.toDbNull ``Real`` |> box
+              ValueOption.toDbNull ``Smalldatetime`` |> box
+              ValueOption.toDbNull ``Smallint`` |> box
+              ValueOption.toDbNull ``Smallmoney`` |> box
+              ValueOption.toDbNull ``Text`` |> box
+              ValueOption.toDbNull ``Time`` |> box
+              ValueOption.toDbNull ``Tinyint`` |> box
+              ValueOption.toDbNull ``Uniqueidentifier`` |> box
+              ValueOption.toDbNull ``Varbinary`` |> box
+              ValueOption.toDbNull ``Varchar`` |> box
+              ValueOption.toDbNull ``Xml`` |> box
+            |]
+            |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``AllTypesNull`` =
+            [|
+              ValueOption.toDbNull (^a: (member ``Bigint``: int64 voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Binary``: byte [] voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Bit``: bool voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Char``: string voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Date``: DateTime voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Datetime``: DateTime voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Datetime2``: DateTime voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Datetimeoffset``: DateTimeOffset voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Decimal``: decimal voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Float``: float voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Image``: byte [] voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Int``: int voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Money``: decimal voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Nchar``: string voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Ntext``: string voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Numeric``: decimal voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Nvarchar``: string voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Real``: float32 voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Smalldatetime``: DateTime voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Smallint``: int16 voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Smallmoney``: decimal voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Text``: string voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Time``: TimeSpan voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Tinyint``: byte voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Uniqueidentifier``: Guid voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Varbinary``: byte [] voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Varchar``: string voption) dto) |> box
+              ValueOption.toDbNull (^a: (member ``Xml``: string voption) dto) |> box
+            |]
+            |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+
+
+      type ``TempTableAllTypesNullVoption`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+          this.userConfigureBulkCopy <- configureBulkCopy
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``TempTableAllTypesNullVoption``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``TempTableAllTypesNullVoption``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.CreateTempTableData
+          (
+            ``AllTypesNull``: seq<``TempTableAllTypesNullVoption``.``AllTypesNull``>
+          ) =
+          [
+            TempTableData
+              (
+                "#AllTypesNull",
+                """
+                CREATE TABLE #AllTypesNull (
+                  [Bigint] BIGINT NULL,
+                  [Binary] BINARY(42) NULL,
+                  [Bit] BIT NULL,
+                  [Char] CHAR(42) NULL,
+                  [Date] DATE NULL,
+                  [Datetime] DATETIME NULL,
+                  [Datetime2] DATETIME2(3) NULL,
+                  [Datetimeoffset] DATETIMEOFFSET(1) NULL,
+                  [Decimal] DECIMAL(10, 5) NULL,
+                  [Float] FLOAT(42) NULL,
+                  [Image] IMAGE NULL,
+                  [Int] INT NULL,
+                  [Money] MONEY NULL,
+                  [Nchar] NCHAR(42) NULL,
+                  [Ntext] NTEXT NULL,
+                  [Numeric] NUMERIC(8, 3) NULL,
+                  [Nvarchar] NVARCHAR(42) NULL,
+                  [Real] REAL NULL,
+                  [Smalldatetime] SMALLDATETIME NULL,
+                  [Smallint] SMALLINT NULL,
+                  [Smallmoney] SMALLMONEY NULL,
+                  [Text] TEXT NULL,
+                  [Time] TIME(1) NULL,
+                  [Tinyint] TINYINT NULL,
+                  [Uniqueidentifier] UNIQUEIDENTIFIER NULL,
+                  [Varbinary] VARBINARY(42) NULL,
+                  [Varchar] VARCHAR(42) NULL,
+                  [Xml] XML NULL
+                )
+
+                """,
+                (``AllTypesNull`` |> Seq.map (fun x -> x.Fields)),
+                28,
+                Action<_> this.userConfigureBulkCopy
+              )
+          ]
+        member this.WithParameters
+          (
+            ``allTypesNull``: seq<``TempTableAllTypesNullVoption``.``AllTypesNull``>
+          ) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              ``allTypesNull``
+            )
+          ``TempTableAllTypesNullVoption_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              (^a: (member ``AllTypesNull``: #seq<``TempTableAllTypesNullVoption``.``AllTypesNull``>) dto)
+            )
+          ``TempTableAllTypesNullVoption_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``TempTableInlined_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            SELECT * FROM #tempTableInlined
+
+          """
+          cmd.Parameters.AddRange sqlParams
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Col1`` = 0
+        let mutable ``ordinal_Col2`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
+          ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+          |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+      module ``TempTableInlined`` =
+
+
+        type ``tempTableInlined`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Col1``: int,
+              ``Col2``: string option
+            ) : ``tempTableInlined`` =
+            [|
+              ``Col1`` |> box
+              Option.toDbNull ``Col2`` |> box
+            |]
+            |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``tempTableInlined`` =
+            [|
+              (^a: (member ``Col1``: int) dto) |> box
+              Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
+            |]
+            |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+
+
+      type ``TempTableInlined`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+          this.userConfigureBulkCopy <- configureBulkCopy
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``TempTableInlined``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``TempTableInlined``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.CreateTempTableData
+          (
+            ``tempTableInlined``: seq<``TempTableInlined``.``tempTableInlined``>
+          ) =
+          [
+            TempTableData
+              (
+                "#tempTableInlined",
+                """
+                CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
+                """,
+                (``tempTableInlined`` |> Seq.map (fun x -> x.Fields)),
+                2,
+                Action<_> this.userConfigureBulkCopy
+              )
+          ]
+        member this.WithParameters
+          (
+            ``tempTableInlined``: seq<``TempTableInlined``.``tempTableInlined``>
+          ) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              ``tempTableInlined``
+            )
+          ``TempTableInlined_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              (^a: (member ``TempTableInlined``: #seq<``TempTableInlined``.``tempTableInlined``>) dto)
+            )
+          ``TempTableInlined_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``TempTableInlinedDynamic_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            DECLARE @sql NVARCHAR(MAX) =
+              'SELECT * FROM #tempTableInlined'
+
+            EXEC sp_executesql @sql, N''
+
+          """
+          cmd.Parameters.AddRange sqlParams
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Col1`` = 0
+        let mutable ``ordinal_Col2`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
+          ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+          |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+      module ``TempTableInlinedDynamic`` =
+
+
+        type ``tempTableInlined`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Col1``: int,
+              ``Col2``: string option
+            ) : ``tempTableInlined`` =
+            [|
+              ``Col1`` |> box
+              Option.toDbNull ``Col2`` |> box
+            |]
+            |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``tempTableInlined`` =
+            [|
+              (^a: (member ``Col1``: int) dto) |> box
+              Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
+            |]
+            |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+
+
+      type ``TempTableInlinedDynamic`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+          this.userConfigureBulkCopy <- configureBulkCopy
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``TempTableInlinedDynamic``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``TempTableInlinedDynamic``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.CreateTempTableData
+          (
+            ``tempTableInlined``: seq<``TempTableInlinedDynamic``.``tempTableInlined``>
+          ) =
+          [
+            TempTableData
+              (
+                "#tempTableInlined",
+                """
+                CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
+                """,
+                (``tempTableInlined`` |> Seq.map (fun x -> x.Fields)),
+                2,
+                Action<_> this.userConfigureBulkCopy
+              )
+          ]
+        member this.WithParameters
+          (
+            ``tempTableInlined``: seq<``TempTableInlinedDynamic``.``tempTableInlined``>
+          ) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              ``tempTableInlined``
+            )
+          ``TempTableInlinedDynamic_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              (^a: (member ``TempTableInlined``: #seq<``TempTableInlinedDynamic``.``tempTableInlined``>) dto)
+            )
+          ``TempTableInlinedDynamic_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``TempTableInlinedWithOtherParams_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+        let configureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """
+            DECLARE @_someParam INT = @someParam
+
+            SELECT * FROM #tempTableInlined
+
+          """
+          cmd.Parameters.AddRange sqlParams
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_Col1`` = 0
+        let mutable ``ordinal_Col2`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
+          ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
+
+        let getItem (reader: SqlDataReader) =
+          {|
+            ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+          |}
+
+        member _.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member _.Execute() =
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+        member _.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        #endif
+
+        member _.LazyExecute() =
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+        member _.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member _.ExecuteSingle() =
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+      module ``TempTableInlinedWithOtherParams`` =
+
+
+        type ``tempTableInlined`` (__: InternalUseOnly, fields: obj []) =
+
+          [<EditorBrowsable(EditorBrowsableState.Never)>]
+          member _.Fields = fields
+
+          static member create
+            (
+              ``Col1``: int,
+              ``Col2``: string option
+            ) : ``tempTableInlined`` =
+            [|
+              ``Col1`` |> box
+              Option.toDbNull ``Col2`` |> box
+            |]
+            |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+
+          static member inline create (dto: ^a) : ``tempTableInlined`` =
+            [|
+              (^a: (member ``Col1``: int) dto) |> box
+              Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
+            |]
+            |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+
+
+      type ``TempTableInlinedWithOtherParams`` private (connStr: string, conn: SqlConnection) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val connStr = connStr
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val conn = conn
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+          this.userConfigureBulkCopy <- configureBulkCopy
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``TempTableInlinedWithOtherParams``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection) = ``TempTableInlinedWithOtherParams``(null, connection)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member this.CreateTempTableData
+          (
+            ``tempTableInlined``: seq<``TempTableInlinedWithOtherParams``.``tempTableInlined``>
+          ) =
+          [
+            TempTableData
+              (
+                "#tempTableInlined",
+                """
+                CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
+                """,
+                (``tempTableInlined`` |> Seq.map (fun x -> x.Fields)),
+                2,
+                Action<_> this.userConfigureBulkCopy
+              )
+          ]
+        member this.WithParameters
+          (
+            ``tempTableInlined``: seq<``TempTableInlinedWithOtherParams``.``tempTableInlined``>,
+            ``someParam``: int
+          ) =
+          let sqlParams =
+            [|
+              SqlParameter("@someParam", SqlDbType.Int, Value = ``someParam``)
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              ``tempTableInlined``
+            )
+          ``TempTableInlinedWithOtherParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+        member inline this.WithParameters(dto: ^a) =
+          let sqlParams =
+            [|
+              SqlParameter("@someParam", SqlDbType.Int, Value = (^a: (member ``SomeParam``: int) dto))
+            |]
+          let tempTableData =
+            this.CreateTempTableData(
+              (^a: (member ``TempTableInlined``: #seq<``TempTableInlinedWithOtherParams``.``tempTableInlined``>) dto)
+            )
+          ``TempTableInlinedWithOtherParams_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, tempTableData)
+
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      type ``UserDefinedTableType_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
         let configureCmd (cmd: SqlCommand) =
           cmd.CommandText <- """
@@ -8855,7 +10696,7 @@ module Scripts =
           |}
 
         member _.ExecuteAsync(?cancellationToken) =
-          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecute() =
           async {
@@ -8864,7 +10705,7 @@ module Scripts =
           }
 
         member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteWithSyncRead() =
           async {
@@ -8873,23 +10714,23 @@ module Scripts =
           }
 
         member _.Execute() =
-          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
         member _.LazyExecuteAsync(?cancellationToken) =
-          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         #endif
 
         member _.LazyExecute() =
-          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+          executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
         member _.ExecuteSingleAsync(?cancellationToken) =
-          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+          executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         member this.AsyncExecuteSingle() =
           async {
@@ -8898,7 +10739,7 @@ module Scripts =
           }
 
         member _.ExecuteSingle() =
-          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+          executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
       type ``UserDefinedTableType`` private (connStr: string, conn: SqlConnection) =
@@ -8938,21 +10779,21 @@ module Scripts =
             [|
               SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = ``tvp``)
             |]
-          ``UserDefinedTableType_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``UserDefinedTableType_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
         member inline this.WithParameters(dto: ^a) =
           let sqlParams =
             [|
               SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = (^a: (member ``Tvp``: #seq<TableTypes.``dbo``.``MultiColNull``>) dto))
             |]
-          ``UserDefinedTableType_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+          ``UserDefinedTableType_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
       module ``Option`` =
 
 
           [<EditorBrowsable(EditorBrowsableState.Never)>]
-          type ``In_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+          type ``In_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
             let configureCmd (cmd: SqlCommand) =
               cmd.CommandText <- """
@@ -8968,7 +10809,7 @@ module Scripts =
               if reader.IsDBNull 0 then None else reader.GetString 0 |> Some
 
             member _.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -8977,7 +10818,7 @@ module Scripts =
               }
 
             member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -8986,23 +10827,23 @@ module Scripts =
               }
 
             member _.Execute() =
-              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member _.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member _.LazyExecute() =
-              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             member _.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9011,7 +10852,7 @@ module Scripts =
               }
 
             member _.ExecuteSingle() =
-              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
           type ``In`` private (connStr: string, conn: SqlConnection) =
@@ -9051,18 +10892,18 @@ module Scripts =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``param1``)
                 |]
-              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
             member inline this.WithParameters(dto: ^a) =
               let sqlParams =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Param1``: string option) dto))
                 |]
-              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
           [<EditorBrowsable(EditorBrowsableState.Never)>]
-          type ``Out_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+          type ``Out_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
             let configureCmd (cmd: SqlCommand) =
               cmd.CommandText <- """
@@ -9078,7 +10919,7 @@ module Scripts =
               if reader.IsDBNull 0 then None else reader.GetString 0 |> Some
 
             member _.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9087,7 +10928,7 @@ module Scripts =
               }
 
             member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9096,23 +10937,23 @@ module Scripts =
               }
 
             member _.Execute() =
-              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member _.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member _.LazyExecute() =
-              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             member _.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9121,7 +10962,7 @@ module Scripts =
               }
 
             member _.ExecuteSingle() =
-              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
           type ``Out`` private (connStr: string, conn: SqlConnection) =
@@ -9161,14 +11002,14 @@ module Scripts =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``param1``)
                 |]
-              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
             member inline this.WithParameters(dto: ^a) =
               let sqlParams =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Param1``: string option) dto))
                 |]
-              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
           type ``TableOutWithDto`` private (connStr: string, conn: SqlConnection) =
@@ -9215,7 +11056,7 @@ module Scripts =
               this
 
             member this.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9224,7 +11065,7 @@ module Scripts =
               }
 
             member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9233,23 +11074,23 @@ module Scripts =
               }
 
             member this.Execute() =
-              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member this.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member this.LazyExecute() =
-              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             member this.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9258,7 +11099,7 @@ module Scripts =
               }
 
             member this.ExecuteSingle() =
-              executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
           type ``TableOutWithoutDto`` private (connStr: string, conn: SqlConnection) =
@@ -9305,7 +11146,7 @@ module Scripts =
               this
 
             member this.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9314,7 +11155,7 @@ module Scripts =
               }
 
             member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9323,23 +11164,23 @@ module Scripts =
               }
 
             member this.Execute() =
-              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member this.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member this.LazyExecute() =
-              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             member this.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9348,11 +11189,11 @@ module Scripts =
               }
 
             member this.ExecuteSingle() =
-              executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
           [<EditorBrowsable(EditorBrowsableState.Never)>]
-          type ``TvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+          type ``TvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
             let configureCmd (cmd: SqlCommand) =
               cmd.CommandText <- """
@@ -9376,7 +11217,7 @@ module Scripts =
               |}
 
             member _.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9385,7 +11226,7 @@ module Scripts =
               }
 
             member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9394,23 +11235,23 @@ module Scripts =
               }
 
             member _.Execute() =
-              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member _.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member _.LazyExecute() =
-              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             member _.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9419,7 +11260,7 @@ module Scripts =
               }
 
             member _.ExecuteSingle() =
-              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
           type ``TvpInOut`` private (connStr: string, conn: SqlConnection) =
@@ -9459,14 +11300,14 @@ module Scripts =
                 [|
                   SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = ``tvp``)
                 |]
-              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
             member inline this.WithParameters(dto: ^a) =
               let sqlParams =
                 [|
                   SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNull", Value = (^a: (member ``Tvp``: #seq<TableTypes.``dbo``.``MultiColNull``>) dto))
                 |]
-              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
       module ``SubPath`` =
@@ -9516,7 +11357,7 @@ module Scripts =
               this
 
             member this.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9525,7 +11366,7 @@ module Scripts =
               }
 
             member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9534,23 +11375,23 @@ module Scripts =
               }
 
             member this.Execute() =
-              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member this.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member this.LazyExecute() =
-              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             member this.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9559,14 +11400,14 @@ module Scripts =
               }
 
             member this.ExecuteSingle() =
-              executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
       module ``Voption`` =
 
 
           [<EditorBrowsable(EditorBrowsableState.Never)>]
-          type ``In_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+          type ``In_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
             let configureCmd (cmd: SqlCommand) =
               cmd.CommandText <- """
@@ -9582,7 +11423,7 @@ module Scripts =
               if reader.IsDBNull 0 then None else reader.GetString 0 |> Some
 
             member _.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9591,7 +11432,7 @@ module Scripts =
               }
 
             member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9600,23 +11441,23 @@ module Scripts =
               }
 
             member _.Execute() =
-              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member _.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member _.LazyExecute() =
-              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             member _.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9625,7 +11466,7 @@ module Scripts =
               }
 
             member _.ExecuteSingle() =
-              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem
+              executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
           type ``In`` private (connStr: string, conn: SqlConnection) =
@@ -9665,18 +11506,18 @@ module Scripts =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = ValueOption.toDbNull ``param1``)
                 |]
-              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
             member inline this.WithParameters(dto: ^a) =
               let sqlParams =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = ValueOption.toDbNull (^a: (member ``Param1``: string voption) dto))
                 |]
-              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
           [<EditorBrowsable(EditorBrowsableState.Never)>]
-          type ``Out_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+          type ``Out_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
             let configureCmd (cmd: SqlCommand) =
               cmd.CommandText <- """
@@ -9692,7 +11533,7 @@ module Scripts =
               if reader.IsDBNull 0 then ValueNone else reader.GetString 0 |> ValueSome
 
             member _.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9701,7 +11542,7 @@ module Scripts =
               }
 
             member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9710,23 +11551,23 @@ module Scripts =
               }
 
             member _.Execute() =
-              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member _.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member _.LazyExecute() =
-              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             member _.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9735,7 +11576,7 @@ module Scripts =
               }
 
             member _.ExecuteSingle() =
-              executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem
+              executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
           type ``Out`` private (connStr: string, conn: SqlConnection) =
@@ -9775,14 +11616,14 @@ module Scripts =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull ``param1``)
                 |]
-              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
             member inline this.WithParameters(dto: ^a) =
               let sqlParams =
                 [|
                   SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = Option.toDbNull (^a: (member ``Param1``: string option) dto))
                 |]
-              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``Out_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
           type ``TableOutWithDto`` private (connStr: string, conn: SqlConnection) =
@@ -9829,7 +11670,7 @@ module Scripts =
               this
 
             member this.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9838,7 +11679,7 @@ module Scripts =
               }
 
             member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9847,23 +11688,23 @@ module Scripts =
               }
 
             member this.Execute() =
-              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member this.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member this.LazyExecute() =
-              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             member this.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9872,7 +11713,7 @@ module Scripts =
               }
 
             member this.ExecuteSingle() =
-              executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
           type ``TableOutWithoutDto`` private (connStr: string, conn: SqlConnection) =
@@ -9919,7 +11760,7 @@ module Scripts =
               this
 
             member this.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9928,7 +11769,7 @@ module Scripts =
               }
 
             member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -9937,23 +11778,23 @@ module Scripts =
               }
 
             member this.Execute() =
-              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member this.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member this.LazyExecute() =
-              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
             member this.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsyncVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -9962,11 +11803,11 @@ module Scripts =
               }
 
             member this.ExecuteSingle() =
-              executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem
+              executeQuerySingleVoption connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
           [<EditorBrowsable(EditorBrowsableState.Never)>]
-          type ``TvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter []) =
+          type ``TvpInOut_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
             let configureCmd (cmd: SqlCommand) =
               cmd.CommandText <- """
@@ -9990,7 +11831,7 @@ module Scripts =
               |}
 
             member _.ExecuteAsync(?cancellationToken) =
-              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecute() =
               async {
@@ -9999,7 +11840,7 @@ module Scripts =
               }
 
             member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteWithSyncRead() =
               async {
@@ -10008,23 +11849,23 @@ module Scripts =
               }
 
             member _.Execute() =
-              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
 
             member _.LazyExecuteAsync(?cancellationToken) =
-              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
-              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             #endif
 
             member _.LazyExecute() =
-              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem
+              executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
             member _.ExecuteSingleAsync(?cancellationToken) =
-              executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem (defaultArg cancellationToken CancellationToken.None)
+              executeQuerySingleAsyncVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
 
             member this.AsyncExecuteSingle() =
               async {
@@ -10033,7 +11874,7 @@ module Scripts =
               }
 
             member _.ExecuteSingle() =
-              executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem
+              executeQuerySingleVoption connStr conn configureConn configureCmd initOrdinals getItem tempTableData
 
 
           type ``TvpInOut`` private (connStr: string, conn: SqlConnection) =
@@ -10073,11 +11914,11 @@ module Scripts =
                 [|
                   SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNullVoption", Value = ``tvp``)
                 |]
-              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
             member inline this.WithParameters(dto: ^a) =
               let sqlParams =
                 [|
                   SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.MultiColNullVoption", Value = (^a: (member ``Tvp``: #seq<TableTypes.``dbo``.``MultiColNullVoption``>) dto))
                 |]
-              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams)
+              ``TvpInOut_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])

@@ -143,7 +143,8 @@ rulesets:
         skipParamDto: true
 
       - for: SQL/MyScript.sql
-        # 'params' allows you to specify settings for individual parameters.
+
+        # 'params' allows you to specify settings for individual script parameters.
         #
         # Type inference in scripts is limited due to limitations in SQL Server's
         # sp_describe_undeclared_parameters, which Facil uses to get parameter information
@@ -175,6 +176,29 @@ rulesets:
             # user-defined table type. Note that table-valued parameters can not be
             # nullable.
             type: dbo.MultiColNull
+
+        # If a script uses temp tables that must be loaded by Facil (effectively acting as
+        # parameters for the script), place the definitions here. Note that while this
+        # property can be overridden by later matching script rules, it is not merged (or
+        # removed); the last specified tempTables array for any given script will be used.
+        #
+        # Note that the temp table definitions will be executed during build, so don't do
+        # anything dangerous here.
+        tempTables:
+            # You can supply the definition directly as a string.
+          - definition: |
+              CREATE TABLE #myTempTable(
+                Col1 INT NOT NULL PRIMARY KEY,
+                Col2 NVARCHAR(100) NULL
+              )
+
+            # If using a single line, remember to enclose in quotes (otherwise everything
+            # after # will be a YAML comment and not be part of the definition)
+          - definition: "CREATE TABLE #myTempTable(Col1 INT NOT NULL)"
+
+            # You can also specify a path to a SQL file containing the definition. The
+            # path is relative to your project directory.
+          - definition: path/to/my/tempTableDefinition.sql
         
 
     # Facil can generate DTO record types for tables. These can then (automatically or

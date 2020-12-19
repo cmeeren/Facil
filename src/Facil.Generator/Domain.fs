@@ -303,6 +303,14 @@ type StoredProcedure = {
 }
 
 
+type TempTable = {
+  Name: string
+  Source: string
+  Columns: OutputColumn list
+} with
+  member this.FSharpName = this.Name.TrimStart '#'
+
+
 type Script = {
   GlobMatchOutput: string
   RelativePathSegments: string list
@@ -310,6 +318,7 @@ type Script = {
   Source: string
   Parameters: Parameter list
   ResultSet: OutputColumn list option
+  TempTables: TempTable list
 }
 
 

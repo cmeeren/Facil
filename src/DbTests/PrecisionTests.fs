@@ -1038,6 +1038,210 @@ let tests =
           test <@ xml = res.Value.xml.Value @>
         }
 
+
+      testCase "Temp table parameters" <| fun () ->
+        Property.check <| property {
+          let! bigint = Gen.Sql.bigint
+          let! binary_42 = Gen.Sql.binary 42
+          let! bit = Gen.Sql.bit
+          let! char_42 = Gen.Sql.char 42
+          let! date = Gen.Sql.date
+          let! datetime = Gen.Sql.datetime
+          let! datetime2_3 = Gen.Sql.datetime2 3
+          let! datetimeoffset_1 = Gen.Sql.datetimeoffset 1
+          let! decimal_10_5 = Gen.Sql.decimal 10 5
+          let! float_42 = Gen.Sql.float 42
+          let! image = Gen.Sql.image
+          let! int = Gen.Sql.int
+          let! money = Gen.Sql.money
+          let! nchar_42 = Gen.Sql.nchar 42
+          let! ntext = Gen.Sql.ntext
+          let! numeric_8_3 = Gen.Sql.numeric 8 3
+          let! nvarchar_42 = Gen.Sql.nvarchar 42
+          let! real = Gen.Sql.real
+          let! smalldatetime = Gen.Sql.smalldatetime
+          let! smallint = Gen.Sql.smallint
+          let! smallmoney = Gen.Sql.smallmoney
+          let! text = Gen.Sql.text
+          let! time_1 = Gen.Sql.time 1
+          let! tinyint = Gen.Sql.tinyint
+          let! uniqueidentifier = Gen.Sql.uniqueidentifier
+          let! varbinary_42 = Gen.Sql.varbinary 42
+          let! varchar_42 = Gen.Sql.varchar 42
+          let! xml = Gen.Sql.xml
+    
+          let res =
+            DbGen.Scripts.SQL.TempTableAllTypesNonNull
+              .WithConnection(Config.connStr)
+              .WithParameters(
+                allTypesNonNull =
+                  [
+                    DbGen.Scripts.SQL.TempTableAllTypesNonNull.AllTypesNonNull.create(
+                      Bigint = bigint,
+                      Binary = binary_42,
+                      Bit = bit,
+                      Char = char_42,
+                      Date = date,
+                      Datetime = datetime,
+                      Datetime2 = datetime2_3,
+                      Datetimeoffset = datetimeoffset_1,
+                      Decimal = decimal_10_5,
+                      Float = float_42,
+                      Image = image,
+                      Int = int,
+                      Money = money,
+                      Nchar = nchar_42,
+                      Ntext = ntext,
+                      Numeric = numeric_8_3,
+                      Nvarchar = nvarchar_42,
+                      Real = real,
+                      Smalldatetime = smalldatetime,
+                      Smallint = smallint,
+                      Smallmoney = smallmoney,
+                      Text = text,
+                      Time = time_1,
+                      Tinyint = tinyint,
+                      Uniqueidentifier = uniqueidentifier,
+                      Varbinary = varbinary_42,
+                      Varchar = varchar_42,
+                      Xml = xml
+                    )
+                  ]
+              )
+              .ExecuteSingle()
+    
+          test <@ bigint = res.Value.Bigint @>
+          test <@ binary_42 = res.Value.Binary @>
+          test <@ bit = res.Value.Bit @>
+          test <@ char_42 = res.Value.Char @>
+          test <@ date = res.Value.Date @>
+          test <@ datetime = res.Value.Datetime @>
+          test <@ datetime2_3 = res.Value.Datetime2 @>
+          test <@ datetimeoffset_1 = res.Value.Datetimeoffset @>
+          test <@ decimal_10_5 = res.Value.Decimal @>
+          test <@ float_42 = res.Value.Float @>
+          test <@ image = res.Value.Image @>
+          test <@ int = res.Value.Int @>
+          test <@ money = res.Value.Money @>
+          test <@ nchar_42 = res.Value.Nchar @>
+          test <@ ntext = res.Value.Ntext @>
+          test <@ numeric_8_3 = res.Value.Numeric @>
+          test <@ nvarchar_42 = res.Value.Nvarchar @>
+          test <@ real = res.Value.Real @>
+          test <@ smalldatetime = res.Value.Smalldatetime @>
+          test <@ smallint = res.Value.Smallint @>
+          test <@ smallmoney = res.Value.Smallmoney @>
+          test <@ text = res.Value.Text @>
+          test <@ time_1 = res.Value.Time @>
+          test <@ tinyint = res.Value.Tinyint @>
+          test <@ uniqueidentifier = res.Value.Uniqueidentifier @>
+          test <@ varbinary_42 = res.Value.Varbinary @>
+          test <@ varchar_42 = res.Value.Varchar @>
+          test <@ xml = res.Value.Xml @>
+        }
+
+
+      testCase "Nullable temp table parameters" <| fun () ->
+        Property.check <| property {
+          let! bigint = Gen.Sql.bigint |> Gen.option
+          let! binary_42 = Gen.Sql.binary 42 |> Gen.option
+          let! bit = Gen.Sql.bit |> Gen.option
+          let! char_42 = Gen.Sql.char 42 |> Gen.option
+          let! date = Gen.Sql.date |> Gen.option
+          let! datetime = Gen.Sql.datetime |> Gen.option
+          let! datetime2_3 = Gen.Sql.datetime2 3 |> Gen.option
+          let! datetimeoffset_1 = Gen.Sql.datetimeoffset 1 |> Gen.option
+          let! decimal_10_5 = Gen.Sql.decimal 10 5 |> Gen.option
+          let! float_42 = Gen.Sql.float 42 |> Gen.option
+          let! image = Gen.Sql.image |> Gen.option
+          let! int = Gen.Sql.int |> Gen.option
+          let! money = Gen.Sql.money |> Gen.option
+          let! nchar_42 = Gen.Sql.nchar 42 |> Gen.option
+          let! ntext = Gen.Sql.ntext |> Gen.option
+          let! numeric_8_3 = Gen.Sql.numeric 8 3 |> Gen.option
+          let! nvarchar_42 = Gen.Sql.nvarchar 42 |> Gen.option
+          let! real = Gen.Sql.real |> Gen.option
+          let! smalldatetime = Gen.Sql.smalldatetime |> Gen.option
+          let! smallint = Gen.Sql.smallint |> Gen.option
+          let! smallmoney = Gen.Sql.smallmoney |> Gen.option
+          let! text = Gen.Sql.text |> Gen.option
+          let! time_1 = Gen.Sql.time 1 |> Gen.option
+          let! tinyint = Gen.Sql.tinyint |> Gen.option
+          let! uniqueidentifier = Gen.Sql.uniqueidentifier |> Gen.option
+          let! varbinary_42 = Gen.Sql.varbinary 42 |> Gen.option
+          let! varchar_42 = Gen.Sql.varchar 42 |> Gen.option
+          let! xml = Gen.Sql.xml |> Gen.option
+    
+          let res =
+            DbGen.Scripts.SQL.TempTableAllTypesNull
+              .WithConnection(Config.connStr)
+              .WithParameters(
+                allTypesNull =
+                  [
+                    DbGen.Scripts.SQL.TempTableAllTypesNull.AllTypesNull.create(
+                      Bigint = bigint,
+                      Binary = binary_42,
+                      Bit = bit,
+                      Char = char_42,
+                      Date = date,
+                      Datetime = datetime,
+                      Datetime2 = datetime2_3,
+                      Datetimeoffset = datetimeoffset_1,
+                      Decimal = decimal_10_5,
+                      Float = float_42,
+                      Image = image,
+                      Int = int,
+                      Money = money,
+                      Nchar = nchar_42,
+                      Ntext = ntext,
+                      Numeric = numeric_8_3,
+                      Nvarchar = nvarchar_42,
+                      Real = real,
+                      Smalldatetime = smalldatetime,
+                      Smallint = smallint,
+                      Smallmoney = smallmoney,
+                      Text = text,
+                      Time = time_1,
+                      Tinyint = tinyint,
+                      Uniqueidentifier = uniqueidentifier,
+                      Varbinary = varbinary_42,
+                      Varchar = varchar_42,
+                      Xml = xml
+                    )
+                  ]
+              )
+              .ExecuteSingle()
+    
+          test <@ bigint = res.Value.Bigint @>
+          test <@ binary_42 = res.Value.Binary @>
+          test <@ bit = res.Value.Bit @>
+          test <@ char_42 = res.Value.Char @>
+          test <@ date = res.Value.Date @>
+          test <@ datetime = res.Value.Datetime @>
+          test <@ datetime2_3 = res.Value.Datetime2 @>
+          test <@ datetimeoffset_1 = res.Value.Datetimeoffset @>
+          test <@ decimal_10_5 = res.Value.Decimal @>
+          test <@ float_42 = res.Value.Float @>
+          test <@ image = res.Value.Image @>
+          test <@ int = res.Value.Int @>
+          test <@ money = res.Value.Money @>
+          test <@ nchar_42 = res.Value.Nchar @>
+          test <@ ntext = res.Value.Ntext @>
+          test <@ numeric_8_3 = res.Value.Numeric @>
+          test <@ nvarchar_42 = res.Value.Nvarchar @>
+          test <@ real = res.Value.Real @>
+          test <@ smalldatetime = res.Value.Smalldatetime @>
+          test <@ smallint = res.Value.Smallint @>
+          test <@ smallmoney = res.Value.Smallmoney @>
+          test <@ text = res.Value.Text @>
+          test <@ time_1 = res.Value.Time @>
+          test <@ tinyint = res.Value.Tinyint @>
+          test <@ uniqueidentifier = res.Value.Uniqueidentifier @>
+          test <@ varbinary_42 = res.Value.Varbinary @>
+          test <@ varchar_42 = res.Value.Varchar @>
+          test <@ xml = res.Value.Xml @>
+        }
+
     ]
 
   ]

@@ -4,6 +4,7 @@ open System
 open System.Collections.Generic
 open System.Data
 open System.IO
+open System.Text.RegularExpressions
 open Microsoft.Data.SqlClient
 open Microsoft.SqlServer.TransactSql.ScriptDom
 
@@ -27,21 +28,45 @@ let getSysTypeIdLookup (conn: SqlConnection) =
     raise <| Exception("Error getting system type IDs", ex)
 
 
+// Prefix temp table names to ensure no collisions with existing global temp tables
+let facilGlobalTempTablePrefix = $"""FACIL_TEMP_{Guid.NewGuid().ToString("N")}_"""
+
+let rewriteLocalTempTablesToGlobalTempTablesWithPrefix (nameOrDefinition: string) =
+  Regex.Replace(nameOrDefinition, "(?<!#)#(?=\w)", "##")
+  |> fun s -> Regex.Replace(s, "##(?=\w)", $"##{facilGlobalTempTablePrefix}")
+
+
+let createAndDropTempTables (tempTables: TempTable list) (conn: SqlConnection) =
+  for tt in tempTables do
+    use cmd = conn.CreateCommand()
+    cmd.CommandText <- tt.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+    cmd.ExecuteNonQuery () |> ignore
+
+  { new IDisposable with
+      member _.Dispose () =
+        // Drop all temp tables
+        for tt in tempTables do
+          use cmd = conn.CreateCommand()
+          cmd.CommandText <- $"DROP TABLE {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}"
+          cmd.ExecuteNonQuery() |> ignore
+  }
+
+
 let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tableTypesByUserId: Map<int, TableType>) (script: Script) (conn: SqlConnection) =
 
   try
 
-    let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-
-    // Use a GUID in the temp var names to ensure no collisions
+    // Prefix temp var names to ensure no collisions
     let facilTempVarPrefix = $"""@FACIL_VARIABLE_{Guid.NewGuid().ToString("N")}_"""
+
+    let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
 
     let paramsWithFirstUsageOffset = Dictionary()
     let parser = TSql150Parser(true)
     let fragment, _ = parser.Parse(new StringReader(script.Source))
     fragment.Accept {
       new TSqlFragmentVisitor() with
-        member _.Visit(node: VariableReference) = 
+        member _.Visit(node: VariableReference) =
           base.Visit node
           match paramsWithFirstUsageOffset.TryGetValue node.Name with
           | true, offset when offset < node.StartOffset -> ()
@@ -49,6 +74,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
     }
 
     let sourceToUse =
+      // Add parameter declarations from config
       (script.Source, (Map.toList rule.Parameters))
       ||> List.fold (fun source (paramName, p) ->
             if not (paramsWithFirstUsageOffset.ContainsKey $"@{paramName}") then
@@ -59,6 +85,10 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
               | None -> source
               | Some typeDef -> $"DECLARE @{paramName} {typeDef} = {facilTempVarPrefix}{paramName}\n{source}"
       )
+      |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+
+
+    use __ = createAndDropTempTables script.TempTables conn
     
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "sys.sp_describe_undeclared_parameters"
@@ -124,18 +154,30 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
   with
   | :? SqlException as ex when ex.Message.Contains "Procedure or function" && ex.Message.Contains "has too many arguments specified" ->
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. If you are using EXEC statements, all parameters passed to the procedure/function you execute may need to be declared in the script or Facil config file.", ex)
+  | :? SqlException as ex when ex.Message.StartsWith "Invalid object name '#" ->
+      raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. If you are using temp tables, you may need to define them in the script's `tempTables` array in the Facil config file.", ex)
   | ex ->
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}", ex)
 
 
 
-let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (executable: Choice<StoredProcedure, Script>) (conn: SqlConnection) =
+let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
+
+  let tempTablesToCreateAndDrop =
+    match executable with
+    | Choice2Of3 script -> script.TempTables
+    | Choice1Of3 _ -> []
+    | Choice3Of3 tempTable -> [tempTable]
+
+  use __ = createAndDropTempTables tempTablesToCreateAndDrop conn
+
   use cmd = conn.CreateCommand()
   cmd.CommandText <- "sys.sp_describe_first_result_set"
   cmd.CommandType <- CommandType.StoredProcedure
   match executable with
-  | Choice1Of2 sproc -> cmd.Parameters.AddWithValue("@tsql", sproc.SchemaName + "." + sproc.Name) |> ignore
-  | Choice2Of2 script -> cmd.Parameters.AddWithValue("@tsql", script.Source) |> ignore
+  | Choice1Of3 sproc -> cmd.Parameters.AddWithValue("@tsql", sproc.SchemaName + "." + sproc.Name) |> ignore
+  | Choice2Of3 script -> cmd.Parameters.AddWithValue("@tsql", script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix) |> ignore
+  | Choice3Of3 tt -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}") |> ignore
   use reader = cmd.ExecuteReader()
   let cols = ResizeArray()
   while reader.Read() do
@@ -163,22 +205,31 @@ let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (
   if cols.Count = 0 then None else Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumnsFromSetFmtOnlyOn (executable: Choice<StoredProcedure, Script>) (conn: SqlConnection) =
+let getColumnsFromSetFmtOnlyOn (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
+  let tempTablesToCreateAndDrop =
+    match executable with
+    | Choice2Of3 script -> script.TempTables
+    | Choice1Of3 _ -> []
+    | Choice3Of3 tempTable -> [tempTable]
+
+  use __ = createAndDropTempTables tempTablesToCreateAndDrop conn
+
   use cmd = conn.CreateCommand()
   match executable with
-  | Choice1Of2 sproc ->
+  | Choice1Of3 sproc ->
       cmd.CommandText <- sproc.SchemaName + "." + sproc.Name
       cmd.CommandType <- CommandType.StoredProcedure
       for param in sproc.Parameters do
         match param.TypeInfo with
         | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
-  | Choice2Of2 script ->
-      cmd.CommandText <- script.Source
+  | Choice2Of3 script ->
+      cmd.CommandText <- script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
       for param in script.Parameters do
         match param.TypeInfo with
         | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+  | Choice3Of3 tt -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}") |> ignore
   use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)
   match reader.GetSchemaTable() with
   | null -> None
@@ -213,8 +264,9 @@ let getColumns (conn: SqlConnection) sysTypeIdLookup executable =
   with ex ->
     let executableName =
       match executable with
-      | Choice1Of2 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
-      | Choice2Of2 s -> $"script {s.GlobMatchOutput}"
+      | Choice1Of3 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
+      | Choice2Of3 s -> $"script {s.GlobMatchOutput}"
+      | Choice3Of3 tt -> $"temp table {tt.Name}"
     raise <| Exception($"Error getting output columns for {executableName}", ex)
 
 
@@ -411,7 +463,7 @@ let getStoredProcedures sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>
   )
   // Add result sets
   |> List.map (fun sproc ->
-      { sproc with ResultSet = getColumns conn sysTypeIdLookup (Choice1Of2 sproc) }
+      { sproc with ResultSet = getColumns conn sysTypeIdLookup (Choice1Of3 sproc) }
   )
 
 
@@ -475,7 +527,51 @@ let getTableDtos (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
     raise <| Exception("Error getting table DTOs", ex)
 
 
-let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSets: Script list) (conn: SqlConnection) =
+
+let getTempTable (sysTypeIdLookup: Map<int, string>) definition (conn: SqlConnection) =
+  try
+    let mutable name = null
+    let parser = TSql150Parser(true)
+    let fragment, _ = parser.Parse(new StringReader(definition))
+    fragment.Accept {
+      new TSqlFragmentVisitor() with
+        member _.Visit(node: CreateTableStatement) =
+          if not (isNull name) then failwith "Temp table definition must not contain multiple CREATE TABLE statements"
+          base.Visit node
+          name <- node.SchemaObjectName.BaseIdentifier.Value
+    }
+
+    if isNull name then failwith "No CREATE TABLE statement was found in temp table definition"
+
+    let tempTableWithoutColumns =
+      {
+        Name = name
+        Source = definition
+        Columns = []
+      }
+
+    // Create table so we can query it to get columns
+    use cmd = conn.CreateCommand()
+    cmd.CommandText <- definition
+    cmd.ExecuteNonQuery() |> ignore
+
+    let tempTable =
+      { tempTableWithoutColumns with
+          Columns = getColumns conn sysTypeIdLookup (Choice3Of3 tempTableWithoutColumns) |> Option.defaultValue []
+      }
+
+    // Drop table in case other temp tables use the same name
+    use cmd = conn.CreateCommand()
+    cmd.CommandText <- $"DROP TABLE {tempTable.Name}"
+    cmd.ExecuteNonQuery() |> ignore
+
+    tempTable
+  with ex ->
+    raise <| Exception($"Error getting temp table from the following definition:\n%s{definition}", ex)
+
+
+
+let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsOrTempTables: Script list) (conn: SqlConnection) =
 
   let sysTypeIdLookup = getSysTypeIdLookup conn
 
@@ -483,14 +579,29 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSets:
 
   let tableTypesByUserId = tableTypes |> List.map (fun t -> t.UserTypeId, t) |> Map.ofList
 
+  let tempTablesByDefinition =
+    cfg.Scripts
+    |> List.collect (fun s -> s.TempTables)
+    |> List.map (fun rule -> rule.Definition)
+    |> List.distinct
+    |> List.map (fun definition -> definition, getTempTable sysTypeIdLookup definition conn)
+    |> Map.ofList
+
   let scripts =
-    scriptsWithoutParamsOrResultSets
+    scriptsWithoutParamsOrResultSetsOrTempTables
+    |> List.map (fun script ->
+        let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+        let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition.[tt.Definition])
+        if tempTables |> List.countBy (fun tt -> tt.Name) |> List.exists (fun (_, count) -> count > 1) then
+          failwithError $"The rule for script '%s{script.GlobMatchOutput}' contains multiple temp table definitions using the same temp table name. This is not supported."
+        { script with TempTables = tempTables }
+    )
     |> List.map (fun script ->
         let parameters = getScriptParameters cfg sysTypeIdLookup tableTypesByUserId script conn
         { script with Parameters = parameters }
     )
     |> List.map (fun script ->
-        let resultSet = getColumns conn sysTypeIdLookup (Choice2Of2 script)
+        let resultSet = getColumns conn sysTypeIdLookup (Choice2Of3 script)
         { script with ResultSet = resultSet }
     )
     |> List.filter (fun s ->
