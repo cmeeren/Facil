@@ -109,7 +109,7 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 
 Facil is production ready.
 
-Facil contains almost 2000 tests verifying most functionality in many different combinations, and will soon be used in several mission-critical production services at our company. I’m not claiming it’s perfect, or even bug-free, but it’s well tested, and I have a vested interest in keeping it working properly.
+Facil contains over 2000 tests verifying most functionality in many different combinations, and will soon be used in several mission-critical production services at our company. I’m not claiming it’s perfect, or even bug-free, but it’s well tested, and I have a vested interest in keeping it working properly.
 
 It’s still at 0.x because it's still new and I may still be discovering improvements that require breaking changes every now and then. However, do not take 0.x to mean that it’s a buggy mess, or that the API will radically change every other week. Breaking changes will cause a lot of churn for me, too.
 
