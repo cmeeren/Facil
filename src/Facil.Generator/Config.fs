@@ -205,6 +205,7 @@ type RuleSetDto = {
   connectionString: string option
   filename: string option
   namespaceOrModuleDeclaration: string option
+  scriptBasePath: string option
   prelude: string option
   tableDtos: TableDtoRuleDto list option
   tableTypes: TableTypeRuleDto list option
@@ -218,6 +219,7 @@ type RuleSet =
     ConnectionString: string
     Filename: string
     NamespaceOrModuleDeclaration: string
+    ScriptBasePath: string
     Prelude: string list option
     TableDtos: TableDtoRule list
     TableTypes: TableTypeRule list
@@ -443,11 +445,11 @@ module ScriptParameter =
 module ScriptTempTableRule =
 
 
-  let fromDto projectDir (dto: ScriptTempTableRuleDto) =
+  let fromDto basePath (dto: ScriptTempTableRuleDto) =
     {
       Definition =
-        if dto.definition.EndsWith ".sql" && File.Exists(Path.Combine(projectDir, dto.definition)) then
-          File.ReadAllText(Path.Combine(projectDir, dto.definition))
+        if dto.definition.EndsWith ".sql" && File.Exists(Path.Combine(basePath, dto.definition)) then
+          File.ReadAllText(Path.Combine(basePath, dto.definition))
         else
           dto.definition
     }
@@ -456,10 +458,10 @@ module ScriptTempTableRule =
 module ScriptRule =
 
 
-  let fromDto (projectDir: string) fullYamlPath (dto: ScriptRuleDto) : ScriptRule =
+  let fromDto (basePath: string) fullYamlPath (dto: ScriptRuleDto) : ScriptRule =
     let exceptMatches =
       match dto.except with
-      | Some pattern -> Glob.Files(projectDir, pattern) |> set
+      | Some pattern -> Glob.Files(basePath, pattern) |> set
       | None -> Set.empty
     {
       IncludeOrFor =
@@ -472,11 +474,11 @@ module ScriptRule =
       IncludeMatches =
         match dto.``include`` with
         | None -> Set.empty
-        | Some pattern -> (Glob.Files(projectDir, pattern) |> set) - exceptMatches
+        | Some pattern -> (Glob.Files(basePath, pattern) |> set) - exceptMatches
       ForMatches =
         match dto.``for`` with
         | None -> Set.empty
-        | Some pattern -> (Glob.Files(projectDir, pattern) |> set) - exceptMatches
+        | Some pattern -> (Glob.Files(basePath, pattern) |> set) - exceptMatches
       Result =
         dto.result
         |> Option.map (function
@@ -492,7 +494,7 @@ module ScriptRule =
         dto.``params``
         |> Option.defaultValue Map.empty
         |> Map.map (fun _ -> ScriptParameter.fromDto)
-      TempTables = dto.tempTables |> Option.map (List.map (ScriptTempTableRule.fromDto projectDir))
+      TempTables = dto.tempTables |> Option.map (List.map (ScriptTempTableRule.fromDto basePath))
     }
 
 
@@ -533,31 +535,34 @@ module ScriptRule =
 module RuleSet =
 
 
-  let fromDto projectDir resolveVariable fullYamlPath (dto: RuleSetDto) = {
-    ConnectionString =
-      dto.connectionString
-      |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "All array items in the 'rulesets' section must have a 'connectionString' property")
-      |> resolveVariable
-    Filename = dto.filename |> Option.defaultValue "DbGen.fs"
-    NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module internal DbGen"
-    Prelude = dto.prelude |> Option.map String.getDeindentedLines
-    TableDtos =
-      dto.tableDtos
-      |> Option.defaultValue []
-      |> List.map (TableDtoRule.fromDto fullYamlPath)
-    TableTypes =
-      dto.tableTypes
-      |> Option.defaultValue []
-      |> List.map (TableTypeRule.fromDto fullYamlPath)
-    Procedures =
-      dto.procedures
-      |> Option.defaultValue []
-      |> List.map (ProcedureRule.fromDto fullYamlPath)
-    Scripts =
-      dto.scripts
-      |> Option.defaultValue []
-      |> List.map (ScriptRule.fromDto projectDir fullYamlPath)
-  }
+  let fromDto projectDir resolveVariable fullYamlPath (dto: RuleSetDto) =
+    let scriptBasePath = dto.scriptBasePath |> Option.defaultValue projectDir |> Path.GetFullPath
+    {
+      ConnectionString =
+        dto.connectionString
+        |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "All array items in the 'rulesets' section must have a 'connectionString' property")
+        |> resolveVariable
+      Filename = dto.filename |> Option.defaultValue "DbGen.fs"
+      NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module internal DbGen"
+      ScriptBasePath = scriptBasePath
+      Prelude = dto.prelude |> Option.map String.getDeindentedLines
+      TableDtos =
+        dto.tableDtos
+        |> Option.defaultValue []
+        |> List.map (TableDtoRule.fromDto fullYamlPath)
+      TableTypes =
+        dto.tableTypes
+        |> Option.defaultValue []
+        |> List.map (TableTypeRule.fromDto fullYamlPath)
+      Procedures =
+        dto.procedures
+        |> Option.defaultValue []
+        |> List.map (ProcedureRule.fromDto fullYamlPath)
+      Scripts =
+        dto.scripts
+        |> Option.defaultValue []
+        |> List.map (ScriptRule.fromDto scriptBasePath fullYamlPath)
+    }
 
 
   let shouldIncludeProcedure schemaName procedureName (cfg: RuleSet) =

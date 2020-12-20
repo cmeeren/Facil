@@ -56,7 +56,7 @@ module Program =
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
                 NameWithoutExtension = Path.GetFileNameWithoutExtension globOutput
-                Source = File.ReadAllText (Path.Combine(projectDir, globOutput))
+                Source = File.ReadAllText (Path.Combine(cfg.ScriptBasePath, globOutput))
                 Parameters = []
                 ResultSet = None
                 TempTables = []

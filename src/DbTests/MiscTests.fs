@@ -64,11 +64,11 @@ let tests =
 
       testList "Dynamic SQL works as expected with explicit declaration" [
         yield!
-          allExecuteMethodsAsSingle<DbGen.Scripts.SQL.DynamicSqlWithDeclaration_Executable, _>
+          allExecuteMethodsAsSingle<DbGen.Scripts.DynamicSqlWithDeclaration_Executable, _>
           |> List.map (fun (name, exec) ->
               testCase name <| fun () ->
                 let res =
-                  DbGen.Scripts.SQL.DynamicSqlWithDeclaration
+                  DbGen.Scripts.DynamicSqlWithDeclaration
                     .WithConnection(Config.connStr)
                     .WithParameters(col1Filter = "test2")
                   |> exec
@@ -80,11 +80,11 @@ let tests =
 
       testList "Dynamic SQL works as expected with config declaration" [
         yield!
-          allExecuteMethodsAsSingle<DbGen.Scripts.SQL.DynamicSqlWithoutDeclaration_Executable, _>
+          allExecuteMethodsAsSingle<DbGen.Scripts.DynamicSqlWithoutDeclaration_Executable, _>
           |> List.map (fun (name, exec) ->
               testCase name <| fun () ->
                 let res =
-                  DbGen.Scripts.SQL.DynamicSqlWithoutDeclaration
+                  DbGen.Scripts.DynamicSqlWithoutDeclaration
                     .WithConnection(Config.connStr)
                     .WithParameters(col1Filter = "test2")
                   |> exec
@@ -152,10 +152,10 @@ let tests =
         // deliberate.
         testCase "Temp table parameters that are too long raise exceptions" <| fun () ->
           let run () =
-            DbGen.Scripts.SQL.TempTableWithLengthTypes
+            DbGen.Scripts.TempTableWithLengthTypes
               .WithConnection(Config.connStr)
               .WithParameters([
-                DbGen.Scripts.SQL.TempTableWithLengthTypes.tempTableWithLengthTypes.create(
+                DbGen.Scripts.TempTableWithLengthTypes.tempTableWithLengthTypes.create(
                   binary = [| 1uy; 2uy; 3uy; 4uy |],
                   char = "1234",
                   nchar = "1234",

@@ -7,6 +7,8 @@ rulesets:
     filename: DbGen.fs
     namespaceOrModuleDeclaration: module DbGen
 
+    scriptBasePath: SQL
+
     prelude: |
       module MyPreludeModule =
         let x = 2
@@ -42,112 +44,112 @@ rulesets:
 
     scripts:
       - include: "**/*.sql"
-        except: "**/TempTableDefinitions/**/*.sql"
+        except: "TempTableDefinitions/**/*.sql"
 
       - for: "**/*WithoutDto.sql"
         result: anonymous
 
-      - for: SQL/ParamsUsedTwice.sql
+      - for: ParamsUsedTwice.sql
         params:
           col1:
             nullable: true
             type: NVARCHAR(50)
 
-      - for: SQL/UserDefinedTableType.sql
+      - for: UserDefinedTableType.sql
         params:
           tvp:
             type: dbo.MultiColNull
 
-      - for: SQL/Voption/In.sql
+      - for: Voption/In.sql
         voptionIn: true
         params:
           param1:
             nullable: true
             type: NVARCHAR(50)
 
-      - for: SQL/Voption/Out.sql
+      - for: Voption/Out.sql
         voptionOut: true
         params:
           param1:
             nullable: true
             type: NVARCHAR(50)
 
-      - for: SQL/Voption/TableOutWithDto.sql
+      - for: Voption/TableOutWithDto.sql
         voptionOut: true
 
-      - for: SQL/Voption/TableOutWithoutDto.sql
+      - for: Voption/TableOutWithoutDto.sql
         voptionOut: true
 
-      - for: SQL/Voption/TvpInOut.sql
+      - for: Voption/TvpInOut.sql
         voptionOut: true
         params:
           tvp:
             type: dbo.MultiColNullVoption
 
-      - for: SQL/Option/In.sql
+      - for: Option/In.sql
         params:
           param1:
             nullable: true
             type: NVARCHAR(50)
 
-      - for: SQL/Option/Out.sql
+      - for: Option/Out.sql
         params:
           param1:
             nullable: true
             type: NVARCHAR(50)
 
-      - for: SQL/Option/TvpInOut.sql
+      - for: Option/TvpInOut.sql
         params:
           tvp:
             type: dbo.MultiColNull
 
-      - for: SQL/SingleRecordCol.sql
+      - for: SingleRecordCol.sql
         recordIfSingleCol: true
 
-      - for: SQL/OverriddenDtoParamName.sql
+      - for: OverriddenDtoParamName.sql
         params:
           nameToBeOverridden:
             type: INT
             dtoName: newDtoParamName
 
-      - for: SQL/DynamicSqlWithoutDeclaration.sql
+      - for: DynamicSqlWithoutDeclaration.sql
         params:
           col1Filter:
             type: NVARCHAR(42)
 
-      - for: SQL/TempTableAllTypesNonNull.sql
+      - for: TempTableAllTypesNonNull.sql
         tempTables:
-          - definition: SQL/TempTableDefinitions/TempTableAllTypesNonNull.sql
+          - definition: TempTableDefinitions/TempTableAllTypesNonNull.sql
 
-      - for: SQL/TempTableAllTypesNull.sql
+      - for: TempTableAllTypesNull.sql
         tempTables:
-          - definition: SQL/TempTableDefinitions/TempTableAllTypesNull.sql
+          - definition: TempTableDefinitions/TempTableAllTypesNull.sql
 
-      - for: SQL/TempTableAllTypesNullVoption.sql
+      - for: TempTableAllTypesNullVoption.sql
         voptionIn: true
         tempTables:
-          - definition: SQL/TempTableDefinitions/TempTableAllTypesNull.sql
+          - definition: TempTableDefinitions/TempTableAllTypesNull.sql
 
-      - for: SQL/TempTableInlined.sql
+      - for: TempTableInlined.sql
         tempTables:
             # Deliberately uses the same temp table name as at least one other script to
             # ensure temp tables are dropped when parsing
           - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
 
-      - for: SQL/TempTableInlinedDynamic.sql
+      - for: TempTableInlinedDynamic.sql
         tempTables:
           - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
 
-      - for: SQL/TempTableInlinedWithOtherParams.sql
+      - for: TempTableInlinedWithOtherParams.sql
         tempTables:
           - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
 
-      - for: SQL/MultipleTempTables.sql
+      - for: MultipleTempTables.sql
         tempTables:
           - definition: "CREATE TABLE #tempTable1 (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
           - definition: "CREATE TABLE #tempTable2 (Col1 INT NOT NULL, Col3 NVARCHAR(42) NOT NULL)"
 
-      - for: SQL/TempTableWithLengthTypes.sql
+      - for: TempTableWithLengthTypes.sql
         tempTables:
           - definition: |
               CREATE TABLE #tempTableWithLengthTypes (

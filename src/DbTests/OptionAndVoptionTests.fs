@@ -162,13 +162,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.In) [
+    testList (nameof DbGen.Scripts.Option.In) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Option.In_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Option.In_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.In
+                DbGen.Scripts.Option.In
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = Some "test")
                 |> exec
@@ -177,13 +177,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.In + "_null") [
+    testList (nameof DbGen.Scripts.Option.In + "_null") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Option.In_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Option.In_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.In
+                DbGen.Scripts.Option.In
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = None)
                 |> exec
@@ -192,13 +192,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.Out) [
+    testList (nameof DbGen.Scripts.Option.Out) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Option.Out_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Option.Out_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.Out
+                DbGen.Scripts.Option.Out
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = Some "test")
                 |> exec
@@ -207,13 +207,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.Out + "_null") [
+    testList (nameof DbGen.Scripts.Option.Out + "_null") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Option.Out_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Option.Out_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.Out
+                DbGen.Scripts.Option.Out
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = None)
                 |> exec
@@ -222,13 +222,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.TableOutWithDto) [
+    testList (nameof DbGen.Scripts.Option.TableOutWithDto) [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.Option.TableOutWithDto, _>
+        allSeqExecuteMethods<DbGen.Scripts.Option.TableOutWithDto, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.TableOutWithDto
+                DbGen.Scripts.Option.TableOutWithDto
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
@@ -250,13 +250,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.TableOutWithoutDto) [
+    testList (nameof DbGen.Scripts.Option.TableOutWithoutDto) [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.Option.TableOutWithoutDto, _>
+        allSeqExecuteMethods<DbGen.Scripts.Option.TableOutWithoutDto, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.TableOutWithoutDto
+                DbGen.Scripts.Option.TableOutWithoutDto
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
@@ -278,13 +278,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.TvpInOut) [
+    testList (nameof DbGen.Scripts.Option.TvpInOut) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Option.TvpInOut_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Option.TvpInOut_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.TvpInOut
+                DbGen.Scripts.Option.TvpInOut
                   .WithConnection(Config.connStr)
                   .WithParameters(tvp = [DbGen.TableTypes.dbo.MultiColNull.create(Foo = Some 1, Bar = Some "test")])
                 |> exec
@@ -295,13 +295,13 @@ let optionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Option.TvpInOut + "_null") [
+    testList (nameof DbGen.Scripts.Option.TvpInOut + "_null") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Option.TvpInOut_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Option.TvpInOut_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Option.TvpInOut
+                DbGen.Scripts.Option.TvpInOut
                   .WithConnection(Config.connStr)
                   .WithParameters(tvp = [DbGen.TableTypes.dbo.MultiColNull.create(Foo = None, Bar = None)])
                 |> exec
@@ -474,13 +474,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.In) [
+    testList (nameof DbGen.Scripts.Voption.In) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Voption.In_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Voption.In_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.In
+                DbGen.Scripts.Voption.In
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = ValueSome "test")
                 |> exec
@@ -489,13 +489,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.In + "_null") [
+    testList (nameof DbGen.Scripts.Voption.In + "_null") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.Voption.In_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.Voption.In_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.In
+                DbGen.Scripts.Voption.In
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = ValueNone)
                 |> exec
@@ -504,13 +504,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.Out) [
+    testList (nameof DbGen.Scripts.Voption.Out) [
       yield!
-        allExecuteMethodsAsSingleVoption<DbGen.Scripts.SQL.Voption.Out_Executable, _>
+        allExecuteMethodsAsSingleVoption<DbGen.Scripts.Voption.Out_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.Out
+                DbGen.Scripts.Voption.Out
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = Some "test")
                 |> exec
@@ -520,13 +520,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.Out + "_null") [
+    testList (nameof DbGen.Scripts.Voption.Out + "_null") [
       yield!
-        allExecuteMethodsAsSingleVoption<DbGen.Scripts.SQL.Voption.Out_Executable, _>
+        allExecuteMethodsAsSingleVoption<DbGen.Scripts.Voption.Out_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.Out
+                DbGen.Scripts.Voption.Out
                   .WithConnection(Config.connStr)
                   .WithParameters(param1 = None)
                 |> exec
@@ -536,13 +536,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.TableOutWithDto) [
+    testList (nameof DbGen.Scripts.Voption.TableOutWithDto) [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.Voption.TableOutWithDto, _>
+        allSeqExecuteMethods<DbGen.Scripts.Voption.TableOutWithDto, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.TableOutWithDto
+                DbGen.Scripts.Voption.TableOutWithDto
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
@@ -564,13 +564,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.TableOutWithoutDto) [
+    testList (nameof DbGen.Scripts.Voption.TableOutWithoutDto) [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.Voption.TableOutWithoutDto, _>
+        allSeqExecuteMethods<DbGen.Scripts.Voption.TableOutWithoutDto, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.TableOutWithoutDto
+                DbGen.Scripts.Voption.TableOutWithoutDto
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
@@ -592,13 +592,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.TvpInOut) [
+    testList (nameof DbGen.Scripts.Voption.TvpInOut) [
       yield!
-        allExecuteMethodsAsSingleVoption<DbGen.Scripts.SQL.Voption.TvpInOut_Executable, _>
+        allExecuteMethodsAsSingleVoption<DbGen.Scripts.Voption.TvpInOut_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.TvpInOut
+                DbGen.Scripts.Voption.TvpInOut
                   .WithConnection(Config.connStr)
                   .WithParameters(tvp = [DbGen.TableTypes.dbo.MultiColNullVoption.create(Foo = ValueSome 1, Bar = ValueSome "test")])
                 |> exec
@@ -610,13 +610,13 @@ let voptionTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.Voption.TvpInOut + "_null") [
+    testList (nameof DbGen.Scripts.Voption.TvpInOut + "_null") [
       yield!
-        allExecuteMethodsAsSingleVoption<DbGen.Scripts.SQL.Voption.TvpInOut_Executable, _>
+        allExecuteMethodsAsSingleVoption<DbGen.Scripts.Voption.TvpInOut_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.Voption.TvpInOut
+                DbGen.Scripts.Voption.TvpInOut
                   .WithConnection(Config.connStr)
                   .WithParameters(tvp = [DbGen.TableTypes.dbo.MultiColNullVoption.create(Foo = ValueNone, Bar = ValueNone)])
                 |> exec

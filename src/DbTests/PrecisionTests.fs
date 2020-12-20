@@ -1071,12 +1071,12 @@ let tests =
           let! xml = Gen.Sql.xml
     
           let res =
-            DbGen.Scripts.SQL.TempTableAllTypesNonNull
+            DbGen.Scripts.TempTableAllTypesNonNull
               .WithConnection(Config.connStr)
               .WithParameters(
                 allTypesNonNull =
                   [
-                    DbGen.Scripts.SQL.TempTableAllTypesNonNull.AllTypesNonNull.create(
+                    DbGen.Scripts.TempTableAllTypesNonNull.AllTypesNonNull.create(
                       Bigint = bigint,
                       Binary = binary_42,
                       Bit = bit,
@@ -1173,12 +1173,12 @@ let tests =
           let! xml = Gen.Sql.xml |> Gen.option
     
           let res =
-            DbGen.Scripts.SQL.TempTableAllTypesNull
+            DbGen.Scripts.TempTableAllTypesNull
               .WithConnection(Config.connStr)
               .WithParameters(
                 allTypesNull =
                   [
-                    DbGen.Scripts.SQL.TempTableAllTypesNull.AllTypesNull.create(
+                    DbGen.Scripts.TempTableAllTypesNull.AllTypesNull.create(
                       Bigint = bigint,
                       Binary = binary_42,
                       Bit = bit,

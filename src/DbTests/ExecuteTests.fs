@@ -2808,13 +2808,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.NormalParams) [
+    testList (nameof DbGen.Scripts.NormalParams) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.NormalParams_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.NormalParams_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.NormalParams
+                DbGen.Scripts.NormalParams
                   .WithConnection(Config.connStr)
                   .WithParameters(col1 = "test1")
                 |> exec
@@ -2824,13 +2824,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.NormalParams + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.NormalParams + "_paramsFromDto") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.NormalParams_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.NormalParams_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.NormalParams
+                DbGen.Scripts.NormalParams
                   .WithConnection(Config.connStr)
                   .WithParameters({| Col1 = "test1" |})
                 |> exec
@@ -2840,13 +2840,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.ParamsUsedTwice) [
+    testList (nameof DbGen.Scripts.ParamsUsedTwice) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.ParamsUsedTwice_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.ParamsUsedTwice_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.ParamsUsedTwice
+                DbGen.Scripts.ParamsUsedTwice
                   .WithConnection(Config.connStr)
                   .WithParameters(col1 = Some "test1")
                 |> exec
@@ -2856,13 +2856,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.ParamsUsedTwice + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.ParamsUsedTwice + "_paramsFromDto") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.ParamsUsedTwice_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.ParamsUsedTwice_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.ParamsUsedTwice
+                DbGen.Scripts.ParamsUsedTwice
                   .WithConnection(Config.connStr)
                   .WithParameters({| Col1 = Some "test1" |})
                 |> exec
@@ -2872,13 +2872,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.SelectAllFromTable) [
+    testList (nameof DbGen.Scripts.SelectAllFromTable) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.SelectAllFromTable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.SelectAllFromTable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.SelectAllFromTable
+                DbGen.Scripts.SelectAllFromTable
                   .WithConnection(Config.connStr)
                 |> exec
               test <@ res.Value.TableCol1 = "test1" @>
@@ -2887,13 +2887,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.UserDefinedTableType) [
+    testList (nameof DbGen.Scripts.UserDefinedTableType) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.UserDefinedTableType_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.UserDefinedTableType_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.UserDefinedTableType
+                DbGen.Scripts.UserDefinedTableType
                   .WithConnection(Config.connStr)
                   .WithParameters(tvp = [DbGen.TableTypes.dbo.MultiColNull.create(Foo = Some 1, Bar = Some "test")])
                 |> exec
@@ -2903,13 +2903,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.UserDefinedTableType + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.UserDefinedTableType + "_paramsFromDto") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.UserDefinedTableType_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.UserDefinedTableType_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.UserDefinedTableType
+                DbGen.Scripts.UserDefinedTableType
                   .WithConnection(Config.connStr)
                   .WithParameters({| Tvp = [DbGen.TableTypes.dbo.MultiColNull.create(Foo = Some 1, Bar = Some "test")] |})
                 |> exec
@@ -2919,13 +2919,13 @@ let execTests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.SubPath + "_" + nameof DbGen.Scripts.SQL.SubPath.SelectAllFromTable) [
+    testList (nameof DbGen.Scripts.SubPath + "_" + nameof DbGen.Scripts.SubPath.SelectAllFromTable) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.SubPath.SelectAllFromTable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.SubPath.SelectAllFromTable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let res =
-                DbGen.Scripts.SQL.SubPath.SelectAllFromTable
+                DbGen.Scripts.SubPath.SelectAllFromTable
                   .WithConnection(Config.connStr)
                 |> exec
               test <@ res.Value.TableCol1 = "test1" @>

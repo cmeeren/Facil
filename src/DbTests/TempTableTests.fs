@@ -10,13 +10,13 @@ let tests =
   testList "Temp table tests" [
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNonNull) [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNonNull) [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNonNull_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNonNull_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNonNull.AllTypesNonNull.create(
+                DbGen.Scripts.TempTableAllTypesNonNull.AllTypesNonNull.create(
                   Bigint = 1L,
                   Binary = Array.replicate 42 1uy,
                   Bit = true,
@@ -48,7 +48,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNonNull
+                DbGen.Scripts.TempTableAllTypesNonNull
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     allTypesNonNull = [
@@ -93,13 +93,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNonNull + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNonNull + "_paramsFromDto") [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNonNull_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNonNull_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNonNull.AllTypesNonNull.create(
+                DbGen.Scripts.TempTableAllTypesNonNull.AllTypesNonNull.create(
                   {|
                     Bigint = 1L
                     Binary = Array.replicate 42 1uy
@@ -133,7 +133,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNonNull
+                DbGen.Scripts.TempTableAllTypesNonNull
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
@@ -181,13 +181,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNull) [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNull) [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNull_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNull_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNull.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNull.AllTypesNull.create(
                   Bigint = Some 1L,
                   Binary = Some (Array.replicate 42 1uy),
                   Bit = Some true,
@@ -219,7 +219,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNull
+                DbGen.Scripts.TempTableAllTypesNull
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     allTypesNull = [
@@ -264,13 +264,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNull + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNull + "_paramsFromDto") [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNull_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNull_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNull.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNull.AllTypesNull.create(
                   {|
                     Bigint = Some 1L
                     Binary = Some (Array.replicate 42 1uy)
@@ -304,7 +304,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNull
+                DbGen.Scripts.TempTableAllTypesNull
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
@@ -352,13 +352,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNull + "_null") [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNull + "_null") [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNull_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNull_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNull.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNull.AllTypesNull.create(
                   Bigint = None,
                   Binary = None,
                   Bit = None,
@@ -390,7 +390,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNull
+                DbGen.Scripts.TempTableAllTypesNull
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     allTypesNull = [
@@ -435,13 +435,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNull + "_null_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNull + "_null_paramsFromDto") [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNull_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNull_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNull.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNull.AllTypesNull.create(
                   {|
                     Bigint = None
                     Binary = None
@@ -475,7 +475,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNull
+                DbGen.Scripts.TempTableAllTypesNull
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
@@ -523,13 +523,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNullVoption) [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNullVoption) [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNullVoption_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNullVoption_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNullVoption.AllTypesNull.create(
                   Bigint = ValueSome 1L,
                   Binary = ValueSome (Array.replicate 42 1uy),
                   Bit = ValueSome true,
@@ -561,7 +561,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption
+                DbGen.Scripts.TempTableAllTypesNullVoption
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     allTypesNull = [
@@ -606,13 +606,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNullVoption + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNullVoption + "_paramsFromDto") [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNullVoption_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNullVoption_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNullVoption.AllTypesNull.create(
                   {|
                     Bigint = ValueSome 1L
                     Binary = ValueSome (Array.replicate 42 1uy)
@@ -646,7 +646,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption
+                DbGen.Scripts.TempTableAllTypesNullVoption
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
@@ -694,13 +694,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNullVoption + "_null") [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNullVoption + "_null") [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNullVoption_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNullVoption_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNullVoption.AllTypesNull.create(
                   Bigint = ValueNone,
                   Binary = ValueNone,
                   Bit = ValueNone,
@@ -732,7 +732,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption
+                DbGen.Scripts.TempTableAllTypesNullVoption
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     allTypesNull = [
@@ -777,13 +777,13 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableAllTypesNullVoption + "_null_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableAllTypesNullVoption + "_null_paramsFromDto") [
       yield!
-        allSeqExecuteMethods<DbGen.Scripts.SQL.TempTableAllTypesNullVoption_Executable, _>
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNullVoption_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
               let createTempTableRow () =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption.AllTypesNull.create(
+                DbGen.Scripts.TempTableAllTypesNullVoption.AllTypesNull.create(
                   {|
                     Bigint = ValueNone
                     Binary = ValueNone
@@ -817,7 +817,7 @@ let tests =
                 )
 
               let res =
-                DbGen.Scripts.SQL.TempTableAllTypesNullVoption
+                DbGen.Scripts.TempTableAllTypesNullVoption
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
@@ -865,18 +865,18 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableInlined) [
+    testList (nameof DbGen.Scripts.TempTableInlined) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.TempTableInlined_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlined_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.TempTableInlined
+                DbGen.Scripts.TempTableInlined
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     tempTableInlined = [
-                      DbGen.Scripts.SQL.TempTableInlined.tempTableInlined.create(
+                      DbGen.Scripts.TempTableInlined.tempTableInlined.create(
                         Col1 = 1,
                         Col2 = Some "test"
                       )
@@ -890,19 +890,19 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableInlined + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableInlined + "_paramsFromDto") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.TempTableInlined_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlined_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.TempTableInlined
+                DbGen.Scripts.TempTableInlined
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
                       TempTableInlined = [
-                        DbGen.Scripts.SQL.TempTableInlined.tempTableInlined.create(
+                        DbGen.Scripts.TempTableInlined.tempTableInlined.create(
                           {|
                             Col1 = 1
                             Col2 = Some "test"
@@ -919,18 +919,18 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableInlinedDynamic) [
+    testList (nameof DbGen.Scripts.TempTableInlinedDynamic) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.TempTableInlinedDynamic_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlinedDynamic_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.TempTableInlinedDynamic
+                DbGen.Scripts.TempTableInlinedDynamic
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     tempTableInlined = [
-                      DbGen.Scripts.SQL.TempTableInlinedDynamic.tempTableInlined.create(
+                      DbGen.Scripts.TempTableInlinedDynamic.tempTableInlined.create(
                         Col1 = 1,
                         Col2 = Some "test"
                       )
@@ -944,19 +944,19 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableInlinedDynamic + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableInlinedDynamic + "_paramsFromDto") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.TempTableInlinedDynamic_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlinedDynamic_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.TempTableInlinedDynamic
+                DbGen.Scripts.TempTableInlinedDynamic
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
                       TempTableInlined = [
-                        DbGen.Scripts.SQL.TempTableInlinedDynamic.tempTableInlined.create(
+                        DbGen.Scripts.TempTableInlinedDynamic.tempTableInlined.create(
                           {|
                             Col1 = 1
                             Col2 = Some "test"
@@ -973,18 +973,18 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableInlinedWithOtherParams) [
+    testList (nameof DbGen.Scripts.TempTableInlinedWithOtherParams) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.TempTableInlinedWithOtherParams_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlinedWithOtherParams_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.TempTableInlinedWithOtherParams
+                DbGen.Scripts.TempTableInlinedWithOtherParams
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     tempTableInlined = [
-                      DbGen.Scripts.SQL.TempTableInlinedWithOtherParams.tempTableInlined.create(
+                      DbGen.Scripts.TempTableInlinedWithOtherParams.tempTableInlined.create(
                         Col1 = 1,
                         Col2 = Some "test"
                       )
@@ -999,19 +999,19 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.TempTableInlinedWithOtherParams + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.TempTableInlinedWithOtherParams + "_paramsFromDto") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.TempTableInlinedWithOtherParams_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlinedWithOtherParams_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.TempTableInlinedWithOtherParams
+                DbGen.Scripts.TempTableInlinedWithOtherParams
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
                       TempTableInlined = [
-                        DbGen.Scripts.SQL.TempTableInlinedWithOtherParams.tempTableInlined.create(
+                        DbGen.Scripts.TempTableInlinedWithOtherParams.tempTableInlined.create(
                           {|
                             Col1 = 1
                             Col2 = Some "test"
@@ -1029,24 +1029,24 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.MultipleTempTables) [
+    testList (nameof DbGen.Scripts.MultipleTempTables) [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.MultipleTempTables_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.MultipleTempTables_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.MultipleTempTables
+                DbGen.Scripts.MultipleTempTables
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     tempTable1 = [
-                      DbGen.Scripts.SQL.MultipleTempTables.tempTable1.create(
+                      DbGen.Scripts.MultipleTempTables.tempTable1.create(
                         Col1 = 1,
                         Col2 = Some "test"
                       )
                     ],
                     tempTable2 = [
-                      DbGen.Scripts.SQL.MultipleTempTables.tempTable2.create(
+                      DbGen.Scripts.MultipleTempTables.tempTable2.create(
                         Col1 = 1,
                         Col3 = "foobar"
                       )
@@ -1061,19 +1061,19 @@ let tests =
     ]
 
 
-    testList (nameof DbGen.Scripts.SQL.MultipleTempTables + "_paramsFromDto") [
+    testList (nameof DbGen.Scripts.MultipleTempTables + "_paramsFromDto") [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.MultipleTempTables_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.MultipleTempTables_Executable, _>
         |> List.map (fun (name, exec) ->
             testCase name <| fun () ->
 
               let res =
-                DbGen.Scripts.SQL.MultipleTempTables
+                DbGen.Scripts.MultipleTempTables
                   .WithConnection(Config.connStr)
                   .WithParameters(
                     {|
                       TempTable1 = [
-                        DbGen.Scripts.SQL.MultipleTempTables.tempTable1.create(
+                        DbGen.Scripts.MultipleTempTables.tempTable1.create(
                           {|
                             Col1 = 1
                             Col2 = Some "test"
@@ -1081,7 +1081,7 @@ let tests =
                         )
                       ]
                       TempTable2 = [
-                        DbGen.Scripts.SQL.MultipleTempTables.tempTable2.create(
+                        DbGen.Scripts.MultipleTempTables.tempTable2.create(
                           {|
                             Col1 = 1
                             Col3 = "foobar"
@@ -1101,18 +1101,18 @@ let tests =
 
     testList "Can configure SqlBulkCopy" [
       yield!
-        allExecuteMethodsAsSingle<DbGen.Scripts.SQL.TempTableInlined_Executable, _>
+        allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlined_Executable, _>
         |> List.map (fun (name, exec) ->
             testCaseAsync name <| async {
               let mutable rowsCopied = 0
 
               let createRow () =
-                DbGen.Scripts.SQL.TempTableInlined.tempTableInlined.create(
+                DbGen.Scripts.TempTableInlined.tempTableInlined.create(
                   Col1 = 1,
                   Col2 = Some "test"
                 )
 
-              DbGen.Scripts.SQL.TempTableInlined
+              DbGen.Scripts.TempTableInlined
                 .WithConnection(Config.connStr)
                 .ConfigureBulkCopy(fun bc ->
                   bc.NotifyAfter <- 1

@@ -24,11 +24,11 @@ let tests =
 
       testList "Single-col record result set - script" [
         yield!
-          allExecuteMethodsAsSingle<DbGen.Scripts.SQL.SingleRecordCol, _>
+          allExecuteMethodsAsSingle<DbGen.Scripts.SingleRecordCol, _>
           |> List.map (fun (name, exec) ->
               testCase name <| fun () ->
                 let res =
-                  DbGen.Scripts.SQL.SingleRecordCol
+                  DbGen.Scripts.SingleRecordCol
                     .WithConnection(Config.connStr)
                   |> exec
                 test <@ res.Value.Test = 1 @>
@@ -64,18 +64,18 @@ let tests =
 
       testList "Parameter DTO name overrides - script" [
         yield!
-          allExecuteMethodsAsSingle<DbGen.Scripts.SQL.OverriddenDtoParamName_Executable, _>
+          allExecuteMethodsAsSingle<DbGen.Scripts.OverriddenDtoParamName_Executable, _>
           |> List.map (fun (name, exec) ->
               testCase name <| fun () ->
                 let normalParamRes =
-                  DbGen.Scripts.SQL.OverriddenDtoParamName
+                  DbGen.Scripts.OverriddenDtoParamName
                     .WithConnection(Config.connStr)
                     .WithParameters(nameToBeOverridden = 3)
                   |> exec
                 test <@ normalParamRes.Value = Some 3 @>
 
                 let dtoParamRes =
-                  DbGen.Scripts.SQL.OverriddenDtoParamName
+                  DbGen.Scripts.OverriddenDtoParamName
                     .WithConnection(Config.connStr)
                     .WithParameters({| newDtoParamName = 3 |})
                   |> exec

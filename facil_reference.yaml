@@ -38,6 +38,10 @@ rulesets:
     filename: DbGen.fs
     namespaceOrModuleDeclaration: module internal DbGen
 
+    # The base path for all scripts (including temp table definitions) in this ruleset,
+    # relative to the project directory.
+    scriptBasePath: ../some/path
+
     # 'prelude' contains anything you want to insert at the top of the generated file.
     # This can for example be preprocessor directives to disable compiler warnings.
     # (#nowarn "49" is always inserted by Facil and is just shown as an example.) You
@@ -128,9 +132,14 @@ rulesets:
     # Rules for which SQL script files are included. These work just like stored procedure
     # rules, except that 'include', 'for', and 'except' are glob patterns, not regex
     # patterns. For supported patterns, see the glob implementation Facil uses:
-    # https://github.com/kthompson/glob Note that the SQL files must exist under the
-    # project directory. (The SQL files do not need to be included in the build output;
-    # the script contents will be inlined in the generated code.)
+    # https://github.com/kthompson/glob
+    #
+    # The SQL files must exist under scriptBasePath (by default the project directory);
+    # you may not use .. to go out of this directory.
+
+    #
+    # The SQL files do not need to be included in the build output; the script contents
+    # will be inlined in the generated code.)
     scripts:
       - include: "**/*.sql"
         except: "SQL/ScriptToExclude.sql"
@@ -197,7 +206,7 @@ rulesets:
           - definition: "CREATE TABLE #myTempTable(Col1 INT NOT NULL)"
 
             # You can also specify a path to a SQL file containing the definition. The
-            # path is relative to your project directory.
+            # path is relative to scriptBasePath (by default the project directory).
           - definition: path/to/my/tempTableDefinition.sql
         
 
