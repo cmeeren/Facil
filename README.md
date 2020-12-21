@@ -271,6 +271,18 @@ MyScriptUsingTempTables
 
 The configuration will apply to the loading of all temp tables for the script; please open an issue if you need separate configuration per temp table.
 
+### Why do the `Execute` methods return `ResizeArray` and not an F# `list`?
+
+The rows have to be read from the DB one at a time without knowing how many rows there are. As far as I know, a `ResizeArray` (an alias for the `System.Collections.Generic.List` type) generally provides the most efficient way (at least in terms of allocations) to build up a collection with an unknown number of items, requiring one allocation and array copy each time the internal array is resized. An F# `list` would cause one allocation per cell (item), though as far as I know, it would not require any copies (though it would be built up in reverse and therefore require a full traversal when reversing the list at the end).
+
+F# users would normally want a `list` instead of a `ResizeArray`, but you can get that trivially by just calling `Seq.toList` on the result. Facil could provide `Execute` variants that do this for you, but then you’d have twice as many `Execute` methods to choose from, which would add confusion, and the name prefix/suffix would almost be as verbose as just calling `Seq.toList` yourself.
+
+If you think that building up a `list` directly in the read loop would avoid the “copy” cost of `Seq.toList`, then 1) I don’t think that’s correct, because an F# `list` would have to be built up in reverse by prepending each item, and the `List.rev` at the end would cause at least one “copy” anyway, and 2) in the rare case that your use-case is so sensitive to performance that you are concerned about the performance impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
+
+Note that since Facil is a general-purpose data access library, I do not know anything about user workloads, databases or connections, and I have not benchmarked anything. All of the above is going by intuition (admittedly a dangerous thing in the performance world) as well as a desire to keep the internals fairly simple.
+
+If you believe any of the above is incorrect and have either sound arguments or proper benchmark data (e.g. using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet)) to back it up, please open an issue and we can discuss both the public API and the implementation details.
+
 Release notes
 -------------
 
