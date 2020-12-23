@@ -74,7 +74,7 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
 
 That’s it! Whenever you want to regenerate, simply delete the first line of the generated file and build your project.
 
-Facil will automatically regenerate if you change the configuration or any scripts. For details, see the FAQ entry [When does Facil regenerate files?](#when-does-facil-regenerate-files).
+Facil will also regenerate on next build if you change the configuration or any scripts. For details, see the FAQ entry [When does Facil regenerate files?](#when-does-facil-regenerate-files).
 
 ## Elevator pitch
 
