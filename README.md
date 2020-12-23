@@ -138,7 +138,7 @@ Facil will regenerate (hitting your DB) before the compilation step of your buil
 * There are changes to Facil itself (i.e., when updating Facil)
 * The environment variable `FACIL_FORCE_REGENERATE` exists
 
-When there are no changes as described above, Facil will skip its build step and thus not hit your DB.
+If none of the above are true, Facil will skip its build step and thus not hit your DB.
 
 Notably, this means that Facil **will not pick up changes to your database**. This is by design. If you update the DB that Facil connects to during build, just open the generated file and delete the first line and Facil will re-generate it on the next build.
 
@@ -160,6 +160,7 @@ For each file, you can configure:
 * Arbitrary code to put at the top of the generated file
 * Which stored procedures (regex matching) or scripts (glob matching) to generate code for
 * Which tables to generate DTO records for (which can be used, automatically or manually, for matching procedure/script result sets)
+* The base path for all scripts glob patterns (can be outside your project directory)
 
 For each procedure/script (or any set of these that matches a specified regex/glob pattern), you can configure:
 
@@ -170,6 +171,7 @@ For each procedure/script (or any set of these that matches a specified regex/gl
 * Whether to use return values (stored procedures only)
 * For each parameter: The name to use in parameter DTO objects
 * For each script parameter: Its type and nullability (to work around type inference limitations for scripts, [see below](#type-inference-limitations-in-scripts))
+* For scripts: temp tables ([see below](#can-i-use-temp-tables))
 
 For each table DTO, you can configure:
 
@@ -200,7 +202,7 @@ If Facil’s current approach does not work for you, please open an issue and de
 
 ### Can Facil support user-defined functions?
 
-If you need this, I’m willing to hear you out, but this isn’t high on my priority list right now. A simple workaround is to simply call the function from a script or stored procedure, and then use Facil with that script/procedure instead.
+If you need this, I’m willing to hear you out, but I have limited OSS maintenance resources and this isn’t high on my priority list right now. A simple workaround is to simply call the function from a script or stored procedure, and then use Facil with that script/procedure instead.
 
 ### Can Facil generate SQL, too?
 
@@ -208,7 +210,7 @@ No, this is not currently supported and not planned. While it may sound useful t
 
 ### Does Facil use column names or ordinals?
 
-Facil uses column names at runtime. This means that you are free to reorder the columns returned by stored procedures and scripts (either directly, or by reordering table columns returned in a `SELECT *` query). This does not require re-compilation and will not break existing running apps.
+Facil uses column names at runtime. This means that you are free to reorder the columns returned by stored procedures and scripts (either explicitly, or by reordering table columns returned in a `SELECT *` query). This does not require re-compilation and will not break existing running apps.
 
 ### Can I use temp tables?
 
@@ -255,7 +257,7 @@ MyScriptUsingTempTables
 
 Just like with TVPs, you can use matching DTOs in the calls to `create` (instead of explicitly passing column parameters as shown above).
 
-Facil uses `SqlBulkCopy` to load temp tables. You can configure the created `SqlBulkCopy` using `ConfigureBulkCopy`.
+Facil uses [`SqlBulkCopy`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.data.sqlclient.sqlbulkcopy) to load temp tables. You can configure the created `SqlBulkCopy` using `ConfigureBulkCopy`.
 
 ```f#
 MyScriptUsingTempTables
@@ -275,9 +277,9 @@ The configuration will apply to the loading of all temp tables for the script; p
 
 The rows have to be read from the DB one at a time without knowing how many rows there are. As far as I know, a `ResizeArray` (an alias for the `System.Collections.Generic.List` type) generally provides the most efficient way (at least in terms of allocations) to build up a collection with an unknown number of items, requiring one allocation and array copy each time the internal array is resized. An F# `list` would cause one allocation per cell (item), though as far as I know, it would not require any copies (though it would be built up in reverse and therefore require a full traversal when reversing the list at the end).
 
-F# users would normally want a `list` instead of a `ResizeArray`, but you can get that trivially by just calling `Seq.toList` on the result. Facil could provide `Execute` variants that do this for you, but then you’d have twice as many `Execute` methods to choose from, which would add confusion, and the name prefix/suffix would almost be as verbose as just calling `Seq.toList` yourself.
+F# users would normally want a `list` instead of a `ResizeArray`, but you can get that trivially by just calling `Seq.toList` on the result. This is similar to e.g. FSharp.Data.SqlClient. Facil could provide `Execute` variants that do this for you, but then you’d have twice as many `Execute` methods to choose from, which would add confusion, and the name prefix/suffix would almost be as verbose as just calling `Seq.toList` yourself.
 
-If you think that building up a `list` directly in the read loop would avoid the “copy” cost of `Seq.toList`, then 1) I don’t think that’s correct, because an F# `list` would have to be built up in reverse by prepending each item, and the `List.rev` at the end would cause at least one “copy” anyway, and 2) in the rare case that your use-case is so sensitive to performance that you are concerned about the performance impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
+If you think that building up a `list` directly in the read loop would be more efficient as it would avoid the “copy” cost of `Seq.toList`, then 1) I don’t think that’s correct, because (as mentioned above) an F# `list` would have to be built up in reverse by prepending each item, and the `List.rev` at the end would cause at least one “copy” anyway, and 2) in the rare case that your use-case is so sensitive to performance that you are concerned about the performance impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
 
 Note that since Facil is a general-purpose data access library, I do not know anything about user workloads, databases or connections, and I have not benchmarked anything. All of the above is going by intuition (admittedly a dangerous thing in the performance world) as well as a desire to keep the internals fairly simple.
 
