@@ -74,3 +74,11 @@ module List =
   let mapAllExceptLast f list =
     let length = List.length list
     list |> List.mapi (fun i x -> if i <> length - 1 then f x else x)
+
+
+
+module Option =
+
+  let teeNone f (opt: 'a option) =
+    if opt.IsNone then f ()
+    opt

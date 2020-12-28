@@ -128,6 +128,17 @@ rulesets:
             # letter upper-cased.
             dtoName: SOMEparam
 
+        # 'columns' allows you to specify settings for individual output columns.
+        columns:
+          # The keys are the column names. The special value "" (empty string) specifies
+          # base rules inherited by all columns in this rule.
+          "": {}
+
+          SomeColumn:
+            # Whether the column should be ignored. Can be used e.g. to remove columns
+            # with unsupported data types.
+            skip: true
+
 
     # Rules for which SQL script files are included. These work just like stored procedure
     # rules, except that 'include', 'for', and 'except' are glob patterns, not regex
@@ -208,6 +219,17 @@ rulesets:
             # You can also specify a path to a SQL file containing the definition. The
             # path is relative to scriptBasePath (by default the project directory).
           - definition: path/to/my/tempTableDefinition.sql
+
+        # 'columns' allows you to specify settings for individual output columns.
+        columns:
+          # The keys are the column names. The special value "" (empty string) specifies
+          # base rules inherited by all columns in this rule.
+          "": {}
+
+          SomeColumn:
+            # Whether the column should be ignored. Can be used e.g. to remove columns
+            # with unsupported data types.
+            skip: true
         
 
     # Facil can generate DTO record types for tables. These can then (automatically or
@@ -226,6 +248,17 @@ rulesets:
         # Whether to use ValueOption instead of Option for nullable columns. Default
         # false.
         voption: true
+
+        # 'columns' allows you to specify settings for individual columns.
+        columns:
+          # The keys are the column names. The special value "" (empty string) specifies
+          # base rules inherited by all columns in this rule.
+          "": {}
+
+          SomeColumn:
+            # Whether the column should be ignored. Can be used e.g. to remove columns
+            # with unsupported data types.
+            skip: true
         
 
     # Facil automatically generates table type constructors for table types used as a

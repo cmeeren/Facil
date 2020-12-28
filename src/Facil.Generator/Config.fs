@@ -26,11 +26,23 @@ type ConfigSourceDto = {
 
 
 [<CLIMutable>]
+type TableDtoColumnDto = {
+  skip: bool option
+}
+
+
+type TableDtoColumn = {
+  Skip: bool option
+}
+
+
+[<CLIMutable>]
 type TableDtoRuleDto = {
   ``include``: string option
   ``for``: string option
   except: string option
   voption: bool option
+  columns: Map<string, TableDtoColumnDto> option
 }
 
 
@@ -38,11 +50,13 @@ type TableDtoRule = {
   IncludeOrFor: IncludeOrFor
   Except: string option
   Voption: bool option
+  Columns: Map<string, TableDtoColumn>
 }
 
 
 type EffectiveTableDtoRule = {
   Voption: bool
+  Columns: Map<string, TableDtoColumn>
 }
 
 [<CLIMutable>]
@@ -80,6 +94,17 @@ type ProcedureParameter = {
 
 
 [<CLIMutable>]
+type ProcedureColumnDto = {
+  skip: bool option
+}
+
+
+type ProcedureColumn = {
+  Skip: bool option
+}
+
+
+[<CLIMutable>]
 type ProcedureRuleDto = {
   ``include``: string option
   ``for``: string option
@@ -91,6 +116,7 @@ type ProcedureRuleDto = {
   skipParamDto: bool option
   useReturnValue: bool option
   ``params``: Map<string, ProcedureParameterDto> option
+  columns: Map<string, ProcedureColumnDto> option
 }
 
 
@@ -104,6 +130,7 @@ type ProcedureRule = {
   SkipParamDto: bool option
   UseReturnValue: bool option
   Parameters: Map<string, ProcedureParameter>
+  Columns: Map<string, ProcedureColumn>
 }
 
 
@@ -115,6 +142,7 @@ type EffectiveProcedureRule = {
   SkipParamDto: bool
   UseReturnValue: bool
   Parameters: Map<string, ProcedureParameter>
+  Columns: Map<string, ProcedureColumn>
 }
 
 
@@ -144,6 +172,17 @@ type ScriptTempTableRule = {
 
 
 [<CLIMutable>]
+type ScriptColumnDto = {
+  skip: bool option
+}
+
+
+type ScriptColumn = {
+  Skip: bool option
+}
+
+
+[<CLIMutable>]
 type ScriptRuleDto = {
   ``include``: string option
   ``for``: string option
@@ -155,6 +194,7 @@ type ScriptRuleDto = {
   skipParamDto: bool option
   ``params``: Map<string, ScriptParameterDto> option
   tempTables: ScriptTempTableRuleDto list option
+  columns: Map<string, ScriptColumnDto> option
 }
 
 
@@ -170,6 +210,7 @@ type ScriptRule = {
   SkipParamDto: bool option
   Parameters: Map<string, ScriptParameter>
   TempTables: ScriptTempTableRule list option
+  Columns: Map<string, ScriptColumn>
 }
 
 
@@ -181,11 +222,17 @@ type EffectiveScriptRule = {
   SkipParamDto: bool
   Parameters: Map<string, ScriptParameter>
   TempTables: ScriptTempTableRule list
+  Columns: Map<string, ScriptColumn>
 }
 
 
 type ProcedureOrScriptParameter = {
   DtoName: string option
+}
+
+
+type ProcedureOrScriptColumn = {
+  Skip: bool option
 }
 
 
@@ -197,6 +244,7 @@ type EffectiveProcedureOrScriptRule = {
   SkipParamDto: bool
   UseReturnValue: bool
   Parameters: Map<string, ProcedureOrScriptParameter>
+  Columns: Map<string, ProcedureOrScriptColumn>
 }
 
 
@@ -214,18 +262,17 @@ type RuleSetDto = {
 }
 
 
-type RuleSet =
-  {
-    ConnectionString: string
-    Filename: string
-    NamespaceOrModuleDeclaration: string
-    ScriptBasePath: string
-    Prelude: string list option
-    TableDtos: TableDtoRule list
-    TableTypes: TableTypeRule list
-    Procedures: ProcedureRule list
-    Scripts: ScriptRule list
-  }
+type RuleSet = {
+  ConnectionString: string
+  Filename: string
+  NamespaceOrModuleDeclaration: string
+  ScriptBasePath: string
+  Prelude: string list option
+  TableDtos: TableDtoRule list
+  TableTypes: TableTypeRule list
+  Procedures: ProcedureRule list
+  Scripts: ScriptRule list
+}
 
 
 [<CLIMutable>]
@@ -235,11 +282,26 @@ type FacilConfigDto = {
 }
 
 
+module TableDtoColumn =
+
+
+  let fromDto (dto: TableDtoColumnDto) : TableDtoColumn =
+    {
+      Skip = dto.skip
+    }
+
+
+  let merge (c1: TableDtoColumn) (c2: TableDtoColumn) : TableDtoColumn = {
+    Skip = c2.Skip |> Option.orElse c1.Skip
+  }
+
+
 module TableDtoRule =
 
 
   let defaultEffectiveRule : EffectiveTableDtoRule = {
     Voption = false
+    Columns = Map.empty
   }
 
 
@@ -252,6 +314,10 @@ module TableDtoRule =
       | Some _, Some _ -> failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a tableDto rule"
     Except = dto.except
     Voption = dto.voption
+    Columns =
+      dto.columns
+      |> Option.defaultValue Map.empty
+      |> Map.map (fun _ -> TableDtoColumn.fromDto)
   }
 
 
@@ -269,6 +335,12 @@ module TableDtoRule =
   let merge (eff: EffectiveTableDtoRule) (rule: TableDtoRule) : EffectiveTableDtoRule =
     {
       Voption = rule.Voption |> Option.defaultValue eff.Voption
+      Columns =
+        let colsToMerge =
+          match rule.Columns.TryFind "" with
+          | None -> rule.Columns
+          | Some baseParam -> rule.Columns |> Map.map (fun _ param -> TableDtoColumn.merge baseParam param)
+        Map.merge TableDtoColumn.merge eff.Columns colsToMerge
     }
 
 
@@ -318,6 +390,20 @@ module ProcedureParameter =
   }
 
 
+module ProcedureColumn =
+
+
+  let fromDto (dto: ProcedureColumnDto) : ProcedureColumn =
+    {
+      Skip = dto.skip
+    }
+
+
+  let merge (c1: ProcedureColumn) (c2: ProcedureColumn) : ProcedureColumn = {
+    Skip = c2.Skip |> Option.orElse c1.Skip
+  }
+
+
 module ProcedureRule =
 
 
@@ -345,6 +431,10 @@ module ProcedureRule =
       dto.``params``
       |> Option.defaultValue Map.empty
       |> Map.map (fun _ -> ProcedureParameter.fromDto)
+    Columns =
+      dto.columns
+      |> Option.defaultValue Map.empty
+      |> Map.map (fun _ -> ProcedureColumn.fromDto)
   }
 
 
@@ -356,6 +446,7 @@ module ProcedureRule =
     SkipParamDto = false
     UseReturnValue = false
     Parameters = Map.empty
+    Columns = Map.empty
   }
 
 
@@ -384,6 +475,12 @@ module ProcedureRule =
           | None -> rule.Parameters
           | Some baseParam -> rule.Parameters |> Map.map (fun _ param -> ProcedureParameter.merge baseParam param)
         Map.merge ProcedureParameter.merge eff.Parameters paramsToMerge
+      Columns =
+        let colsToMerge =
+          match rule.Columns.TryFind "" with
+          | None -> rule.Columns
+          | Some baseParam -> rule.Columns |> Map.map (fun _ param -> ProcedureColumn.merge baseParam param)
+        Map.merge ProcedureColumn.merge eff.Columns colsToMerge
     }
 
 
@@ -400,6 +497,19 @@ module ProcedureOrScriptParameter =
   }
 
 
+module ProcedureOrScriptColumn =
+
+
+  let fromProcedureColumn (p: ProcedureColumn) : ProcedureOrScriptColumn = {
+      Skip = p.Skip
+  }
+
+
+  let fromScriptColumn (p: ScriptColumn) : ProcedureOrScriptColumn = {
+      Skip = p.Skip
+  }
+
+
 module EffectiveProcedureOrScriptRule =
 
 
@@ -411,6 +521,7 @@ module EffectiveProcedureOrScriptRule =
       SkipParamDto = rule.SkipParamDto
       UseReturnValue = rule.UseReturnValue
       Parameters = rule.Parameters |> Map.map (fun _ -> ProcedureOrScriptParameter.fromProcedureParameter)
+      Columns = rule.Columns |> Map.map (fun _ -> ProcedureOrScriptColumn.fromProcedureColumn)
   }
 
 
@@ -422,6 +533,7 @@ module EffectiveProcedureOrScriptRule =
       SkipParamDto = rule.SkipParamDto
       UseReturnValue = false
       Parameters = rule.Parameters |> Map.map (fun _ -> ProcedureOrScriptParameter.fromScriptParameter)
+      Columns = rule.Columns |> Map.map (fun _ -> ProcedureOrScriptColumn.fromScriptColumn)
   }
 
 
@@ -453,6 +565,20 @@ module ScriptTempTableRule =
         else
           dto.definition
     }
+
+
+module ScriptColumn =
+
+
+  let fromDto (dto: ScriptColumnDto) : ScriptColumn =
+    {
+      Skip = dto.skip
+    }
+
+
+  let merge (c1: ScriptColumn) (c2: ScriptColumn) : ScriptColumn = {
+    Skip = c2.Skip |> Option.orElse c1.Skip
+  }
 
 
 module ScriptRule =
@@ -495,6 +621,10 @@ module ScriptRule =
         |> Option.defaultValue Map.empty
         |> Map.map (fun _ -> ScriptParameter.fromDto)
       TempTables = dto.tempTables |> Option.map (List.map (ScriptTempTableRule.fromDto basePath))
+      Columns =
+        dto.columns
+        |> Option.defaultValue Map.empty
+        |> Map.map (fun _ -> ScriptColumn.fromDto)
     }
 
 
@@ -506,6 +636,7 @@ module ScriptRule =
     SkipParamDto = false
     Parameters = Map.empty
     TempTables = []
+    Columns = Map.empty
   }
 
 
@@ -528,6 +659,12 @@ module ScriptRule =
           | Some baseParam -> rule.Parameters |> Map.map (fun _ param -> ScriptParameter.merge baseParam param)
         Map.merge ScriptParameter.merge eff.Parameters paramsToMerge
       TempTables = rule.TempTables |> Option.defaultValue eff.TempTables
+      Columns =
+        let colsToMerge =
+          match rule.Columns.TryFind "" with
+          | None -> rule.Columns
+          | Some baseParam -> rule.Columns |> Map.map (fun _ param -> ScriptColumn.merge baseParam param)
+        Map.merge ScriptColumn.merge eff.Columns colsToMerge
     }
 
 
@@ -601,9 +738,9 @@ module RuleSet =
     |> List.fold ScriptRule.merge ScriptRule.defaultEffectiveRule
 
 
-  let getEffectiveTableDtoRuleFor schemaName typeName (cfg: RuleSet) =
+  let getEffectiveTableDtoRuleFor schemaName tableName (cfg: RuleSet) =
     cfg.TableDtos
-    |> List.filter (TableDtoRule.matches schemaName typeName)
+    |> List.filter (TableDtoRule.matches schemaName tableName)
     |> List.fold TableDtoRule.merge TableDtoRule.defaultEffectiveRule
 
 

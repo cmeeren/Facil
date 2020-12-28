@@ -111,6 +111,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
           if reader.IsDBNull "suggested_user_type_id"
           then None
           else reader.["suggested_user_type_id"] |> unbox<int> |> Some
+
         match userTypeId |> Option.bind tableTypesByUserId.TryFind with
         | Some tt ->
             match rule.Parameters.TryFind (paramName.TrimStart '@') with
@@ -123,10 +124,10 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
             |> unbox<int>
             |> fun id ->
                 sysTypeIdLookup.TryFind id
-                |> Option.defaultWith (fun () -> failwithf "Unknown SQL system type ID: %i" id)
+                |> Option.defaultWith (fun () -> failwith $"Unsupported SQL system type ID '%i{id}' for parameter '%s{paramName}'")
             |> fun typeName ->
                 sqlDbTypeMap.TryFind typeName
-                |> Option.defaultWith (fun () -> failwithf "Unsupported SQL type '%s' for parameter '%s' in script '%s'" typeName paramName script.NameWithoutExtension)
+                |> Option.defaultWith (fun () -> failwith $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}'")
             |> Scalar
 
       parameters.Add(
@@ -161,7 +162,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
 
 
 
-let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
+let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
 
   let tempTablesToCreateAndDrop =
     match executable with
@@ -180,32 +181,60 @@ let getColumnsFromSpDescribeFirstResultSet (sysTypeIdLookup: Map<int, string>) (
   | Choice3Of3 tt -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}") |> ignore
   use reader = cmd.ExecuteReader()
   let cols = ResizeArray()
+  let allColNames = ResizeArray()
   while reader.Read() do
-    let typeInfo =
-      reader.["system_type_id"]
-      |> unbox<int>
-      |> fun id ->
-          sysTypeIdLookup.TryFind id
-          |> Option.defaultWith (fun () -> failwithf "Unknown SQL system type ID: %i" id)
-      |> fun typeName ->
-          sqlDbTypeMap.TryFind typeName
-          |> Option.defaultWith (fun () -> failwithf "Unsupported SQL type: %s" typeName)
-    cols.Add { 
-        OutputColumn.Name =
-          if reader.IsDBNull "name" then None
-          else
-            reader.["name"]
-            |> unbox<string>
-            |> Some
-            |> Option.filter (not << String.IsNullOrEmpty)
-        SortKey = reader.["column_ordinal"] |> unbox<int>
-        IsNullable = reader.["is_nullable"] |> unbox<bool>
-        TypeInfo = typeInfo
-    }
-  if cols.Count = 0 then None else Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
+    let colName =
+      if reader.IsDBNull "name" then None
+      else
+        reader.["name"]
+        |> unbox<string>
+        |> Some
+        |> Option.filter (not << String.IsNullOrEmpty)
+
+    colName |> Option.iter allColNames.Add
+
+    let shouldSkipCol =
+      match colName, executable with
+      | Some name, Choice1Of3 sproc ->
+          RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+          |> fun r -> r.Columns
+          |> Map.tryFind name
+          |> Option.bind (fun c -> c.Skip)
+          |> Option.defaultValue false
+      | Some name, Choice2Of3 script ->
+          RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+          |> fun r -> r.Columns
+          |> Map.tryFind name
+          |> Option.bind (fun c -> c.Skip)
+          |> Option.defaultValue false
+      | None, _ | _, Choice3Of3 _ -> false
+
+    if not shouldSkipCol then
+
+      let typeInfo =
+        reader.["system_type_id"]
+        |> unbox<int>
+        |> fun id ->
+            sysTypeIdLookup.TryFind id
+            |> Option.defaultWith (fun () -> failwith $"""Unsupported SQL system type ID '%i{id}' for column '%s{defaultArg colName "<unnamed column>"}'""")
+        |> fun typeName ->
+            sqlDbTypeMap.TryFind typeName
+            |> Option.defaultWith (fun () -> failwith $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
+
+      cols.Add { 
+          Name = colName
+          SortKey = reader.["column_ordinal"] |> unbox<int>
+          IsNullable = reader.["is_nullable"] |> unbox<bool>
+          TypeInfo = typeInfo
+      }
+
+  if cols.Count = 0 then
+    Seq.toList allColNames, None
+  else
+    Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumnsFromSetFmtOnlyOn (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
+let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
   let tempTablesToCreateAndDrop =
     match executable with
     | Choice2Of3 script -> script.TempTables
@@ -232,42 +261,91 @@ let getColumnsFromSetFmtOnlyOn (executable: Choice<StoredProcedure, Script, Temp
   | Choice3Of3 tt -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}") |> ignore
   use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)
   match reader.GetSchemaTable() with
-  | null -> None
+  | null -> [], None
   | table ->
       let cols = ResizeArray()
+      let allColNames = ResizeArray()
       for row in table.Rows do
-        let typeInfo =
-          row.["DataTypeName"]
-          |> unbox<string>
-          |> fun typeName ->
-              sqlDbTypeMap.TryFind typeName
-              |> Option.defaultWith (fun () -> failwithf "Unsupported SQL type: %s" typeName)
-        cols.Add {
-          OutputColumn.Name =
-            if row.IsNull "ColumnName" then None
-            else
-              row.["ColumnName"]
-              |> unbox<string>
-              |> Some
-              |> Option.filter (not << String.IsNullOrEmpty)
-          SortKey = row.["ColumnOrdinal"] |> unbox<int>
-          IsNullable = row.["AllowDBNull"] |> unbox<bool>
-          TypeInfo = typeInfo
-        }
-      Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
+
+        let colName =
+          if row.IsNull "ColumnName" then None
+          else
+            row.["ColumnName"]
+            |> unbox<string>
+            |> Some
+            |> Option.filter (not << String.IsNullOrEmpty)
+
+        colName |> Option.iter allColNames.Add
+
+        let shouldSkipCol =
+          match colName, executable with
+          | Some name, Choice1Of3 sproc ->
+              RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+              |> fun r -> r.Columns
+              |> Map.tryFind name
+              |> Option.bind (fun c -> c.Skip)
+              |> Option.defaultValue false
+          | Some name, Choice2Of3 script ->
+              RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+              |> fun r -> r.Columns
+              |> Map.tryFind name
+              |> Option.bind (fun c -> c.Skip)
+              |> Option.defaultValue false
+          | None, _ | _, Choice3Of3 _ -> false
+
+        if not shouldSkipCol then
+
+          let typeInfo =
+            row.["DataTypeName"]
+            |> unbox<string>
+            |> fun typeName ->
+                sqlDbTypeMap.TryFind typeName
+                |> Option.defaultWith (fun () -> failwith $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
+
+          cols.Add {
+            Name = colName
+            SortKey = row.["ColumnOrdinal"] |> unbox<int>
+            IsNullable = row.["AllowDBNull"] |> unbox<bool>
+            TypeInfo = typeInfo
+          }
+
+      Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumns (conn: SqlConnection) sysTypeIdLookup executable =
-  try
-    try getColumnsFromSpDescribeFirstResultSet sysTypeIdLookup executable conn
-    with :? SqlException -> getColumnsFromSetFmtOnlyOn executable conn
-  with ex ->
-    let executableName =
-      match executable with
-      | Choice1Of3 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
-      | Choice2Of3 s -> $"script {s.GlobMatchOutput}"
-      | Choice3Of3 tt -> $"temp table {tt.Name}"
-    raise <| Exception($"Error getting output columns for {executableName}", ex)
+let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Script, TempTable>) =
+  let executableName =
+    match executable with
+    | Choice1Of3 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
+    | Choice2Of3 s -> $"script {s.GlobMatchOutput}"
+    | Choice3Of3 tt -> $"temp table {tt.Name}"
+
+  let allColNames, cols =
+    try
+      try getColumnsFromSpDescribeFirstResultSet cfg sysTypeIdLookup executable conn
+      with :? SqlException -> getColumnsFromSetFmtOnlyOn cfg executable conn
+    with ex ->
+      raise <| Exception($"Error getting output columns for {executableName}", ex)
+
+  let allColumnNamesWithRules =
+    match executable with
+    | Choice1Of3 sproc ->
+        RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+        |> fun r -> r.Columns
+        |> Map.toList
+        |> List.map fst
+        |> set
+    | Choice2Of3 script ->
+        RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+        |> fun r -> r.Columns
+        |> Map.toList
+        |> List.map fst
+        |> set
+    | Choice3Of3 _ -> Set.empty
+
+  for unmatchedColumn in allColumnNamesWithRules - set allColNames do
+    logWarning $"Config contains unmatched rule for column '%s{unmatchedColumn}' in {executableName}"
+
+  cols
 
 
 let getTableTypes (conn: SqlConnection) =
@@ -294,19 +372,21 @@ let getTableTypes (conn: SqlConnection) =
     use reader = cmd.ExecuteReader()
     let tableTypes = ResizeArray()
     while reader.Read() do
+      let colName = reader.["ColumnName"] |> unbox<string>
       let typeInfo =
         reader.["ColumnTypeName"]
         |> unbox<string>
         |> fun typeName ->
             sqlDbTypeMap.TryFind typeName
-            |> Option.defaultWith (fun () -> failwithf "Unsupported SQL type: %s" typeName)
+            |> Option.defaultWith (fun () -> failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}'")
       tableTypes.Add { 
           UserTypeId = reader.["TableTypeUserTypeId"] |> unbox<int>
           SchemaName = reader.["TableTypeSchemaName"] |> unbox<string>
           Name = reader.["TableTypeName"] |> unbox<string>
+          // Merged later
           Columns = [
             {
-              Name = reader.["ColumnName"] |> unbox<string>
+              Name = colName
               IsNullable = reader.["ColumnIsNullable"] |> unbox<bool>
               SortKey = reader.["ColumnId"] |> unbox<int>
               Size = reader.["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
@@ -332,7 +412,7 @@ let getTableTypes (conn: SqlConnection) =
     raise <| Exception("Error getting table types", ex)
 
 
-let getStoredProcedures sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>) (conn: SqlConnection) =
+let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>) (conn: SqlConnection) =
 
   let getStoredProceduresWithoutParamsOrResultSet () =
     try
@@ -397,11 +477,11 @@ let getStoredProcedures sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>
           | "table type" ->
               let userTypeId = reader.["user_type_id"] |> unbox<int>
               tableTypesByUserId.TryFind userTypeId
-              |> Option.defaultWith (fun () -> failwithf "Unknown user type ID '%i' for table type parameter '%s' in stored procedure '%s'" userTypeId paramName sprocName)
+              |> Option.defaultWith (fun () -> failwith $"Unknown user type ID '%i{userTypeId}' for table type parameter '%s{paramName}' in stored procedure '%s{sprocName}'")
               |> Table
           | typeName ->
               sqlDbTypeMap.TryFind typeName
-              |> Option.defaultWith (fun () -> failwithf "Unsupported SQL type '%s' for parameter '%s' in stored procedure '%s'" typeName paramName sprocName)
+              |> Option.defaultWith (fun () -> failwith $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}' in stored procedure '%s{sprocName}'")
               |> Scalar
 
         parameters.Add(
@@ -463,11 +543,11 @@ let getStoredProcedures sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>
   )
   // Add result sets
   |> List.map (fun sproc ->
-      { sproc with ResultSet = getColumns conn sysTypeIdLookup (Choice1Of3 sproc) }
+      { sproc with ResultSet = getColumns conn cfg sysTypeIdLookup (Choice1Of3 sproc) }
   )
 
 
-let getTableDtos (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
+let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
   try
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "
@@ -486,37 +566,73 @@ let getTableDtos (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
     "
     use reader = cmd.ExecuteReader()
     let tableDtos = ResizeArray()
+    let allColumnsByTableSchemaAndName = Dictionary<string, ResizeArray<string>>()
     while reader.Read() do
-      let typeInfo =
-        reader.["system_type_id"]
-        |> unbox<byte>
-        |> int
-        |> fun id ->
-            sysTypeIdLookup.TryFind id
-            |> Option.defaultWith (fun () -> failwithf "Unknown SQL system type ID: %i" id)
-        |> fun typeName ->
-            sqlDbTypeMap.TryFind typeName
-            |> Option.defaultWith (fun () -> failwithf "Unsupported SQL type: %s" typeName)
-      tableDtos.Add(
-        { 
-          SchemaName = reader.["SchemaName"] |> unbox<string>
-          Name = reader.["TableName"] |> unbox<string>
-          // Merged later
-          Columns = [
-            {
-              OutputColumn.Name = reader.["ColName"] |> unbox<string> |> Some
-              SortKey = reader.["column_id"] |> unbox<int>
-              IsNullable = reader.["is_nullable"] |> unbox<bool>
-              TypeInfo = typeInfo
-            }
-          ]
-        }
-      )
+
+      let schemaName = reader.["SchemaName"] |> unbox<string>
+      let tableName = reader.["TableName"] |> unbox<string>
+      let colName = reader.["ColName"] |> unbox<string>
+
+      let key = $"{schemaName}.{tableName}"
+      match allColumnsByTableSchemaAndName.TryGetValue key with
+      | false, _->
+          let r = ResizeArray()
+          r.Add colName
+          allColumnsByTableSchemaAndName.[key] <- r
+      | true, names -> names.Add colName
+
+      let shouldSkipCol =
+        RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
+        |> fun r -> r.Columns
+        |> Map.tryFind tableName
+        |> Option.bind (fun c -> c.Skip)
+        |> Option.defaultValue false
+
+      if not shouldSkipCol then
+
+        let typeInfo =
+          reader.["system_type_id"]
+          |> unbox<byte>
+          |> int
+          |> fun id ->
+              sysTypeIdLookup.TryFind id
+              |> Option.defaultWith (fun () -> failwith $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'")
+          |> fun typeName ->
+              sqlDbTypeMap.TryFind typeName
+              |> Option.defaultWith (fun () -> failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'")
+
+        tableDtos.Add(
+          { 
+            SchemaName = schemaName
+            Name = tableName
+            // Merged later
+            Columns = [
+              {
+                OutputColumn.Name = colName |> Some
+                SortKey = reader.["column_id"] |> unbox<int>
+                IsNullable = reader.["is_nullable"] |> unbox<bool>
+                TypeInfo = typeInfo
+              }
+            ]
+          }
+        )
 
     tableDtos
     |> Seq.toList
     |> List.groupBy (fun dto -> dto.SchemaName, dto.Name)
     |> List.map (fun ((schemaName, tableName), xs) ->
+
+        let allColumnNamesWithRules =
+          RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
+          |> fun r -> r.Columns
+          |> Map.toList
+          |> List.map fst
+          |> set
+
+        let key = $"{schemaName}.{tableName}"
+        for unmatchedColumn in allColumnNamesWithRules - set allColumnsByTableSchemaAndName.[key] do
+          logWarning $"Config contains unmatched rule for column '%s{unmatchedColumn}' in table {schemaName}.{tableName}"
+
         { 
           SchemaName = schemaName
           Name = tableName
@@ -528,7 +644,7 @@ let getTableDtos (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
 
 
 
-let getTempTable (sysTypeIdLookup: Map<int, string>) definition (conn: SqlConnection) =
+let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition (conn: SqlConnection) =
   try
     let mutable name = null
     let parser = TSql150Parser(true)
@@ -557,7 +673,7 @@ let getTempTable (sysTypeIdLookup: Map<int, string>) definition (conn: SqlConnec
 
     let tempTable =
       { tempTableWithoutColumns with
-          Columns = getColumns conn sysTypeIdLookup (Choice3Of3 tempTableWithoutColumns) |> Option.defaultValue []
+          Columns = getColumns conn cfg sysTypeIdLookup (Choice3Of3 tempTableWithoutColumns) |> Option.defaultValue []
       }
 
     // Drop table in case other temp tables use the same name
@@ -584,7 +700,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     |> List.collect (fun s -> s.TempTables |> Option.defaultValue [])
     |> List.map (fun rule -> rule.Definition)
     |> List.distinct
-    |> List.map (fun definition -> definition, getTempTable sysTypeIdLookup definition conn)
+    |> List.map (fun definition -> definition, getTempTable cfg sysTypeIdLookup definition conn)
     |> Map.ofList
 
   let scripts =
@@ -608,7 +724,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
         { script with Parameters = parameters }
     )
     |> List.map (fun script ->
-        let resultSet = getColumns conn sysTypeIdLookup (Choice2Of3 script)
+        let resultSet = getColumns conn cfg sysTypeIdLookup (Choice2Of3 script)
         { script with ResultSet = resultSet }
     )
     |> List.filter (fun s ->
@@ -640,7 +756,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     )
   
   let sprocs =
-    getStoredProcedures sysTypeIdLookup tableTypesByUserId conn
+    getStoredProcedures cfg sysTypeIdLookup tableTypesByUserId conn
     |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
     |> List.filter (fun sp ->
 
@@ -692,7 +808,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     |> List.filter (fun tt -> usedTableTypes |> Set.contains (tt.SchemaName, tt.Name))
 
   let tableDtos =
-    getTableDtos sysTypeIdLookup conn
+    getTableDtos cfg sysTypeIdLookup conn
     |> List.filter (fun dto -> RuleSet.shouldIncludeTableDto dto.SchemaName dto.Name cfg)
 
 
