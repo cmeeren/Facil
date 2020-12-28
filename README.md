@@ -275,7 +275,7 @@ The configuration will apply to the loading of all temp tables for the script; p
 
 ### Why do the `Execute` methods return `ResizeArray` and not an F# `list`?
 
-The rows have to be read from the DB one at a time without knowing how many rows there are. As far as I know, a `ResizeArray` (an alias for the `System.Collections.Generic.List` type) generally provides the most efficient way (at least in terms of allocations) to build up a collection with an unknown number of items, requiring one allocation and array copy each time the internal array is resized. An F# `list` would cause one allocation per cell (item), though as far as I know, it would not require any copies (though it would be built up in reverse and therefore require a full traversal when reversing the list at the end).
+The rows have to be read from the DB one at a time without knowing how many rows there are. As far as I know, a `ResizeArray<_>` (an alias for `System.Collections.Generic.List<_>`) generally provides the most efficient way (at least in terms of allocations) to build up a collection with an unknown number of items, requiring one allocation and array copy each time the internal array is resized. An F# `list` would cause one allocation per cell (item), though as far as I know, it would not require any copies (though it would be built up in reverse and therefore require a full traversal when reversing the list at the end).
 
 F# users would normally want a `list` instead of a `ResizeArray`, but you can get that trivially by just calling `Seq.toList` on the result. This is similar to e.g. FSharp.Data.SqlClient. Facil could provide `Execute` variants that do this for you, but then you’d have twice as many `Execute` methods to choose from, which would add confusion, and the name prefix/suffix would almost be as verbose as just calling `Seq.toList` yourself.
 
@@ -284,6 +284,20 @@ If you think that building up a `list` directly in the read loop would be more e
 Note that since Facil is a general-purpose data access library, I do not know anything about user workloads, databases or connections, and I have not benchmarked anything. All of the above is going by intuition (admittedly a dangerous thing in the performance world) as well as a desire to keep the internals fairly simple.
 
 If you believe any of the above is incorrect and have either sound arguments or proper benchmark data (e.g. using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet)) to back it up, please open an issue and we can discuss both the public API and the implementation details.
+
+### Can Facil support SSDT (`.sqlproj`) projects, like [SQLProvider](http://fsprojects.github.io/SQLProvider/)?
+
+No, unfortunately that’s not feasible.
+
+SQLProvider uses information about tables and views and lets you write F# queries against them; it doesn’t provide strongly typed access to stored procedures or scripts. This means that SQLProvider “only” has to know the table/view schema, which (at least for tables) can be easily parsed directly from the definition.
+
+Facil, on the other hand, must know the input parameters and output columns of scripts and stored procedures. While it would be fairly easy to get the input parameters of stored procedures by just parsing the procedure definition, Facil has to use SQL Server functionality on the deployed schema to get script input parameters (`sp_describe_undeclared_parameters`) and script/procedure output columns (`sp_describe_first_result_set` and `SET FMTONLY ON`).
+
+The only way for Facil to be able to use SSDT projects directly would be if this SQL type inference functionality was implemented directly in the Facil generator. For all but the most trivial schema, this seems too complicated to be worth the implementation and maintenance effort. Therefore, Facil only works with deployed schema.
+
+The most significant drawback of this limitation is that it is possible to update the SSDT schema but forget to deploy and re-generate. However, that is no different than if you were using [FSharp.Data.SqlClient](http://fsprojects.github.io/FSharp.Data.SqlClient/), and can be alleviated by using `FACIL_FORCE_REGENERATE` and `FACIL_FAIL_ON_CHANGED_OUTPUT` on your build server.
+
+A bonus, however, is that having to deploy the updated schema to a database during development ensures that the schema actually “compiles”.
 
 Release notes
 -------------
