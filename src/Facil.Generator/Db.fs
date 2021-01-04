@@ -177,7 +177,17 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
   cmd.CommandType <- CommandType.StoredProcedure
   match executable with
   | Choice1Of3 sproc -> cmd.Parameters.AddWithValue("@tsql", sproc.SchemaName + "." + sproc.Name) |> ignore
-  | Choice2Of3 script -> cmd.Parameters.AddWithValue("@tsql", script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix) |> ignore
+  | Choice2Of3 script ->
+      let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+      let sourceToUse =
+        (script.Source, (Map.toList rule.Parameters))
+        ||> List.fold (fun source (paramName, p) ->
+              match p.Type with
+              | None -> source
+              | Some typeDef -> $"DECLARE @{paramName} {typeDef}\n{source}"
+        )
+        |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+      cmd.Parameters.AddWithValue("@tsql", sourceToUse) |> ignore
   | Choice3Of3 tt -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}") |> ignore
   use reader = cmd.ExecuteReader()
   let cols = ResizeArray()
