@@ -587,7 +587,11 @@ module ScriptRule =
   let fromDto (basePath: string) fullYamlPath (dto: ScriptRuleDto) : ScriptRule =
     let exceptMatches =
       match dto.except with
-      | Some pattern -> Glob.Files(basePath, pattern) |> set
+      | Some pattern ->
+          let matches = Glob.Files(basePath, pattern) |> set
+          if matches.IsEmpty then
+            logYamlWarning fullYamlPath 0 0 $"The 'except' glob pattern '{pattern}' does not match any files"
+          matches
       | None -> Set.empty
     {
       IncludeOrFor =
@@ -595,16 +599,38 @@ module ScriptRule =
         | None, None -> failwithYamlError fullYamlPath 0 0 "Either 'include' or 'for' is required in a script rule"
         | Some inc, None -> Include inc
         | None, Some f -> For f
-        | Some _, Some _ -> failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a tableDto rule"
+        | Some _, Some _ -> failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a script rule"
       Except = dto.except
       IncludeMatches =
         match dto.``include`` with
         | None -> Set.empty
-        | Some pattern -> (Glob.Files(basePath, pattern) |> set) - exceptMatches
+        | Some pattern ->
+            let includeMatches = Glob.Files(basePath, pattern) |> set
+
+            if includeMatches.IsEmpty then
+              logYamlWarning fullYamlPath 0 0 $"The 'include' glob pattern '{pattern}' does not match any files"
+
+            let finalMatches = includeMatches - exceptMatches
+
+            if not includeMatches.IsEmpty && finalMatches.IsEmpty then
+              logYamlWarning fullYamlPath 0 0 $"The 'include' glob pattern '{pattern}' does not match any files after subtracting the corresponding 'except' pattern '{dto.except.Value}'"
+
+            finalMatches
       ForMatches =
         match dto.``for`` with
         | None -> Set.empty
-        | Some pattern -> (Glob.Files(basePath, pattern) |> set) - exceptMatches
+        | Some pattern ->
+            let forMatches = Glob.Files(basePath, pattern) |> set
+
+            if forMatches.IsEmpty then
+              logYamlWarning fullYamlPath 0 0 $"The 'for' glob pattern '{pattern}' does not match any files"
+
+            let finalMatches = forMatches - exceptMatches
+
+            if not forMatches.IsEmpty && finalMatches.IsEmpty then
+              logYamlWarning fullYamlPath 0 0 $"The 'for' glob pattern '{pattern}' does not match any files after subtracting the corresponding 'except' pattern '{dto.except.Value}'"
+
+            finalMatches
       Result =
         dto.result
         |> Option.map (function
