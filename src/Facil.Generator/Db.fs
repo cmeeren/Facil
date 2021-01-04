@@ -260,13 +260,29 @@ let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedur
       cmd.CommandType <- CommandType.StoredProcedure
       for param in sproc.Parameters do
         match param.TypeInfo with
-        | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
+        | Scalar ti ->
+            let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+            // If the procedure contains OPTION(RECOMPILE) and FETCH, parsing fails unless
+            // we set an actual value for the FETCH value, so always set a value for
+            // ints/bigints.
+            match ti.SqlDbType with
+            | SqlDbType.Int -> p.Value <- 0
+            | SqlDbType.BigInt -> p.Value <- 0L
+            | _ -> ()
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
   | Choice2Of3 script ->
       cmd.CommandText <- script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
       for param in script.Parameters do
         match param.TypeInfo with
-        | Scalar ti -> cmd.Parameters.Add(param.Name, ti.SqlDbType) |> ignore
+        | Scalar ti ->
+            let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+            // If the script contains OPTION(RECOMPILE) and FETCH, parsing fails unless we
+            // set an actual value for the FETCH value, so always set a value for
+            // ints/bigints.
+            match ti.SqlDbType with
+            | SqlDbType.Int -> p.Value <- 0
+            | SqlDbType.BigInt -> p.Value <- 0L
+            | _ -> ()
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
   | Choice3Of3 tt -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}") |> ignore
   use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)

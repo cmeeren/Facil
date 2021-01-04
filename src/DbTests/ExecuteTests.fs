@@ -2872,6 +2872,38 @@ let execTests =
     ]
 
 
+    testList (nameof DbGen.Scripts.OptionRecompileAndFetch) [
+      yield!
+        allExecuteMethodsAsSingle<DbGen.Scripts.OptionRecompileAndFetch_Executable, _>
+        |> List.map (fun (name, exec) ->
+            testCase name <| fun () ->
+              let res =
+                DbGen.Scripts.OptionRecompileAndFetch
+                  .WithConnection(Config.connStr)
+                  .WithParameters(offset = 0L, limit = 10L)
+                |> exec
+              test <@ res.Value.TableCol1 = "test1" @>
+              test <@ res.Value.TableCol2 = Some 1 @>
+        )
+    ]
+
+
+    testList (nameof DbGen.Scripts.OptionRecompileAndFetch + "_paramsFromDto") [
+      yield!
+        allExecuteMethodsAsSingle<DbGen.Scripts.OptionRecompileAndFetch_Executable, _>
+        |> List.map (fun (name, exec) ->
+            testCase name <| fun () ->
+              let res =
+                DbGen.Scripts.OptionRecompileAndFetch
+                  .WithConnection(Config.connStr)
+                  .WithParameters({| Offset = 0L; Limit = 10L |})
+                |> exec
+              test <@ res.Value.TableCol1 = "test1" @>
+              test <@ res.Value.TableCol2 = Some 1 @>
+        )
+    ]
+
+
     testList (nameof DbGen.Scripts.SelectAllFromTable) [
       yield!
         allExecuteMethodsAsSingle<DbGen.Scripts.SelectAllFromTable, _>

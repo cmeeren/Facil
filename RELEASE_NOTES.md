@@ -3,7 +3,8 @@ Release notes
 
 ### vNext
 
-* Parses only included stored procedures
+* Now parses only included stored procedures
+* Fixed rare script parsing error
 * Fixed script base path bug
 
 ### 0.1.3 (2021-01-04)
