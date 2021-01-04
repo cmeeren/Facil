@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### vNext
+### 0.1.5 (2021-01-04)
 
 * Fixed ignored columns in table DTOs
 
