@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 9c4ddcbf357ef07afee07a87cfd05fb2609e448bb7d4b14d714944e8a21f971b
+// Hash: 0b2579ba7abaf44ff5f82ad3b56e4e3ccafec0dc5ca6a2afa6dccb2603d0e852
 
 //////////////////////////////////////////
 //
@@ -58,6 +58,13 @@ module TableDtos =
       {
         TableCol1: string
         TableCol2: int option
+      }
+
+
+    type ``TableWithSkippedUnsupportedColumn`` =
+      {
+        SupportedCol1: string
+        SupportedCol2: int
       }
 
 
@@ -8150,6 +8157,94 @@ module Procedures =
         executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
+    type ``ProcWithSkippedUnsupportedColumn`` private (connStr: string, conn: SqlConnection) =
+
+      let configureCmd userConfigureCmd (cmd: SqlCommand) =
+        cmd.CommandType <- CommandType.StoredProcedure
+        cmd.CommandText <- "dbo.ProcWithSkippedUnsupportedColumn"
+        userConfigureCmd cmd
+
+      let mutable ``ordinal_SupportedCol1`` = 0
+      let mutable ``ordinal_SupportedCol2`` = 0
+
+      let initOrdinals (reader: SqlDataReader) =
+        ``ordinal_SupportedCol1`` <- reader.GetOrdinal "SupportedCol1"
+        ``ordinal_SupportedCol2`` <- reader.GetOrdinal "SupportedCol2"
+
+      let getItem (reader: SqlDataReader) =
+        {|
+          ``SupportedCol1`` = reader.GetInt32 ``ordinal_SupportedCol1``
+          ``SupportedCol2`` = reader.GetString ``ordinal_SupportedCol2``
+        |}
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val configureConn : SqlConnection -> unit = ignore with get, set
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+      member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+        this.userConfigureCmd <- configureCommand
+        this
+
+      static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+        ``ProcWithSkippedUnsupportedColumn``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+      static member WithConnection(connection) = ``ProcWithSkippedUnsupportedColumn``(null, connection)
+
+      member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+        match configureConnection with
+        | None -> ()
+        | Some config -> this.configureConn <- config
+        this
+
+      member this.ExecuteAsync(?cancellationToken) =
+        executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecute() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsync(ct) |> Async.AwaitTask
+        }
+
+      member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+        executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteWithSyncRead() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+        }
+
+      member this.Execute() =
+        executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+      #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+      member this.LazyExecuteAsync(?cancellationToken) =
+        executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+      member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+        executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+      #endif
+
+      member this.LazyExecute() =
+        executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+      member this.ExecuteSingleAsync(?cancellationToken) =
+        executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      member this.ExecuteSingle() =
+        executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     type ``ProcWithSpecialCasing_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
 
@@ -9483,6 +9578,101 @@ module Scripts =
       ``SingleRecordCol``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
 
     static member WithConnection(connection) = ``SingleRecordCol``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member this.Execute() =
+      executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+    member this.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    #endif
+
+    member this.LazyExecute() =
+      executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteSingle() =
+      executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+
+  type ``SkippedUnsupportedColumn`` private (connStr: string, conn: SqlConnection) =
+
+    let configureCmd userConfigureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        DECLARE @hid HIERARCHYID
+
+        SELECT
+          SupportedCol1 = 1,
+          SupportedCol2 = 'test',
+          UnsupportedCol = @hid
+
+      """
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_SupportedCol1`` = 0
+    let mutable ``ordinal_SupportedCol2`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_SupportedCol1`` <- reader.GetOrdinal "SupportedCol1"
+      ``ordinal_SupportedCol2`` <- reader.GetOrdinal "SupportedCol2"
+
+    let getItem (reader: SqlDataReader) =
+      {|
+        ``SupportedCol1`` = reader.GetInt32 ``ordinal_SupportedCol1``
+        ``SupportedCol2`` = reader.GetString ``ordinal_SupportedCol2``
+      |}
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``SkippedUnsupportedColumn``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``SkippedUnsupportedColumn``(null, connection)
 
     member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
       match configureConnection with

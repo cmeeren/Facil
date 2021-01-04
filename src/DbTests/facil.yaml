@@ -41,6 +41,11 @@ rulesets:
         voptionIn: true
         voptionOut: true
 
+      - for: ProcWithSkippedUnsupportedColumn
+        columns:
+          UnsupportedCol:
+            skip: true
+
 
     scripts:
       - include: "**/*.sql"
@@ -54,6 +59,11 @@ rulesets:
           col1:
             nullable: true
             type: NVARCHAR(50)
+
+      - for: SkippedUnsupportedColumn.sql
+        columns:
+          UnsupportedCol:
+            skip: true
 
       - for: UserDefinedTableType.sql
         params:
@@ -168,6 +178,11 @@ rulesets:
 
       - for: Voption
         voption: true
+
+      - for: dbo\.TableWithSkippedUnsupportedColumn
+        columns:
+          UnsupportedCol:
+            skip: true
 
 
     tableTypes:

@@ -34,6 +34,7 @@
     <None Include="SQL\NormalParams.sql" />
     <None Include="SQL\ParamsUsedTwice.sql" />
     <None Include="SQL\OptionRecompileAndFetch.sql" />
+    <None Include="SQL\SkippedUnsupportedColumn.sql" />
     <None Include="SQL\SelectAllFromTable.sql" />
     <None Include="SQL\UserDefinedTableType.sql" />
     <None Include="SQL\SingleRecordCol.sql" />
