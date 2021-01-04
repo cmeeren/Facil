@@ -4,6 +4,7 @@
     <!-- Target a framework compatible with netstandard2.1 and one only compatible with netstandard2.0 -->
     <TargetFrameworks>net5.0;netcoreapp2.1</TargetFrameworks>
     <GenerateProgramFile>false</GenerateProgramFile>
+    <BuildInParallel>false</BuildInParallel>
   </PropertyGroup>
 
   <PropertyGroup>
