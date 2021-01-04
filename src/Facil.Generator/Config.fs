@@ -673,7 +673,11 @@ module RuleSet =
 
 
   let fromDto projectDir resolveVariable fullYamlPath (dto: RuleSetDto) =
-    let scriptBasePath = dto.scriptBasePath |> Option.defaultValue projectDir |> Path.GetFullPath
+    let scriptBasePath =
+      dto.scriptBasePath
+      |> Option.map (fun scriptBase -> Path.Combine(projectDir, scriptBase))
+      |> Option.defaultValue projectDir
+      |> Path.GetFullPath
     {
       ConnectionString =
         dto.connectionString
