@@ -172,4 +172,44 @@ let tests =
       ]
 
 
+      testCase "Compile-time script param inheritance test" <| fun () ->
+        DbGen.Scripts.ParamInheritance
+          .WithConnection(Config.connStr)
+          .WithParameters(
+            col1 = Some 1,
+            col2 = 1
+          )
+          |> ignore
+
+
+      testCase "Compile-time sproc column inheritance test" <| fun () ->
+        let f () =
+          let res =
+            DbGen.Procedures.dbo.ProcColumnInheritance
+              .WithConnection(Config.connStr)
+              .ExecuteSingle()
+          res.Value.Foo |> ignore<int>
+          res.Value.Bar |> ignore<int>
+        ignore f
+
+
+      testCase "Compile-time script column inheritance test" <| fun () ->
+        let f () =
+          let res =
+            DbGen.Scripts.ColumnInheritance
+              .WithConnection(Config.connStr)
+              .ExecuteSingle()
+          res.Value.Foo |> ignore<int>
+          res.Value.Bar |> ignore<int>
+        ignore f
+
+
+      testCase "Compile-time table DTO column inheritance test" <| fun () ->
+        let f () =
+          let (x: DbGen.TableDtos.dbo.TableDtoColumnInheritance) = Unchecked.defaultof<_>
+          x.Foo |> ignore<int>
+          x.Bar |> ignore<int>
+        ignore f
+
+
   ]

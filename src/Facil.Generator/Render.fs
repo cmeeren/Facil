@@ -801,7 +801,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               yield! indent [
                 for p in parameters do
                   let dtoName =
-                    rule.Parameters.TryFind p.FSharpParamName
+                    rule.Parameters.TryFind (Some p.FSharpParamName)
+                    |> Option.orElse (rule.Parameters.TryFind None)
                     |> Option.bind (fun p -> p.DtoName)
                     |> Option.defaultValue (p.FSharpParamName |> String.firstUpper)
 

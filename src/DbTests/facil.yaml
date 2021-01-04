@@ -46,6 +46,15 @@ rulesets:
           UnsupportedCol:
             skip: true
 
+      - for: ProcColumnInheritance
+        columns:
+          "":
+            skip: true
+          Foo:
+            skip: false
+          Bar:
+            skip: false
+
 
     scripts:
       - include: "**/*.sql"
@@ -64,6 +73,23 @@ rulesets:
         columns:
           UnsupportedCol:
             skip: true
+
+      - for: ParamInheritance.sql
+        params:
+          "":
+            type: INT
+            nullable: true
+          col2:
+            nullable: false
+
+      - for: ColumnInheritance.sql
+        columns:
+          "":
+            skip: true
+          Foo:
+            skip: false
+          Bar:
+            skip: false
 
       - for: UserDefinedTableType.sql
         params:
@@ -183,6 +209,15 @@ rulesets:
         columns:
           UnsupportedCol:
             skip: true
+
+      - for: TableDtoColumnInheritance
+        columns:
+          "":
+            skip: true
+          Foo:
+            skip: false
+          Bar:
+            skip: false
 
 
     tableTypes:

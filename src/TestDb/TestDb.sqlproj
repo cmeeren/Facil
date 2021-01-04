@@ -145,6 +145,8 @@
     <Build Include="dbo\Stored Procedures\ProcWithLengthTypesFromTvp.sql" />
     <Build Include="dbo\Tables\TableWithSkippedUnsupportedColumn.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithSkippedUnsupportedColumn.sql" />
+    <Build Include="dbo\Stored Procedures\ProcColumnInheritance.sql" />
+    <Build Include="dbo\Tables\TableDtoColumnInheritance.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDB.publish.xml" />

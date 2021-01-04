@@ -73,19 +73,36 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
           | _ -> paramsWithFirstUsageOffset.[node.Name] <- node.StartOffset
     }
 
+    let declaredParams = ResizeArray()
+    let parser = TSql150Parser(true)
+    let fragment, _ = parser.Parse(new StringReader(script.Source))
+    fragment.Accept {
+      new TSqlFragmentVisitor() with
+        member _.Visit(node: DeclareVariableElement) =
+          base.Visit node
+          declaredParams.Add node.VariableName.Value
+    }
+
+    let undeclaredParams = set paramsWithFirstUsageOffset.Keys - set declaredParams
+
     let sourceToUse =
       // Add parameter declarations from config
-      (script.Source, (Map.toList rule.Parameters))
-      ||> List.fold (fun source (paramName, p) ->
-            if not (paramsWithFirstUsageOffset.ContainsKey $"@{paramName}") then
-              logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '@{paramName}' that is not used in the script. Ignoring parameter."
-              source
-            else
-              match p.Type with
-              | None -> source
-              | Some typeDef -> $"DECLARE @{paramName} {typeDef} = {facilTempVarPrefix}{paramName}\n{source}"
+      (script.Source, undeclaredParams |> Seq.map (fun s -> s.TrimStart '@'))
+      ||> Seq.fold (fun source paramName ->
+            match rule.Parameters.TryFind (Some paramName) |> Option.orElse (rule.Parameters.TryFind None) with
+            | Some { Type = Some typeDef } ->
+                $"DECLARE @%s{paramName} %s{typeDef} = %s{facilTempVarPrefix}%s{paramName}\n%s{source}"
+            | _ -> source
       )
       |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+
+
+    let unusedParamRules =
+      (rule.Parameters |> Map.toList |> List.choose fst |> List.map (fun s -> "@" + s) |> set)
+      - (set paramsWithFirstUsageOffset.Keys)
+
+    for paramName in unusedParamRules do
+      logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '@%s{paramName}' that is not used in the script. Ignoring parameter."
 
 
     use __ = createAndDropTempTables script.TempTables conn
@@ -114,7 +131,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
 
         match userTypeId |> Option.bind tableTypesByUserId.TryFind with
         | Some tt ->
-            match rule.Parameters.TryFind (paramName.TrimStart '@') with
+            match rule.Parameters.TryFind (Some (paramName.TrimStart '@')) |> Option.orElse (rule.Parameters.TryFind None) with
             | Some paramRule when paramRule.Nullable = Some true ->
                 logWarning $"The effective rule for script '{script.GlobMatchOutput}' and parameter '@{paramName}' specifies that the parameter is both nullable and a user-defined table type, but table-valued parameters cannot be nullable. Treating the parameter as non-nullable. To remove this warning, ensure that the parameter does not specify or inherit 'nullable: true'"
             | _ -> ()
@@ -141,7 +158,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
           Precision = reader.["suggested_precision"] |> unbox<byte>
           Scale = reader.["suggested_scale"] |> unbox<byte>
           FSharpDefaultValueString =
-            match rule.Parameters.TryFind (paramName.TrimStart '@') with
+            match rule.Parameters.TryFind (Some (paramName.TrimStart '@')) |> Option.orElse (rule.Parameters.TryFind None) with
             | Some { Nullable = Some true } -> Some "null"
             | _ -> None
           TypeInfo = typeInfo
@@ -150,7 +167,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
         }
       )
 
-    parameters |> Seq.toList
+    parameters |> Seq.toList |> List.sortBy (fun p -> p.SortKey)
 
   with
   | :? SqlException as ex when ex.Message.Contains "Procedure or function" && ex.Message.Contains "has too many arguments specified" ->
@@ -206,15 +223,21 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     let shouldSkipCol =
       match colName, executable with
       | Some name, Choice1Of3 sproc ->
+          if sproc.Name = "ProcColumnInheritance" then ()
+          let _rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
           RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-          |> fun r -> r.Columns
-          |> Map.tryFind name
+          |> fun r ->
+              r.Columns
+              |> Map.tryFind (Some name)
+              |> Option.orElse (r.Columns |> Map.tryFind None)
           |> Option.bind (fun c -> c.Skip)
           |> Option.defaultValue false
       | Some name, Choice2Of3 script ->
           RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-          |> fun r -> r.Columns
-          |> Map.tryFind name
+          |> fun r ->
+              r.Columns
+              |> Map.tryFind (Some name)
+              |> Option.orElse (r.Columns |> Map.tryFind None)
           |> Option.bind (fun c -> c.Skip)
           |> Option.defaultValue false
       | None, _ | _, Choice3Of3 _ -> false
@@ -307,14 +330,18 @@ let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedur
           match colName, executable with
           | Some name, Choice1Of3 sproc ->
               RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-              |> fun r -> r.Columns
-              |> Map.tryFind name
+              |> fun r ->
+                  r.Columns
+                  |> Map.tryFind (Some name)
+                  |> Option.orElse (r.Columns |> Map.tryFind None)
               |> Option.bind (fun c -> c.Skip)
               |> Option.defaultValue false
           | Some name, Choice2Of3 script ->
               RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-              |> fun r -> r.Columns
-              |> Map.tryFind name
+              |> fun r ->
+                  r.Columns
+                  |> Map.tryFind (Some name)
+                  |> Option.orElse (r.Columns |> Map.tryFind None)
               |> Option.bind (fun c -> c.Skip)
               |> Option.defaultValue false
           | None, _ | _, Choice3Of3 _ -> false
@@ -358,13 +385,13 @@ let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Scr
         RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
         |> fun r -> r.Columns
         |> Map.toList
-        |> List.map fst
+        |> List.choose fst
         |> set
     | Choice2Of3 script ->
         RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
         |> fun r -> r.Columns
         |> Map.toList
-        |> List.map fst
+        |> List.choose fst
         |> set
     | Choice3Of3 _ -> Set.empty
 
@@ -610,8 +637,10 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
 
       let shouldSkipCol =
         RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
-        |> fun r -> r.Columns
-        |> Map.tryFind colName
+        |> fun r ->
+            r.Columns
+            |> Map.tryFind (Some colName)
+            |> Option.orElse (r.Columns |> Map.tryFind None)
         |> Option.bind (fun c -> c.Skip)
         |> Option.defaultValue false
 
@@ -653,7 +682,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
           RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
           |> fun r -> r.Columns
           |> Map.toList
-          |> List.map fst
+          |> List.choose fst
           |> set
 
         let key = $"{schemaName}.{tableName}"
@@ -888,7 +917,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
 
   for i, rule in Seq.indexed cfg.Procedures do
-    for paramName, _ in rule.Parameters |> Map.toList do
+    for paramName in rule.Parameters |> Map.toList |> List.choose fst do
       let hasMatchingProcedureAndParam =
         sprocs
         |> List.exists (fun sp ->
@@ -906,7 +935,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
 
   for i, rule in Seq.indexed cfg.Scripts do
-    for paramName, _ in rule.Parameters |> Map.toList do
+    for paramName in rule.Parameters |> Map.toList |> List.choose fst do
       let hasMatchingScriptAndParam =
         scripts
         |> List.exists (fun s ->
