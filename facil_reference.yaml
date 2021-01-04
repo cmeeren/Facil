@@ -66,7 +66,7 @@ rulesets:
       # should use ValueOption instead of Option for nullable output columns (unless
       # overridden by later rules).
       - include: .*
-        except: ^dbo\\.ProcToExclude$
+        except: ^dbo\.ProcToExclude$
         voptionOut: true
 
       # 'for' contains a regex that specifies which already included procedures (also from
@@ -75,8 +75,8 @@ rulesets:
       #
       # The rule below applies to all procedures containing 'dbo.User_' except those
       # containing 'dbo.User_Id'.
-      - for: dbo\\.User_
-        except: dbo\\.User_Id
+      - for: dbo\.User_
+        except: dbo\.User_Id
 
         # 'result' specifies the type of the returned rows. Valid values:
         #  - "auto" (default): If a single matching table DTO (see later) is found, use
@@ -243,7 +243,7 @@ rulesets:
       # 'include', 'for', and 'except' work just like in stored procedure rules, and are
       # matched against the schema-qualified table name.
       - include: .*
-        except: dbo\\.SomeTable
+        except: dbo\.SomeTable
 
         # Whether to use ValueOption instead of Option for nullable columns. Default
         # false.
@@ -270,7 +270,7 @@ rulesets:
       # supported; Facil always generates wrappers for the table types used in included
       # procedure and script parameters.
       - for: .*
-        except: dbo\\.SomeTableType
+        except: dbo\.SomeTableType
 
         # Whether to use ValueOption instead of Option for nullable columns. Default
         # false.
