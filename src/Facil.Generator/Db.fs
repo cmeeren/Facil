@@ -516,6 +516,7 @@ let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableT
   let sprocParamsByObjectId = getSprocParamsByObjectId ()
 
   sprocsWithoutParamsOrResultSet
+  |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
   // Add parameters
   |> List.map (fun sproc ->
       { sproc with
@@ -756,40 +757,42 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     )
   
   let sprocs =
-    getStoredProcedures cfg sysTypeIdLookup tableTypesByUserId conn
-    |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
-    |> List.filter (fun sp ->
+    if cfg.Procedures.IsEmpty then []
+    else
+      getStoredProcedures cfg sysTypeIdLookup tableTypesByUserId conn
+      |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
+      |> List.filter (fun sp ->
 
-        let hasUnsupportedParameter =
-          sp.Parameters |> List.exists (fun p ->
-            if p.IsCursorRef then
-              logWarning $"Parameter '%s{p.Name}' in stored procedure '%s{sp.SchemaName}.%s{sp.Name}' is a cursor reference, which is not supported. Ignoring stored procedure. To remove this warning, remove the parameter from the stored procedure or make the procedure is not included in any rules."
-              true
-            else false
-          )
+          let hasUnsupportedParameter =
+            sp.Parameters |> List.exists (fun p ->
+              if p.IsCursorRef then
+                logWarning $"Parameter '%s{p.Name}' in stored procedure '%s{sp.SchemaName}.%s{sp.Name}' is a cursor reference, which is not supported. Ignoring stored procedure. To remove this warning, remove the parameter from the stored procedure or make the procedure is not included in any rules."
+                true
+              else false
+            )
 
-        let hasUnsupportedResultColumn =
-          match sp.ResultSet with
-          | None -> false
-          | Some cols ->
-              match cols |> List.tryFindIndex (fun c -> c.Name.IsNone) with
-              | Some idx when idx > 0 || cols.Length > 1 ->
-                  logWarning $"Column #{idx + 1} of {cols.Length} returned by stored procedure '{sp.SchemaName}.{sp.Name}' is missing a name. Columns without names are only supported if they are the only column in the result set. Ignoring stored procedure. To remove this warning, fix the result set make sure this stored procedure is not included in any rules."
-                  true
-              | _ -> false
+          let hasUnsupportedResultColumn =
+            match sp.ResultSet with
+            | None -> false
+            | Some cols ->
+                match cols |> List.tryFindIndex (fun c -> c.Name.IsNone) with
+                | Some idx when idx > 0 || cols.Length > 1 ->
+                    logWarning $"Column #{idx + 1} of {cols.Length} returned by stored procedure '{sp.SchemaName}.{sp.Name}' is missing a name. Columns without names are only supported if they are the only column in the result set. Ignoring stored procedure. To remove this warning, fix the result set make sure this stored procedure is not included in any rules."
+                    true
+                | _ -> false
 
-        let hasDuplicateColumnNames =
-          match sp.ResultSet with
-          | None -> false
-          | Some cols ->
-              match cols |> List.choose (fun c -> c.Name) |> List.countBy id |> List.filter (fun (_, c) -> c > 1) with
-              | (name, count) :: _ ->
-                  logWarning $"Stored procedure '{sp.SchemaName}.{sp.Name}' returns %i{count} columns named '{name}'. Columns names must be unique. Ignoring stored procedure. To remove this warning, fix the column names or make sure this stored procedure is not included in any rules."
-                  true
-              | _ -> false
+          let hasDuplicateColumnNames =
+            match sp.ResultSet with
+            | None -> false
+            | Some cols ->
+                match cols |> List.choose (fun c -> c.Name) |> List.countBy id |> List.filter (fun (_, c) -> c > 1) with
+                | (name, count) :: _ ->
+                    logWarning $"Stored procedure '{sp.SchemaName}.{sp.Name}' returns %i{count} columns named '{name}'. Columns names must be unique. Ignoring stored procedure. To remove this warning, fix the column names or make sure this stored procedure is not included in any rules."
+                    true
+                | _ -> false
 
-        not hasUnsupportedParameter && not hasUnsupportedResultColumn && not hasDuplicateColumnNames
-    )
+          not hasUnsupportedParameter && not hasUnsupportedResultColumn && not hasDuplicateColumnNames
+      )
 
   let usedTableTypes =
     [
