@@ -611,7 +611,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
       let shouldSkipCol =
         RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
         |> fun r -> r.Columns
-        |> Map.tryFind tableName
+        |> Map.tryFind colName
         |> Option.bind (fun c -> c.Skip)
         |> Option.defaultValue false
 

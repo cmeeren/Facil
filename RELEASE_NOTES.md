@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Fixed ignored columns in table DTOs
+
 ### 0.1.4 (2021-01-04)
 
 * Now parses only included stored procedures
