@@ -1,11 +1,11 @@
 Release notes
 ==============
 
-### vNext
+### 0.1.3 (2021-01-04)
 
 * Support temp tables for scripts (thanks [@davidtme](davidtme)!) ([#2](https://github.com/cmeeren/Facil/pull/2), [#3](https://github.com/cmeeren/Facil/issues/3))
 * Added ability to configure script base path
-* Added ability to ignore script/procedure columns and table DTO columns
+* Added ability to ignore columns in scripts, procedures, and table DTOs [#4](https://github.com/cmeeren/Facil/issues/4)
 
 ### 0.1.2 (2020-12-17)
 
