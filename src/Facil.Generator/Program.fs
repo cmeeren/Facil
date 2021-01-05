@@ -92,7 +92,14 @@ module Program =
 
           if Environment.GetEnvironmentVariable(envvar_fail_on_changed_output) |> isNull |> not then
             let existingLines = if File.Exists outFile then File.ReadAllLines(outFile) |> Array.toList else []
-            if lines <> existingLines then
+
+            let shouldCheckLine (line: string) =
+              not <| line.Trim().StartsWith "//"
+
+            let linesToCheck = lines |> List.filter shouldCheckLine
+            let existingLinesToCheck = existingLines |> List.filter shouldCheckLine
+
+            if linesToCheck <> existingLinesToCheck then
               failwithError $"The generated code has changed and the environment variable {envvar_fail_on_changed_output} is set. Failing build."
 
           // Writing the file may fail if the target projects has multiple target
