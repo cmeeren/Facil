@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 5c97ec242156ccc1d54503ac15017bd2825f30d7956b8a96fa61f9f92cde1ff9
+// Hash: a2553e512d98717ed74de18b8afe4968b00f60558d3e7dff1278fb8861360e34
 
 //////////////////////////////////////////
 //
@@ -47,24 +47,10 @@ module TableDtos =
       }
 
 
-    type ``VoptionTableWithDto`` =
-      {
-        Col1: string voption
-        Col2: int voption
-      }
-
-
     type ``Table1`` =
       {
         TableCol1: string
         TableCol2: int option
-      }
-
-
-    type ``TableWithSkippedUnsupportedColumn`` =
-      {
-        SupportedCol1: string
-        SupportedCol2: int
       }
 
 
@@ -75,216 +61,24 @@ module TableDtos =
       }
 
 
+    type ``TableWithSkippedUnsupportedColumn`` =
+      {
+        SupportedCol1: string
+        SupportedCol2: int
+      }
+
+
+    type ``VoptionTableWithDto`` =
+      {
+        Col1: string voption
+        Col2: int voption
+      }
+
+
 module TableTypes =
 
 
   module ``dbo`` =
-
-
-    let private ``MultiColNullVoption_meta`` = 
-      [|
-        SqlMetaData("Foo", SqlDbType.Int)
-        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |]
-
-
-    type ``MultiColNullVoption`` (__: InternalUseOnly) =
-      inherit SqlDataRecord (``MultiColNullVoption_meta``)
-
-      static member create
-        (
-          ``Foo``: int voption,
-          ``Bar``: string voption
-        ) =
-        let x = ``MultiColNullVoption``(internalUseOnlyValue)
-        x.SetValues(
-          ValueOption.toDbNull ``Foo``,
-          ValueOption.toDbNull ``Bar``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``MultiColNullVoption``(internalUseOnlyValue)
-        x.SetValues(
-          ValueOption.toDbNull (^a: (member ``Foo``: int voption) dto),
-          ValueOption.toDbNull (^a: (member ``Bar``: string voption) dto)
-        )
-        |> ignore
-        x
-
-
-    let private ``MultiColNonNull_meta`` = 
-      [|
-        SqlMetaData("Foo", SqlDbType.Int)
-        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |]
-
-
-    type ``MultiColNonNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord (``MultiColNonNull_meta``)
-
-      static member create
-        (
-          ``Foo``: int,
-          ``Bar``: string
-        ) =
-        let x = ``MultiColNonNull``(internalUseOnlyValue)
-        x.SetValues(
-          ``Foo``,
-          ``Bar``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``MultiColNonNull``(internalUseOnlyValue)
-        x.SetValues(
-          (^a: (member ``Foo``: int) dto),
-          (^a: (member ``Bar``: string) dto)
-        )
-        |> ignore
-        x
-
-
-    let private ``MultiColNull_meta`` = 
-      [|
-        SqlMetaData("Foo", SqlDbType.Int)
-        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
-      |]
-
-
-    type ``MultiColNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord (``MultiColNull_meta``)
-
-      static member create
-        (
-          ``Foo``: int option,
-          ``Bar``: string option
-        ) =
-        let x = ``MultiColNull``(internalUseOnlyValue)
-        x.SetValues(
-          Option.toDbNull ``Foo``,
-          Option.toDbNull ``Bar``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``MultiColNull``(internalUseOnlyValue)
-        x.SetValues(
-          Option.toDbNull (^a: (member ``Foo``: int option) dto),
-          Option.toDbNull (^a: (member ``Bar``: string option) dto)
-        )
-        |> ignore
-        x
-
-
-    let private ``SingleColNonNull_meta`` = 
-      [|
-        SqlMetaData("Foo", SqlDbType.Int)
-      |]
-
-
-    type ``SingleColNonNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord (``SingleColNonNull_meta``)
-
-      static member create
-        (
-          ``Foo``: int
-        ) =
-        let x = ``SingleColNonNull``(internalUseOnlyValue)
-        x.SetValues(
-          ``Foo``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``SingleColNonNull``(internalUseOnlyValue)
-        x.SetValues(
-          (^a: (member ``Foo``: int) dto)
-        )
-        |> ignore
-        x
-
-
-    let private ``SingleColNull_meta`` = 
-      [|
-        SqlMetaData("Foo", SqlDbType.Int)
-      |]
-
-
-    type ``SingleColNull`` (__: InternalUseOnly) =
-      inherit SqlDataRecord (``SingleColNull_meta``)
-
-      static member create
-        (
-          ``Foo``: int option
-        ) =
-        let x = ``SingleColNull``(internalUseOnlyValue)
-        x.SetValues(
-          Option.toDbNull ``Foo``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``SingleColNull``(internalUseOnlyValue)
-        x.SetValues(
-          Option.toDbNull (^a: (member ``Foo``: int option) dto)
-        )
-        |> ignore
-        x
-
-
-    let private ``LengthTypes_meta`` = 
-      [|
-        SqlMetaData("binary", SqlDbType.Binary, 3L)
-        SqlMetaData("char", SqlDbType.Char, 3L)
-        SqlMetaData("nchar", SqlDbType.NChar, 3L)
-        SqlMetaData("nvarchar", SqlDbType.NVarChar, 3L)
-        SqlMetaData("varbinary", SqlDbType.VarBinary, 3L)
-        SqlMetaData("varchar", SqlDbType.VarChar, 3L)
-      |]
-
-
-    type ``LengthTypes`` (__: InternalUseOnly) =
-      inherit SqlDataRecord (``LengthTypes_meta``)
-
-      static member create
-        (
-          ``binary``: byte [],
-          ``char``: string,
-          ``nchar``: string,
-          ``nvarchar``: string,
-          ``varbinary``: byte [],
-          ``varchar``: string
-        ) =
-        let x = ``LengthTypes``(internalUseOnlyValue)
-        x.SetValues(
-          ``binary``,
-          ``char``,
-          ``nchar``,
-          ``nvarchar``,
-          ``varbinary``,
-          ``varchar``
-        )
-        |> ignore
-        x
-
-      static member inline create (dto: ^a) =
-        let x = ``LengthTypes``(internalUseOnlyValue)
-        x.SetValues(
-          (^a: (member ``binary``: byte []) dto),
-          (^a: (member ``char``: string) dto),
-          (^a: (member ``nchar``: string) dto),
-          (^a: (member ``nvarchar``: string) dto),
-          (^a: (member ``varbinary``: byte []) dto),
-          (^a: (member ``varchar``: string) dto)
-        )
-        |> ignore
-        x
 
 
     let private ``AllTypesNonNull_meta`` = 
@@ -556,6 +350,212 @@ module TableTypes =
           Option.toDbNull (^a: (member ``varbinary``: byte [] option) dto),
           Option.toDbNull (^a: (member ``varchar``: string option) dto),
           Option.toDbNull (^a: (member ``xml``: string option) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``LengthTypes_meta`` = 
+      [|
+        SqlMetaData("binary", SqlDbType.Binary, 3L)
+        SqlMetaData("char", SqlDbType.Char, 3L)
+        SqlMetaData("nchar", SqlDbType.NChar, 3L)
+        SqlMetaData("nvarchar", SqlDbType.NVarChar, 3L)
+        SqlMetaData("varbinary", SqlDbType.VarBinary, 3L)
+        SqlMetaData("varchar", SqlDbType.VarChar, 3L)
+      |]
+
+
+    type ``LengthTypes`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``LengthTypes_meta``)
+
+      static member create
+        (
+          ``binary``: byte [],
+          ``char``: string,
+          ``nchar``: string,
+          ``nvarchar``: string,
+          ``varbinary``: byte [],
+          ``varchar``: string
+        ) =
+        let x = ``LengthTypes``(internalUseOnlyValue)
+        x.SetValues(
+          ``binary``,
+          ``char``,
+          ``nchar``,
+          ``nvarchar``,
+          ``varbinary``,
+          ``varchar``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``LengthTypes``(internalUseOnlyValue)
+        x.SetValues(
+          (^a: (member ``binary``: byte []) dto),
+          (^a: (member ``char``: string) dto),
+          (^a: (member ``nchar``: string) dto),
+          (^a: (member ``nvarchar``: string) dto),
+          (^a: (member ``varbinary``: byte []) dto),
+          (^a: (member ``varchar``: string) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``MultiColNonNull_meta`` = 
+      [|
+        SqlMetaData("Foo", SqlDbType.Int)
+        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
+      |]
+
+
+    type ``MultiColNonNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``MultiColNonNull_meta``)
+
+      static member create
+        (
+          ``Foo``: int,
+          ``Bar``: string
+        ) =
+        let x = ``MultiColNonNull``(internalUseOnlyValue)
+        x.SetValues(
+          ``Foo``,
+          ``Bar``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``MultiColNonNull``(internalUseOnlyValue)
+        x.SetValues(
+          (^a: (member ``Foo``: int) dto),
+          (^a: (member ``Bar``: string) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``MultiColNull_meta`` = 
+      [|
+        SqlMetaData("Foo", SqlDbType.Int)
+        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
+      |]
+
+
+    type ``MultiColNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``MultiColNull_meta``)
+
+      static member create
+        (
+          ``Foo``: int option,
+          ``Bar``: string option
+        ) =
+        let x = ``MultiColNull``(internalUseOnlyValue)
+        x.SetValues(
+          Option.toDbNull ``Foo``,
+          Option.toDbNull ``Bar``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``MultiColNull``(internalUseOnlyValue)
+        x.SetValues(
+          Option.toDbNull (^a: (member ``Foo``: int option) dto),
+          Option.toDbNull (^a: (member ``Bar``: string option) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``MultiColNullVoption_meta`` = 
+      [|
+        SqlMetaData("Foo", SqlDbType.Int)
+        SqlMetaData("Bar", SqlDbType.NVarChar, 50L)
+      |]
+
+
+    type ``MultiColNullVoption`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``MultiColNullVoption_meta``)
+
+      static member create
+        (
+          ``Foo``: int voption,
+          ``Bar``: string voption
+        ) =
+        let x = ``MultiColNullVoption``(internalUseOnlyValue)
+        x.SetValues(
+          ValueOption.toDbNull ``Foo``,
+          ValueOption.toDbNull ``Bar``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``MultiColNullVoption``(internalUseOnlyValue)
+        x.SetValues(
+          ValueOption.toDbNull (^a: (member ``Foo``: int voption) dto),
+          ValueOption.toDbNull (^a: (member ``Bar``: string voption) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``SingleColNonNull_meta`` = 
+      [|
+        SqlMetaData("Foo", SqlDbType.Int)
+      |]
+
+
+    type ``SingleColNonNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``SingleColNonNull_meta``)
+
+      static member create
+        (
+          ``Foo``: int
+        ) =
+        let x = ``SingleColNonNull``(internalUseOnlyValue)
+        x.SetValues(
+          ``Foo``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``SingleColNonNull``(internalUseOnlyValue)
+        x.SetValues(
+          (^a: (member ``Foo``: int) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``SingleColNull_meta`` = 
+      [|
+        SqlMetaData("Foo", SqlDbType.Int)
+      |]
+
+
+    type ``SingleColNull`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``SingleColNull_meta``)
+
+      static member create
+        (
+          ``Foo``: int option
+        ) =
+        let x = ``SingleColNull``(internalUseOnlyValue)
+        x.SetValues(
+          Option.toDbNull ``Foo``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``SingleColNull``(internalUseOnlyValue)
+        x.SetValues(
+          Option.toDbNull (^a: (member ``Foo``: int option) dto)
         )
         |> ignore
         x

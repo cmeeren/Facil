@@ -828,6 +828,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
         not hasUnsupportedParameter && not hasDuplicateColumnNames
     )
+    |> List.sortBy (fun s -> s.GlobMatchOutput)
   
   let sprocs =
     if cfg.Procedures.IsEmpty then []
@@ -866,6 +867,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
           not hasUnsupportedParameter && not hasUnsupportedResultColumn && not hasDuplicateColumnNames
       )
+      |> List.sortBy (fun sp -> sp.SchemaName, sp.Name)
 
   let usedTableTypes =
     [
@@ -882,10 +884,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
   let tableTypes =
     tableTypes
     |> List.filter (fun tt -> usedTableTypes |> Set.contains (tt.SchemaName, tt.Name))
+    |> List.sortBy (fun tt -> tt.SchemaName, tt.Name)
 
   let tableDtos =
     getTableDtos cfg sysTypeIdLookup conn
     |> List.filter (fun dto -> RuleSet.shouldIncludeTableDto dto.SchemaName dto.Name cfg)
+    |> List.sortBy (fun dto -> dto.SchemaName, dto.Name)
 
 
   for i, rule in Seq.indexed cfg.TableDtos do
