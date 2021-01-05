@@ -306,7 +306,7 @@ let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedur
             | SqlDbType.BigInt -> p.Value <- 0L
             | _ -> ()
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
-  | Choice3Of3 tt -> cmd.Parameters.AddWithValue("@tsql", $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}") |> ignore
+  | Choice3Of3 tt -> cmd.CommandText <- $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}"
   use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)
   match reader.GetSchemaTable() with
   | null -> [], None
