@@ -102,7 +102,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       - (set paramsWithFirstUsageOffset.Keys)
 
     for paramName in unusedParamRules do
-      logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '@%s{paramName}' that is not used in the script. Ignoring parameter."
+      logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '%s{paramName}' that is not used in the script. Ignoring parameter."
 
 
     use __ = createAndDropTempTables script.TempTables conn
