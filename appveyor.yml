@@ -5,8 +5,8 @@ build:
 
 environment:
 
-  FACIL_FORCE_REGENERATE: ""
-  FACIL_FAIL_ON_CHANGED_OUTPUT: ""
+  FACIL_FORCE_REGENERATE: "1"
+  FACIL_FAIL_ON_CHANGED_OUTPUT: "1"
   connectionString: Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI
 
 init:
