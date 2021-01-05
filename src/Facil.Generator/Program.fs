@@ -96,11 +96,22 @@ module Program =
             let shouldCheckLine (line: string) =
               not <| line.Trim().StartsWith "//"
 
-            let linesToCheck = lines |> List.filter shouldCheckLine
-            let existingLinesToCheck = existingLines |> List.filter shouldCheckLine
+            let linesToCheck = lines |> List.toArray
+            let existingLinesToCheck = existingLines |> List.toArray
 
-            if linesToCheck <> existingLinesToCheck then
-              failwithError $"The generated code has changed and the environment variable {envvar_fail_on_changed_output} is set. Failing build."
+            for i in [0 .. (max linesToCheck.Length existingLinesToCheck.Length) - 1] do
+              let lNew = linesToCheck |> Array.tryItem i
+              let lOld = existingLinesToCheck |> Array.tryItem i
+              let shouldFail =
+                match lNew, lOld with
+                | Some lNew, Some lOld ->
+                    if not (shouldCheckLine lNew) && not (shouldCheckLine lOld) then false
+                    else lNew <> lOld
+                | None, Some _ | Some _, None -> true
+                | None, None -> false  // Should never happen
+
+              if shouldFail then
+                failwithError $"""The generated code has changed and the environment variable %s{envvar_fail_on_changed_output} is set. Failing build.\n\Index of first different line:%i{i}\n\nExisting line:\n%s{defaultArg lOld "<missing line>"}\n\nNew line:\n{defaultArg lNew "<missing line>"}"""
 
           // Writing the file may fail if the target projects has multiple target
           // frameworks that are built in parallel, such as is the case with Facil's own
