@@ -223,7 +223,6 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     let shouldSkipCol =
       match colName, executable with
       | Some name, Choice1Of3 sproc ->
-          if sproc.Name = "ProcColumnInheritance" then ()
           let _rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
           RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
           |> fun r ->
