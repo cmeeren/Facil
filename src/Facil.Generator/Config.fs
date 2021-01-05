@@ -85,11 +85,13 @@ type EffectiveTableTypeRule = {
 [<CLIMutable>]
 type ProcedureParameterDto = {
   dtoName: string option
+  buildValue: string option
 }
 
 
 type ProcedureParameter = {
   DtoName: string option
+  BuildValue: string option
 }
 
 
@@ -151,6 +153,7 @@ type ScriptParameterDto = {
   nullable: bool option
   ``type``: string option
   dtoName: string option
+  buildValue: string option
 }
 
 
@@ -158,6 +161,7 @@ type ScriptParameter = {
   Nullable: bool option
   Type: string option
   DtoName: string option
+  BuildValue: string option
 }
 
 [<CLIMutable>]
@@ -228,6 +232,7 @@ type EffectiveScriptRule = {
 
 type ProcedureOrScriptParameter = {
   DtoName: string option
+  BuildValue: string option
 }
 
 
@@ -385,11 +390,13 @@ module ProcedureParameter =
 
   let fromDto (dto: ProcedureParameterDto) : ProcedureParameter = {
     DtoName = dto.dtoName
+    BuildValue = dto.buildValue
   }
 
 
   let merge (p1: ProcedureParameter) (p2: ProcedureParameter) : ProcedureParameter = {
     DtoName = p2.DtoName |> Option.orElse p1.DtoName
+    BuildValue = p2.BuildValue |> Option.orElse p1.BuildValue
   }
 
 
@@ -498,11 +505,13 @@ module ProcedureOrScriptParameter =
 
   let fromProcedureParameter (p: ProcedureParameter) : ProcedureOrScriptParameter = {
       DtoName = p.DtoName
+      BuildValue = p.BuildValue
   }
 
 
   let fromScriptParameter (p: ScriptParameter) : ProcedureOrScriptParameter = {
       DtoName = p.DtoName
+      BuildValue = p.BuildValue
   }
 
 
@@ -553,6 +562,7 @@ module ScriptParameter =
     Nullable = dto.nullable
     Type = dto.``type``
     DtoName = dto.dtoName
+    BuildValue = dto.buildValue
   }
 
 
@@ -560,6 +570,7 @@ module ScriptParameter =
     Nullable = p2.Nullable |> Option.orElse p1.Nullable
     Type = p2.Type |> Option.orElse p1.Type
     DtoName = p2.DtoName |> Option.orElse p1.DtoName
+    BuildValue = p2.BuildValue |> Option.orElse p1.BuildValue
   }
 
 

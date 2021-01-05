@@ -43,6 +43,8 @@
     <None Include="SQL\OverriddenDtoParamName.sql" />
     <None Include="SQL\DynamicSqlWithDeclaration.sql" />
     <None Include="SQL\DynamicSqlWithoutDeclaration.sql" />
+    <None Include="SQL\DynamicSqlSensitiveToParamValues.sql" />
+    <None Include="SQL\DynamicSqlSensitiveToParamValuesWithResultSets.sql" />
     <None Include="SQL\TempTableAllTypesNonNull.sql" />
     <None Include="SQL\TempTableAllTypesNull.sql" />
     <None Include="SQL\TempTableAllTypesNullVoption.sql" />

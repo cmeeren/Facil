@@ -153,6 +153,11 @@ rulesets:
           col1Filter:
             type: NVARCHAR(42)
 
+      - for: DynamicSqlSensitiveToParamValues.sql
+        params:
+          orderBy:
+            buildValue: TableCol1
+
       - for: TempTableAllTypesNonNull.sql
         tempTables:
           - definition: TempTableDefinitions/TempTableAllTypesNonNull.sql

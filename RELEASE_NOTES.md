@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Add `buildValue` parameter config to work around some dynamic SQL limitations
+
 ### 0.1.6 (2021-01-04)
 
 * Fixed parameter and column inheritance

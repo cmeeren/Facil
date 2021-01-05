@@ -280,10 +280,13 @@ let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedur
   | Choice1Of3 sproc ->
       cmd.CommandText <- sproc.SchemaName + "." + sproc.Name
       cmd.CommandType <- CommandType.StoredProcedure
+      let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
       for param in sproc.Parameters do
         match param.TypeInfo with
+
         | Scalar ti ->
             let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+
             // If the procedure contains OPTION(RECOMPILE) and FETCH, parsing fails unless
             // we set an actual value for the FETCH value, so always set a value for
             // ints/bigints.
@@ -291,13 +294,23 @@ let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedur
             | SqlDbType.Int -> p.Value <- 0
             | SqlDbType.BigInt -> p.Value <- 0L
             | _ -> ()
+
+            rule.Parameters.TryFind (Some (param.Name.TrimStart '@'))
+            |> Option.orElse (rule.Parameters.TryFind None)
+            |> Option.bind (fun p -> p.BuildValue)
+            |> Option.iter (fun v -> p.Value <- v)
+
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+
   | Choice2Of3 script ->
       cmd.CommandText <- script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+      let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
       for param in script.Parameters do
         match param.TypeInfo with
+
         | Scalar ti ->
             let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+
             // If the script contains OPTION(RECOMPILE) and FETCH, parsing fails unless we
             // set an actual value for the FETCH value, so always set a value for
             // ints/bigints.
@@ -305,6 +318,12 @@ let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedur
             | SqlDbType.Int -> p.Value <- 0
             | SqlDbType.BigInt -> p.Value <- 0L
             | _ -> ()
+
+            rule.Parameters.TryFind (Some (param.Name.TrimStart '@'))
+            |> Option.orElse (rule.Parameters.TryFind None)
+            |> Option.bind (fun p -> p.BuildValue)
+            |> Option.iter (fun v -> p.Value <- v)
+
         | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
   | Choice3Of3 tt -> cmd.CommandText <- $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}"
   use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)

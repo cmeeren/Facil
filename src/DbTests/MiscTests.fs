@@ -212,4 +212,28 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time buildValue test" <| fun () ->
+        let f () =
+          let res =
+            DbGen.Scripts.DynamicSqlSensitiveToParamValues
+              .WithConnection(Config.connStr)
+              .WithParameters("unused")
+              .ExecuteSingle()
+          res.Value.TableCol1 |> ignore<string>
+          res.Value.TableCol2 |> ignore<int option>
+        ignore f
+
+
+      testCase "Compile-time test of WITH RESULT SETS as a buildValue alternative" <| fun () ->
+        let f () =
+          let res =
+            DbGen.Scripts.DynamicSqlSensitiveToParamValuesWithResultSets
+              .WithConnection(Config.connStr)
+              .WithParameters("unused")
+              .ExecuteSingle()
+          res.Value.TableCol1 |> ignore<string>
+          res.Value.TableCol2 |> ignore<int option>
+        ignore f
+
+
   ]

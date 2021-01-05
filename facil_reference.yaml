@@ -127,6 +127,11 @@ rulesets:
             # object. By default, it's equal to the actual parameter name with the first
             # letter upper-cased.
             dtoName: SOMEparam
+            # The value this parameter will have during build when inferring the output
+            # result set. This is probably only needed if you use dynamic SQL and this
+            # parameter represents e.g. a column name. Only string parameters (e.g.
+            # NVARCHAR) are supported.
+            buildValue: foo
 
         # 'columns' allows you to specify settings for individual output columns.
         columns:
@@ -191,6 +196,11 @@ rulesets:
             # object. By default, it's equal to the actual parameter name with the first
             # letter upper-cased.
             dtoName: SOMEparam
+            # The value this parameter will have during build when inferring the output
+            # result set. This is probably only needed if you use dynamic SQL and this
+            # parameter represents e.g. a column name. Only string parameters (e.g.
+            # NVARCHAR) are supported.
+            buildValue: foo
           anotherParam:
             # For table-valued parameters, specify the schema-qualified name of a
             # user-defined table type. Note that table-valued parameters can not be

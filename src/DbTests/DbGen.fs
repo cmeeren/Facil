@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: baf4b06074499798abec13ecb61107e311bca08034f0a0878c25c539b39bbcd2
+// Hash: f83110ce745c1040207d2683b74145c04ee070b4b789e787ec6e233e488b5795
 
 //////////////////////////////////////////
 //
@@ -8686,6 +8686,246 @@ module Scripts =
 
     member this.ExecuteSingle() =
       executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``DynamicSqlSensitiveToParamValues_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        DECLARE @sql NVARCHAR(MAX) = 'SELECT * FROM dbo.Table1 ORDER BY ' + @orderBy
+        EXEC sp_executesql @sql, N''
+
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_TableCol1`` = 0
+    let mutable ``ordinal_TableCol2`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
+      ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
+
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      {
+        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+      }
+
+    member _.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member _.Execute() =
+      executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+    #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+    member _.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    #endif
+
+    member _.LazyExecute() =
+      executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+    member _.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteSingle() =
+      executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+  type ``DynamicSqlSensitiveToParamValues`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``DynamicSqlSensitiveToParamValues``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``DynamicSqlSensitiveToParamValues``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``orderBy``: string
+      ) =
+      let sqlParams =
+        [|
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = ``orderBy``)
+        |]
+      ``DynamicSqlSensitiveToParamValues_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let sqlParams =
+        [|
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``OrderBy``: string) dto))
+        |]
+      ``DynamicSqlSensitiveToParamValues_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``DynamicSqlSensitiveToParamValuesWithResultSets_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        DECLARE @sql NVARCHAR(MAX) = 'SELECT * FROM dbo.Table1 ORDER BY ' + @orderBy
+        EXEC sp_executesql @sql, N''
+
+        WITH RESULT SETS (([TableCol1] NVARCHAR (42) NOT NULL, [TableCol2] INT NULL))
+
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_TableCol1`` = 0
+    let mutable ``ordinal_TableCol2`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
+      ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
+
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      {
+        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+      }
+
+    member _.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member _.Execute() =
+      executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+    #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+    member _.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    #endif
+
+    member _.LazyExecute() =
+      executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+    member _.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteSingle() =
+      executeQuerySingle connStr conn configureConn configureCmd initOrdinals getItem tempTableData
+
+
+  type ``DynamicSqlSensitiveToParamValuesWithResultSets`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``DynamicSqlSensitiveToParamValuesWithResultSets``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``DynamicSqlSensitiveToParamValuesWithResultSets``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``orderBy``: string
+      ) =
+      let sqlParams =
+        [|
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = ``orderBy``)
+        |]
+      ``DynamicSqlSensitiveToParamValuesWithResultSets_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let sqlParams =
+        [|
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``OrderBy``: string) dto))
+        |]
+      ``DynamicSqlSensitiveToParamValuesWithResultSets_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, [])
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]

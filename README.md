@@ -299,6 +299,30 @@ The most significant drawback of this limitation is that it is possible to updat
 
 A bonus, however, is that having to deploy the updated schema to a database during development ensures that the schema actually “compiles”.
 
+### Why does Facil not generate result sets for my dynamic SQL query?
+
+TL;DR: Use `buildValue` in the parameter config for parameters with sort column names etc.
+
+Long version: This can happen when all of the following are true:
+
+* You use dynamic SQL
+* The syntax of the dynamic SQL statement is sensitive to the value of a parameter (e.g. a parameter contains the column name to sort by)
+* You are not using `WITH RESULT SETS`
+* You are not using `buildValue` for the relevant parameters in `facil.yaml`
+
+In this scenario, the output column parser returns no columns. (Unfortunately Facil can’t easily find out whether this is an error or if the script actually returns no results, and thus can’t display a warning/error instead of silently producing non-query code.)
+
+The fix is simple: In the procedure/script config, add a parameter with `buildValue` set to a value you know will work:
+
+```yaml
+- for: MyProcedure
+  params:
+    mySortColParam:
+      buildValue: MySortColumn
+```
+
+Another workaround is to use `WITH RESULT SETS`. This will in many cases enable Facil to use another method of determining the output columns that does not depend on parameter values. However, compared to using `buildValue`, it is more likely to break (since you must keep it in sync with the `SELECT` list) and likely more verbose.
+
 Release notes
 -------------
 
