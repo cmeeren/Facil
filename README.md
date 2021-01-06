@@ -135,7 +135,7 @@ Facil will regenerate (hitting your DB) before the compilation step of your buil
 
 * There are changes to the two first lines of the generated file(s) (this is the simplest way to manually force a rebuild)
 * There are changes in included SQL scripts
-* There are changes in effective config
+* There are changes in the config file
 * There are changes to Facil itself (i.e., when updating Facil)
 * The environment variable `FACIL_FORCE_REGENERATE` exists
 

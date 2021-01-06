@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.1.12 (2021-01-06)
+
+* Make change detection more resilient against environment differences
+
 ### 0.1.11 (2021-01-06)
 
 * Fix false positive change detection from v0.1.9

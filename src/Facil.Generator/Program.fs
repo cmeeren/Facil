@@ -67,8 +67,9 @@ module Program =
           use sha = System.Security.Cryptography.SHA256.Create()
           [
             assemblyHash
-            sprintf "%A" cfg
-            yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.GlobMatchOutput + s.Source)
+            yield! yamlFilePath |> File.ReadAllLines
+            yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.GlobMatchOutput.Replace("\\", "/"))
+            yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.Source)
           ]
           |> String.concat ""
           |> Text.Encoding.UTF8.GetBytes
