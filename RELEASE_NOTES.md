@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.1.9 (2021-01-06)
+
+* Facil will no longer regenerate if connection string variable contents change. This was fundamentally flawed, since it meant that if you don’t want to regenerate on CI, you’d have to set up a variable with the exact same connection string you use locally. Now you don’t have to set up any variables on CI if you don’t intend to regenerate.
+
 ### 0.1.8 (2021-01-06)
 
 * Fixed some edge cases with dynamic SQL

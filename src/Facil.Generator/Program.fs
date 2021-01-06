@@ -83,7 +83,7 @@ module Program =
           let sw = Diagnostics.Stopwatch.StartNew()
           use conn =
             try
-              new SqlConnection(cfg.ConnectionString)
+              new SqlConnection(cfg.GetConnectionString ())
             with :? ArgumentException ->
               failwithError "Invalid connection string"
           conn.Open()

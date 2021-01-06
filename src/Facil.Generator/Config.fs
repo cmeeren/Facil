@@ -268,7 +268,7 @@ type RuleSetDto = {
 
 
 type RuleSet = {
-  ConnectionString: string
+  GetConnectionString: unit -> string
   Filename: string
   NamespaceOrModuleDeclaration: string
   ScriptBasePath: string
@@ -731,10 +731,11 @@ module RuleSet =
       |> Option.defaultValue projectDir
       |> Path.GetFullPath
     {
-      ConnectionString =
-        dto.connectionString
-        |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "All array items in the 'rulesets' section must have a 'connectionString' property")
-        |> resolveVariable
+      GetConnectionString =
+        fun () ->
+          dto.connectionString
+          |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "All array items in the 'rulesets' section must have a 'connectionString' property")
+          |> resolveVariable
       Filename = dto.filename |> Option.defaultValue "DbGen.fs"
       NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module internal DbGen"
       ScriptBasePath = scriptBasePath
