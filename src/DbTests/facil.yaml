@@ -163,6 +163,11 @@ rulesets:
           splitParam:
             type: NVARCHAR(100)
 
+      - for: DynamicSqlWithTvp.sql
+        params:
+          tvp:
+            type: dbo.SingleColNonNull
+
       - for: TempTableAllTypesNonNull.sql
         tempTables:
           - definition: TempTableDefinitions/TempTableAllTypesNonNull.sql

@@ -47,6 +47,7 @@
     <None Include="SQL\DynamicSqlSensitiveToParamValuesWithResultSets.sql" />
     <None Include="SQL\DynamicSqlWithConflictingBranches.sql" />
     <None Include="SQL\DynamicSqlWithStringSplitParam.sql" />
+    <None Include="SQL\DynamicSqlWithTvp.sql" />
     <None Include="SQL\TempTableAllTypesNonNull.sql" />
     <None Include="SQL\TempTableAllTypesNull.sql" />
     <None Include="SQL\TempTableAllTypesNullVoption.sql" />
