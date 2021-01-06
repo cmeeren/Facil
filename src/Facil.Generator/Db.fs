@@ -174,6 +174,8 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. If you are using EXEC statements, all parameters passed to the procedure/function you execute may need to be declared in the script or Facil config file.", ex)
   | :? SqlException as ex when ex.Message.StartsWith "Invalid object name '#" ->
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. If you are using temp tables, you may need to define them in the script's `tempTables` array in the Facil config file.", ex)
+  | :? SqlException as ex when ex.Message.Contains "used more than once in the batch being analyzed" ->
+      raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. Parameters that are used more than once must be specified in the Facil config file.", ex)
   | ex ->
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}", ex)
 
