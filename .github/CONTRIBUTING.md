@@ -68,13 +68,13 @@ Development
 * `Facil.Runtime` and `Facil.Runtime.CSharp` contain runtime utilities used by the generated code.
 * ` Facil.Package` is the project that pulls together the generator, build tasks and runtime components into a single package, and also specifies all the package dependencies. It does not contain any code itself.
 * `DbTests` is the unit test project. In order to also test the build task, it references Facil using `PackageReference`, which after building `Facil.Package` exists in and (due to the solution’s `nuget.config`) is restored from the `nupkg` directory in the solution root.
-* `TestOutput` is the output project for the generated code if you run `Facil.Generator` directly in VS, and makes it easier to check generator output when debugging or developing new features. It does not test the build task.
-* `TestDb` is the database project that contains the schema used by `DbTests` and `TestOutput`.
+* `TestDb` is the database project that contains the schema used by `DbTests`.
 
 #### Dev workflow: Quick testing of generator output:
 
 * Set `Facil.Generator` as the startup project
-* Run it when needed and verify the output in the `TestOutput` project
+* Run it when needed and verify the output in the `DbTests` project
+* Remember to perform the steps below to properly update the test project
 
 #### Dev workflow: Updating test project and running tests
 

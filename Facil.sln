@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Facil.Generator", "src\Facil.Generator\Facil.Generator.fsproj", "{F0D6837B-C337-4585-9367-AA423ECEF4A4}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TestOutput", "src\TestOutput\TestOutput.fsproj", "{8CBAC607-FB64-4124-8083-FAF405CA4F50}"
-EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Facil.Runtime", "src\Facil.Runtime\Facil.Runtime.fsproj", "{D8BE2869-5F73-4BDA-AC18-3A14B2407131}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facil.Runtime.CSharp", "src\Facil.Runtime.CSharp\Facil.Runtime.CSharp.csproj", "{438D59CE-0E7C-4081-B75E-D78FCEAC1439}"
@@ -43,10 +41,6 @@ Global
 		{F0D6837B-C337-4585-9367-AA423ECEF4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0D6837B-C337-4585-9367-AA423ECEF4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0D6837B-C337-4585-9367-AA423ECEF4A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8CBAC607-FB64-4124-8083-FAF405CA4F50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CBAC607-FB64-4124-8083-FAF405CA4F50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CBAC607-FB64-4124-8083-FAF405CA4F50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8CBAC607-FB64-4124-8083-FAF405CA4F50}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D8BE2869-5F73-4BDA-AC18-3A14B2407131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8BE2869-5F73-4BDA-AC18-3A14B2407131}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8BE2869-5F73-4BDA-AC18-3A14B2407131}.Release|Any CPU.ActiveCfg = Release|Any CPU
