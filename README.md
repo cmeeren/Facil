@@ -103,6 +103,7 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 * Supports stored procedure output parameters and return values
 * Supports lazy execution, both sync (returns `seq`) and async (if your target supports .NET Standard 2.1 – returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
 * Supports inferring dynamic SQL result sets *without* `WITH RESULT SETS`
+* To some extent [checks your dynamic SQL at build time](#can-facil-check-my-dynamic-sql)
 * Supports [temp tables](#can-i-use-temp-tables)
 
 ### Production readiness
@@ -322,6 +323,41 @@ The fix is simple: In the procedure/script config, add a parameter with `buildVa
 ```
 
 Another workaround is to use `WITH RESULT SETS`. This will in many cases enable Facil to use another method of determining the output columns that does not depend on parameter values. However, compared to using `buildValue`, it is more likely to break (since you must keep it in sync with the `SELECT` list) and likely more verbose.
+
+### Can Facil check my dynamic SQL?
+
+Facil provides some checking of dynamic SQL as long as you don’t use `WITH RESULT SETS`.
+
+A common use of dynamic SQL is dynamic filtering:
+
+```sql
+DECLARE @sql NVARCHAR(MAX) = '
+SELECT * FROM dbo.MyTable
+WHERE
+  1 = 1
+'
+
+IF @col1Filter IS NOT NULL
+  SET @sql += '
+  AND Col1 = @col1Filter
+'
+
+IF @col2Filter IS NOT NULL
+  SET @sql += '
+  AND Col2 = @col2Filter
+'
+
+DECLARE @paramList NVARCHAR(MAX) = '
+  @col1Filter NVARCHAR(100),
+  @col2Filter INT
+'
+
+EXEC sp_executesql @sql, @paramList, @col1Filter, @col2Filter
+```
+
+In order to parse the output columns of dynamic SQL queries, Facil must execute your query and see which columns come back. By default, Facil passes “empty” non-null values (e.g. zero, empty GUID, empty string) for all parameters when executing the query. In the common case of dynamic filters as shown above, where you use `IS NOT NULL` to add filters to the executed SQL, this means that your dynamic SQL will be executed with all the optional filters.
+
+Facil may not completely check your dynamic SQL. For example, you may have a parameter that is used to choose one of several different `ORDER BY` clauses. In this case, only one of them will be used at build time (and you may be able to specify the parameter value by using `buildValue` as described previously).
 
 Release notes
 -------------

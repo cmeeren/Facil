@@ -268,7 +268,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
+let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
   let tempTablesToCreateAndDrop =
     match executable with
     | Choice2Of3 script -> script.TempTables
@@ -278,57 +278,52 @@ let getColumnsFromSetFmtOnlyOn (cfg: RuleSet) (executable: Choice<StoredProcedur
   use __ = createAndDropTempTables tempTablesToCreateAndDrop conn
 
   use cmd = conn.CreateCommand()
+
   match executable with
+
   | Choice1Of3 sproc ->
       cmd.CommandText <- sproc.SchemaName + "." + sproc.Name
       cmd.CommandType <- CommandType.StoredProcedure
       let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
       for param in sproc.Parameters do
         match param.TypeInfo with
-
         | Scalar ti ->
             let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
-
-            // If the procedure contains OPTION(RECOMPILE) and FETCH, parsing fails unless
-            // we set an actual value for the FETCH value, so always set a value for
-            // ints/bigints.
-            match ti.SqlDbType with
-            | SqlDbType.Int -> p.Value <- 0
-            | SqlDbType.BigInt -> p.Value <- 0L
-            | _ -> ()
-
             rule.Parameters.TryFind (Some (param.Name.TrimStart '@'))
             |> Option.orElse (rule.Parameters.TryFind None)
             |> Option.bind (fun p -> p.BuildValue)
-            |> Option.iter (fun v -> p.Value <- v)
-
-        | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+            |> Option.map box
+            |> Option.defaultValue ti.DefaultBuildValue
+            |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
+        | Table tt ->
+            cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
 
   | Choice2Of3 script ->
       cmd.CommandText <- script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
       let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
       for param in script.Parameters do
         match param.TypeInfo with
-
         | Scalar ti ->
             let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
-
-            // If the script contains OPTION(RECOMPILE) and FETCH, parsing fails unless we
-            // set an actual value for the FETCH value, so always set a value for
-            // ints/bigints.
-            match ti.SqlDbType with
-            | SqlDbType.Int -> p.Value <- 0
-            | SqlDbType.BigInt -> p.Value <- 0L
-            | _ -> ()
-
             rule.Parameters.TryFind (Some (param.Name.TrimStart '@'))
             |> Option.orElse (rule.Parameters.TryFind None)
             |> Option.bind (fun p -> p.BuildValue)
-            |> Option.iter (fun v -> p.Value <- v)
+            |> Option.map box
+            |> Option.defaultValue ti.DefaultBuildValue
+            |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
+        | Table tt ->
+            cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
 
-        | Table tt -> cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
   | Choice3Of3 tt -> cmd.CommandText <- $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}"
-  use reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly)
+
+  use reader =
+    try
+      // SET FMTONLY ON, may fail with dynamic SQL
+      cmd.ExecuteReader(CommandBehavior.SchemaOnly)
+    with :? SqlException ->
+      // Actually execute query
+      cmd.ExecuteReader(CommandBehavior.SingleRow)
+
   match reader.GetSchemaTable() with
   | null -> [], None
   | table ->
@@ -395,7 +390,7 @@ let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Scr
   let allColNames, cols =
     try
       try getColumnsFromSpDescribeFirstResultSet cfg sysTypeIdLookup executable conn
-      with :? SqlException -> getColumnsFromSetFmtOnlyOn cfg executable conn
+      with :? SqlException -> getColumnsFromQuery cfg executable conn
     with ex ->
       raise <| Exception($"Error getting output columns for {executableName}", ex)
 

@@ -158,6 +158,11 @@ rulesets:
           orderBy:
             buildValue: TableCol1
 
+      - for: DynamicSqlWithStringSplitParam.sql
+        params:
+          splitParam:
+            type: NVARCHAR(100)
+
       - for: TempTableAllTypesNonNull.sql
         tempTables:
           - definition: TempTableDefinitions/TempTableAllTypesNonNull.sql

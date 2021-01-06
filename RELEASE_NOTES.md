@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Fixed some edge cases with dynamic SQL
+
 ### 0.1.7 (2021-01-05)
 
 * Add `buildValue` parameter config to work around some dynamic SQL limitations
