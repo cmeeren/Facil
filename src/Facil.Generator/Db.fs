@@ -324,60 +324,55 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
       // Actually execute query
       cmd.ExecuteReader(CommandBehavior.SingleRow)
 
-  match reader.GetSchemaTable() with
-  | null -> [], None
-  | table ->
-      let cols = ResizeArray()
-      let allColNames = ResizeArray()
-      for row in table.Rows do
+  let schemas = reader.GetColumnSchema()
+  if schemas.Count = 0 then [], None
+  else
+    let cols = ResizeArray()
+    let allColNames = ResizeArray()
+    for schema in schemas do
 
-        let colName =
-          if row.IsNull "ColumnName" then None
-          else
-            row.["ColumnName"]
-            |> unbox<string>
-            |> Some
-            |> Option.filter (not << String.IsNullOrEmpty)
+      let colName =
+        if String.IsNullOrEmpty schema.ColumnName then None
+        else Some schema.ColumnName
 
-        colName |> Option.iter allColNames.Add
+      colName |> Option.iter allColNames.Add
 
-        let shouldSkipCol =
-          match colName, executable with
-          | Some name, Choice1Of3 sproc ->
-              RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-              |> fun r ->
-                  r.Columns
-                  |> Map.tryFind (Some name)
-                  |> Option.orElse (r.Columns |> Map.tryFind None)
-              |> Option.bind (fun c -> c.Skip)
-              |> Option.defaultValue false
-          | Some name, Choice2Of3 script ->
-              RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-              |> fun r ->
-                  r.Columns
-                  |> Map.tryFind (Some name)
-                  |> Option.orElse (r.Columns |> Map.tryFind None)
-              |> Option.bind (fun c -> c.Skip)
-              |> Option.defaultValue false
-          | None, _ | _, Choice3Of3 _ -> false
+      let shouldSkipCol =
+        match colName, executable with
+        | Some name, Choice1Of3 sproc ->
+            RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+            |> fun r ->
+                r.Columns
+                |> Map.tryFind (Some name)
+                |> Option.orElse (r.Columns |> Map.tryFind None)
+            |> Option.bind (fun c -> c.Skip)
+            |> Option.defaultValue false
+        | Some name, Choice2Of3 script ->
+            RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+            |> fun r ->
+                r.Columns
+                |> Map.tryFind (Some name)
+                |> Option.orElse (r.Columns |> Map.tryFind None)
+            |> Option.bind (fun c -> c.Skip)
+            |> Option.defaultValue false
+        | None, _ | _, Choice3Of3 _ -> false
 
-        if not shouldSkipCol then
+      if not shouldSkipCol then
 
-          let typeInfo =
-            row.["DataTypeName"]
-            |> unbox<string>
-            |> fun typeName ->
-                sqlDbTypeMap.TryFind typeName
-                |> Option.defaultWith (fun () -> failwith $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
+        let typeInfo =
+          schema.DataTypeName
+          |> fun typeName ->
+              sqlDbTypeMap.TryFind typeName
+              |> Option.defaultWith (fun () -> failwith $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
 
-          cols.Add {
-            Name = colName
-            SortKey = row.["ColumnOrdinal"] |> unbox<int>
-            IsNullable = row.["AllowDBNull"] |> unbox<bool>
-            TypeInfo = typeInfo
-          }
+        cols.Add {
+          Name = colName
+          SortKey = schema.ColumnOrdinal.Value
+          IsNullable = schema.AllowDBNull.Value
+          TypeInfo = typeInfo
+        }
 
-      Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
+    Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
 let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Script, TempTable>) =
