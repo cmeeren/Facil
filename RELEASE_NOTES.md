@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### vNext
+### 0.1.8 (2021-01-06)
 
 * Fixed some edge cases with dynamic SQL
 
