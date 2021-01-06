@@ -268,7 +268,7 @@ type RuleSetDto = {
 
 
 type RuleSet = {
-  GetConnectionString: unit -> string
+  ConnectionString: Lazy<string>
   Filename: string
   NamespaceOrModuleDeclaration: string
   ScriptBasePath: string
@@ -731,8 +731,8 @@ module RuleSet =
       |> Option.defaultValue projectDir
       |> Path.GetFullPath
     {
-      GetConnectionString =
-        fun () ->
+      ConnectionString =
+        lazy
           dto.connectionString
           |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "All array items in the 'rulesets' section must have a 'connectionString' property")
           |> resolveVariable

@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.1.11 (2021-01-06)
+
+* Fix false positive change detection from v0.1.9
+
 ### 0.1.10 (2021-01-06)
 
 * Ignore line endings when comparing script sources for determining whether to regenerate
