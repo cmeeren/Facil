@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: efe4f387964d8b8647a267b77977ac49468627333feb0aef3b3925f6fbb61c10
+// Hash: 4c4a24b1a729d3649663de6da4de297e2bcf5336942c603c26b2ec2ae0feafe2
 
 //////////////////////////////////////////
 //
@@ -42,36 +42,36 @@ module TableDtos =
 
     type ``OptionTableWithDto`` =
       {
-        Col1: string option
-        Col2: int option
+        ``Col1``: string option
+        ``Col2``: int option
       }
 
 
     type ``Table1`` =
       {
-        TableCol1: string
-        TableCol2: int option
+        ``TableCol1``: string
+        ``TableCol2``: int option
       }
 
 
     type ``TableDtoColumnInheritance`` =
       {
-        Foo: int
-        Bar: int
+        ``Foo``: int
+        ``Bar``: int
       }
 
 
     type ``TableWithSkippedUnsupportedColumn`` =
       {
-        SupportedCol1: string
-        SupportedCol2: int
+        ``SupportedCol1``: string
+        ``SupportedCol2``: int
       }
 
 
     type ``VoptionTableWithDto`` =
       {
-        Col1: string voption
-        Col2: int voption
+        ``Col1``: string voption
+        ``Col2``: int voption
       }
 
 

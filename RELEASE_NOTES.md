@@ -4,6 +4,7 @@ Release notes
 ### 0.1.13 (2021-01-08)
 
 * The default generated file module is now public instead of internal (since internal table DTOs can’t be used in the DTO `WithParameter` overloads).
+* Fixed bug where table DTOs with non-F#-friendly column names would fail
 
 ### 0.1.12 (2021-01-06)
 
