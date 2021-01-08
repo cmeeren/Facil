@@ -36,7 +36,7 @@ rulesets:
     # The filename and namespace/module declaration of the generated file. The values
     # below are the defaults.
     filename: DbGen.fs
-    namespaceOrModuleDeclaration: module internal DbGen
+    namespaceOrModuleDeclaration: module DbGen
 
     # The base path for all scripts (including temp table definitions) in this ruleset,
     # relative to the project directory.

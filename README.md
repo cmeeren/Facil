@@ -17,9 +17,9 @@ Quick start
 
 Install Facil from [NuGet](https://www.nuget.org/packages/Facil).
 
-### 2. Build your project and edit the new config file
+### 2. Edit the new config file
 
-Start a build. It will fail. Facil will place [a simple facil.yaml](https://github.com/cmeeren/Facil/blob/master/src/Facil.Generator/facil_minimal.yaml) file in your project directory. Edit it – you should at least set a connection string.
+You now have [a simple facil.yaml](https://github.com/cmeeren/Facil/blob/master/src/Facil.Generator/facil_minimal.yaml) file in your project directory (if not, build your project or just add it manually). Edit it – you should at least set a connection string.
 
 As an example, the following is the minimum config for generating code for all stored procedures in the database and all scripts in your project directory:
 

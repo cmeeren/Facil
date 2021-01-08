@@ -12,7 +12,7 @@ rulesets:
     # The filename and namespace/module declaration of the generated file. The values
     # below are the defaults. You can remove them if you're happy with them.
     filename: DbGen.fs
-    namespaceOrModuleDeclaration: module internal DbGen
+    namespaceOrModuleDeclaration: module DbGen
 
     procedures:
       # Generate wrappers for all stored procedures with the default configuration.

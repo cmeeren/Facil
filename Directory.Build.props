@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <Version>0.1.12</Version>
+    <Version>0.1.13</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CI)' == 'True'">

@@ -737,7 +737,7 @@ module RuleSet =
           |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "All array items in the 'rulesets' section must have a 'connectionString' property")
           |> resolveVariable
       Filename = dto.filename |> Option.defaultValue "DbGen.fs"
-      NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module internal DbGen"
+      NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module DbGen"
       ScriptBasePath = scriptBasePath
       Prelude = dto.prelude |> Option.map String.getDeindentedLines
       TableDtos =
