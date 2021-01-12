@@ -293,6 +293,7 @@ type TableTypeColumn = {
     match this.TypeInfo.SqlDbType with
     | SqlDbType.DateTime2 | SqlDbType.DateTimeOffset | SqlDbType.Time -> 0uy
     | _ -> this.Precision
+  member this.SizeForSqlMetaData = if this.Size = 0s then -1L else int64 this.Size
 
 
 type TableType = {

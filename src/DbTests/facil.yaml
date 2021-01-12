@@ -212,6 +212,15 @@ rulesets:
                 [varchar] VARCHAR(3) NOT NULL
               )
 
+      - for: TempTableWithMaxLengthTypes.sql
+        tempTables:
+          - definition: |
+              CREATE TABLE #tempTableWithMaxLengthTypes (
+                [nvarchar] NVARCHAR(MAX) NOT NULL,
+                [varbinary] VARBINARY(MAX) NOT NULL,
+                [varchar] VARCHAR(MAX) NOT NULL
+              )
+
 
     tableDtos:
       - include: .*

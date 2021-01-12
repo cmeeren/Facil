@@ -236,4 +236,62 @@ let tests =
         ignore f
 
 
+      testList "MAX length work correctly" [
+
+
+        testCase "Normal parameters" <| fun () ->
+          let res =
+            DbGen.Procedures.dbo.ProcWithMaxLengthTypes
+              .WithConnection(Config.connStr)
+              .WithParameters(
+                nvarchar = "1234",
+                varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                varchar = "1234"
+              )
+              .ExecuteSingle()
+
+          test <@ res.Value.nvarchar = Some "1234" @>
+          test <@ res.Value.varbinary = Some [| 1uy; 2uy; 3uy; 4uy |] @>
+          test <@ res.Value.varchar = Some "1234" @>
+
+
+        testCase "TVP parameters" <| fun () ->
+          let res =
+            DbGen.Procedures.dbo.ProcWithMaxLengthTypesFromTvp
+              .WithConnection(Config.connStr)
+              .WithParameters([
+                DbGen.TableTypes.dbo.MaxLengthTypes.create(
+                  nvarchar = "1234",
+                  varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                  varchar = "1234"
+                )
+              ])
+              .ExecuteSingle()
+
+          test <@ res.Value.nvarchar = "1234" @>
+          test <@ res.Value.varbinary = [| 1uy; 2uy; 3uy; 4uy |] @>
+          test <@ res.Value.varchar = "1234" @>
+
+
+        testCase "Temp table" <| fun () ->
+          let res =
+            DbGen.Scripts.TempTableWithMaxLengthTypes
+              .WithConnection(Config.connStr)
+              .WithParameters([
+                DbGen.Scripts.TempTableWithMaxLengthTypes.tempTableWithMaxLengthTypes.create(
+                  nvarchar = "1234",
+                  varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                  varchar = "1234"
+                )
+              ])
+              .ExecuteSingle()
+
+          test <@ res.Value.nvarchar = "1234" @>
+          test <@ res.Value.varbinary = [| 1uy; 2uy; 3uy; 4uy |] @>
+          test <@ res.Value.varchar = "1234" @>
+
+
+      ]
+
+
   ]

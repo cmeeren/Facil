@@ -60,7 +60,7 @@ let private renderTableType cfg (t: TableType) =
           if isPrecisionAndScaleRelevantForSqlMetaData c.TypeInfo.SqlDbType then
             $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.{c.TypeInfo.SqlDbType}, {c.PrecisionForSqlMetaData}uy, {c.Scale}uy)"""
           elif isSizeRelevantForSqlMetaData c.TypeInfo.SqlDbType then
-            $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.{c.TypeInfo.SqlDbType}, {c.Size}L)"""
+            $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.{c.TypeInfo.SqlDbType}, {c.SizeForSqlMetaData}L)"""
           else
             $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.{c.TypeInfo.SqlDbType})"""
       ]
