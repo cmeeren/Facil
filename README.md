@@ -342,20 +342,19 @@ IF @col1Filter IS NOT NULL
   AND Col1 = @col1Filter
 '
 
-IF @col2Filter IS NOT NULL
+IF @requireCol2Zero = 1
   SET @sql += '
-  AND Col2 = @col2Filter
+  AND Col2 = 0
 '
 
 DECLARE @paramList NVARCHAR(MAX) = '
-  @col1Filter NVARCHAR(100),
-  @col2Filter INT
+  @col1Filter NVARCHAR(100)
 '
 
-EXEC sp_executesql @sql, @paramList, @col1Filter, @col2Filter
+EXEC sp_executesql @sql, @paramList, @col1Filter
 ```
 
-In order to parse the output columns of dynamic SQL queries, Facil must execute your query and see which columns come back. At build time, Facil generally passes `1` (or `"1"` etc.) for all parameters when executing the query. In the common case of dynamic filters as shown above, where you use `IS NOT NULL` to add filters to the executed SQL, this means that your dynamic SQL will be executed with all the optional filters.
+In order to parse the output columns of dynamic SQL queries, Facil must execute your query and see which columns come back. At build time, Facil generally passes `1` (or `"1"` etc.) for all parameters when executing the query. In the common case of dynamic filters as shown above, where you use `IS NOT NULL` or `@param = 1` to add filters to the executed SQL, this means that your dynamic SQL will be executed with all the optional filters.
 
 Facil may not completely check your dynamic SQL. For example, you may have a parameter that is used to choose one of several different `ORDER BY` clauses. In this case, only one of them will be used at build time (and you may be able to specify the parameter value by using `buildValue` as described previously).
 
