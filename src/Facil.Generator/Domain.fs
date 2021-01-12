@@ -58,28 +58,28 @@ let sqlDbTypeMap =
       FSharpTypeString = "int64"
       SqlDbType = SqlDbType.BigInt
       SqlDataReaderGetMethodName = "GetInt64"
-      DefaultBuildValue = 0L |> box<int64>
+      DefaultBuildValue = 1L |> box<int64>
     }
     {
       SqlType = "binary"
       FSharpTypeString = "byte []"
       SqlDbType = SqlDbType.Binary
       SqlDataReaderGetMethodName = "GetBytes"
-      DefaultBuildValue = [||] |> box<byte []>
+      DefaultBuildValue = [|1uy|] |> box<byte []>
     }
     {
       SqlType = "bit"
       FSharpTypeString = "bool"
       SqlDbType = SqlDbType.Bit
       SqlDataReaderGetMethodName = "GetBoolean"
-      DefaultBuildValue = false |> box<bool>
+      DefaultBuildValue = true |> box<bool>
     }
     {
       SqlType = "char"
       FSharpTypeString = "string"
       SqlDbType = SqlDbType.Char
       SqlDataReaderGetMethodName = "GetString"
-      DefaultBuildValue = "" |> box<string>
+      DefaultBuildValue = "1" |> box<string>
     }
     {
       SqlType = "date"
@@ -114,77 +114,77 @@ let sqlDbTypeMap =
       FSharpTypeString = "decimal"
       SqlDbType = SqlDbType.Decimal
       SqlDataReaderGetMethodName = "GetDecimal"
-      DefaultBuildValue = 0M |> box<decimal>
+      DefaultBuildValue = 1M |> box<decimal>
     }
     {
       SqlType = "float"
       FSharpTypeString = "float"
       SqlDbType = SqlDbType.Float
       SqlDataReaderGetMethodName = "GetDouble"
-      DefaultBuildValue = 0. |> box<float>
+      DefaultBuildValue = 1. |> box<float>
     }
     {
       SqlType = "image"
       FSharpTypeString = "byte []"
       SqlDbType = SqlDbType.Image
       SqlDataReaderGetMethodName = "GetBytes"
-      DefaultBuildValue = [||] |> box<byte []>
+      DefaultBuildValue = [|1uy|] |> box<byte []>
     }
     {
       SqlType = "int"
       FSharpTypeString = "int"
       SqlDbType = SqlDbType.Int
       SqlDataReaderGetMethodName = "GetInt32"
-      DefaultBuildValue = 0 |> box<int>
+      DefaultBuildValue = 1 |> box<int>
     }
     {
       SqlType = "money"
       FSharpTypeString = "decimal"
       SqlDbType = SqlDbType.Money
       SqlDataReaderGetMethodName = "GetDecimal"
-      DefaultBuildValue = 0M |> box<decimal>
+      DefaultBuildValue = 1M |> box<decimal>
     }
     {
       SqlType = "nchar"
       FSharpTypeString = "string"
       SqlDbType = SqlDbType.NChar
       SqlDataReaderGetMethodName = "GetString"
-      DefaultBuildValue = "" |> box<string>
+      DefaultBuildValue = "1" |> box<string>
     }
     {
       SqlType = "ntext"
       FSharpTypeString = "string"
       SqlDbType = SqlDbType.NText
       SqlDataReaderGetMethodName = "GetString"
-      DefaultBuildValue = "" |> box<string>
+      DefaultBuildValue = "1" |> box<string>
     }
     {
       SqlType = "numeric"
       FSharpTypeString = "decimal"
       SqlDbType = SqlDbType.Decimal
       SqlDataReaderGetMethodName = "GetDecimal"
-      DefaultBuildValue = 0M |> box<decimal>
+      DefaultBuildValue = 1M |> box<decimal>
     }
     {
       SqlType = "nvarchar"
       FSharpTypeString = "string"
       SqlDbType = SqlDbType.NVarChar
       SqlDataReaderGetMethodName = "GetString"
-      DefaultBuildValue = "" |> box<string>
+      DefaultBuildValue = "1" |> box<string>
     }
     {
       SqlType = "real"
       FSharpTypeString = "float32"
       SqlDbType = SqlDbType.Real
       SqlDataReaderGetMethodName = "GetFloat"
-      DefaultBuildValue = 0.f |> box<float32>
+      DefaultBuildValue = 1.f |> box<float32>
     }
     {
       SqlType = "rowversion"
       FSharpTypeString = "byte []"
       SqlDbType = SqlDbType.Timestamp
       SqlDataReaderGetMethodName = "GetBytes"
-      DefaultBuildValue = [||] |> box<byte []>
+      DefaultBuildValue = [|1uy|] |> box<byte []>
     }
     {
       SqlType = "smalldatetime"
@@ -198,21 +198,21 @@ let sqlDbTypeMap =
       FSharpTypeString = "int16"
       SqlDbType = SqlDbType.SmallInt
       SqlDataReaderGetMethodName = "GetInt16"
-      DefaultBuildValue = 0s |> box<int16>
+      DefaultBuildValue = 1s |> box<int16>
     }
     {
       SqlType = "smallmoney"
       FSharpTypeString = "decimal"
       SqlDbType = SqlDbType.SmallMoney
       SqlDataReaderGetMethodName = "GetDecimal"
-      DefaultBuildValue = 0M |> box<decimal>
+      DefaultBuildValue = 1M |> box<decimal>
     }
     {
       SqlType = "text"
       FSharpTypeString = "string"
       SqlDbType = SqlDbType.Text
       SqlDataReaderGetMethodName = "GetString"
-      DefaultBuildValue = "" |> box<string>
+      DefaultBuildValue = "1" |> box<string>
     }
     {
       SqlType = "time"
@@ -226,42 +226,42 @@ let sqlDbTypeMap =
       FSharpTypeString = "byte []"
       SqlDbType = SqlDbType.Timestamp
       SqlDataReaderGetMethodName = "GetBytes"
-      DefaultBuildValue = [||] |> box<byte []>
+      DefaultBuildValue = [|1uy|] |> box<byte []>
     }
     {
       SqlType = "tinyint"
       FSharpTypeString = "byte"
       SqlDbType = SqlDbType.TinyInt
       SqlDataReaderGetMethodName = "GetByte"
-      DefaultBuildValue = 0uy |> box<byte>
+      DefaultBuildValue = 1uy |> box<byte>
     }
     {
       SqlType = "uniqueidentifier"
       FSharpTypeString = "Guid"
       SqlDbType = SqlDbType.UniqueIdentifier
       SqlDataReaderGetMethodName = "GetGuid"
-      DefaultBuildValue = Guid.Empty |> box<Guid>
+      DefaultBuildValue = Guid.NewGuid() |> box<Guid>
     }
     {
       SqlType = "varbinary"
       FSharpTypeString = "byte []"
       SqlDbType = SqlDbType.VarBinary
       SqlDataReaderGetMethodName = "GetBytes"
-      DefaultBuildValue = [||] |> box<byte []>
+      DefaultBuildValue = [|1uy|] |> box<byte []>
     }
     {
       SqlType = "varchar"
       FSharpTypeString = "string"
       SqlDbType = SqlDbType.VarChar
       SqlDataReaderGetMethodName = "GetString"
-      DefaultBuildValue = "" |> box<string>
+      DefaultBuildValue = "1" |> box<string>
     }
     {
       SqlType = "xml"
       FSharpTypeString = "string"
       SqlDbType = SqlDbType.Xml
       SqlDataReaderGetMethodName = "GetString"
-      DefaultBuildValue = "" |> box<string>
+      DefaultBuildValue = "1" |> box<string>
     }
   ]
   |> List.map (fun ti -> ti.SqlType, ti)

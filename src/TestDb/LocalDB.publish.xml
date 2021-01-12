@@ -4,7 +4,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>FacilTest</TargetDatabaseName>
     <DeployScriptFileName>FacilTest.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=(LocalDb)\MSSQLLocalDB;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=.;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <BlockWhenDriftDetected>False</BlockWhenDriftDetected>
     <RegisterDataTierApplication>False</RegisterDataTierApplication>
     <ProfileVersionNumber>1</ProfileVersionNumber>

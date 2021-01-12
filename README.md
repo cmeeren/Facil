@@ -328,7 +328,7 @@ Another workaround is to use `WITH RESULT SETS`. This will in many cases enable 
 
 Facil provides some checking of dynamic SQL as long as you don’t use `WITH RESULT SETS`.
 
-A common use of dynamic SQL is dynamic filtering:
+As an example, take the following script:
 
 ```sql
 DECLARE @sql NVARCHAR(MAX) = '
@@ -355,7 +355,7 @@ DECLARE @paramList NVARCHAR(MAX) = '
 EXEC sp_executesql @sql, @paramList, @col1Filter, @col2Filter
 ```
 
-In order to parse the output columns of dynamic SQL queries, Facil must execute your query and see which columns come back. By default, Facil passes “empty” non-null values (e.g. zero, empty GUID, empty string) for all parameters when executing the query. In the common case of dynamic filters as shown above, where you use `IS NOT NULL` to add filters to the executed SQL, this means that your dynamic SQL will be executed with all the optional filters.
+In order to parse the output columns of dynamic SQL queries, Facil must execute your query and see which columns come back. At build time, Facil generally passes `1` (or `"1"` etc.) for all parameters when executing the query. In the common case of dynamic filters as shown above, where you use `IS NOT NULL` to add filters to the executed SQL, this means that your dynamic SQL will be executed with all the optional filters.
 
 Facil may not completely check your dynamic SQL. For example, you may have a parameter that is used to choose one of several different `ORDER BY` clauses. In this case, only one of them will be used at build time (and you may be able to specify the parameter value by using `buildValue` as described previously).
 

@@ -236,6 +236,16 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time dynamic SQL with full-text predicate test" <| fun () ->
+        let f () =
+          DbGen.Procedures.dbo.ProcWithDynamicSqlWithFullTextSearch
+            .WithConnection(Config.connStr)
+            .WithParameters("unused")
+            .ExecuteSingle()
+          |> ignore<string option>
+        ignore f
+
+
       testList "MAX length work correctly" [
 
 

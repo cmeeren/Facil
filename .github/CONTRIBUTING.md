@@ -62,6 +62,12 @@ More on rebasing and squashing can be found in [this guide](https://robots.thoug
 Development
 -----------
 
+#### Dev dependencies
+
+* A SQL Server (e.g. Developer Edition) instance with full-text search available at `Data Source=.`
+  * If you’d like to use another SQL Server instance, just modify the data source in `DbTests\appsettings.json` and `TestDb\LocalDB.publish.xml`
+* Publish using `TestDb\LocalDB.publish.xml` (in VS, just double-click it and choose Publish)
+
 #### Solution structure
 
 * `Facil.Generator` is the generator console app. The build output is copied as-is into the nupkg as a build tool.

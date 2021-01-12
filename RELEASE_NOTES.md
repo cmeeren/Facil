@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### 0.1.15 (2021-01-12)
+
+* Automatically support dynamic SQL queries with full-text predicates (previously required `buildValue`)
+* Generally check more dynamic SQL by executing script with non-zero/non-empty parameter values
+
 ### 0.1.14 (2021-01-12)
 
 * Fixed bug where MAX length parameters in TVP would throw exception
