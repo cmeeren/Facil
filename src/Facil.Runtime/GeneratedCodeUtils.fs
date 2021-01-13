@@ -63,6 +63,10 @@ module GeneratedCodeUtils =
     ExecuteNonQuery(conn, connStr, Action<_> configureConn, Action<_> configureCmd, tempTableData)
 
 
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  let boxNullIfEmpty (seq: #seq<'a>) =
+    if Seq.isEmpty seq then null else box seq
+
 
   type SqlDataRecord with
 

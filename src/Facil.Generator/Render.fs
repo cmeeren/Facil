@@ -768,7 +768,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                 | Scalar ti ->
                     $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {scalarParamValueExpr})"""
                 | Table tt ->
-                    $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = ``{p.FSharpParamName}``)"""
+                    $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = boxNullIfEmpty ``{p.FSharpParamName}``)"""
 
               if useRetVal then
                 "SqlParameter(\"ReturnValue\", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)"
@@ -819,7 +819,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                   | Scalar ti ->
                       $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {scalarParamValueExpr ti})"""
                   | Table tt ->
-                      $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = (^a: (member ``{dtoName}``: #seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>) dto))"""
+                      $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = boxNullIfEmpty (^a: (member ``{dtoName}``: #seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>) dto))"""
 
                 if useRetVal then
                   "SqlParameter(\"ReturnValue\", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)"

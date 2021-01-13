@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.1.16 (2021-01-13)
+
+* Fixed exception when passing empty TVPs
+
 ### 0.1.15 (2021-01-12)
 
 * Automatically support dynamic SQL queries with full-text predicates (previously required `buildValue`)

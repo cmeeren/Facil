@@ -304,4 +304,42 @@ let tests =
       ]
 
 
+      testList "Can send empty TVPs" [
+        yield!
+          allExecuteMethodsAsSingle<DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams_Executable, _>
+          |> List.map (fun (name, exec) ->
+              testCase name <| fun () ->
+                let res =
+                  DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
+                    .WithConnection(Config.connStr)
+                    .WithParameters(
+                      single = [],
+                      multi = []
+                    )
+                  |> exec
+                test <@ res.IsNone @>
+          )
+      ]
+
+
+      testList "Can send empty TVPs - params from DTO" [
+        yield!
+          allExecuteMethodsAsSingle<DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams_Executable, _>
+          |> List.map (fun (name, exec) ->
+              testCase name <| fun () ->
+                let res =
+                  DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
+                    .WithConnection(Config.connStr)
+                    .WithParameters(
+                      {|
+                        Single = []
+                        Multi = []
+                      |}
+                    )
+                  |> exec
+                test <@ res.IsNone @>
+          )
+      ]
+
+
   ]
