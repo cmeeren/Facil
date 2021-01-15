@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.0 (2021-01-15)
+
+* **Breaking:** Table DTO fields are now PascalCase so they can be easily used in DTO `WithParameter` overloads even when table columns are camelCase.
+
 ### 0.1.16 (2021-01-13)
 
 * Fixed exception when passing empty TVPs

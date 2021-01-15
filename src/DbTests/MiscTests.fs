@@ -246,6 +246,13 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time table DTO casing test" <| fun () ->
+        let f (x: DbGen.TableDtos.dbo.CamelCaseColNames) =
+          ignore x.Col1
+          ignore x.OtherCol
+        ignore f
+
+
       testList "MAX length work correctly" [
 
 

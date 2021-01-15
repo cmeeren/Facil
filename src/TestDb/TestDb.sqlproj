@@ -155,6 +155,7 @@
     <Build Include="dbo\Stored Procedures\ProcWithDynamicSqlWithFullTextSearch.sql" />
     <Build Include="dbo\Storage\Full Text Catalogs\FullTextCatalog.sql" />
     <Build Include="dbo\Tables\TableWithFullTextCatalog.sql" />
+    <Build Include="dbo\Tables\CamelCaseColNames.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDB.publish.xml" />
