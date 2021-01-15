@@ -343,12 +343,7 @@ module TableDtoRule =
   let merge (eff: EffectiveTableDtoRule) (rule: TableDtoRule) : EffectiveTableDtoRule =
     {
       Voption = rule.Voption |> Option.defaultValue eff.Voption
-      Columns =
-        let colsToMerge =
-          match rule.Columns.TryFind None with
-          | None -> rule.Columns
-          | Some baseParam -> rule.Columns |> Map.map (fun _ param -> TableDtoColumn.merge baseParam param)
-        Map.merge TableDtoColumn.merge eff.Columns colsToMerge
+      Columns = Map.mergeWithNoneKeyInheritance TableDtoColumn.merge eff.Columns rule.Columns
     }
 
 
@@ -485,18 +480,8 @@ module ProcedureRule =
       RecordIfSingleCol = rule.RecordIfSingleCol |> Option.defaultValue eff.RecordIfSingleCol
       SkipParamDto = rule.SkipParamDto |> Option.defaultValue eff.SkipParamDto
       UseReturnValue = rule.UseReturnValue |> Option.defaultValue eff.UseReturnValue
-      Parameters =
-        let paramsToMerge =
-          match rule.Parameters.TryFind None with
-          | None -> rule.Parameters
-          | Some baseParam -> rule.Parameters |> Map.map (fun _ param -> ProcedureParameter.merge baseParam param)
-        Map.merge ProcedureParameter.merge eff.Parameters paramsToMerge
-      Columns =
-        let colsToMerge =
-          match rule.Columns.TryFind None with
-          | None -> rule.Columns
-          | Some baseParam -> rule.Columns |> Map.map (fun _ param -> ProcedureColumn.merge baseParam param)
-        Map.merge ProcedureColumn.merge eff.Columns colsToMerge
+      Parameters = Map.mergeWithNoneKeyInheritance ProcedureParameter.merge eff.Parameters rule.Parameters
+      Columns = Map.mergeWithNoneKeyInheritance ProcedureColumn.merge eff.Columns rule.Columns
     }
 
 
@@ -704,19 +689,9 @@ module ScriptRule =
       VoptionOut = rule.VoptionOut |> Option.defaultValue eff.VoptionOut
       RecordIfSingleCol = rule.RecordIfSingleCol |> Option.defaultValue eff.RecordIfSingleCol
       SkipParamDto = rule.SkipParamDto |> Option.defaultValue eff.SkipParamDto
-      Parameters =
-        let paramsToMerge =
-          match rule.Parameters.TryFind None with
-          | None -> rule.Parameters
-          | Some baseParam -> rule.Parameters |> Map.map (fun _ param -> ScriptParameter.merge baseParam param)
-        Map.merge ScriptParameter.merge eff.Parameters paramsToMerge
+      Parameters = Map.mergeWithNoneKeyInheritance ScriptParameter.merge eff.Parameters rule.Parameters
       TempTables = rule.TempTables |> Option.defaultValue eff.TempTables
-      Columns =
-        let colsToMerge =
-          match rule.Columns.TryFind None with
-          | None -> rule.Columns
-          | Some baseParam -> rule.Columns |> Map.map (fun _ param -> ScriptColumn.merge baseParam param)
-        Map.merge ScriptColumn.merge eff.Columns colsToMerge
+      Columns = Map.mergeWithNoneKeyInheritance ScriptColumn.merge eff.Columns rule.Columns
     }
 
 

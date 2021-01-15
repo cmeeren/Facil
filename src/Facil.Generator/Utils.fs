@@ -67,6 +67,17 @@ module Map =
       | Some existingItem -> outMap.Add(key, mergeItem existingItem item)
     Map.fold folder initialMap mergeMap
 
+  let mergeWithNoneKeyInheritance mergeItem (initialMap: Map<_,_>) (mergeMap: Map<_,_>) =
+    let paramsToMerge =
+      match mergeMap.TryFind None, initialMap.TryFind None with
+      | None, None -> mergeMap
+      | Some baseParam, None | None, Some baseParam ->
+          mergeMap |> Map.map (fun _ param -> mergeItem baseParam param)
+      | Some baseParam1, Some baseParam2 ->
+          let baseParam = mergeItem baseParam1 baseParam2
+          mergeMap |> Map.map (fun _ param -> mergeItem baseParam param)
+    merge mergeItem initialMap paramsToMerge
+
 
 
 module List =

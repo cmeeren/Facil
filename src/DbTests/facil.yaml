@@ -74,13 +74,18 @@ rulesets:
           UnsupportedCol:
             skip: true
 
-      - for: ParamInheritance.sql
+      - for: ParamInh*ritance.sql
         params:
           "":
             type: INT
             nullable: true
           col2:
             nullable: false
+
+      - for: ParamInheritance.sql
+        params:
+          col3:
+            type: BIT
 
       - for: ColumnInheritance.sql
         columns:

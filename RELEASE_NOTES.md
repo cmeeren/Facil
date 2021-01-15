@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.2 (2021-01-15)
+
+* Fixed parameter and column inheritance
+
 ### 0.2.1 (2021-01-15)
 
 * Fixed bug where case-transformed table DTOs used as outputs used incorrect casing

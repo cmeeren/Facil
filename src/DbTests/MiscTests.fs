@@ -177,7 +177,8 @@ let tests =
           .WithConnection(Config.connStr)
           .WithParameters(
             col1 = Some 1,
-            col2 = 1
+            col2 = 1,
+            col3 = Some true
           )
           |> ignore
 
