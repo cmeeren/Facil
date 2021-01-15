@@ -156,6 +156,7 @@
     <Build Include="dbo\Storage\Full Text Catalogs\FullTextCatalog.sql" />
     <Build Include="dbo\Tables\TableWithFullTextCatalog.sql" />
     <Build Include="dbo\Tables\CamelCaseColNames.sql" />
+    <Build Include="dbo\Stored Procedures\ProcWithCamelCaseColNames.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDB.publish.xml" />

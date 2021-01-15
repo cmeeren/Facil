@@ -18,7 +18,7 @@ let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
       "{"
       yield! indent [
         for c in dto.Columns do
-          $"""``{c.DtoName.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}"""
+          $"""``{c.PascalCaseName.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}"""
       ]
       "}"
     ]
@@ -179,21 +179,21 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
   let outOptionSome = if rule.VoptionOut then "ValueSome" else "Some"
   let outOptionNone = if rule.VoptionOut then "ValueNone" else "None"
 
-  let getItemReturnTypeExpr, getItemRecordStart, getItemRecordEnd =
+  let getItemReturnTypeExpr, getItemRecordStart, getItemRecordEnd, (getColName: OutputColumn -> string) =
     match rule.Result with
     | Auto ->
         match tableDtos |> List.filter (TableDto.canBeUsedBy resultSet rule cfg) with
-        | [] -> "", "{|", "|}"
-        | [dto] -> $" : TableDtos.{dto.SchemaName}.{dto.Name}", "{", "}"
+        | [] -> "", "{|", "|}", (fun c -> c.Name.Value)
+        | [dto] -> $" : TableDtos.{dto.SchemaName}.{dto.Name}", "{", "}", (fun c -> c.PascalCaseName.Value)
         | dtos ->
             let matchingTableDtoStr = dtos |> List.map (fun dto -> $"{dto.SchemaName}.{dto.Name}") |> String.concat ", "
             logWarning $"Output of {nameForLogs |> String.firstLower} matches more than one table DTO. Falling back to anonymous record. To remove this warning, specify a matching rule that uses a specific table type or anonymous record. The matching table DTOs are: %s{matchingTableDtoStr}"
-            "", "{|", "|}"
-    | AnonymousRecord -> "", "{|", "|}"
+            "", "{|", "|}", (fun c -> c.Name.Value)
+    | AnonymousRecord -> "", "{|", "|}", (fun c -> c.Name.Value)
     | Custom name ->
         match tableDtos |> List.tryFind (fun dto -> $"{dto.SchemaName}.{dto.Name}" = name) with
-        | None -> $" : %s{name}", "{", "}"
-        | Some dto when dto |> TableDto.canBeUsedBy resultSet rule cfg -> $" : TableDtos.{dto.SchemaName}.{dto.Name}", "{", "}"
+        | None -> $" : %s{name}", "{", "}", (fun c -> c.Name.Value)
+        | Some dto when dto |> TableDto.canBeUsedBy resultSet rule cfg -> $" : TableDtos.{dto.SchemaName}.{dto.Name}", "{", "}", (fun c -> c.PascalCaseName.Value)
         | Some dto -> failwithError $"{nameForLogs} specifies result table DTO {dto.SchemaName}.{dto.Name}, but the result set does not match the DTO."
 
   let hasOutParams = parameters |> List.exists (fun p -> p.IsOutput)
@@ -283,9 +283,9 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               yield! indent [
                 for c in cols do
                   if c.IsNullable then
-                    $"``{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
+                    $"``{getColName c}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
                   else
-                    $"``{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+                    $"``{getColName c}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
               ]
               getItemRecordEnd
             ]
@@ -465,9 +465,9 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               yield! indent [
                 for c in cols do
                   if c.IsNullable then
-                    $"``{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
+                    $"``{getColName c}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
                   else
-                    $"``{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+                    $"``{getColName c}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
               ]
               getItemRecordEnd
             ]

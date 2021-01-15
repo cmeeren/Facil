@@ -276,7 +276,7 @@ type OutputColumn = {
   TypeInfo: SqlTypeInfo
 } with
   member this.StringEscapedName = this.Name |> Option.map (fun s -> s.Replace("\"", "\\\""))
-  member this.DtoName = this.Name |> Option.map String.firstUpper
+  member this.PascalCaseName = this.Name |> Option.map String.firstUpper
 
 
 type TableTypeColumn = {
