@@ -801,9 +801,9 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               yield! indent [
                 for p in parameters do
                   let dtoName =
-                    rule.Parameters.TryFind (Some p.FSharpParamName)
-                    |> Option.orElse (rule.Parameters.TryFind None)
-                    |> Option.bind (fun p -> p.DtoName)
+                    rule
+                    |> EffectiveProcedureOrScriptRule.getParam p.FSharpParamName
+                    |> fun p -> p.DtoName
                     |> Option.defaultValue (p.FSharpParamName |> String.firstUpper)
 
                   let scalarParamValueExpr (ti: SqlTypeInfo) =

@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### 0.2.2 (2021-01-15)
+### 0.2.3 (2021-01-15)
 
 * Fixed parameter and column inheritance
 

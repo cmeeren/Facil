@@ -56,7 +56,7 @@ type TableDtoRule = {
 
 type EffectiveTableDtoRule = {
   Voption: bool
-  Columns: Map<string option, TableDtoColumn>
+  ColumnsFromAllRules: Map<string option, TableDtoColumn> list
 }
 
 [<CLIMutable>]
@@ -143,8 +143,8 @@ type EffectiveProcedureRule = {
   RecordIfSingleCol: bool
   SkipParamDto: bool
   UseReturnValue: bool
-  Parameters: Map<string option, ProcedureParameter>
-  Columns: Map<string option, ProcedureColumn>
+  ParametersFromAllRules: Map<string option, ProcedureParameter> list
+  ColumnsFromAllRules: Map<string option, ProcedureColumn> list
 }
 
 
@@ -224,9 +224,9 @@ type EffectiveScriptRule = {
   VoptionOut: bool
   RecordIfSingleCol: bool
   SkipParamDto: bool
-  Parameters: Map<string option, ScriptParameter>
+  ParametersFromAllRules: Map<string option, ScriptParameter> list
   TempTables: ScriptTempTableRule list
-  Columns: Map<string option, ScriptColumn>
+  ColumnsFromAllRules: Map<string option, ScriptColumn> list
 }
 
 
@@ -248,8 +248,8 @@ type EffectiveProcedureOrScriptRule = {
   RecordIfSingleCol: bool
   SkipParamDto: bool
   UseReturnValue: bool
-  Parameters: Map<string option, ProcedureOrScriptParameter>
-  Columns: Map<string option, ProcedureOrScriptColumn>
+  ParametersFromAllRules: Map<string option, ProcedureOrScriptParameter> list
+  ColumnsFromAllRules: Map<string option, ProcedureOrScriptColumn> list
 }
 
 
@@ -290,6 +290,12 @@ type FacilConfigDto = {
 module TableDtoColumn =
 
 
+  let empty : TableDtoColumn =
+    {
+      Skip = None
+    }
+
+
   let fromDto (dto: TableDtoColumnDto) : TableDtoColumn =
     {
       Skip = dto.skip
@@ -306,7 +312,7 @@ module TableDtoRule =
 
   let defaultEffectiveRule : EffectiveTableDtoRule = {
     Voption = false
-    Columns = Map.empty
+    ColumnsFromAllRules = []
   }
 
 
@@ -343,8 +349,28 @@ module TableDtoRule =
   let merge (eff: EffectiveTableDtoRule) (rule: TableDtoRule) : EffectiveTableDtoRule =
     {
       Voption = rule.Voption |> Option.defaultValue eff.Voption
-      Columns = Map.mergeWithNoneKeyInheritance TableDtoColumn.merge eff.Columns rule.Columns
+      ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]
     }
+
+
+module EffectiveTableDtoRule =
+
+
+  let getColumn colName (rule: EffectiveTableDtoRule) =
+    rule.ColumnsFromAllRules
+    |> List.collect (fun map ->
+        [
+          yield! map.TryFind None |> Option.toList
+          yield! map.TryFind (Some colName) |> Option.toList
+        ]
+    )
+    |> List.fold TableDtoColumn.merge TableDtoColumn.empty
+
+
+  let allColumnNames (rule: EffectiveTableDtoRule) =
+    rule.ColumnsFromAllRules
+    |> List.collect (Map.toList >> List.map fst >> List.choose id)
+    |> set
 
 
 module TableTypeRule =
@@ -383,6 +409,12 @@ module TableTypeRule =
 module ProcedureParameter =
 
 
+  let empty : ProcedureParameter = {
+    DtoName = None
+    BuildValue = None
+  }
+
+
   let fromDto (dto: ProcedureParameterDto) : ProcedureParameter = {
     DtoName = dto.dtoName
     BuildValue = dto.buildValue
@@ -396,6 +428,11 @@ module ProcedureParameter =
 
 
 module ProcedureColumn =
+
+
+  let empty : ProcedureColumn = {
+    Skip = None
+  }
 
 
   let fromDto (dto: ProcedureColumnDto) : ProcedureColumn =
@@ -456,8 +493,8 @@ module ProcedureRule =
     RecordIfSingleCol = false
     SkipParamDto = false
     UseReturnValue = false
-    Parameters = Map.empty
-    Columns = Map.empty
+    ParametersFromAllRules = []
+    ColumnsFromAllRules = []
   }
 
 
@@ -480,12 +517,48 @@ module ProcedureRule =
       RecordIfSingleCol = rule.RecordIfSingleCol |> Option.defaultValue eff.RecordIfSingleCol
       SkipParamDto = rule.SkipParamDto |> Option.defaultValue eff.SkipParamDto
       UseReturnValue = rule.UseReturnValue |> Option.defaultValue eff.UseReturnValue
-      Parameters = Map.mergeWithNoneKeyInheritance ProcedureParameter.merge eff.Parameters rule.Parameters
-      Columns = Map.mergeWithNoneKeyInheritance ProcedureColumn.merge eff.Columns rule.Columns
+      ParametersFromAllRules = eff.ParametersFromAllRules @ [rule.Parameters]
+      ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]
     }
 
 
+module EffectiveProcedureRule =
+
+
+  let getParam paramName (rule: EffectiveProcedureRule) =
+    rule.ParametersFromAllRules
+    |> List.collect (fun map ->
+        [
+          yield! map.TryFind None |> Option.toList
+          yield! map.TryFind (Some paramName) |> Option.toList
+        ]
+    )
+    |> List.fold ProcedureParameter.merge ProcedureParameter.empty
+
+
+  let getColumn colName (rule: EffectiveProcedureRule) =
+    rule.ColumnsFromAllRules
+    |> List.collect (fun map ->
+        [
+          yield! map.TryFind None |> Option.toList
+          yield! map.TryFind (Some colName) |> Option.toList
+        ]
+    )
+    |> List.fold ProcedureColumn.merge ProcedureColumn.empty
+
+
+  let allColumnNames (rule: EffectiveProcedureRule) =
+    rule.ColumnsFromAllRules
+    |> List.collect (Map.toList >> List.map fst >> List.choose id)
+    |> set
+
+
 module ProcedureOrScriptParameter =
+
+  let empty = {
+    DtoName = None
+    BuildValue = None
+  }
 
 
   let fromProcedureParameter (p: ProcedureParameter) : ProcedureOrScriptParameter = {
@@ -497,6 +570,12 @@ module ProcedureOrScriptParameter =
   let fromScriptParameter (p: ScriptParameter) : ProcedureOrScriptParameter = {
       DtoName = p.DtoName
       BuildValue = p.BuildValue
+  }
+
+
+  let merge (p1: ProcedureOrScriptParameter) (p2: ProcedureOrScriptParameter) : ProcedureOrScriptParameter = {
+      DtoName = p2.DtoName |> Option.orElse p1.DtoName
+      BuildValue = p2.BuildValue |> Option.orElse p1.DtoName
   }
 
 
@@ -523,8 +602,8 @@ module EffectiveProcedureOrScriptRule =
       RecordIfSingleCol = rule.RecordIfSingleCol
       SkipParamDto = rule.SkipParamDto
       UseReturnValue = rule.UseReturnValue
-      Parameters = rule.Parameters |> Map.map (fun _ -> ProcedureOrScriptParameter.fromProcedureParameter)
-      Columns = rule.Columns |> Map.map (fun _ -> ProcedureOrScriptColumn.fromProcedureColumn)
+      ParametersFromAllRules = rule.ParametersFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptParameter.fromProcedureParameter))
+      ColumnsFromAllRules = rule.ColumnsFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptColumn.fromProcedureColumn))
   }
 
 
@@ -535,12 +614,30 @@ module EffectiveProcedureOrScriptRule =
       RecordIfSingleCol = rule.RecordIfSingleCol
       SkipParamDto = rule.SkipParamDto
       UseReturnValue = false
-      Parameters = rule.Parameters |> Map.map (fun _ -> ProcedureOrScriptParameter.fromScriptParameter)
-      Columns = rule.Columns |> Map.map (fun _ -> ProcedureOrScriptColumn.fromScriptColumn)
+      ParametersFromAllRules = rule.ParametersFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptParameter.fromScriptParameter))
+      ColumnsFromAllRules = rule.ColumnsFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptColumn.fromScriptColumn))
   }
 
 
+  let getParam paramName (rule: EffectiveProcedureOrScriptRule) =
+    rule.ParametersFromAllRules
+    |> List.collect (fun map ->
+        [
+          yield! map.TryFind None |> Option.toList
+          yield! map.TryFind (Some paramName) |> Option.toList
+        ]
+    )
+    |> List.fold ProcedureOrScriptParameter.merge ProcedureOrScriptParameter.empty
+
+
 module ScriptParameter =
+
+  let empty = {
+    Nullable = None
+    Type = None
+    DtoName = None
+    BuildValue = None
+  }
 
 
   let fromDto (dto: ScriptParameterDto) : ScriptParameter = {
@@ -573,6 +670,12 @@ module ScriptTempTableRule =
 
 
 module ScriptColumn =
+
+
+  let empty : ScriptColumn =
+    {
+      Skip = None
+    }
 
 
   let fromDto (dto: ScriptColumnDto) : ScriptColumn =
@@ -671,9 +774,9 @@ module ScriptRule =
     VoptionOut = false
     RecordIfSingleCol = false
     SkipParamDto = false
-    Parameters = Map.empty
+    ParametersFromAllRules = []
     TempTables = []
-    Columns = Map.empty
+    ColumnsFromAllRules = []
   }
 
 
@@ -689,10 +792,54 @@ module ScriptRule =
       VoptionOut = rule.VoptionOut |> Option.defaultValue eff.VoptionOut
       RecordIfSingleCol = rule.RecordIfSingleCol |> Option.defaultValue eff.RecordIfSingleCol
       SkipParamDto = rule.SkipParamDto |> Option.defaultValue eff.SkipParamDto
-      Parameters = Map.mergeWithNoneKeyInheritance ScriptParameter.merge eff.Parameters rule.Parameters
+      ParametersFromAllRules = eff.ParametersFromAllRules @ [rule.Parameters]
       TempTables = rule.TempTables |> Option.defaultValue eff.TempTables
-      Columns = Map.mergeWithNoneKeyInheritance ScriptColumn.merge eff.Columns rule.Columns
+      ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]
     }
+
+
+module EffectiveScriptRule =
+
+
+  let getParam paramName (rule: EffectiveScriptRule) =
+    rule.ParametersFromAllRules
+    |> List.collect (fun map ->
+        [
+          yield! map.TryFind None |> Option.toList
+          yield! map.TryFind (Some paramName) |> Option.toList
+        ]
+    )
+    |> List.fold ScriptParameter.merge ScriptParameter.empty
+
+
+  let getColumn colName (rule: EffectiveScriptRule) =
+    rule.ColumnsFromAllRules
+    |> List.collect (fun map ->
+        [
+          yield! map.TryFind None |> Option.toList
+          yield! map.TryFind (Some colName) |> Option.toList
+        ]
+    )
+    |> List.fold ScriptColumn.merge ScriptColumn.empty
+
+
+  let allParamNames (rule: EffectiveScriptRule) =
+    rule.ParametersFromAllRules
+    |> List.collect (Map.toList >> List.map fst >> List.choose id)
+    |> set
+
+
+  let allParams rule =
+    allParamNames rule
+    |> Set.map (fun name -> name, getParam name rule)
+    |> Map.ofSeq
+
+
+  let allColumnNames (rule: EffectiveScriptRule) =
+    rule.ColumnsFromAllRules
+    |> List.collect (Map.toList >> List.map fst >> List.choose id)
+    |> set
+
 
 
 

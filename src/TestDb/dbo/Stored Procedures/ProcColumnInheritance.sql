@@ -4,6 +4,7 @@ AS
 DECLARE @hid HIERARCHYID
 
 SELECT
-  Foo = 1,
-  Bar = 2,
-  Baz = @hid
+  Col1 = 1,
+  Col2 = 2,
+  Col3 = @hid,
+  Col4 = @hid

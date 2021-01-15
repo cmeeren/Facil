@@ -46,14 +46,21 @@ rulesets:
           UnsupportedCol:
             skip: true
 
-      - for: ProcColumnInheritance
+      - for: ProcColumnInh.ritance
         columns:
           "":
             skip: true
-          Foo:
+          Col1:
             skip: false
-          Bar:
+          Col4:
             skip: false
+
+      - for: ProcColumnInheritance
+        columns:
+          Col2:
+            skip: false
+          Col4:
+            skip: true
 
 
     scripts:
@@ -84,17 +91,26 @@ rulesets:
 
       - for: ParamInheritance.sql
         params:
+          col2:
+            type: BIGINT
           col3:
             type: BIT
 
-      - for: ColumnInheritance.sql
+      - for: ColumnInh*ritance.sql
         columns:
           "":
             skip: true
-          Foo:
+          Col1:
             skip: false
-          Bar:
+          Col4:
             skip: false
+
+      - for: ColumnInheritance.sql
+        columns:
+          Col2:
+            skip: false
+          Col4:
+            skip: true
 
       - for: UserDefinedTableType.sql
         params:
@@ -239,14 +255,21 @@ rulesets:
           UnsupportedCol:
             skip: true
 
-      - for: TableDtoColumnInheritance
+      - for: TableDtoColumnInh.ritance
         columns:
           "":
             skip: true
-          Foo:
+          Col1:
             skip: false
-          Bar:
+          Col4:
             skip: false
+
+      - for: TableDtoColumnInheritance
+        columns:
+          Col2:
+            skip: false
+          Col4:
+            skip: true
 
 
     tableTypes:

@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[TableDtoColumnInheritance]
 (
-  [Foo] INT NOT NULL,
-  [Bar] INT NOT NULL,
-  [Baz] HIERARCHYID NOT NULL
+  [Col1] INT NOT NULL,
+  [Col2] INT NOT NULL,
+  [Col3] HIERARCHYID NOT NULL,
+  [Col4] HIERARCHYID NOT NULL
 )

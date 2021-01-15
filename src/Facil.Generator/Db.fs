@@ -89,8 +89,8 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       // Add parameter declarations from config
       (script.Source, undeclaredParams |> Seq.map (fun s -> s.TrimStart '@'))
       ||> Seq.fold (fun source paramName ->
-            match rule.Parameters.TryFind (Some paramName) |> Option.orElse (rule.Parameters.TryFind None) with
-            | Some { Type = Some typeDef } ->
+            match rule |> EffectiveScriptRule.getParam paramName with
+            | { Type = Some typeDef } ->
                 $"DECLARE @%s{paramName} %s{typeDef} = %s{facilTempVarPrefix}%s{paramName}\n%s{source}"
             | _ -> source
       )
@@ -98,7 +98,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
 
 
     let unusedParamRules =
-      (rule.Parameters |> Map.toList |> List.choose fst |> List.map (fun s -> "@" + s) |> set)
+      (rule |> EffectiveScriptRule.allParamNames |> Set.map (fun s -> "@" + s))
       - (set paramsWithFirstUsageOffset.Keys)
 
     for paramName in unusedParamRules do
@@ -131,8 +131,8 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
 
         match userTypeId |> Option.bind tableTypesByUserId.TryFind with
         | Some tt ->
-            match rule.Parameters.TryFind (Some (paramName.TrimStart '@')) |> Option.orElse (rule.Parameters.TryFind None) with
-            | Some paramRule when paramRule.Nullable = Some true ->
+            match rule |> EffectiveScriptRule.getParam (paramName.TrimStart '@') with
+            | { Nullable = Some true } ->
                 logWarning $"The effective rule for script '{script.GlobMatchOutput}' and parameter '@{paramName}' specifies that the parameter is both nullable and a user-defined table type, but table-valued parameters cannot be nullable. Treating the parameter as non-nullable. To remove this warning, ensure that the parameter does not specify or inherit 'nullable: true'"
             | _ -> ()
             Table tt
@@ -158,8 +158,8 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
           Precision = reader.["suggested_precision"] |> unbox<byte>
           Scale = reader.["suggested_scale"] |> unbox<byte>
           FSharpDefaultValueString =
-            match rule.Parameters.TryFind (Some (paramName.TrimStart '@')) |> Option.orElse (rule.Parameters.TryFind None) with
-            | Some { Nullable = Some true } -> Some "null"
+            match rule |> EffectiveScriptRule.getParam (paramName.TrimStart '@') with
+            | { Nullable = Some true } -> Some "null"
             | _ -> None
           TypeInfo = typeInfo
           IsOutput = reader.["suggested_is_output"] |> unbox<bool>
@@ -199,7 +199,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
   | Choice2Of3 script ->
       let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
       let sourceToUse =
-        (script.Source, (Map.toList rule.Parameters))
+        (script.Source, (rule |> EffectiveScriptRule.allParams |> Map.toList))
         ||> List.fold (fun source (paramName, p) ->
               match p.Type with
               | None -> source
@@ -225,21 +225,14 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     let shouldSkipCol =
       match colName, executable with
       | Some name, Choice1Of3 sproc ->
-          let _rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
           RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-          |> fun r ->
-              r.Columns
-              |> Map.tryFind (Some name)
-              |> Option.orElse (r.Columns |> Map.tryFind None)
-          |> Option.bind (fun c -> c.Skip)
+          |> EffectiveProcedureRule.getColumn name
+          |> fun c -> c.Skip
           |> Option.defaultValue false
       | Some name, Choice2Of3 script ->
           RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-          |> fun r ->
-              r.Columns
-              |> Map.tryFind (Some name)
-              |> Option.orElse (r.Columns |> Map.tryFind None)
-          |> Option.bind (fun c -> c.Skip)
+          |> EffectiveScriptRule.getColumn name
+          |> fun c -> c.Skip
           |> Option.defaultValue false
       | None, _ | _, Choice3Of3 _ -> false
 
@@ -289,9 +282,9 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
         match param.TypeInfo with
         | Scalar ti ->
             let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
-            rule.Parameters.TryFind (Some (param.Name.TrimStart '@'))
-            |> Option.orElse (rule.Parameters.TryFind None)
-            |> Option.bind (fun p -> p.BuildValue)
+            rule
+            |> EffectiveProcedureRule.getParam (param.Name.TrimStart '@')
+            |> fun p -> p.BuildValue
             |> Option.map box
             |> Option.defaultValue ti.DefaultBuildValue
             |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
@@ -305,9 +298,9 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
         match param.TypeInfo with
         | Scalar ti ->
             let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
-            rule.Parameters.TryFind (Some (param.Name.TrimStart '@'))
-            |> Option.orElse (rule.Parameters.TryFind None)
-            |> Option.bind (fun p -> p.BuildValue)
+            rule
+            |> EffectiveScriptRule.getParam (param.Name.TrimStart '@')
+            |> fun p -> p.BuildValue
             |> Option.map box
             |> Option.defaultValue ti.DefaultBuildValue
             |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
@@ -341,19 +334,13 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
         match colName, executable with
         | Some name, Choice1Of3 sproc ->
             RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-            |> fun r ->
-                r.Columns
-                |> Map.tryFind (Some name)
-                |> Option.orElse (r.Columns |> Map.tryFind None)
-            |> Option.bind (fun c -> c.Skip)
+            |> EffectiveProcedureRule.getColumn name
+            |> fun c -> c.Skip
             |> Option.defaultValue false
         | Some name, Choice2Of3 script ->
             RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-            |> fun r ->
-                r.Columns
-                |> Map.tryFind (Some name)
-                |> Option.orElse (r.Columns |> Map.tryFind None)
-            |> Option.bind (fun c -> c.Skip)
+            |> EffectiveScriptRule.getColumn name
+            |> fun c -> c.Skip
             |> Option.defaultValue false
         | None, _ | _, Choice3Of3 _ -> false
 
@@ -393,16 +380,10 @@ let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Scr
     match executable with
     | Choice1Of3 sproc ->
         RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-        |> fun r -> r.Columns
-        |> Map.toList
-        |> List.choose fst
-        |> set
+        |> EffectiveProcedureRule.allColumnNames
     | Choice2Of3 script ->
         RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-        |> fun r -> r.Columns
-        |> Map.toList
-        |> List.choose fst
-        |> set
+        |> EffectiveScriptRule.allColumnNames
     | Choice3Of3 _ -> Set.empty
 
   for unmatchedColumn in allColumnNamesWithRules - set allColNames do
@@ -647,11 +628,8 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
 
       let shouldSkipCol =
         RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
-        |> fun r ->
-            r.Columns
-            |> Map.tryFind (Some colName)
-            |> Option.orElse (r.Columns |> Map.tryFind None)
-        |> Option.bind (fun c -> c.Skip)
+        |> EffectiveTableDtoRule.getColumn colName
+        |> fun c -> c.Skip
         |> Option.defaultValue false
 
       if not shouldSkipCol then
@@ -690,10 +668,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
 
         let allColumnNamesWithRules =
           RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
-          |> fun r -> r.Columns
-          |> Map.toList
-          |> List.choose fst
-          |> set
+          |> EffectiveTableDtoRule.allColumnNames
 
         let key = $"{schemaName}.{tableName}"
         for unmatchedColumn in allColumnNamesWithRules - set allColumnsByTableSchemaAndName.[key] do

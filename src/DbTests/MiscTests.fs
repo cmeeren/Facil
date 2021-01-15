@@ -177,7 +177,7 @@ let tests =
           .WithConnection(Config.connStr)
           .WithParameters(
             col1 = Some 1,
-            col2 = 1,
+            col2 = 1L,
             col3 = Some true
           )
           |> ignore
@@ -189,8 +189,8 @@ let tests =
             DbGen.Procedures.dbo.ProcColumnInheritance
               .WithConnection(Config.connStr)
               .ExecuteSingle()
-          res.Value.Foo |> ignore<int>
-          res.Value.Bar |> ignore<int>
+          res.Value.Col1 |> ignore<int>
+          res.Value.Col2 |> ignore<int>
         ignore f
 
 
@@ -200,16 +200,16 @@ let tests =
             DbGen.Scripts.ColumnInheritance
               .WithConnection(Config.connStr)
               .ExecuteSingle()
-          res.Value.Foo |> ignore<int>
-          res.Value.Bar |> ignore<int>
+          res.Value.Col1 |> ignore<int>
+          res.Value.Col2 |> ignore<int>
         ignore f
 
 
       testCase "Compile-time table DTO column inheritance test" <| fun () ->
         let f () =
           let (x: DbGen.TableDtos.dbo.TableDtoColumnInheritance) = Unchecked.defaultof<_>
-          x.Foo |> ignore<int>
-          x.Bar |> ignore<int>
+          x.Col1 |> ignore<int>
+          x.Col2 |> ignore<int>
         ignore f
 
 

@@ -117,9 +117,7 @@ rulesets:
         # 'params' allows you to specify settings for individual parameters.
         params:
           # The keys are the names of the parameters without '@'. The special value ""
-          # (empty string) specifies base rules inherited by all parameters in this rule,
-          # though currently it's not relevant for procedure parameters, only scripts (see
-          # later).
+          # (empty string) specifies base rules inherited by all parameters in this rule.
           "": {}
 
           someParam:
@@ -137,12 +135,12 @@ rulesets:
         columns:
           # The keys are the column names. The special value "" (empty string) specifies
           # base rules inherited by all columns in this rule.
-          "": {}
-
-          SomeColumn:
+          "":
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
+          SomeColumn:
+            skip: false
 
 
     # Rules for which SQL script files are included. These work just like stored procedure
@@ -234,12 +232,12 @@ rulesets:
         columns:
           # The keys are the column names. The special value "" (empty string) specifies
           # base rules inherited by all columns in this rule.
-          "": {}
-
-          SomeColumn:
+          "":
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
+          SomeColumn:
+            skip: false
         
 
     # Facil can generate DTO record types for tables. These can then (automatically or
@@ -263,12 +261,12 @@ rulesets:
         columns:
           # The keys are the column names. The special value "" (empty string) specifies
           # base rules inherited by all columns in this rule.
-          "": {}
-
-          SomeColumn:
+          "":
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
+          SomeColumn:
+            skip: false
         
 
     # Facil automatically generates table type constructors for table types used as a
