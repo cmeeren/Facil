@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.4 (2021-02-04)
+
+* Made async computations for parametrized operations directly retryable (see [#6](https://github.com/cmeeren/Facil/issues/6) for details)
+
 ### 0.2.3 (2021-01-15)
 
 * Fixed parameter and column inheritance

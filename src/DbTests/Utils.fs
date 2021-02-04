@@ -9,6 +9,16 @@ open FSharp.Control
 open Hedgehog
 
 
+
+let rec getInnerEx (ex: exn) =
+  if isNull ex.InnerException then ex else getInnerEx ex.InnerException
+
+
+let (|InnerException|) ex =
+  getInnerEx ex
+
+
+
 module Seq =
 
   let tryHeadVoption xs =

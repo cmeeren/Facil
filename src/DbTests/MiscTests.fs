@@ -349,5 +349,132 @@ let tests =
           )
       ]
 
+      testAsync "Can run the resulting Async query computation several times when there are parameters" {
+        let comp1 =
+          DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
+            .WithConnection(Config.connStr)
+            .WithParameters(foo = 1, bar = "a")
+            .AsyncExecute()
+
+        let comp2 =
+          DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
+            .WithConnection(Config.connStr)
+            .WithParameters(foo = 1, bar = "a")
+            .AsyncExecuteWithSyncRead()
+
+        let comp3 =
+          DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
+            .WithConnection(Config.connStr)
+            .WithParameters(foo = 1, bar = "a")
+            .AsyncExecuteSingle()
+
+        do! comp1 |> Async.Ignore
+        do! comp1 |> Async.Ignore
+
+        do! comp2 |> Async.Ignore
+        do! comp2 |> Async.Ignore
+
+        do! comp3 |> Async.Ignore
+        do! comp3 |> Async.Ignore
+      }
+
+      testAsync "Can run the resulting Async query computation several times when there are TVP parameters" {
+        let comp1 =
+          DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
+            .WithConnection(Config.connStr)
+            .WithParameters(
+              single = [DbGen.TableTypes.dbo.SingleColNonNull.create(Foo = 1)],
+              multi = [DbGen.TableTypes.dbo.MultiColNonNull.create (Foo = 1, Bar = "test")]
+            )
+            .AsyncExecute()
+
+        let comp2 =
+          DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
+            .WithConnection(Config.connStr)
+            .WithParameters(
+              single = [DbGen.TableTypes.dbo.SingleColNonNull.create(Foo = 1)],
+              multi = [DbGen.TableTypes.dbo.MultiColNonNull.create (Foo = 1, Bar = "test")]
+            )
+            .AsyncExecuteWithSyncRead()
+
+        let comp3 =
+          DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
+            .WithConnection(Config.connStr)
+            .WithParameters(
+              single = [DbGen.TableTypes.dbo.SingleColNonNull.create(Foo = 1)],
+              multi = [DbGen.TableTypes.dbo.MultiColNonNull.create (Foo = 1, Bar = "test")]
+            )
+            .AsyncExecuteSingle()
+
+        do! comp1 |> Async.Ignore
+        do! comp1 |> Async.Ignore
+
+        do! comp2 |> Async.Ignore
+        do! comp2 |> Async.Ignore
+
+        do! comp3 |> Async.Ignore
+        do! comp3 |> Async.Ignore
+      }
+
+      testAsync "Can run the resulting Async query computation several times when there are temp tables" {
+        let comp1 =
+          DbGen.Scripts.MultipleTempTables
+            .WithConnection(Config.connStr)
+            .WithParameters(
+              tempTable1 = [
+                DbGen.Scripts.MultipleTempTables.tempTable1.create(Col1 = 1, Col2 = Some "test")
+              ],
+              tempTable2 = [
+                DbGen.Scripts.MultipleTempTables.tempTable2.create(Col1 = 1, Col3 = "test")
+              ]
+            )
+            .AsyncExecute()
+
+        let comp2 =
+          DbGen.Scripts.MultipleTempTables
+            .WithConnection(Config.connStr)
+            .WithParameters(
+              tempTable1 = [
+                DbGen.Scripts.MultipleTempTables.tempTable1.create(Col1 = 1, Col2 = Some "test")
+              ],
+              tempTable2 = [
+                DbGen.Scripts.MultipleTempTables.tempTable2.create(Col1 = 1, Col3 = "test")
+              ]
+            )
+            .AsyncExecute()
+
+        let comp3 =
+          DbGen.Scripts.MultipleTempTables
+            .WithConnection(Config.connStr)
+            .WithParameters(
+              tempTable1 = [
+                DbGen.Scripts.MultipleTempTables.tempTable1.create(Col1 = 1, Col2 = Some "test")
+              ],
+              tempTable2 = [
+                DbGen.Scripts.MultipleTempTables.tempTable2.create(Col1 = 1, Col3 = "test")
+              ]
+            )
+            .AsyncExecute()
+
+        do! comp1 |> Async.Ignore
+        do! comp1 |> Async.Ignore
+
+        do! comp2 |> Async.Ignore
+        do! comp2 |> Async.Ignore
+
+        do! comp3 |> Async.Ignore
+        do! comp3 |> Async.Ignore
+      }
+
+      testAsync "Can run the resulting Async non-query computation several times when there are parameters" {
+        let comp =
+          DbGen.Procedures.dbo.ProcWithNoResults
+            .WithConnection(Config.connStr)
+            .WithParameters(foo = 1)
+            .AsyncExecute()
+
+        do! comp |> Async.Ignore
+        do! comp |> Async.Ignore
+      }
 
   ]

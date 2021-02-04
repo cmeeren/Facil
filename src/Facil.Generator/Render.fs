@@ -202,7 +202,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
   let wrapResultDef =
     [
-      "let wrapResultWithOutParams result ="
+      "let wrapResultWithOutParams (sqlParams: SqlParameter []) result ="
       yield! indent [
         "{|"
         yield! indent [
@@ -418,10 +418,10 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
       ""
       ""
       "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-      $"type ``{className}_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, sqlParams: SqlParameter [], tempTableData: seq<TempTableData>) ="
+      $"type ``{className}_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) ="
       ""
       yield! indent [
-        "let configureCmd (cmd: SqlCommand) ="
+        "let configureCmd sqlParams (cmd: SqlCommand) ="
         yield! indent [
           match executable with
           | Choice1Of2 sp ->
@@ -494,72 +494,82 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
         | None ->
             "member _.ExecuteAsync(?cancellationToken) ="
             yield! indent [
-              "executeNonQueryAsync connStr conn configureConn configureCmd tempTableData (defaultArg cancellationToken CancellationToken.None)"
-              if wrapResult then "|> Task.map wrapResultWithOutParams"
+              "let sqlParams = getSqlParams ()"
+              "executeNonQueryAsync connStr conn configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)"
+              if wrapResult then "|> Task.map (wrapResultWithOutParams sqlParams)"
             ]
             ""
             yield! asyncOverTaskFor "ExecuteAsync" "AsyncExecute"
             ""
             "member _.Execute() ="
             yield! indent [
-              "executeNonQuery connStr conn configureConn configureCmd tempTableData"
-              if wrapResult then "|> wrapResultWithOutParams"
+              "let sqlParams = getSqlParams ()"
+              "executeNonQuery connStr conn configureConn (configureCmd sqlParams) tempTableData"
+              if wrapResult then "|> wrapResultWithOutParams sqlParams"
             ]
 
         | Some _ ->
             "member _.ExecuteAsync(?cancellationToken) ="
             yield! indent [
-              "executeQueryEagerAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
-              if wrapResult then "|> Task.map wrapResultWithOutParams"
+              "let sqlParams = getSqlParams ()"
+              "executeQueryEagerAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
+              if wrapResult then "|> Task.map (wrapResultWithOutParams sqlParams)"
             ]
             ""
             yield! asyncOverTaskFor "ExecuteAsync" "AsyncExecute"
             ""
             "member _.ExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
-              "executeQueryEagerAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
-              if wrapResult then "|> Task.map wrapResultWithOutParams"
+              "let sqlParams = getSqlParams ()"
+              "executeQueryEagerAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
+              if wrapResult then "|> Task.map (wrapResultWithOutParams sqlParams)"
             ]
             ""
             yield! asyncOverTaskFor "ExecuteAsyncWithSyncRead" "AsyncExecuteWithSyncRead"
             ""
             "member _.Execute() ="
             yield! indent [
-              "executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData"
-              if wrapResult then "|> wrapResultWithOutParams"
+              "let sqlParams = getSqlParams ()"
+              "executeQueryEager connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"
+              if wrapResult then "|> wrapResultWithOutParams sqlParams"
             ]
             ""
             "#if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)"
             ""
             "member _.LazyExecuteAsync(?cancellationToken) ="
             yield! indent [
-              "executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
+              "let sqlParams = getSqlParams ()"
+              "executeQueryLazyAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
             ]
             ""
             "member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
-              "executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
+              "let sqlParams = getSqlParams ()"
+              "executeQueryLazyAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
             ]
             ""
             "#endif"
             ""
             "member _.LazyExecute() ="
             yield! indent [
-              "executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData"
+              "let sqlParams = getSqlParams ()"
+              "executeQueryLazy connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"
             ]
             ""
             "member _.ExecuteSingleAsync(?cancellationToken) ="
             yield! indent [
-              $"""executeQuerySingleAsync{if rule.VoptionOut then "Voption" else ""} connStr conn configureConn configureCmd initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"""
-              if wrapResult then "|> Task.map wrapResultWithOutParams"
+              "let sqlParams = getSqlParams ()"
+              $"""executeQuerySingleAsync{if rule.VoptionOut then "Voption" else ""} connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"""
+              if wrapResult then "|> Task.map (wrapResultWithOutParams sqlParams)"
             ]
             ""
             yield! asyncOverTaskFor "ExecuteSingleAsync" "AsyncExecuteSingle"
             ""
             "member _.ExecuteSingle() ="
             yield! indent [
-              $"""executeQuerySingle{if rule.VoptionOut then "Voption" else ""} connStr conn configureConn configureCmd initOrdinals getItem tempTableData"""
-              if wrapResult then "|> wrapResultWithOutParams"
+              "let sqlParams = getSqlParams ()"
+              $"""executeQuerySingle{if rule.VoptionOut then "Voption" else ""} connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"""
+              if wrapResult then "|> wrapResultWithOutParams sqlParams"
             ]
       ]
 
@@ -745,7 +755,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
           ") ="
         ]
         yield! indent [
-          "let sqlParams ="
+          "let getSqlParams () ="
           yield! indent [
             "[|"
             yield! indent [
@@ -787,7 +797,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               ]
               ")"
             ]
-          $"""``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, {if tempTables.IsEmpty then "[]" else "tempTableData"})"""
+          $"""``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, {if tempTables.IsEmpty then "[]" else "tempTableData"})"""
         ]
         ""
 
@@ -795,7 +805,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
         if not rule.SkipParamDto then
           $"member inline this.WithParameters(dto: ^a) ="
           yield! indent [
-            "let sqlParams ="
+            "let getSqlParams () ="
             yield! indent [
               "[|"
               yield! indent [
@@ -838,7 +848,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                 ]
                 ")"
               ]
-            $"""``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, sqlParams, {if tempTables.IsEmpty then "[]" else "tempTableData"})"""
+            $"""``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, {if tempTables.IsEmpty then "[]" else "tempTableData"})"""
           ]
 
       ]
