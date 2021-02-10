@@ -176,6 +176,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
   let inOptionModule = if rule.VoptionIn then "ValueOption" else "Option"
   let inOptionType = if rule.VoptionIn then "voption" else "option"
+  let outOptionType = if rule.VoptionOut then "voption" else "option"
   let outOptionSome = if rule.VoptionOut then "ValueSome" else "Some"
   let outOptionNone = if rule.VoptionOut then "ValueNone" else "None"
 
@@ -190,11 +191,32 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             logWarning $"Output of {nameForLogs |> String.firstLower} matches more than one table DTO. Falling back to anonymous record. To remove this warning, specify a matching rule that uses a specific table type or anonymous record. The matching table DTOs are: %s{matchingTableDtoStr}"
             "", "{|", "|}", (fun c -> c.Name.Value)
     | AnonymousRecord -> "", "{|", "|}", (fun c -> c.Name.Value)
+    | NominalRecord -> "", "{", "}", (fun c -> c.Name.Value)
     | Custom name ->
         match tableDtos |> List.tryFind (fun dto -> $"{dto.SchemaName}.{dto.Name}" = name) with
         | None -> $" : %s{name}", "{", "}", (fun c -> c.Name.Value)
         | Some dto when dto |> TableDto.canBeUsedBy resultSet rule cfg -> $" : TableDtos.{dto.SchemaName}.{dto.Name}", "{", "}", (fun c -> c.PascalCaseName.Value)
         | Some dto -> failwithError $"{nameForLogs} specifies result table DTO {dto.SchemaName}.{dto.Name}, but the result set does not match the DTO."
+
+  let nominalTypeDef =
+      match rule.Result, resultSet with
+      | _, None -> []
+      | _, Some [c] when c.Name.IsNone || not rule.RecordIfSingleCol -> []
+      | NominalRecord, Some cols ->
+          [
+            ""
+            ""
+            $"type ``{className}_Result`` ="
+            yield! indent [
+              "{"
+              yield! indent [
+                for c in cols do
+                  $"""``%s{c.Name.Value}``: %s{c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + outOptionType else ""}"""
+              ]
+              "}"
+            ]
+          ]
+      | _ -> []
 
   let hasOutParams = parameters |> List.exists (fun p -> p.IsOutput)
   let useRetVal = rule.UseReturnValue
@@ -235,6 +257,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
   if parameters.IsEmpty && tempTables.IsEmpty then
     [
+      yield! nominalTypeDef
       ""
       ""
       $"type ``{className}`` private (connStr: string, conn: SqlConnection) ="
@@ -415,6 +438,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
   else  // Has parameters or temp tables
     [
+      yield! nominalTypeDef
       ""
       ""
       "[<EditorBrowsable(EditorBrowsableState.Never)>]"

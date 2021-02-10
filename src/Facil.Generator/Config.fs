@@ -14,6 +14,7 @@ type IncludeOrFor =
 type ResultKind =
   | Auto
   | AnonymousRecord
+  | NominalRecord
   | Custom of string
 
 
@@ -462,6 +463,7 @@ module ProcedureRule =
       |> Option.map (function
           | "auto" -> Auto
           | "anonymous" -> AnonymousRecord
+          | "nominal" -> NominalRecord
           | name -> Custom name
       )
     VoptionIn = dto.voptionIn
@@ -744,6 +746,7 @@ module ScriptRule =
         |> Option.map (function
             | "auto" -> Auto
             | "anonymous" -> AnonymousRecord
+            | "nominal" -> NominalRecord
             | name -> Custom name
         )
       VoptionIn = dto.voptionIn

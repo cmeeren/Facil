@@ -254,6 +254,28 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time nominal result type sproc test" <| fun () ->
+        let f () =
+          let (result: DbGen.Procedures.dbo.ProcNominalResult_Result option) =
+            DbGen.Procedures.dbo.ProcNominalResult
+              .WithConnection(Config.connStr)
+              .ExecuteSingle()
+          result.Value.TableCol1 |> ignore<string>
+          result.Value.TableCol2 |> ignore<int option>
+        ignore f
+
+
+      testCase "Compile-time nominal result type script test" <| fun () ->
+        let f () =
+          let (result: DbGen.Scripts.NominalResult_Result option) =
+            DbGen.Scripts.NominalResult
+              .WithConnection(Config.connStr)
+              .ExecuteSingle()
+          result.Value.TableCol1 |> ignore<string>
+          result.Value.TableCol2 |> ignore<int option>
+        ignore f
+
+
       testList "MAX length work correctly" [
 
 

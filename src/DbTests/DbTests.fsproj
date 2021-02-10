@@ -57,6 +57,7 @@
     <None Include="SQL\MultipleTempTables.sql" />
     <None Include="SQL\TempTableWithLengthTypes.sql" />
     <None Include="SQL\TempTableWithMaxLengthTypes.sql" />
+    <None Include="SQL\NominalResult.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />

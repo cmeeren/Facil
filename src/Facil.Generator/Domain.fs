@@ -375,7 +375,7 @@ module TableDto =
 
   let canBeUsedBy (resultSet: OutputColumn list option) (procOrScriptRule: EffectiveProcedureOrScriptRule) cfg (dto: TableDto) =
     match procOrScriptRule.Result with
-    | AnonymousRecord | Custom _ -> false
+    | AnonymousRecord | NominalRecord | Custom _ -> false
     | Auto ->
         let dtoRule = RuleSet.getEffectiveTableDtoRuleFor dto.SchemaName dto.Name cfg
         resultSet |> Option.map (List.map (fun c -> { c with SortKey = 0 }))

@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.5 (2021-02-10)
+
+* Allow setting `result` to `nominal` for procedures and scripts, which will generate and use a normal F# record for the result set.
+
 ### 0.2.4 (2021-02-04)
 
 * Made async computations for parametrized operations directly retryable (see [#6](https://github.com/cmeeren/Facil/issues/6) for details)

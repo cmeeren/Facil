@@ -84,6 +84,8 @@ rulesets:
         #    records if there are multiple matching table DTOs. Will not match
         #    voption-enabled table DTOs if voptionOut if false, and vice versa.
         #  - "anonymous": Use anonymous records.
+        #  - "nominal": Generate and use a normal record type (a unique type is defined
+        #    for each procedure).
         #  - A qualified table name, e.g. "dbo.User": If the name matches an included
         #    table DTO (see later), use that. Otherwise, treat as a custom record type as
         #    described in the next point.

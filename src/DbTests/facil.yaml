@@ -62,6 +62,9 @@ rulesets:
           Col4:
             skip: true
 
+      - for: ProcNominalResult
+        result: nominal
+
 
     scripts:
       - include: "**/*.sql"
@@ -241,6 +244,9 @@ rulesets:
                 [varbinary] VARBINARY(MAX) NOT NULL,
                 [varchar] VARCHAR(MAX) NOT NULL
               )
+
+      - for: NominalResult.sql
+        result: nominal
 
 
     tableDtos:
