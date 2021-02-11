@@ -516,7 +516,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
         match resultSet with
         | None ->
-            "member _.ExecuteAsync(?cancellationToken) ="
+            "member __.ExecuteAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeNonQueryAsync connStr conn configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)"
@@ -525,7 +525,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteAsync" "AsyncExecute"
             ""
-            "member _.Execute() ="
+            "member __.Execute() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeNonQuery connStr conn configureConn (configureCmd sqlParams) tempTableData"
@@ -533,7 +533,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ]
 
         | Some _ ->
-            "member _.ExecuteAsync(?cancellationToken) ="
+            "member __.ExecuteAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryEagerAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
@@ -542,7 +542,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteAsync" "AsyncExecute"
             ""
-            "member _.ExecuteAsyncWithSyncRead(?cancellationToken) ="
+            "member __.ExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryEagerAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
@@ -551,7 +551,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteAsyncWithSyncRead" "AsyncExecuteWithSyncRead"
             ""
-            "member _.Execute() ="
+            "member __.Execute() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryEager connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"
@@ -560,13 +560,13 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             "#if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)"
             ""
-            "member _.LazyExecuteAsync(?cancellationToken) ="
+            "member __.LazyExecuteAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryLazyAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
             ]
             ""
-            "member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) ="
+            "member __.LazyExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryLazyAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
@@ -574,13 +574,13 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             "#endif"
             ""
-            "member _.LazyExecute() ="
+            "member __.LazyExecute() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryLazy connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"
             ]
             ""
-            "member _.ExecuteSingleAsync(?cancellationToken) ="
+            "member __.ExecuteSingleAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               $"""executeQuerySingleAsync{if rule.VoptionOut then "Voption" else ""} connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"""
@@ -589,7 +589,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteSingleAsync" "AsyncExecuteSingle"
             ""
-            "member _.ExecuteSingle() ="
+            "member __.ExecuteSingle() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               $"""executeQuerySingle{if rule.VoptionOut then "Voption" else ""} connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"""
@@ -610,7 +610,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
           yield! indent [
             ""
             "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-            "member _.Fields = fields"
+            "member __.Fields = fields"
             ""
             "static member create"
             yield! indent [
