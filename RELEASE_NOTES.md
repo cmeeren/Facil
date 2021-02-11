@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.6 (2021-02-11)
+
+* Make the generated code more compatible with older F# versions
+
 ### 0.2.5 (2021-02-10)
 
 * Allow setting `result` to `nominal` for procedures and scripts, which will generate and use a normal F# record for the result set.
