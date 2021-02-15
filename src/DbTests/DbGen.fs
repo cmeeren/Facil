@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 83c67df77b182bcd7bedf8b8c0ef515e4b5a8917f4ccd018eeb2f985ce6aaece
+// Hash: a393b207def5d1d8c6da55a57671a5683fc76d8f8c16b8c9854f1798dcea0a8c
 
 //////////////////////////////////////////
 //
@@ -632,9 +632,11 @@ module Procedures =
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
       let getItem (reader: SqlDataReader) : TableDtos.dbo.TableDtoColumnInheritance =
+        let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+        let ``Col2`` = reader.GetInt32 ``ordinal_Col2``
         {
-          ``Col1`` = reader.GetInt32 ``ordinal_Col1``
-          ``Col2`` = reader.GetInt32 ``ordinal_Col2``
+          ``Col1`` = ``Col1``
+          ``Col2`` = ``Col2``
         }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -768,9 +770,11 @@ module Procedures =
         ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
       let getItem (reader: SqlDataReader) =
+        let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+        let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
         {
-          ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-          ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+          ``TableCol1`` = ``TableCol1``
+          ``TableCol2`` = ``TableCol2``
         }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -1088,9 +1092,11 @@ module Procedures =
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
       let getItem (reader: SqlDataReader) : TableDtos.dbo.OptionTableWithDto =
+        let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
+        let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
         {
-          ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
-          ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
+          ``Col1`` = ``Col1``
+          ``Col2`` = ``Col2``
         }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -1176,9 +1182,11 @@ module Procedures =
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
       let getItem (reader: SqlDataReader) =
+        let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
+        let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
         {|
-          ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
-          ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
+          ``Col1`` = ``Col1``
+          ``Col2`` = ``Col2``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -1266,9 +1274,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -1388,9 +1398,11 @@ module Procedures =
         ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
       let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+        let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+        let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
         {
-          ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-          ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+          ``TableCol1`` = ``TableCol1``
+          ``TableCol2`` = ``TableCol2``
         }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -1476,9 +1488,11 @@ module Procedures =
         ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
       let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+        let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+        let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
         {
-          ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-          ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+          ``TableCol1`` = ``TableCol1``
+          ``TableCol2`` = ``TableCol2``
         }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -1564,9 +1578,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetString ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetString ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -1884,9 +1900,11 @@ module Procedures =
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
       let getItem (reader: SqlDataReader) : TableDtos.dbo.VoptionTableWithDto =
+        let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
+        let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
         {
-          ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
-          ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
+          ``Col1`` = ``Col1``
+          ``Col2`` = ``Col2``
         }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -1972,9 +1990,11 @@ module Procedures =
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
       let getItem (reader: SqlDataReader) =
+        let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
+        let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
         {|
-          ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
-          ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
+          ``Col1`` = ``Col1``
+          ``Col2`` = ``Col2``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -2062,9 +2082,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then ValueNone else reader.GetInt32 ``ordinal_Foo`` |> ValueSome
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then ValueNone else reader.GetString ``ordinal_Bar`` |> ValueSome
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then ValueNone else reader.GetInt32 ``ordinal_Foo`` |> ValueSome
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then ValueNone else reader.GetString ``ordinal_Bar`` |> ValueSome
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -2242,37 +2264,67 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
+        let ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
+        let ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
+        let ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
+        let ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
+        let ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
+        let ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
+        let ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
+        let ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
+        let ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
+        let ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
+        let ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
+        let ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
+        let ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
+        let ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
+        let ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
+        let ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
+        let ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
+        let ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
+        let ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
+        let ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
+        let ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
+        let ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
+        let ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
+        let ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+        let ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
         {|
-          ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
-          ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
-          ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
-          ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
-          ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
-          ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
-          ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
-          ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
-          ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
-          ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
-          ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
-          ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
-          ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
-          ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
-          ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
-          ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
-          ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
-          ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
-          ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
-          ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
-          ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
-          ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
-          ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
-          ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
-          ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
-          ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``rowversion`` = ``rowversion``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``timestamp`` = ``timestamp``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -2537,37 +2589,67 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
+        let ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
+        let ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
+        let ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
+        let ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
+        let ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
+        let ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
+        let ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
+        let ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
+        let ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
+        let ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
+        let ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
+        let ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
+        let ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
+        let ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
+        let ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
+        let ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
+        let ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
+        let ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
+        let ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
+        let ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
+        let ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
+        let ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
+        let ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
+        let ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+        let ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
         {|
-          ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
-          ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
-          ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
-          ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
-          ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
-          ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
-          ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
-          ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
-          ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
-          ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
-          ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
-          ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
-          ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
-          ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
-          ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
-          ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
-          ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
-          ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
-          ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
-          ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
-          ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
-          ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
-          ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
-          ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
-          ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
-          ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``rowversion`` = ``rowversion``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``timestamp`` = ``timestamp``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -2828,35 +2910,63 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = reader.GetInt64 ``ordinal_bigint``
+        let ``binary`` = reader.GetBytes ``ordinal_binary``
+        let ``bit`` = reader.GetBoolean ``ordinal_bit``
+        let ``char`` = reader.GetString ``ordinal_char``
+        let ``date`` = reader.GetDateTime ``ordinal_date``
+        let ``datetime`` = reader.GetDateTime ``ordinal_datetime``
+        let ``datetime2`` = reader.GetDateTime ``ordinal_datetime2``
+        let ``datetimeoffset`` = reader.GetDateTimeOffset ``ordinal_datetimeoffset``
+        let ``decimal`` = reader.GetDecimal ``ordinal_decimal``
+        let ``float`` = reader.GetDouble ``ordinal_float``
+        let ``image`` = reader.GetBytes ``ordinal_image``
+        let ``int`` = reader.GetInt32 ``ordinal_int``
+        let ``money`` = reader.GetDecimal ``ordinal_money``
+        let ``nchar`` = reader.GetString ``ordinal_nchar``
+        let ``ntext`` = reader.GetString ``ordinal_ntext``
+        let ``numeric`` = reader.GetDecimal ``ordinal_numeric``
+        let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
+        let ``real`` = reader.GetFloat ``ordinal_real``
+        let ``smalldatetime`` = reader.GetDateTime ``ordinal_smalldatetime``
+        let ``smallint`` = reader.GetInt16 ``ordinal_smallint``
+        let ``smallmoney`` = reader.GetDecimal ``ordinal_smallmoney``
+        let ``text`` = reader.GetString ``ordinal_text``
+        let ``time`` = reader.GetTimeSpan ``ordinal_time``
+        let ``tinyint`` = reader.GetByte ``ordinal_tinyint``
+        let ``uniqueidentifier`` = reader.GetGuid ``ordinal_uniqueidentifier``
+        let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
+        let ``varchar`` = reader.GetString ``ordinal_varchar``
+        let ``xml`` = reader.GetString ``ordinal_xml``
         {|
-          ``bigint`` = reader.GetInt64 ``ordinal_bigint``
-          ``binary`` = reader.GetBytes ``ordinal_binary``
-          ``bit`` = reader.GetBoolean ``ordinal_bit``
-          ``char`` = reader.GetString ``ordinal_char``
-          ``date`` = reader.GetDateTime ``ordinal_date``
-          ``datetime`` = reader.GetDateTime ``ordinal_datetime``
-          ``datetime2`` = reader.GetDateTime ``ordinal_datetime2``
-          ``datetimeoffset`` = reader.GetDateTimeOffset ``ordinal_datetimeoffset``
-          ``decimal`` = reader.GetDecimal ``ordinal_decimal``
-          ``float`` = reader.GetDouble ``ordinal_float``
-          ``image`` = reader.GetBytes ``ordinal_image``
-          ``int`` = reader.GetInt32 ``ordinal_int``
-          ``money`` = reader.GetDecimal ``ordinal_money``
-          ``nchar`` = reader.GetString ``ordinal_nchar``
-          ``ntext`` = reader.GetString ``ordinal_ntext``
-          ``numeric`` = reader.GetDecimal ``ordinal_numeric``
-          ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
-          ``real`` = reader.GetFloat ``ordinal_real``
-          ``smalldatetime`` = reader.GetDateTime ``ordinal_smalldatetime``
-          ``smallint`` = reader.GetInt16 ``ordinal_smallint``
-          ``smallmoney`` = reader.GetDecimal ``ordinal_smallmoney``
-          ``text`` = reader.GetString ``ordinal_text``
-          ``time`` = reader.GetTimeSpan ``ordinal_time``
-          ``tinyint`` = reader.GetByte ``ordinal_tinyint``
-          ``uniqueidentifier`` = reader.GetGuid ``ordinal_uniqueidentifier``
-          ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
-          ``varchar`` = reader.GetString ``ordinal_varchar``
-          ``xml`` = reader.GetString ``ordinal_xml``
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -3030,35 +3140,63 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = reader.GetInt64 ``ordinal_bigint``
+        let ``binary`` = reader.GetBytes ``ordinal_binary``
+        let ``bit`` = reader.GetBoolean ``ordinal_bit``
+        let ``char`` = reader.GetString ``ordinal_char``
+        let ``date`` = reader.GetDateTime ``ordinal_date``
+        let ``datetime`` = reader.GetDateTime ``ordinal_datetime``
+        let ``datetime2`` = reader.GetDateTime ``ordinal_datetime2``
+        let ``datetimeoffset`` = reader.GetDateTimeOffset ``ordinal_datetimeoffset``
+        let ``decimal`` = reader.GetDecimal ``ordinal_decimal``
+        let ``float`` = reader.GetDouble ``ordinal_float``
+        let ``image`` = reader.GetBytes ``ordinal_image``
+        let ``int`` = reader.GetInt32 ``ordinal_int``
+        let ``money`` = reader.GetDecimal ``ordinal_money``
+        let ``nchar`` = reader.GetString ``ordinal_nchar``
+        let ``ntext`` = reader.GetString ``ordinal_ntext``
+        let ``numeric`` = reader.GetDecimal ``ordinal_numeric``
+        let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
+        let ``real`` = reader.GetFloat ``ordinal_real``
+        let ``smalldatetime`` = reader.GetDateTime ``ordinal_smalldatetime``
+        let ``smallint`` = reader.GetInt16 ``ordinal_smallint``
+        let ``smallmoney`` = reader.GetDecimal ``ordinal_smallmoney``
+        let ``text`` = reader.GetString ``ordinal_text``
+        let ``time`` = reader.GetTimeSpan ``ordinal_time``
+        let ``tinyint`` = reader.GetByte ``ordinal_tinyint``
+        let ``uniqueidentifier`` = reader.GetGuid ``ordinal_uniqueidentifier``
+        let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
+        let ``varchar`` = reader.GetString ``ordinal_varchar``
+        let ``xml`` = reader.GetString ``ordinal_xml``
         {|
-          ``bigint`` = reader.GetInt64 ``ordinal_bigint``
-          ``binary`` = reader.GetBytes ``ordinal_binary``
-          ``bit`` = reader.GetBoolean ``ordinal_bit``
-          ``char`` = reader.GetString ``ordinal_char``
-          ``date`` = reader.GetDateTime ``ordinal_date``
-          ``datetime`` = reader.GetDateTime ``ordinal_datetime``
-          ``datetime2`` = reader.GetDateTime ``ordinal_datetime2``
-          ``datetimeoffset`` = reader.GetDateTimeOffset ``ordinal_datetimeoffset``
-          ``decimal`` = reader.GetDecimal ``ordinal_decimal``
-          ``float`` = reader.GetDouble ``ordinal_float``
-          ``image`` = reader.GetBytes ``ordinal_image``
-          ``int`` = reader.GetInt32 ``ordinal_int``
-          ``money`` = reader.GetDecimal ``ordinal_money``
-          ``nchar`` = reader.GetString ``ordinal_nchar``
-          ``ntext`` = reader.GetString ``ordinal_ntext``
-          ``numeric`` = reader.GetDecimal ``ordinal_numeric``
-          ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
-          ``real`` = reader.GetFloat ``ordinal_real``
-          ``smalldatetime`` = reader.GetDateTime ``ordinal_smalldatetime``
-          ``smallint`` = reader.GetInt16 ``ordinal_smallint``
-          ``smallmoney`` = reader.GetDecimal ``ordinal_smallmoney``
-          ``text`` = reader.GetString ``ordinal_text``
-          ``time`` = reader.GetTimeSpan ``ordinal_time``
-          ``tinyint`` = reader.GetByte ``ordinal_tinyint``
-          ``uniqueidentifier`` = reader.GetGuid ``ordinal_uniqueidentifier``
-          ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
-          ``varchar`` = reader.GetString ``ordinal_varchar``
-          ``xml`` = reader.GetString ``ordinal_xml``
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -3232,35 +3370,63 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
+        let ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
+        let ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
+        let ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
+        let ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
+        let ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
+        let ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
+        let ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
+        let ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
+        let ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
+        let ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
+        let ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
+        let ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
+        let ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
+        let ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
+        let ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
+        let ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
+        let ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
+        let ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
+        let ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
+        let ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
+        let ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
+        let ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+        let ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
         {|
-          ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
-          ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
-          ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
-          ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
-          ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
-          ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
-          ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
-          ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
-          ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
-          ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
-          ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
-          ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
-          ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
-          ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
-          ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
-          ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
-          ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
-          ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
-          ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
-          ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
-          ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
-          ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
-          ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
-          ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -3434,35 +3600,63 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
+        let ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
+        let ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
+        let ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
+        let ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
+        let ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
+        let ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
+        let ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
+        let ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
+        let ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
+        let ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
+        let ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
+        let ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
+        let ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
+        let ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
+        let ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
+        let ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
+        let ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
+        let ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
+        let ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
+        let ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
+        let ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
+        let ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+        let ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
         {|
-          ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
-          ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
-          ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
-          ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
-          ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
-          ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
-          ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
-          ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
-          ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
-          ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
-          ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
-          ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
-          ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
-          ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
-          ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
-          ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
-          ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
-          ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
-          ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
-          ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
-          ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
-          ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
-          ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
-          ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -3640,37 +3834,67 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
+        let ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
+        let ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
+        let ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
+        let ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
+        let ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
+        let ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
+        let ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
+        let ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
+        let ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
+        let ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
+        let ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
+        let ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
+        let ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
+        let ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
+        let ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
+        let ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
+        let ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
+        let ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
+        let ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
+        let ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
+        let ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
+        let ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
+        let ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
+        let ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+        let ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
         {|
-          ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
-          ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
-          ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
-          ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
-          ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
-          ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
-          ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
-          ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
-          ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
-          ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
-          ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
-          ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
-          ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
-          ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
-          ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
-          ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
-          ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
-          ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
-          ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
-          ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
-          ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
-          ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
-          ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
-          ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
-          ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
-          ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``rowversion`` = ``rowversion``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``timestamp`` = ``timestamp``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -3935,37 +4159,67 @@ module Procedures =
         ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
       let getItem (reader: SqlDataReader) =
+        let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
+        let ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
+        let ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
+        let ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
+        let ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
+        let ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
+        let ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
+        let ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
+        let ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
+        let ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
+        let ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
+        let ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
+        let ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
+        let ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
+        let ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
+        let ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
+        let ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
+        let ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
+        let ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
+        let ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
+        let ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
+        let ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
+        let ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
+        let ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
+        let ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+        let ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
         {|
-          ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
-          ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
-          ``bit`` = if reader.IsDBNull ``ordinal_bit`` then None else reader.GetBoolean ``ordinal_bit`` |> Some
-          ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
-          ``date`` = if reader.IsDBNull ``ordinal_date`` then None else reader.GetDateTime ``ordinal_date`` |> Some
-          ``datetime`` = if reader.IsDBNull ``ordinal_datetime`` then None else reader.GetDateTime ``ordinal_datetime`` |> Some
-          ``datetime2`` = if reader.IsDBNull ``ordinal_datetime2`` then None else reader.GetDateTime ``ordinal_datetime2`` |> Some
-          ``datetimeoffset`` = if reader.IsDBNull ``ordinal_datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_datetimeoffset`` |> Some
-          ``decimal`` = if reader.IsDBNull ``ordinal_decimal`` then None else reader.GetDecimal ``ordinal_decimal`` |> Some
-          ``float`` = if reader.IsDBNull ``ordinal_float`` then None else reader.GetDouble ``ordinal_float`` |> Some
-          ``image`` = if reader.IsDBNull ``ordinal_image`` then None else reader.GetBytes ``ordinal_image`` |> Some
-          ``int`` = if reader.IsDBNull ``ordinal_int`` then None else reader.GetInt32 ``ordinal_int`` |> Some
-          ``money`` = if reader.IsDBNull ``ordinal_money`` then None else reader.GetDecimal ``ordinal_money`` |> Some
-          ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
-          ``ntext`` = if reader.IsDBNull ``ordinal_ntext`` then None else reader.GetString ``ordinal_ntext`` |> Some
-          ``numeric`` = if reader.IsDBNull ``ordinal_numeric`` then None else reader.GetDecimal ``ordinal_numeric`` |> Some
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``real`` = if reader.IsDBNull ``ordinal_real`` then None else reader.GetFloat ``ordinal_real`` |> Some
-          ``rowversion`` = if reader.IsDBNull ``ordinal_rowversion`` then None else reader.GetBytes ``ordinal_rowversion`` |> Some
-          ``smalldatetime`` = if reader.IsDBNull ``ordinal_smalldatetime`` then None else reader.GetDateTime ``ordinal_smalldatetime`` |> Some
-          ``smallint`` = if reader.IsDBNull ``ordinal_smallint`` then None else reader.GetInt16 ``ordinal_smallint`` |> Some
-          ``smallmoney`` = if reader.IsDBNull ``ordinal_smallmoney`` then None else reader.GetDecimal ``ordinal_smallmoney`` |> Some
-          ``text`` = if reader.IsDBNull ``ordinal_text`` then None else reader.GetString ``ordinal_text`` |> Some
-          ``time`` = if reader.IsDBNull ``ordinal_time`` then None else reader.GetTimeSpan ``ordinal_time`` |> Some
-          ``timestamp`` = if reader.IsDBNull ``ordinal_timestamp`` then None else reader.GetBytes ``ordinal_timestamp`` |> Some
-          ``tinyint`` = if reader.IsDBNull ``ordinal_tinyint`` then None else reader.GetByte ``ordinal_tinyint`` |> Some
-          ``uniqueidentifier`` = if reader.IsDBNull ``ordinal_uniqueidentifier`` then None else reader.GetGuid ``ordinal_uniqueidentifier`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
-          ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
+          ``bigint`` = ``bigint``
+          ``binary`` = ``binary``
+          ``bit`` = ``bit``
+          ``char`` = ``char``
+          ``date`` = ``date``
+          ``datetime`` = ``datetime``
+          ``datetime2`` = ``datetime2``
+          ``datetimeoffset`` = ``datetimeoffset``
+          ``decimal`` = ``decimal``
+          ``float`` = ``float``
+          ``image`` = ``image``
+          ``int`` = ``int``
+          ``money`` = ``money``
+          ``nchar`` = ``nchar``
+          ``ntext`` = ``ntext``
+          ``numeric`` = ``numeric``
+          ``nvarchar`` = ``nvarchar``
+          ``real`` = ``real``
+          ``rowversion`` = ``rowversion``
+          ``smalldatetime`` = ``smalldatetime``
+          ``smallint`` = ``smallint``
+          ``smallmoney`` = ``smallmoney``
+          ``text`` = ``text``
+          ``time`` = ``time``
+          ``timestamp`` = ``timestamp``
+          ``tinyint`` = ``tinyint``
+          ``uniqueidentifier`` = ``uniqueidentifier``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
+          ``xml`` = ``xml``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -4172,9 +4426,11 @@ module Procedures =
         ``ordinal_otherCol`` <- reader.GetOrdinal "otherCol"
 
       let getItem (reader: SqlDataReader) : TableDtos.dbo.CamelCaseColNames =
+        let ``col1`` = if reader.IsDBNull ``ordinal_col1`` then None else reader.GetString ``ordinal_col1`` |> Some
+        let ``otherCol`` = if reader.IsDBNull ``ordinal_otherCol`` then None else reader.GetInt32 ``ordinal_otherCol`` |> Some
         {
-          ``Col1`` = if reader.IsDBNull ``ordinal_col1`` then None else reader.GetString ``ordinal_col1`` |> Some
-          ``OtherCol`` = if reader.IsDBNull ``ordinal_otherCol`` then None else reader.GetInt32 ``ordinal_otherCol`` |> Some
+          ``Col1`` = ``col1``
+          ``OtherCol`` = ``otherCol``
         }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -4386,13 +4642,19 @@ module Procedures =
         ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
       let getItem (reader: SqlDataReader) =
+        let ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
+        let ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
+        let ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
         {|
-          ``binary`` = if reader.IsDBNull ``ordinal_binary`` then None else reader.GetBytes ``ordinal_binary`` |> Some
-          ``char`` = if reader.IsDBNull ``ordinal_char`` then None else reader.GetString ``ordinal_char`` |> Some
-          ``nchar`` = if reader.IsDBNull ``ordinal_nchar`` then None else reader.GetString ``ordinal_nchar`` |> Some
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+          ``binary`` = ``binary``
+          ``char`` = ``char``
+          ``nchar`` = ``nchar``
+          ``nvarchar`` = ``nvarchar``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -4537,13 +4799,19 @@ module Procedures =
         ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
       let getItem (reader: SqlDataReader) =
+        let ``binary`` = reader.GetBytes ``ordinal_binary``
+        let ``char`` = reader.GetString ``ordinal_char``
+        let ``nchar`` = reader.GetString ``ordinal_nchar``
+        let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
+        let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
+        let ``varchar`` = reader.GetString ``ordinal_varchar``
         {|
-          ``binary`` = reader.GetBytes ``ordinal_binary``
-          ``char`` = reader.GetString ``ordinal_char``
-          ``nchar`` = reader.GetString ``ordinal_nchar``
-          ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
-          ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
-          ``varchar`` = reader.GetString ``ordinal_varchar``
+          ``binary`` = ``binary``
+          ``char`` = ``char``
+          ``nchar`` = ``nchar``
+          ``nvarchar`` = ``nvarchar``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -4667,10 +4935,13 @@ module Procedures =
         ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
       let getItem (reader: SqlDataReader) =
+        let ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
+        let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
+        let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
         {|
-          ``nvarchar`` = if reader.IsDBNull ``ordinal_nvarchar`` then None else reader.GetString ``ordinal_nvarchar`` |> Some
-          ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
-          ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
+          ``nvarchar`` = ``nvarchar``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -4800,10 +5071,13 @@ module Procedures =
         ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
       let getItem (reader: SqlDataReader) =
+        let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
+        let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
+        let ``varchar`` = reader.GetString ``ordinal_varchar``
         {|
-          ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
-          ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
-          ``varchar`` = reader.GetString ``ordinal_varchar``
+          ``nvarchar`` = ``nvarchar``
+          ``varbinary`` = ``varbinary``
+          ``varchar`` = ``varchar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -4923,9 +5197,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetString ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetString ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -5011,9 +5287,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetString ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetString ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -5101,9 +5379,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -5228,9 +5508,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -5355,9 +5637,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -5482,9 +5766,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -5609,9 +5895,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -5736,9 +6024,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -5863,9 +6153,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetString ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetString ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -5990,9 +6282,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetString ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetString ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -6117,9 +6411,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -6244,9 +6540,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+        let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
         {|
-          ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-          ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -6511,9 +6809,11 @@ module Procedures =
         ``ordinal_!"#%&/()=?`` <- reader.GetOrdinal "!\"#%&/()=?"
 
       let getItem (reader: SqlDataReader) =
+        let ``This is the first column`` = reader.GetString ``ordinal_This is the first column``
+        let ``!"#%&/()=?`` = reader.GetInt32 ``ordinal_!"#%&/()=?``
         {|
-          ``This is the first column`` = reader.GetString ``ordinal_This is the first column``
-          ``!"#%&/()=?`` = reader.GetInt32 ``ordinal_!"#%&/()=?``
+          ``This is the first column`` = ``This is the first column``
+          ``!"#%&/()=?`` = ``!"#%&/()=?``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -6599,9 +6899,11 @@ module Procedures =
         ``ordinal_!"#%&/()=?`` <- reader.GetOrdinal "!\"#%&/()=?"
 
       let getItem (reader: SqlDataReader) =
+        let ``This is the first column`` = reader.GetString ``ordinal_This is the first column``
+        let ``!"#%&/()=?`` = reader.GetInt32 ``ordinal_!"#%&/()=?``
         {|
-          ``This is the first column`` = reader.GetString ``ordinal_This is the first column``
-          ``!"#%&/()=?`` = reader.GetInt32 ``ordinal_!"#%&/()=?``
+          ``This is the first column`` = ``This is the first column``
+          ``!"#%&/()=?`` = ``!"#%&/()=?``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -7283,9 +7585,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetInt32 ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetInt32 ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       let wrapResultWithOutParams (sqlParams: SqlParameter []) result =
@@ -7431,9 +7735,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetInt32 ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetInt32 ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       let wrapResultWithOutParams (sqlParams: SqlParameter []) result =
@@ -7585,9 +7891,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetInt32 ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetInt32 ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       let wrapResultWithOutParams (sqlParams: SqlParameter []) result =
@@ -7739,9 +8047,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetInt32 ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetInt32 ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       let wrapResultWithOutParams (sqlParams: SqlParameter []) result =
@@ -7887,9 +8197,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetInt32 ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetInt32 ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       let wrapResultWithOutParams (sqlParams: SqlParameter []) result =
@@ -8024,9 +8336,11 @@ module Procedures =
         ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
       let getItem (reader: SqlDataReader) =
+        let ``Foo`` = reader.GetInt32 ``ordinal_Foo``
+        let ``Bar`` = reader.GetInt32 ``ordinal_Bar``
         {|
-          ``Foo`` = reader.GetInt32 ``ordinal_Foo``
-          ``Bar`` = reader.GetInt32 ``ordinal_Bar``
+          ``Foo`` = ``Foo``
+          ``Bar`` = ``Bar``
         |}
 
       let wrapResultWithOutParams (sqlParams: SqlParameter []) result =
@@ -9103,8 +9417,9 @@ module Procedures =
         ``ordinal_Test`` <- reader.GetOrdinal "Test"
 
       let getItem (reader: SqlDataReader) =
+        let ``Test`` = reader.GetInt32 ``ordinal_Test``
         {|
-          ``Test`` = reader.GetInt32 ``ordinal_Test``
+          ``Test`` = ``Test``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -9190,9 +9505,11 @@ module Procedures =
         ``ordinal_SupportedCol2`` <- reader.GetOrdinal "SupportedCol2"
 
       let getItem (reader: SqlDataReader) =
+        let ``SupportedCol1`` = reader.GetInt32 ``ordinal_SupportedCol1``
+        let ``SupportedCol2`` = reader.GetString ``ordinal_SupportedCol2``
         {|
-          ``SupportedCol1`` = reader.GetInt32 ``ordinal_SupportedCol1``
-          ``SupportedCol2`` = reader.GetString ``ordinal_SupportedCol2``
+          ``SupportedCol1`` = ``SupportedCol1``
+          ``SupportedCol2`` = ``SupportedCol2``
         |}
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -9282,10 +9599,13 @@ module Procedures =
         ``ordinal_col3`` <- reader.GetOrdinal "col3"
 
       let getItem (reader: SqlDataReader) =
+        let ``COL1`` = if reader.IsDBNull ``ordinal_COL1`` then None else reader.GetInt32 ``ordinal_COL1`` |> Some
+        let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
+        let ``col3`` = if reader.IsDBNull ``ordinal_col3`` then None else reader.GetInt32 ``ordinal_col3`` |> Some
         {|
-          ``COL1`` = if reader.IsDBNull ``ordinal_COL1`` then None else reader.GetInt32 ``ordinal_COL1`` |> Some
-          ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
-          ``col3`` = if reader.IsDBNull ``ordinal_col3`` then None else reader.GetInt32 ``ordinal_col3`` |> Some
+          ``COL1`` = ``COL1``
+          ``Col2`` = ``Col2``
+          ``col3`` = ``col3``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -9415,10 +9735,13 @@ module Procedures =
         ``ordinal_col3`` <- reader.GetOrdinal "col3"
 
       let getItem (reader: SqlDataReader) =
+        let ``COL1`` = if reader.IsDBNull ``ordinal_COL1`` then None else reader.GetInt32 ``ordinal_COL1`` |> Some
+        let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
+        let ``col3`` = if reader.IsDBNull ``ordinal_col3`` then None else reader.GetInt32 ``ordinal_col3`` |> Some
         {|
-          ``COL1`` = if reader.IsDBNull ``ordinal_COL1`` then None else reader.GetInt32 ``ordinal_COL1`` |> Some
-          ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
-          ``col3`` = if reader.IsDBNull ``ordinal_col3`` then None else reader.GetInt32 ``ordinal_col3`` |> Some
+          ``COL1`` = ``COL1``
+          ``Col2`` = ``Col2``
+          ``col3`` = ``col3``
         |}
 
       member __.ExecuteAsync(?cancellationToken) =
@@ -9554,9 +9877,11 @@ module Scripts =
       ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.TableDtoColumnInheritance =
+      let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+      let ``Col2`` = reader.GetInt32 ``ordinal_Col2``
       {
-        ``Col1`` = reader.GetInt32 ``ordinal_Col1``
-        ``Col2`` = reader.GetInt32 ``ordinal_Col2``
+        ``Col1`` = ``Col1``
+        ``Col2`` = ``Col2``
       }
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -9646,9 +9971,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -9774,9 +10101,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -9902,9 +10231,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -10001,9 +10332,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -10132,9 +10465,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -10267,9 +10602,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -10398,9 +10735,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -10505,6 +10844,2500 @@ module Scripts =
       ``DynamicSqlWithTvp_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
 
 
+  type ``ManyColumns`` private (connStr: string, conn: SqlConnection) =
+
+    let configureCmd userConfigureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        DECLARE @numCols INT = 600
+        DECLARE @sql NVARCHAR(MAX) = 'SELECT '
+
+        DECLARE @colNo INT = 1
+
+        WHILE (@colNo <= @numCols)
+        BEGIN
+          SET @sql += 'Column' + CAST(@colNo AS NVARCHAR) + ' = NULL' + CASE @colNo WHEN @numCols THEN '' ELSE ', ' END
+          SET @colNo += 1
+        END
+
+        EXEC sp_executesql @sql
+      """
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_Column1`` = 0
+    let mutable ``ordinal_Column2`` = 0
+    let mutable ``ordinal_Column3`` = 0
+    let mutable ``ordinal_Column4`` = 0
+    let mutable ``ordinal_Column5`` = 0
+    let mutable ``ordinal_Column6`` = 0
+    let mutable ``ordinal_Column7`` = 0
+    let mutable ``ordinal_Column8`` = 0
+    let mutable ``ordinal_Column9`` = 0
+    let mutable ``ordinal_Column10`` = 0
+    let mutable ``ordinal_Column11`` = 0
+    let mutable ``ordinal_Column12`` = 0
+    let mutable ``ordinal_Column13`` = 0
+    let mutable ``ordinal_Column14`` = 0
+    let mutable ``ordinal_Column15`` = 0
+    let mutable ``ordinal_Column16`` = 0
+    let mutable ``ordinal_Column17`` = 0
+    let mutable ``ordinal_Column18`` = 0
+    let mutable ``ordinal_Column19`` = 0
+    let mutable ``ordinal_Column20`` = 0
+    let mutable ``ordinal_Column21`` = 0
+    let mutable ``ordinal_Column22`` = 0
+    let mutable ``ordinal_Column23`` = 0
+    let mutable ``ordinal_Column24`` = 0
+    let mutable ``ordinal_Column25`` = 0
+    let mutable ``ordinal_Column26`` = 0
+    let mutable ``ordinal_Column27`` = 0
+    let mutable ``ordinal_Column28`` = 0
+    let mutable ``ordinal_Column29`` = 0
+    let mutable ``ordinal_Column30`` = 0
+    let mutable ``ordinal_Column31`` = 0
+    let mutable ``ordinal_Column32`` = 0
+    let mutable ``ordinal_Column33`` = 0
+    let mutable ``ordinal_Column34`` = 0
+    let mutable ``ordinal_Column35`` = 0
+    let mutable ``ordinal_Column36`` = 0
+    let mutable ``ordinal_Column37`` = 0
+    let mutable ``ordinal_Column38`` = 0
+    let mutable ``ordinal_Column39`` = 0
+    let mutable ``ordinal_Column40`` = 0
+    let mutable ``ordinal_Column41`` = 0
+    let mutable ``ordinal_Column42`` = 0
+    let mutable ``ordinal_Column43`` = 0
+    let mutable ``ordinal_Column44`` = 0
+    let mutable ``ordinal_Column45`` = 0
+    let mutable ``ordinal_Column46`` = 0
+    let mutable ``ordinal_Column47`` = 0
+    let mutable ``ordinal_Column48`` = 0
+    let mutable ``ordinal_Column49`` = 0
+    let mutable ``ordinal_Column50`` = 0
+    let mutable ``ordinal_Column51`` = 0
+    let mutable ``ordinal_Column52`` = 0
+    let mutable ``ordinal_Column53`` = 0
+    let mutable ``ordinal_Column54`` = 0
+    let mutable ``ordinal_Column55`` = 0
+    let mutable ``ordinal_Column56`` = 0
+    let mutable ``ordinal_Column57`` = 0
+    let mutable ``ordinal_Column58`` = 0
+    let mutable ``ordinal_Column59`` = 0
+    let mutable ``ordinal_Column60`` = 0
+    let mutable ``ordinal_Column61`` = 0
+    let mutable ``ordinal_Column62`` = 0
+    let mutable ``ordinal_Column63`` = 0
+    let mutable ``ordinal_Column64`` = 0
+    let mutable ``ordinal_Column65`` = 0
+    let mutable ``ordinal_Column66`` = 0
+    let mutable ``ordinal_Column67`` = 0
+    let mutable ``ordinal_Column68`` = 0
+    let mutable ``ordinal_Column69`` = 0
+    let mutable ``ordinal_Column70`` = 0
+    let mutable ``ordinal_Column71`` = 0
+    let mutable ``ordinal_Column72`` = 0
+    let mutable ``ordinal_Column73`` = 0
+    let mutable ``ordinal_Column74`` = 0
+    let mutable ``ordinal_Column75`` = 0
+    let mutable ``ordinal_Column76`` = 0
+    let mutable ``ordinal_Column77`` = 0
+    let mutable ``ordinal_Column78`` = 0
+    let mutable ``ordinal_Column79`` = 0
+    let mutable ``ordinal_Column80`` = 0
+    let mutable ``ordinal_Column81`` = 0
+    let mutable ``ordinal_Column82`` = 0
+    let mutable ``ordinal_Column83`` = 0
+    let mutable ``ordinal_Column84`` = 0
+    let mutable ``ordinal_Column85`` = 0
+    let mutable ``ordinal_Column86`` = 0
+    let mutable ``ordinal_Column87`` = 0
+    let mutable ``ordinal_Column88`` = 0
+    let mutable ``ordinal_Column89`` = 0
+    let mutable ``ordinal_Column90`` = 0
+    let mutable ``ordinal_Column91`` = 0
+    let mutable ``ordinal_Column92`` = 0
+    let mutable ``ordinal_Column93`` = 0
+    let mutable ``ordinal_Column94`` = 0
+    let mutable ``ordinal_Column95`` = 0
+    let mutable ``ordinal_Column96`` = 0
+    let mutable ``ordinal_Column97`` = 0
+    let mutable ``ordinal_Column98`` = 0
+    let mutable ``ordinal_Column99`` = 0
+    let mutable ``ordinal_Column100`` = 0
+    let mutable ``ordinal_Column101`` = 0
+    let mutable ``ordinal_Column102`` = 0
+    let mutable ``ordinal_Column103`` = 0
+    let mutable ``ordinal_Column104`` = 0
+    let mutable ``ordinal_Column105`` = 0
+    let mutable ``ordinal_Column106`` = 0
+    let mutable ``ordinal_Column107`` = 0
+    let mutable ``ordinal_Column108`` = 0
+    let mutable ``ordinal_Column109`` = 0
+    let mutable ``ordinal_Column110`` = 0
+    let mutable ``ordinal_Column111`` = 0
+    let mutable ``ordinal_Column112`` = 0
+    let mutable ``ordinal_Column113`` = 0
+    let mutable ``ordinal_Column114`` = 0
+    let mutable ``ordinal_Column115`` = 0
+    let mutable ``ordinal_Column116`` = 0
+    let mutable ``ordinal_Column117`` = 0
+    let mutable ``ordinal_Column118`` = 0
+    let mutable ``ordinal_Column119`` = 0
+    let mutable ``ordinal_Column120`` = 0
+    let mutable ``ordinal_Column121`` = 0
+    let mutable ``ordinal_Column122`` = 0
+    let mutable ``ordinal_Column123`` = 0
+    let mutable ``ordinal_Column124`` = 0
+    let mutable ``ordinal_Column125`` = 0
+    let mutable ``ordinal_Column126`` = 0
+    let mutable ``ordinal_Column127`` = 0
+    let mutable ``ordinal_Column128`` = 0
+    let mutable ``ordinal_Column129`` = 0
+    let mutable ``ordinal_Column130`` = 0
+    let mutable ``ordinal_Column131`` = 0
+    let mutable ``ordinal_Column132`` = 0
+    let mutable ``ordinal_Column133`` = 0
+    let mutable ``ordinal_Column134`` = 0
+    let mutable ``ordinal_Column135`` = 0
+    let mutable ``ordinal_Column136`` = 0
+    let mutable ``ordinal_Column137`` = 0
+    let mutable ``ordinal_Column138`` = 0
+    let mutable ``ordinal_Column139`` = 0
+    let mutable ``ordinal_Column140`` = 0
+    let mutable ``ordinal_Column141`` = 0
+    let mutable ``ordinal_Column142`` = 0
+    let mutable ``ordinal_Column143`` = 0
+    let mutable ``ordinal_Column144`` = 0
+    let mutable ``ordinal_Column145`` = 0
+    let mutable ``ordinal_Column146`` = 0
+    let mutable ``ordinal_Column147`` = 0
+    let mutable ``ordinal_Column148`` = 0
+    let mutable ``ordinal_Column149`` = 0
+    let mutable ``ordinal_Column150`` = 0
+    let mutable ``ordinal_Column151`` = 0
+    let mutable ``ordinal_Column152`` = 0
+    let mutable ``ordinal_Column153`` = 0
+    let mutable ``ordinal_Column154`` = 0
+    let mutable ``ordinal_Column155`` = 0
+    let mutable ``ordinal_Column156`` = 0
+    let mutable ``ordinal_Column157`` = 0
+    let mutable ``ordinal_Column158`` = 0
+    let mutable ``ordinal_Column159`` = 0
+    let mutable ``ordinal_Column160`` = 0
+    let mutable ``ordinal_Column161`` = 0
+    let mutable ``ordinal_Column162`` = 0
+    let mutable ``ordinal_Column163`` = 0
+    let mutable ``ordinal_Column164`` = 0
+    let mutable ``ordinal_Column165`` = 0
+    let mutable ``ordinal_Column166`` = 0
+    let mutable ``ordinal_Column167`` = 0
+    let mutable ``ordinal_Column168`` = 0
+    let mutable ``ordinal_Column169`` = 0
+    let mutable ``ordinal_Column170`` = 0
+    let mutable ``ordinal_Column171`` = 0
+    let mutable ``ordinal_Column172`` = 0
+    let mutable ``ordinal_Column173`` = 0
+    let mutable ``ordinal_Column174`` = 0
+    let mutable ``ordinal_Column175`` = 0
+    let mutable ``ordinal_Column176`` = 0
+    let mutable ``ordinal_Column177`` = 0
+    let mutable ``ordinal_Column178`` = 0
+    let mutable ``ordinal_Column179`` = 0
+    let mutable ``ordinal_Column180`` = 0
+    let mutable ``ordinal_Column181`` = 0
+    let mutable ``ordinal_Column182`` = 0
+    let mutable ``ordinal_Column183`` = 0
+    let mutable ``ordinal_Column184`` = 0
+    let mutable ``ordinal_Column185`` = 0
+    let mutable ``ordinal_Column186`` = 0
+    let mutable ``ordinal_Column187`` = 0
+    let mutable ``ordinal_Column188`` = 0
+    let mutable ``ordinal_Column189`` = 0
+    let mutable ``ordinal_Column190`` = 0
+    let mutable ``ordinal_Column191`` = 0
+    let mutable ``ordinal_Column192`` = 0
+    let mutable ``ordinal_Column193`` = 0
+    let mutable ``ordinal_Column194`` = 0
+    let mutable ``ordinal_Column195`` = 0
+    let mutable ``ordinal_Column196`` = 0
+    let mutable ``ordinal_Column197`` = 0
+    let mutable ``ordinal_Column198`` = 0
+    let mutable ``ordinal_Column199`` = 0
+    let mutable ``ordinal_Column200`` = 0
+    let mutable ``ordinal_Column201`` = 0
+    let mutable ``ordinal_Column202`` = 0
+    let mutable ``ordinal_Column203`` = 0
+    let mutable ``ordinal_Column204`` = 0
+    let mutable ``ordinal_Column205`` = 0
+    let mutable ``ordinal_Column206`` = 0
+    let mutable ``ordinal_Column207`` = 0
+    let mutable ``ordinal_Column208`` = 0
+    let mutable ``ordinal_Column209`` = 0
+    let mutable ``ordinal_Column210`` = 0
+    let mutable ``ordinal_Column211`` = 0
+    let mutable ``ordinal_Column212`` = 0
+    let mutable ``ordinal_Column213`` = 0
+    let mutable ``ordinal_Column214`` = 0
+    let mutable ``ordinal_Column215`` = 0
+    let mutable ``ordinal_Column216`` = 0
+    let mutable ``ordinal_Column217`` = 0
+    let mutable ``ordinal_Column218`` = 0
+    let mutable ``ordinal_Column219`` = 0
+    let mutable ``ordinal_Column220`` = 0
+    let mutable ``ordinal_Column221`` = 0
+    let mutable ``ordinal_Column222`` = 0
+    let mutable ``ordinal_Column223`` = 0
+    let mutable ``ordinal_Column224`` = 0
+    let mutable ``ordinal_Column225`` = 0
+    let mutable ``ordinal_Column226`` = 0
+    let mutable ``ordinal_Column227`` = 0
+    let mutable ``ordinal_Column228`` = 0
+    let mutable ``ordinal_Column229`` = 0
+    let mutable ``ordinal_Column230`` = 0
+    let mutable ``ordinal_Column231`` = 0
+    let mutable ``ordinal_Column232`` = 0
+    let mutable ``ordinal_Column233`` = 0
+    let mutable ``ordinal_Column234`` = 0
+    let mutable ``ordinal_Column235`` = 0
+    let mutable ``ordinal_Column236`` = 0
+    let mutable ``ordinal_Column237`` = 0
+    let mutable ``ordinal_Column238`` = 0
+    let mutable ``ordinal_Column239`` = 0
+    let mutable ``ordinal_Column240`` = 0
+    let mutable ``ordinal_Column241`` = 0
+    let mutable ``ordinal_Column242`` = 0
+    let mutable ``ordinal_Column243`` = 0
+    let mutable ``ordinal_Column244`` = 0
+    let mutable ``ordinal_Column245`` = 0
+    let mutable ``ordinal_Column246`` = 0
+    let mutable ``ordinal_Column247`` = 0
+    let mutable ``ordinal_Column248`` = 0
+    let mutable ``ordinal_Column249`` = 0
+    let mutable ``ordinal_Column250`` = 0
+    let mutable ``ordinal_Column251`` = 0
+    let mutable ``ordinal_Column252`` = 0
+    let mutable ``ordinal_Column253`` = 0
+    let mutable ``ordinal_Column254`` = 0
+    let mutable ``ordinal_Column255`` = 0
+    let mutable ``ordinal_Column256`` = 0
+    let mutable ``ordinal_Column257`` = 0
+    let mutable ``ordinal_Column258`` = 0
+    let mutable ``ordinal_Column259`` = 0
+    let mutable ``ordinal_Column260`` = 0
+    let mutable ``ordinal_Column261`` = 0
+    let mutable ``ordinal_Column262`` = 0
+    let mutable ``ordinal_Column263`` = 0
+    let mutable ``ordinal_Column264`` = 0
+    let mutable ``ordinal_Column265`` = 0
+    let mutable ``ordinal_Column266`` = 0
+    let mutable ``ordinal_Column267`` = 0
+    let mutable ``ordinal_Column268`` = 0
+    let mutable ``ordinal_Column269`` = 0
+    let mutable ``ordinal_Column270`` = 0
+    let mutable ``ordinal_Column271`` = 0
+    let mutable ``ordinal_Column272`` = 0
+    let mutable ``ordinal_Column273`` = 0
+    let mutable ``ordinal_Column274`` = 0
+    let mutable ``ordinal_Column275`` = 0
+    let mutable ``ordinal_Column276`` = 0
+    let mutable ``ordinal_Column277`` = 0
+    let mutable ``ordinal_Column278`` = 0
+    let mutable ``ordinal_Column279`` = 0
+    let mutable ``ordinal_Column280`` = 0
+    let mutable ``ordinal_Column281`` = 0
+    let mutable ``ordinal_Column282`` = 0
+    let mutable ``ordinal_Column283`` = 0
+    let mutable ``ordinal_Column284`` = 0
+    let mutable ``ordinal_Column285`` = 0
+    let mutable ``ordinal_Column286`` = 0
+    let mutable ``ordinal_Column287`` = 0
+    let mutable ``ordinal_Column288`` = 0
+    let mutable ``ordinal_Column289`` = 0
+    let mutable ``ordinal_Column290`` = 0
+    let mutable ``ordinal_Column291`` = 0
+    let mutable ``ordinal_Column292`` = 0
+    let mutable ``ordinal_Column293`` = 0
+    let mutable ``ordinal_Column294`` = 0
+    let mutable ``ordinal_Column295`` = 0
+    let mutable ``ordinal_Column296`` = 0
+    let mutable ``ordinal_Column297`` = 0
+    let mutable ``ordinal_Column298`` = 0
+    let mutable ``ordinal_Column299`` = 0
+    let mutable ``ordinal_Column300`` = 0
+    let mutable ``ordinal_Column301`` = 0
+    let mutable ``ordinal_Column302`` = 0
+    let mutable ``ordinal_Column303`` = 0
+    let mutable ``ordinal_Column304`` = 0
+    let mutable ``ordinal_Column305`` = 0
+    let mutable ``ordinal_Column306`` = 0
+    let mutable ``ordinal_Column307`` = 0
+    let mutable ``ordinal_Column308`` = 0
+    let mutable ``ordinal_Column309`` = 0
+    let mutable ``ordinal_Column310`` = 0
+    let mutable ``ordinal_Column311`` = 0
+    let mutable ``ordinal_Column312`` = 0
+    let mutable ``ordinal_Column313`` = 0
+    let mutable ``ordinal_Column314`` = 0
+    let mutable ``ordinal_Column315`` = 0
+    let mutable ``ordinal_Column316`` = 0
+    let mutable ``ordinal_Column317`` = 0
+    let mutable ``ordinal_Column318`` = 0
+    let mutable ``ordinal_Column319`` = 0
+    let mutable ``ordinal_Column320`` = 0
+    let mutable ``ordinal_Column321`` = 0
+    let mutable ``ordinal_Column322`` = 0
+    let mutable ``ordinal_Column323`` = 0
+    let mutable ``ordinal_Column324`` = 0
+    let mutable ``ordinal_Column325`` = 0
+    let mutable ``ordinal_Column326`` = 0
+    let mutable ``ordinal_Column327`` = 0
+    let mutable ``ordinal_Column328`` = 0
+    let mutable ``ordinal_Column329`` = 0
+    let mutable ``ordinal_Column330`` = 0
+    let mutable ``ordinal_Column331`` = 0
+    let mutable ``ordinal_Column332`` = 0
+    let mutable ``ordinal_Column333`` = 0
+    let mutable ``ordinal_Column334`` = 0
+    let mutable ``ordinal_Column335`` = 0
+    let mutable ``ordinal_Column336`` = 0
+    let mutable ``ordinal_Column337`` = 0
+    let mutable ``ordinal_Column338`` = 0
+    let mutable ``ordinal_Column339`` = 0
+    let mutable ``ordinal_Column340`` = 0
+    let mutable ``ordinal_Column341`` = 0
+    let mutable ``ordinal_Column342`` = 0
+    let mutable ``ordinal_Column343`` = 0
+    let mutable ``ordinal_Column344`` = 0
+    let mutable ``ordinal_Column345`` = 0
+    let mutable ``ordinal_Column346`` = 0
+    let mutable ``ordinal_Column347`` = 0
+    let mutable ``ordinal_Column348`` = 0
+    let mutable ``ordinal_Column349`` = 0
+    let mutable ``ordinal_Column350`` = 0
+    let mutable ``ordinal_Column351`` = 0
+    let mutable ``ordinal_Column352`` = 0
+    let mutable ``ordinal_Column353`` = 0
+    let mutable ``ordinal_Column354`` = 0
+    let mutable ``ordinal_Column355`` = 0
+    let mutable ``ordinal_Column356`` = 0
+    let mutable ``ordinal_Column357`` = 0
+    let mutable ``ordinal_Column358`` = 0
+    let mutable ``ordinal_Column359`` = 0
+    let mutable ``ordinal_Column360`` = 0
+    let mutable ``ordinal_Column361`` = 0
+    let mutable ``ordinal_Column362`` = 0
+    let mutable ``ordinal_Column363`` = 0
+    let mutable ``ordinal_Column364`` = 0
+    let mutable ``ordinal_Column365`` = 0
+    let mutable ``ordinal_Column366`` = 0
+    let mutable ``ordinal_Column367`` = 0
+    let mutable ``ordinal_Column368`` = 0
+    let mutable ``ordinal_Column369`` = 0
+    let mutable ``ordinal_Column370`` = 0
+    let mutable ``ordinal_Column371`` = 0
+    let mutable ``ordinal_Column372`` = 0
+    let mutable ``ordinal_Column373`` = 0
+    let mutable ``ordinal_Column374`` = 0
+    let mutable ``ordinal_Column375`` = 0
+    let mutable ``ordinal_Column376`` = 0
+    let mutable ``ordinal_Column377`` = 0
+    let mutable ``ordinal_Column378`` = 0
+    let mutable ``ordinal_Column379`` = 0
+    let mutable ``ordinal_Column380`` = 0
+    let mutable ``ordinal_Column381`` = 0
+    let mutable ``ordinal_Column382`` = 0
+    let mutable ``ordinal_Column383`` = 0
+    let mutable ``ordinal_Column384`` = 0
+    let mutable ``ordinal_Column385`` = 0
+    let mutable ``ordinal_Column386`` = 0
+    let mutable ``ordinal_Column387`` = 0
+    let mutable ``ordinal_Column388`` = 0
+    let mutable ``ordinal_Column389`` = 0
+    let mutable ``ordinal_Column390`` = 0
+    let mutable ``ordinal_Column391`` = 0
+    let mutable ``ordinal_Column392`` = 0
+    let mutable ``ordinal_Column393`` = 0
+    let mutable ``ordinal_Column394`` = 0
+    let mutable ``ordinal_Column395`` = 0
+    let mutable ``ordinal_Column396`` = 0
+    let mutable ``ordinal_Column397`` = 0
+    let mutable ``ordinal_Column398`` = 0
+    let mutable ``ordinal_Column399`` = 0
+    let mutable ``ordinal_Column400`` = 0
+    let mutable ``ordinal_Column401`` = 0
+    let mutable ``ordinal_Column402`` = 0
+    let mutable ``ordinal_Column403`` = 0
+    let mutable ``ordinal_Column404`` = 0
+    let mutable ``ordinal_Column405`` = 0
+    let mutable ``ordinal_Column406`` = 0
+    let mutable ``ordinal_Column407`` = 0
+    let mutable ``ordinal_Column408`` = 0
+    let mutable ``ordinal_Column409`` = 0
+    let mutable ``ordinal_Column410`` = 0
+    let mutable ``ordinal_Column411`` = 0
+    let mutable ``ordinal_Column412`` = 0
+    let mutable ``ordinal_Column413`` = 0
+    let mutable ``ordinal_Column414`` = 0
+    let mutable ``ordinal_Column415`` = 0
+    let mutable ``ordinal_Column416`` = 0
+    let mutable ``ordinal_Column417`` = 0
+    let mutable ``ordinal_Column418`` = 0
+    let mutable ``ordinal_Column419`` = 0
+    let mutable ``ordinal_Column420`` = 0
+    let mutable ``ordinal_Column421`` = 0
+    let mutable ``ordinal_Column422`` = 0
+    let mutable ``ordinal_Column423`` = 0
+    let mutable ``ordinal_Column424`` = 0
+    let mutable ``ordinal_Column425`` = 0
+    let mutable ``ordinal_Column426`` = 0
+    let mutable ``ordinal_Column427`` = 0
+    let mutable ``ordinal_Column428`` = 0
+    let mutable ``ordinal_Column429`` = 0
+    let mutable ``ordinal_Column430`` = 0
+    let mutable ``ordinal_Column431`` = 0
+    let mutable ``ordinal_Column432`` = 0
+    let mutable ``ordinal_Column433`` = 0
+    let mutable ``ordinal_Column434`` = 0
+    let mutable ``ordinal_Column435`` = 0
+    let mutable ``ordinal_Column436`` = 0
+    let mutable ``ordinal_Column437`` = 0
+    let mutable ``ordinal_Column438`` = 0
+    let mutable ``ordinal_Column439`` = 0
+    let mutable ``ordinal_Column440`` = 0
+    let mutable ``ordinal_Column441`` = 0
+    let mutable ``ordinal_Column442`` = 0
+    let mutable ``ordinal_Column443`` = 0
+    let mutable ``ordinal_Column444`` = 0
+    let mutable ``ordinal_Column445`` = 0
+    let mutable ``ordinal_Column446`` = 0
+    let mutable ``ordinal_Column447`` = 0
+    let mutable ``ordinal_Column448`` = 0
+    let mutable ``ordinal_Column449`` = 0
+    let mutable ``ordinal_Column450`` = 0
+    let mutable ``ordinal_Column451`` = 0
+    let mutable ``ordinal_Column452`` = 0
+    let mutable ``ordinal_Column453`` = 0
+    let mutable ``ordinal_Column454`` = 0
+    let mutable ``ordinal_Column455`` = 0
+    let mutable ``ordinal_Column456`` = 0
+    let mutable ``ordinal_Column457`` = 0
+    let mutable ``ordinal_Column458`` = 0
+    let mutable ``ordinal_Column459`` = 0
+    let mutable ``ordinal_Column460`` = 0
+    let mutable ``ordinal_Column461`` = 0
+    let mutable ``ordinal_Column462`` = 0
+    let mutable ``ordinal_Column463`` = 0
+    let mutable ``ordinal_Column464`` = 0
+    let mutable ``ordinal_Column465`` = 0
+    let mutable ``ordinal_Column466`` = 0
+    let mutable ``ordinal_Column467`` = 0
+    let mutable ``ordinal_Column468`` = 0
+    let mutable ``ordinal_Column469`` = 0
+    let mutable ``ordinal_Column470`` = 0
+    let mutable ``ordinal_Column471`` = 0
+    let mutable ``ordinal_Column472`` = 0
+    let mutable ``ordinal_Column473`` = 0
+    let mutable ``ordinal_Column474`` = 0
+    let mutable ``ordinal_Column475`` = 0
+    let mutable ``ordinal_Column476`` = 0
+    let mutable ``ordinal_Column477`` = 0
+    let mutable ``ordinal_Column478`` = 0
+    let mutable ``ordinal_Column479`` = 0
+    let mutable ``ordinal_Column480`` = 0
+    let mutable ``ordinal_Column481`` = 0
+    let mutable ``ordinal_Column482`` = 0
+    let mutable ``ordinal_Column483`` = 0
+    let mutable ``ordinal_Column484`` = 0
+    let mutable ``ordinal_Column485`` = 0
+    let mutable ``ordinal_Column486`` = 0
+    let mutable ``ordinal_Column487`` = 0
+    let mutable ``ordinal_Column488`` = 0
+    let mutable ``ordinal_Column489`` = 0
+    let mutable ``ordinal_Column490`` = 0
+    let mutable ``ordinal_Column491`` = 0
+    let mutable ``ordinal_Column492`` = 0
+    let mutable ``ordinal_Column493`` = 0
+    let mutable ``ordinal_Column494`` = 0
+    let mutable ``ordinal_Column495`` = 0
+    let mutable ``ordinal_Column496`` = 0
+    let mutable ``ordinal_Column497`` = 0
+    let mutable ``ordinal_Column498`` = 0
+    let mutable ``ordinal_Column499`` = 0
+    let mutable ``ordinal_Column500`` = 0
+    let mutable ``ordinal_Column501`` = 0
+    let mutable ``ordinal_Column502`` = 0
+    let mutable ``ordinal_Column503`` = 0
+    let mutable ``ordinal_Column504`` = 0
+    let mutable ``ordinal_Column505`` = 0
+    let mutable ``ordinal_Column506`` = 0
+    let mutable ``ordinal_Column507`` = 0
+    let mutable ``ordinal_Column508`` = 0
+    let mutable ``ordinal_Column509`` = 0
+    let mutable ``ordinal_Column510`` = 0
+    let mutable ``ordinal_Column511`` = 0
+    let mutable ``ordinal_Column512`` = 0
+    let mutable ``ordinal_Column513`` = 0
+    let mutable ``ordinal_Column514`` = 0
+    let mutable ``ordinal_Column515`` = 0
+    let mutable ``ordinal_Column516`` = 0
+    let mutable ``ordinal_Column517`` = 0
+    let mutable ``ordinal_Column518`` = 0
+    let mutable ``ordinal_Column519`` = 0
+    let mutable ``ordinal_Column520`` = 0
+    let mutable ``ordinal_Column521`` = 0
+    let mutable ``ordinal_Column522`` = 0
+    let mutable ``ordinal_Column523`` = 0
+    let mutable ``ordinal_Column524`` = 0
+    let mutable ``ordinal_Column525`` = 0
+    let mutable ``ordinal_Column526`` = 0
+    let mutable ``ordinal_Column527`` = 0
+    let mutable ``ordinal_Column528`` = 0
+    let mutable ``ordinal_Column529`` = 0
+    let mutable ``ordinal_Column530`` = 0
+    let mutable ``ordinal_Column531`` = 0
+    let mutable ``ordinal_Column532`` = 0
+    let mutable ``ordinal_Column533`` = 0
+    let mutable ``ordinal_Column534`` = 0
+    let mutable ``ordinal_Column535`` = 0
+    let mutable ``ordinal_Column536`` = 0
+    let mutable ``ordinal_Column537`` = 0
+    let mutable ``ordinal_Column538`` = 0
+    let mutable ``ordinal_Column539`` = 0
+    let mutable ``ordinal_Column540`` = 0
+    let mutable ``ordinal_Column541`` = 0
+    let mutable ``ordinal_Column542`` = 0
+    let mutable ``ordinal_Column543`` = 0
+    let mutable ``ordinal_Column544`` = 0
+    let mutable ``ordinal_Column545`` = 0
+    let mutable ``ordinal_Column546`` = 0
+    let mutable ``ordinal_Column547`` = 0
+    let mutable ``ordinal_Column548`` = 0
+    let mutable ``ordinal_Column549`` = 0
+    let mutable ``ordinal_Column550`` = 0
+    let mutable ``ordinal_Column551`` = 0
+    let mutable ``ordinal_Column552`` = 0
+    let mutable ``ordinal_Column553`` = 0
+    let mutable ``ordinal_Column554`` = 0
+    let mutable ``ordinal_Column555`` = 0
+    let mutable ``ordinal_Column556`` = 0
+    let mutable ``ordinal_Column557`` = 0
+    let mutable ``ordinal_Column558`` = 0
+    let mutable ``ordinal_Column559`` = 0
+    let mutable ``ordinal_Column560`` = 0
+    let mutable ``ordinal_Column561`` = 0
+    let mutable ``ordinal_Column562`` = 0
+    let mutable ``ordinal_Column563`` = 0
+    let mutable ``ordinal_Column564`` = 0
+    let mutable ``ordinal_Column565`` = 0
+    let mutable ``ordinal_Column566`` = 0
+    let mutable ``ordinal_Column567`` = 0
+    let mutable ``ordinal_Column568`` = 0
+    let mutable ``ordinal_Column569`` = 0
+    let mutable ``ordinal_Column570`` = 0
+    let mutable ``ordinal_Column571`` = 0
+    let mutable ``ordinal_Column572`` = 0
+    let mutable ``ordinal_Column573`` = 0
+    let mutable ``ordinal_Column574`` = 0
+    let mutable ``ordinal_Column575`` = 0
+    let mutable ``ordinal_Column576`` = 0
+    let mutable ``ordinal_Column577`` = 0
+    let mutable ``ordinal_Column578`` = 0
+    let mutable ``ordinal_Column579`` = 0
+    let mutable ``ordinal_Column580`` = 0
+    let mutable ``ordinal_Column581`` = 0
+    let mutable ``ordinal_Column582`` = 0
+    let mutable ``ordinal_Column583`` = 0
+    let mutable ``ordinal_Column584`` = 0
+    let mutable ``ordinal_Column585`` = 0
+    let mutable ``ordinal_Column586`` = 0
+    let mutable ``ordinal_Column587`` = 0
+    let mutable ``ordinal_Column588`` = 0
+    let mutable ``ordinal_Column589`` = 0
+    let mutable ``ordinal_Column590`` = 0
+    let mutable ``ordinal_Column591`` = 0
+    let mutable ``ordinal_Column592`` = 0
+    let mutable ``ordinal_Column593`` = 0
+    let mutable ``ordinal_Column594`` = 0
+    let mutable ``ordinal_Column595`` = 0
+    let mutable ``ordinal_Column596`` = 0
+    let mutable ``ordinal_Column597`` = 0
+    let mutable ``ordinal_Column598`` = 0
+    let mutable ``ordinal_Column599`` = 0
+    let mutable ``ordinal_Column600`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_Column1`` <- reader.GetOrdinal "Column1"
+      ``ordinal_Column2`` <- reader.GetOrdinal "Column2"
+      ``ordinal_Column3`` <- reader.GetOrdinal "Column3"
+      ``ordinal_Column4`` <- reader.GetOrdinal "Column4"
+      ``ordinal_Column5`` <- reader.GetOrdinal "Column5"
+      ``ordinal_Column6`` <- reader.GetOrdinal "Column6"
+      ``ordinal_Column7`` <- reader.GetOrdinal "Column7"
+      ``ordinal_Column8`` <- reader.GetOrdinal "Column8"
+      ``ordinal_Column9`` <- reader.GetOrdinal "Column9"
+      ``ordinal_Column10`` <- reader.GetOrdinal "Column10"
+      ``ordinal_Column11`` <- reader.GetOrdinal "Column11"
+      ``ordinal_Column12`` <- reader.GetOrdinal "Column12"
+      ``ordinal_Column13`` <- reader.GetOrdinal "Column13"
+      ``ordinal_Column14`` <- reader.GetOrdinal "Column14"
+      ``ordinal_Column15`` <- reader.GetOrdinal "Column15"
+      ``ordinal_Column16`` <- reader.GetOrdinal "Column16"
+      ``ordinal_Column17`` <- reader.GetOrdinal "Column17"
+      ``ordinal_Column18`` <- reader.GetOrdinal "Column18"
+      ``ordinal_Column19`` <- reader.GetOrdinal "Column19"
+      ``ordinal_Column20`` <- reader.GetOrdinal "Column20"
+      ``ordinal_Column21`` <- reader.GetOrdinal "Column21"
+      ``ordinal_Column22`` <- reader.GetOrdinal "Column22"
+      ``ordinal_Column23`` <- reader.GetOrdinal "Column23"
+      ``ordinal_Column24`` <- reader.GetOrdinal "Column24"
+      ``ordinal_Column25`` <- reader.GetOrdinal "Column25"
+      ``ordinal_Column26`` <- reader.GetOrdinal "Column26"
+      ``ordinal_Column27`` <- reader.GetOrdinal "Column27"
+      ``ordinal_Column28`` <- reader.GetOrdinal "Column28"
+      ``ordinal_Column29`` <- reader.GetOrdinal "Column29"
+      ``ordinal_Column30`` <- reader.GetOrdinal "Column30"
+      ``ordinal_Column31`` <- reader.GetOrdinal "Column31"
+      ``ordinal_Column32`` <- reader.GetOrdinal "Column32"
+      ``ordinal_Column33`` <- reader.GetOrdinal "Column33"
+      ``ordinal_Column34`` <- reader.GetOrdinal "Column34"
+      ``ordinal_Column35`` <- reader.GetOrdinal "Column35"
+      ``ordinal_Column36`` <- reader.GetOrdinal "Column36"
+      ``ordinal_Column37`` <- reader.GetOrdinal "Column37"
+      ``ordinal_Column38`` <- reader.GetOrdinal "Column38"
+      ``ordinal_Column39`` <- reader.GetOrdinal "Column39"
+      ``ordinal_Column40`` <- reader.GetOrdinal "Column40"
+      ``ordinal_Column41`` <- reader.GetOrdinal "Column41"
+      ``ordinal_Column42`` <- reader.GetOrdinal "Column42"
+      ``ordinal_Column43`` <- reader.GetOrdinal "Column43"
+      ``ordinal_Column44`` <- reader.GetOrdinal "Column44"
+      ``ordinal_Column45`` <- reader.GetOrdinal "Column45"
+      ``ordinal_Column46`` <- reader.GetOrdinal "Column46"
+      ``ordinal_Column47`` <- reader.GetOrdinal "Column47"
+      ``ordinal_Column48`` <- reader.GetOrdinal "Column48"
+      ``ordinal_Column49`` <- reader.GetOrdinal "Column49"
+      ``ordinal_Column50`` <- reader.GetOrdinal "Column50"
+      ``ordinal_Column51`` <- reader.GetOrdinal "Column51"
+      ``ordinal_Column52`` <- reader.GetOrdinal "Column52"
+      ``ordinal_Column53`` <- reader.GetOrdinal "Column53"
+      ``ordinal_Column54`` <- reader.GetOrdinal "Column54"
+      ``ordinal_Column55`` <- reader.GetOrdinal "Column55"
+      ``ordinal_Column56`` <- reader.GetOrdinal "Column56"
+      ``ordinal_Column57`` <- reader.GetOrdinal "Column57"
+      ``ordinal_Column58`` <- reader.GetOrdinal "Column58"
+      ``ordinal_Column59`` <- reader.GetOrdinal "Column59"
+      ``ordinal_Column60`` <- reader.GetOrdinal "Column60"
+      ``ordinal_Column61`` <- reader.GetOrdinal "Column61"
+      ``ordinal_Column62`` <- reader.GetOrdinal "Column62"
+      ``ordinal_Column63`` <- reader.GetOrdinal "Column63"
+      ``ordinal_Column64`` <- reader.GetOrdinal "Column64"
+      ``ordinal_Column65`` <- reader.GetOrdinal "Column65"
+      ``ordinal_Column66`` <- reader.GetOrdinal "Column66"
+      ``ordinal_Column67`` <- reader.GetOrdinal "Column67"
+      ``ordinal_Column68`` <- reader.GetOrdinal "Column68"
+      ``ordinal_Column69`` <- reader.GetOrdinal "Column69"
+      ``ordinal_Column70`` <- reader.GetOrdinal "Column70"
+      ``ordinal_Column71`` <- reader.GetOrdinal "Column71"
+      ``ordinal_Column72`` <- reader.GetOrdinal "Column72"
+      ``ordinal_Column73`` <- reader.GetOrdinal "Column73"
+      ``ordinal_Column74`` <- reader.GetOrdinal "Column74"
+      ``ordinal_Column75`` <- reader.GetOrdinal "Column75"
+      ``ordinal_Column76`` <- reader.GetOrdinal "Column76"
+      ``ordinal_Column77`` <- reader.GetOrdinal "Column77"
+      ``ordinal_Column78`` <- reader.GetOrdinal "Column78"
+      ``ordinal_Column79`` <- reader.GetOrdinal "Column79"
+      ``ordinal_Column80`` <- reader.GetOrdinal "Column80"
+      ``ordinal_Column81`` <- reader.GetOrdinal "Column81"
+      ``ordinal_Column82`` <- reader.GetOrdinal "Column82"
+      ``ordinal_Column83`` <- reader.GetOrdinal "Column83"
+      ``ordinal_Column84`` <- reader.GetOrdinal "Column84"
+      ``ordinal_Column85`` <- reader.GetOrdinal "Column85"
+      ``ordinal_Column86`` <- reader.GetOrdinal "Column86"
+      ``ordinal_Column87`` <- reader.GetOrdinal "Column87"
+      ``ordinal_Column88`` <- reader.GetOrdinal "Column88"
+      ``ordinal_Column89`` <- reader.GetOrdinal "Column89"
+      ``ordinal_Column90`` <- reader.GetOrdinal "Column90"
+      ``ordinal_Column91`` <- reader.GetOrdinal "Column91"
+      ``ordinal_Column92`` <- reader.GetOrdinal "Column92"
+      ``ordinal_Column93`` <- reader.GetOrdinal "Column93"
+      ``ordinal_Column94`` <- reader.GetOrdinal "Column94"
+      ``ordinal_Column95`` <- reader.GetOrdinal "Column95"
+      ``ordinal_Column96`` <- reader.GetOrdinal "Column96"
+      ``ordinal_Column97`` <- reader.GetOrdinal "Column97"
+      ``ordinal_Column98`` <- reader.GetOrdinal "Column98"
+      ``ordinal_Column99`` <- reader.GetOrdinal "Column99"
+      ``ordinal_Column100`` <- reader.GetOrdinal "Column100"
+      ``ordinal_Column101`` <- reader.GetOrdinal "Column101"
+      ``ordinal_Column102`` <- reader.GetOrdinal "Column102"
+      ``ordinal_Column103`` <- reader.GetOrdinal "Column103"
+      ``ordinal_Column104`` <- reader.GetOrdinal "Column104"
+      ``ordinal_Column105`` <- reader.GetOrdinal "Column105"
+      ``ordinal_Column106`` <- reader.GetOrdinal "Column106"
+      ``ordinal_Column107`` <- reader.GetOrdinal "Column107"
+      ``ordinal_Column108`` <- reader.GetOrdinal "Column108"
+      ``ordinal_Column109`` <- reader.GetOrdinal "Column109"
+      ``ordinal_Column110`` <- reader.GetOrdinal "Column110"
+      ``ordinal_Column111`` <- reader.GetOrdinal "Column111"
+      ``ordinal_Column112`` <- reader.GetOrdinal "Column112"
+      ``ordinal_Column113`` <- reader.GetOrdinal "Column113"
+      ``ordinal_Column114`` <- reader.GetOrdinal "Column114"
+      ``ordinal_Column115`` <- reader.GetOrdinal "Column115"
+      ``ordinal_Column116`` <- reader.GetOrdinal "Column116"
+      ``ordinal_Column117`` <- reader.GetOrdinal "Column117"
+      ``ordinal_Column118`` <- reader.GetOrdinal "Column118"
+      ``ordinal_Column119`` <- reader.GetOrdinal "Column119"
+      ``ordinal_Column120`` <- reader.GetOrdinal "Column120"
+      ``ordinal_Column121`` <- reader.GetOrdinal "Column121"
+      ``ordinal_Column122`` <- reader.GetOrdinal "Column122"
+      ``ordinal_Column123`` <- reader.GetOrdinal "Column123"
+      ``ordinal_Column124`` <- reader.GetOrdinal "Column124"
+      ``ordinal_Column125`` <- reader.GetOrdinal "Column125"
+      ``ordinal_Column126`` <- reader.GetOrdinal "Column126"
+      ``ordinal_Column127`` <- reader.GetOrdinal "Column127"
+      ``ordinal_Column128`` <- reader.GetOrdinal "Column128"
+      ``ordinal_Column129`` <- reader.GetOrdinal "Column129"
+      ``ordinal_Column130`` <- reader.GetOrdinal "Column130"
+      ``ordinal_Column131`` <- reader.GetOrdinal "Column131"
+      ``ordinal_Column132`` <- reader.GetOrdinal "Column132"
+      ``ordinal_Column133`` <- reader.GetOrdinal "Column133"
+      ``ordinal_Column134`` <- reader.GetOrdinal "Column134"
+      ``ordinal_Column135`` <- reader.GetOrdinal "Column135"
+      ``ordinal_Column136`` <- reader.GetOrdinal "Column136"
+      ``ordinal_Column137`` <- reader.GetOrdinal "Column137"
+      ``ordinal_Column138`` <- reader.GetOrdinal "Column138"
+      ``ordinal_Column139`` <- reader.GetOrdinal "Column139"
+      ``ordinal_Column140`` <- reader.GetOrdinal "Column140"
+      ``ordinal_Column141`` <- reader.GetOrdinal "Column141"
+      ``ordinal_Column142`` <- reader.GetOrdinal "Column142"
+      ``ordinal_Column143`` <- reader.GetOrdinal "Column143"
+      ``ordinal_Column144`` <- reader.GetOrdinal "Column144"
+      ``ordinal_Column145`` <- reader.GetOrdinal "Column145"
+      ``ordinal_Column146`` <- reader.GetOrdinal "Column146"
+      ``ordinal_Column147`` <- reader.GetOrdinal "Column147"
+      ``ordinal_Column148`` <- reader.GetOrdinal "Column148"
+      ``ordinal_Column149`` <- reader.GetOrdinal "Column149"
+      ``ordinal_Column150`` <- reader.GetOrdinal "Column150"
+      ``ordinal_Column151`` <- reader.GetOrdinal "Column151"
+      ``ordinal_Column152`` <- reader.GetOrdinal "Column152"
+      ``ordinal_Column153`` <- reader.GetOrdinal "Column153"
+      ``ordinal_Column154`` <- reader.GetOrdinal "Column154"
+      ``ordinal_Column155`` <- reader.GetOrdinal "Column155"
+      ``ordinal_Column156`` <- reader.GetOrdinal "Column156"
+      ``ordinal_Column157`` <- reader.GetOrdinal "Column157"
+      ``ordinal_Column158`` <- reader.GetOrdinal "Column158"
+      ``ordinal_Column159`` <- reader.GetOrdinal "Column159"
+      ``ordinal_Column160`` <- reader.GetOrdinal "Column160"
+      ``ordinal_Column161`` <- reader.GetOrdinal "Column161"
+      ``ordinal_Column162`` <- reader.GetOrdinal "Column162"
+      ``ordinal_Column163`` <- reader.GetOrdinal "Column163"
+      ``ordinal_Column164`` <- reader.GetOrdinal "Column164"
+      ``ordinal_Column165`` <- reader.GetOrdinal "Column165"
+      ``ordinal_Column166`` <- reader.GetOrdinal "Column166"
+      ``ordinal_Column167`` <- reader.GetOrdinal "Column167"
+      ``ordinal_Column168`` <- reader.GetOrdinal "Column168"
+      ``ordinal_Column169`` <- reader.GetOrdinal "Column169"
+      ``ordinal_Column170`` <- reader.GetOrdinal "Column170"
+      ``ordinal_Column171`` <- reader.GetOrdinal "Column171"
+      ``ordinal_Column172`` <- reader.GetOrdinal "Column172"
+      ``ordinal_Column173`` <- reader.GetOrdinal "Column173"
+      ``ordinal_Column174`` <- reader.GetOrdinal "Column174"
+      ``ordinal_Column175`` <- reader.GetOrdinal "Column175"
+      ``ordinal_Column176`` <- reader.GetOrdinal "Column176"
+      ``ordinal_Column177`` <- reader.GetOrdinal "Column177"
+      ``ordinal_Column178`` <- reader.GetOrdinal "Column178"
+      ``ordinal_Column179`` <- reader.GetOrdinal "Column179"
+      ``ordinal_Column180`` <- reader.GetOrdinal "Column180"
+      ``ordinal_Column181`` <- reader.GetOrdinal "Column181"
+      ``ordinal_Column182`` <- reader.GetOrdinal "Column182"
+      ``ordinal_Column183`` <- reader.GetOrdinal "Column183"
+      ``ordinal_Column184`` <- reader.GetOrdinal "Column184"
+      ``ordinal_Column185`` <- reader.GetOrdinal "Column185"
+      ``ordinal_Column186`` <- reader.GetOrdinal "Column186"
+      ``ordinal_Column187`` <- reader.GetOrdinal "Column187"
+      ``ordinal_Column188`` <- reader.GetOrdinal "Column188"
+      ``ordinal_Column189`` <- reader.GetOrdinal "Column189"
+      ``ordinal_Column190`` <- reader.GetOrdinal "Column190"
+      ``ordinal_Column191`` <- reader.GetOrdinal "Column191"
+      ``ordinal_Column192`` <- reader.GetOrdinal "Column192"
+      ``ordinal_Column193`` <- reader.GetOrdinal "Column193"
+      ``ordinal_Column194`` <- reader.GetOrdinal "Column194"
+      ``ordinal_Column195`` <- reader.GetOrdinal "Column195"
+      ``ordinal_Column196`` <- reader.GetOrdinal "Column196"
+      ``ordinal_Column197`` <- reader.GetOrdinal "Column197"
+      ``ordinal_Column198`` <- reader.GetOrdinal "Column198"
+      ``ordinal_Column199`` <- reader.GetOrdinal "Column199"
+      ``ordinal_Column200`` <- reader.GetOrdinal "Column200"
+      ``ordinal_Column201`` <- reader.GetOrdinal "Column201"
+      ``ordinal_Column202`` <- reader.GetOrdinal "Column202"
+      ``ordinal_Column203`` <- reader.GetOrdinal "Column203"
+      ``ordinal_Column204`` <- reader.GetOrdinal "Column204"
+      ``ordinal_Column205`` <- reader.GetOrdinal "Column205"
+      ``ordinal_Column206`` <- reader.GetOrdinal "Column206"
+      ``ordinal_Column207`` <- reader.GetOrdinal "Column207"
+      ``ordinal_Column208`` <- reader.GetOrdinal "Column208"
+      ``ordinal_Column209`` <- reader.GetOrdinal "Column209"
+      ``ordinal_Column210`` <- reader.GetOrdinal "Column210"
+      ``ordinal_Column211`` <- reader.GetOrdinal "Column211"
+      ``ordinal_Column212`` <- reader.GetOrdinal "Column212"
+      ``ordinal_Column213`` <- reader.GetOrdinal "Column213"
+      ``ordinal_Column214`` <- reader.GetOrdinal "Column214"
+      ``ordinal_Column215`` <- reader.GetOrdinal "Column215"
+      ``ordinal_Column216`` <- reader.GetOrdinal "Column216"
+      ``ordinal_Column217`` <- reader.GetOrdinal "Column217"
+      ``ordinal_Column218`` <- reader.GetOrdinal "Column218"
+      ``ordinal_Column219`` <- reader.GetOrdinal "Column219"
+      ``ordinal_Column220`` <- reader.GetOrdinal "Column220"
+      ``ordinal_Column221`` <- reader.GetOrdinal "Column221"
+      ``ordinal_Column222`` <- reader.GetOrdinal "Column222"
+      ``ordinal_Column223`` <- reader.GetOrdinal "Column223"
+      ``ordinal_Column224`` <- reader.GetOrdinal "Column224"
+      ``ordinal_Column225`` <- reader.GetOrdinal "Column225"
+      ``ordinal_Column226`` <- reader.GetOrdinal "Column226"
+      ``ordinal_Column227`` <- reader.GetOrdinal "Column227"
+      ``ordinal_Column228`` <- reader.GetOrdinal "Column228"
+      ``ordinal_Column229`` <- reader.GetOrdinal "Column229"
+      ``ordinal_Column230`` <- reader.GetOrdinal "Column230"
+      ``ordinal_Column231`` <- reader.GetOrdinal "Column231"
+      ``ordinal_Column232`` <- reader.GetOrdinal "Column232"
+      ``ordinal_Column233`` <- reader.GetOrdinal "Column233"
+      ``ordinal_Column234`` <- reader.GetOrdinal "Column234"
+      ``ordinal_Column235`` <- reader.GetOrdinal "Column235"
+      ``ordinal_Column236`` <- reader.GetOrdinal "Column236"
+      ``ordinal_Column237`` <- reader.GetOrdinal "Column237"
+      ``ordinal_Column238`` <- reader.GetOrdinal "Column238"
+      ``ordinal_Column239`` <- reader.GetOrdinal "Column239"
+      ``ordinal_Column240`` <- reader.GetOrdinal "Column240"
+      ``ordinal_Column241`` <- reader.GetOrdinal "Column241"
+      ``ordinal_Column242`` <- reader.GetOrdinal "Column242"
+      ``ordinal_Column243`` <- reader.GetOrdinal "Column243"
+      ``ordinal_Column244`` <- reader.GetOrdinal "Column244"
+      ``ordinal_Column245`` <- reader.GetOrdinal "Column245"
+      ``ordinal_Column246`` <- reader.GetOrdinal "Column246"
+      ``ordinal_Column247`` <- reader.GetOrdinal "Column247"
+      ``ordinal_Column248`` <- reader.GetOrdinal "Column248"
+      ``ordinal_Column249`` <- reader.GetOrdinal "Column249"
+      ``ordinal_Column250`` <- reader.GetOrdinal "Column250"
+      ``ordinal_Column251`` <- reader.GetOrdinal "Column251"
+      ``ordinal_Column252`` <- reader.GetOrdinal "Column252"
+      ``ordinal_Column253`` <- reader.GetOrdinal "Column253"
+      ``ordinal_Column254`` <- reader.GetOrdinal "Column254"
+      ``ordinal_Column255`` <- reader.GetOrdinal "Column255"
+      ``ordinal_Column256`` <- reader.GetOrdinal "Column256"
+      ``ordinal_Column257`` <- reader.GetOrdinal "Column257"
+      ``ordinal_Column258`` <- reader.GetOrdinal "Column258"
+      ``ordinal_Column259`` <- reader.GetOrdinal "Column259"
+      ``ordinal_Column260`` <- reader.GetOrdinal "Column260"
+      ``ordinal_Column261`` <- reader.GetOrdinal "Column261"
+      ``ordinal_Column262`` <- reader.GetOrdinal "Column262"
+      ``ordinal_Column263`` <- reader.GetOrdinal "Column263"
+      ``ordinal_Column264`` <- reader.GetOrdinal "Column264"
+      ``ordinal_Column265`` <- reader.GetOrdinal "Column265"
+      ``ordinal_Column266`` <- reader.GetOrdinal "Column266"
+      ``ordinal_Column267`` <- reader.GetOrdinal "Column267"
+      ``ordinal_Column268`` <- reader.GetOrdinal "Column268"
+      ``ordinal_Column269`` <- reader.GetOrdinal "Column269"
+      ``ordinal_Column270`` <- reader.GetOrdinal "Column270"
+      ``ordinal_Column271`` <- reader.GetOrdinal "Column271"
+      ``ordinal_Column272`` <- reader.GetOrdinal "Column272"
+      ``ordinal_Column273`` <- reader.GetOrdinal "Column273"
+      ``ordinal_Column274`` <- reader.GetOrdinal "Column274"
+      ``ordinal_Column275`` <- reader.GetOrdinal "Column275"
+      ``ordinal_Column276`` <- reader.GetOrdinal "Column276"
+      ``ordinal_Column277`` <- reader.GetOrdinal "Column277"
+      ``ordinal_Column278`` <- reader.GetOrdinal "Column278"
+      ``ordinal_Column279`` <- reader.GetOrdinal "Column279"
+      ``ordinal_Column280`` <- reader.GetOrdinal "Column280"
+      ``ordinal_Column281`` <- reader.GetOrdinal "Column281"
+      ``ordinal_Column282`` <- reader.GetOrdinal "Column282"
+      ``ordinal_Column283`` <- reader.GetOrdinal "Column283"
+      ``ordinal_Column284`` <- reader.GetOrdinal "Column284"
+      ``ordinal_Column285`` <- reader.GetOrdinal "Column285"
+      ``ordinal_Column286`` <- reader.GetOrdinal "Column286"
+      ``ordinal_Column287`` <- reader.GetOrdinal "Column287"
+      ``ordinal_Column288`` <- reader.GetOrdinal "Column288"
+      ``ordinal_Column289`` <- reader.GetOrdinal "Column289"
+      ``ordinal_Column290`` <- reader.GetOrdinal "Column290"
+      ``ordinal_Column291`` <- reader.GetOrdinal "Column291"
+      ``ordinal_Column292`` <- reader.GetOrdinal "Column292"
+      ``ordinal_Column293`` <- reader.GetOrdinal "Column293"
+      ``ordinal_Column294`` <- reader.GetOrdinal "Column294"
+      ``ordinal_Column295`` <- reader.GetOrdinal "Column295"
+      ``ordinal_Column296`` <- reader.GetOrdinal "Column296"
+      ``ordinal_Column297`` <- reader.GetOrdinal "Column297"
+      ``ordinal_Column298`` <- reader.GetOrdinal "Column298"
+      ``ordinal_Column299`` <- reader.GetOrdinal "Column299"
+      ``ordinal_Column300`` <- reader.GetOrdinal "Column300"
+      ``ordinal_Column301`` <- reader.GetOrdinal "Column301"
+      ``ordinal_Column302`` <- reader.GetOrdinal "Column302"
+      ``ordinal_Column303`` <- reader.GetOrdinal "Column303"
+      ``ordinal_Column304`` <- reader.GetOrdinal "Column304"
+      ``ordinal_Column305`` <- reader.GetOrdinal "Column305"
+      ``ordinal_Column306`` <- reader.GetOrdinal "Column306"
+      ``ordinal_Column307`` <- reader.GetOrdinal "Column307"
+      ``ordinal_Column308`` <- reader.GetOrdinal "Column308"
+      ``ordinal_Column309`` <- reader.GetOrdinal "Column309"
+      ``ordinal_Column310`` <- reader.GetOrdinal "Column310"
+      ``ordinal_Column311`` <- reader.GetOrdinal "Column311"
+      ``ordinal_Column312`` <- reader.GetOrdinal "Column312"
+      ``ordinal_Column313`` <- reader.GetOrdinal "Column313"
+      ``ordinal_Column314`` <- reader.GetOrdinal "Column314"
+      ``ordinal_Column315`` <- reader.GetOrdinal "Column315"
+      ``ordinal_Column316`` <- reader.GetOrdinal "Column316"
+      ``ordinal_Column317`` <- reader.GetOrdinal "Column317"
+      ``ordinal_Column318`` <- reader.GetOrdinal "Column318"
+      ``ordinal_Column319`` <- reader.GetOrdinal "Column319"
+      ``ordinal_Column320`` <- reader.GetOrdinal "Column320"
+      ``ordinal_Column321`` <- reader.GetOrdinal "Column321"
+      ``ordinal_Column322`` <- reader.GetOrdinal "Column322"
+      ``ordinal_Column323`` <- reader.GetOrdinal "Column323"
+      ``ordinal_Column324`` <- reader.GetOrdinal "Column324"
+      ``ordinal_Column325`` <- reader.GetOrdinal "Column325"
+      ``ordinal_Column326`` <- reader.GetOrdinal "Column326"
+      ``ordinal_Column327`` <- reader.GetOrdinal "Column327"
+      ``ordinal_Column328`` <- reader.GetOrdinal "Column328"
+      ``ordinal_Column329`` <- reader.GetOrdinal "Column329"
+      ``ordinal_Column330`` <- reader.GetOrdinal "Column330"
+      ``ordinal_Column331`` <- reader.GetOrdinal "Column331"
+      ``ordinal_Column332`` <- reader.GetOrdinal "Column332"
+      ``ordinal_Column333`` <- reader.GetOrdinal "Column333"
+      ``ordinal_Column334`` <- reader.GetOrdinal "Column334"
+      ``ordinal_Column335`` <- reader.GetOrdinal "Column335"
+      ``ordinal_Column336`` <- reader.GetOrdinal "Column336"
+      ``ordinal_Column337`` <- reader.GetOrdinal "Column337"
+      ``ordinal_Column338`` <- reader.GetOrdinal "Column338"
+      ``ordinal_Column339`` <- reader.GetOrdinal "Column339"
+      ``ordinal_Column340`` <- reader.GetOrdinal "Column340"
+      ``ordinal_Column341`` <- reader.GetOrdinal "Column341"
+      ``ordinal_Column342`` <- reader.GetOrdinal "Column342"
+      ``ordinal_Column343`` <- reader.GetOrdinal "Column343"
+      ``ordinal_Column344`` <- reader.GetOrdinal "Column344"
+      ``ordinal_Column345`` <- reader.GetOrdinal "Column345"
+      ``ordinal_Column346`` <- reader.GetOrdinal "Column346"
+      ``ordinal_Column347`` <- reader.GetOrdinal "Column347"
+      ``ordinal_Column348`` <- reader.GetOrdinal "Column348"
+      ``ordinal_Column349`` <- reader.GetOrdinal "Column349"
+      ``ordinal_Column350`` <- reader.GetOrdinal "Column350"
+      ``ordinal_Column351`` <- reader.GetOrdinal "Column351"
+      ``ordinal_Column352`` <- reader.GetOrdinal "Column352"
+      ``ordinal_Column353`` <- reader.GetOrdinal "Column353"
+      ``ordinal_Column354`` <- reader.GetOrdinal "Column354"
+      ``ordinal_Column355`` <- reader.GetOrdinal "Column355"
+      ``ordinal_Column356`` <- reader.GetOrdinal "Column356"
+      ``ordinal_Column357`` <- reader.GetOrdinal "Column357"
+      ``ordinal_Column358`` <- reader.GetOrdinal "Column358"
+      ``ordinal_Column359`` <- reader.GetOrdinal "Column359"
+      ``ordinal_Column360`` <- reader.GetOrdinal "Column360"
+      ``ordinal_Column361`` <- reader.GetOrdinal "Column361"
+      ``ordinal_Column362`` <- reader.GetOrdinal "Column362"
+      ``ordinal_Column363`` <- reader.GetOrdinal "Column363"
+      ``ordinal_Column364`` <- reader.GetOrdinal "Column364"
+      ``ordinal_Column365`` <- reader.GetOrdinal "Column365"
+      ``ordinal_Column366`` <- reader.GetOrdinal "Column366"
+      ``ordinal_Column367`` <- reader.GetOrdinal "Column367"
+      ``ordinal_Column368`` <- reader.GetOrdinal "Column368"
+      ``ordinal_Column369`` <- reader.GetOrdinal "Column369"
+      ``ordinal_Column370`` <- reader.GetOrdinal "Column370"
+      ``ordinal_Column371`` <- reader.GetOrdinal "Column371"
+      ``ordinal_Column372`` <- reader.GetOrdinal "Column372"
+      ``ordinal_Column373`` <- reader.GetOrdinal "Column373"
+      ``ordinal_Column374`` <- reader.GetOrdinal "Column374"
+      ``ordinal_Column375`` <- reader.GetOrdinal "Column375"
+      ``ordinal_Column376`` <- reader.GetOrdinal "Column376"
+      ``ordinal_Column377`` <- reader.GetOrdinal "Column377"
+      ``ordinal_Column378`` <- reader.GetOrdinal "Column378"
+      ``ordinal_Column379`` <- reader.GetOrdinal "Column379"
+      ``ordinal_Column380`` <- reader.GetOrdinal "Column380"
+      ``ordinal_Column381`` <- reader.GetOrdinal "Column381"
+      ``ordinal_Column382`` <- reader.GetOrdinal "Column382"
+      ``ordinal_Column383`` <- reader.GetOrdinal "Column383"
+      ``ordinal_Column384`` <- reader.GetOrdinal "Column384"
+      ``ordinal_Column385`` <- reader.GetOrdinal "Column385"
+      ``ordinal_Column386`` <- reader.GetOrdinal "Column386"
+      ``ordinal_Column387`` <- reader.GetOrdinal "Column387"
+      ``ordinal_Column388`` <- reader.GetOrdinal "Column388"
+      ``ordinal_Column389`` <- reader.GetOrdinal "Column389"
+      ``ordinal_Column390`` <- reader.GetOrdinal "Column390"
+      ``ordinal_Column391`` <- reader.GetOrdinal "Column391"
+      ``ordinal_Column392`` <- reader.GetOrdinal "Column392"
+      ``ordinal_Column393`` <- reader.GetOrdinal "Column393"
+      ``ordinal_Column394`` <- reader.GetOrdinal "Column394"
+      ``ordinal_Column395`` <- reader.GetOrdinal "Column395"
+      ``ordinal_Column396`` <- reader.GetOrdinal "Column396"
+      ``ordinal_Column397`` <- reader.GetOrdinal "Column397"
+      ``ordinal_Column398`` <- reader.GetOrdinal "Column398"
+      ``ordinal_Column399`` <- reader.GetOrdinal "Column399"
+      ``ordinal_Column400`` <- reader.GetOrdinal "Column400"
+      ``ordinal_Column401`` <- reader.GetOrdinal "Column401"
+      ``ordinal_Column402`` <- reader.GetOrdinal "Column402"
+      ``ordinal_Column403`` <- reader.GetOrdinal "Column403"
+      ``ordinal_Column404`` <- reader.GetOrdinal "Column404"
+      ``ordinal_Column405`` <- reader.GetOrdinal "Column405"
+      ``ordinal_Column406`` <- reader.GetOrdinal "Column406"
+      ``ordinal_Column407`` <- reader.GetOrdinal "Column407"
+      ``ordinal_Column408`` <- reader.GetOrdinal "Column408"
+      ``ordinal_Column409`` <- reader.GetOrdinal "Column409"
+      ``ordinal_Column410`` <- reader.GetOrdinal "Column410"
+      ``ordinal_Column411`` <- reader.GetOrdinal "Column411"
+      ``ordinal_Column412`` <- reader.GetOrdinal "Column412"
+      ``ordinal_Column413`` <- reader.GetOrdinal "Column413"
+      ``ordinal_Column414`` <- reader.GetOrdinal "Column414"
+      ``ordinal_Column415`` <- reader.GetOrdinal "Column415"
+      ``ordinal_Column416`` <- reader.GetOrdinal "Column416"
+      ``ordinal_Column417`` <- reader.GetOrdinal "Column417"
+      ``ordinal_Column418`` <- reader.GetOrdinal "Column418"
+      ``ordinal_Column419`` <- reader.GetOrdinal "Column419"
+      ``ordinal_Column420`` <- reader.GetOrdinal "Column420"
+      ``ordinal_Column421`` <- reader.GetOrdinal "Column421"
+      ``ordinal_Column422`` <- reader.GetOrdinal "Column422"
+      ``ordinal_Column423`` <- reader.GetOrdinal "Column423"
+      ``ordinal_Column424`` <- reader.GetOrdinal "Column424"
+      ``ordinal_Column425`` <- reader.GetOrdinal "Column425"
+      ``ordinal_Column426`` <- reader.GetOrdinal "Column426"
+      ``ordinal_Column427`` <- reader.GetOrdinal "Column427"
+      ``ordinal_Column428`` <- reader.GetOrdinal "Column428"
+      ``ordinal_Column429`` <- reader.GetOrdinal "Column429"
+      ``ordinal_Column430`` <- reader.GetOrdinal "Column430"
+      ``ordinal_Column431`` <- reader.GetOrdinal "Column431"
+      ``ordinal_Column432`` <- reader.GetOrdinal "Column432"
+      ``ordinal_Column433`` <- reader.GetOrdinal "Column433"
+      ``ordinal_Column434`` <- reader.GetOrdinal "Column434"
+      ``ordinal_Column435`` <- reader.GetOrdinal "Column435"
+      ``ordinal_Column436`` <- reader.GetOrdinal "Column436"
+      ``ordinal_Column437`` <- reader.GetOrdinal "Column437"
+      ``ordinal_Column438`` <- reader.GetOrdinal "Column438"
+      ``ordinal_Column439`` <- reader.GetOrdinal "Column439"
+      ``ordinal_Column440`` <- reader.GetOrdinal "Column440"
+      ``ordinal_Column441`` <- reader.GetOrdinal "Column441"
+      ``ordinal_Column442`` <- reader.GetOrdinal "Column442"
+      ``ordinal_Column443`` <- reader.GetOrdinal "Column443"
+      ``ordinal_Column444`` <- reader.GetOrdinal "Column444"
+      ``ordinal_Column445`` <- reader.GetOrdinal "Column445"
+      ``ordinal_Column446`` <- reader.GetOrdinal "Column446"
+      ``ordinal_Column447`` <- reader.GetOrdinal "Column447"
+      ``ordinal_Column448`` <- reader.GetOrdinal "Column448"
+      ``ordinal_Column449`` <- reader.GetOrdinal "Column449"
+      ``ordinal_Column450`` <- reader.GetOrdinal "Column450"
+      ``ordinal_Column451`` <- reader.GetOrdinal "Column451"
+      ``ordinal_Column452`` <- reader.GetOrdinal "Column452"
+      ``ordinal_Column453`` <- reader.GetOrdinal "Column453"
+      ``ordinal_Column454`` <- reader.GetOrdinal "Column454"
+      ``ordinal_Column455`` <- reader.GetOrdinal "Column455"
+      ``ordinal_Column456`` <- reader.GetOrdinal "Column456"
+      ``ordinal_Column457`` <- reader.GetOrdinal "Column457"
+      ``ordinal_Column458`` <- reader.GetOrdinal "Column458"
+      ``ordinal_Column459`` <- reader.GetOrdinal "Column459"
+      ``ordinal_Column460`` <- reader.GetOrdinal "Column460"
+      ``ordinal_Column461`` <- reader.GetOrdinal "Column461"
+      ``ordinal_Column462`` <- reader.GetOrdinal "Column462"
+      ``ordinal_Column463`` <- reader.GetOrdinal "Column463"
+      ``ordinal_Column464`` <- reader.GetOrdinal "Column464"
+      ``ordinal_Column465`` <- reader.GetOrdinal "Column465"
+      ``ordinal_Column466`` <- reader.GetOrdinal "Column466"
+      ``ordinal_Column467`` <- reader.GetOrdinal "Column467"
+      ``ordinal_Column468`` <- reader.GetOrdinal "Column468"
+      ``ordinal_Column469`` <- reader.GetOrdinal "Column469"
+      ``ordinal_Column470`` <- reader.GetOrdinal "Column470"
+      ``ordinal_Column471`` <- reader.GetOrdinal "Column471"
+      ``ordinal_Column472`` <- reader.GetOrdinal "Column472"
+      ``ordinal_Column473`` <- reader.GetOrdinal "Column473"
+      ``ordinal_Column474`` <- reader.GetOrdinal "Column474"
+      ``ordinal_Column475`` <- reader.GetOrdinal "Column475"
+      ``ordinal_Column476`` <- reader.GetOrdinal "Column476"
+      ``ordinal_Column477`` <- reader.GetOrdinal "Column477"
+      ``ordinal_Column478`` <- reader.GetOrdinal "Column478"
+      ``ordinal_Column479`` <- reader.GetOrdinal "Column479"
+      ``ordinal_Column480`` <- reader.GetOrdinal "Column480"
+      ``ordinal_Column481`` <- reader.GetOrdinal "Column481"
+      ``ordinal_Column482`` <- reader.GetOrdinal "Column482"
+      ``ordinal_Column483`` <- reader.GetOrdinal "Column483"
+      ``ordinal_Column484`` <- reader.GetOrdinal "Column484"
+      ``ordinal_Column485`` <- reader.GetOrdinal "Column485"
+      ``ordinal_Column486`` <- reader.GetOrdinal "Column486"
+      ``ordinal_Column487`` <- reader.GetOrdinal "Column487"
+      ``ordinal_Column488`` <- reader.GetOrdinal "Column488"
+      ``ordinal_Column489`` <- reader.GetOrdinal "Column489"
+      ``ordinal_Column490`` <- reader.GetOrdinal "Column490"
+      ``ordinal_Column491`` <- reader.GetOrdinal "Column491"
+      ``ordinal_Column492`` <- reader.GetOrdinal "Column492"
+      ``ordinal_Column493`` <- reader.GetOrdinal "Column493"
+      ``ordinal_Column494`` <- reader.GetOrdinal "Column494"
+      ``ordinal_Column495`` <- reader.GetOrdinal "Column495"
+      ``ordinal_Column496`` <- reader.GetOrdinal "Column496"
+      ``ordinal_Column497`` <- reader.GetOrdinal "Column497"
+      ``ordinal_Column498`` <- reader.GetOrdinal "Column498"
+      ``ordinal_Column499`` <- reader.GetOrdinal "Column499"
+      ``ordinal_Column500`` <- reader.GetOrdinal "Column500"
+      ``ordinal_Column501`` <- reader.GetOrdinal "Column501"
+      ``ordinal_Column502`` <- reader.GetOrdinal "Column502"
+      ``ordinal_Column503`` <- reader.GetOrdinal "Column503"
+      ``ordinal_Column504`` <- reader.GetOrdinal "Column504"
+      ``ordinal_Column505`` <- reader.GetOrdinal "Column505"
+      ``ordinal_Column506`` <- reader.GetOrdinal "Column506"
+      ``ordinal_Column507`` <- reader.GetOrdinal "Column507"
+      ``ordinal_Column508`` <- reader.GetOrdinal "Column508"
+      ``ordinal_Column509`` <- reader.GetOrdinal "Column509"
+      ``ordinal_Column510`` <- reader.GetOrdinal "Column510"
+      ``ordinal_Column511`` <- reader.GetOrdinal "Column511"
+      ``ordinal_Column512`` <- reader.GetOrdinal "Column512"
+      ``ordinal_Column513`` <- reader.GetOrdinal "Column513"
+      ``ordinal_Column514`` <- reader.GetOrdinal "Column514"
+      ``ordinal_Column515`` <- reader.GetOrdinal "Column515"
+      ``ordinal_Column516`` <- reader.GetOrdinal "Column516"
+      ``ordinal_Column517`` <- reader.GetOrdinal "Column517"
+      ``ordinal_Column518`` <- reader.GetOrdinal "Column518"
+      ``ordinal_Column519`` <- reader.GetOrdinal "Column519"
+      ``ordinal_Column520`` <- reader.GetOrdinal "Column520"
+      ``ordinal_Column521`` <- reader.GetOrdinal "Column521"
+      ``ordinal_Column522`` <- reader.GetOrdinal "Column522"
+      ``ordinal_Column523`` <- reader.GetOrdinal "Column523"
+      ``ordinal_Column524`` <- reader.GetOrdinal "Column524"
+      ``ordinal_Column525`` <- reader.GetOrdinal "Column525"
+      ``ordinal_Column526`` <- reader.GetOrdinal "Column526"
+      ``ordinal_Column527`` <- reader.GetOrdinal "Column527"
+      ``ordinal_Column528`` <- reader.GetOrdinal "Column528"
+      ``ordinal_Column529`` <- reader.GetOrdinal "Column529"
+      ``ordinal_Column530`` <- reader.GetOrdinal "Column530"
+      ``ordinal_Column531`` <- reader.GetOrdinal "Column531"
+      ``ordinal_Column532`` <- reader.GetOrdinal "Column532"
+      ``ordinal_Column533`` <- reader.GetOrdinal "Column533"
+      ``ordinal_Column534`` <- reader.GetOrdinal "Column534"
+      ``ordinal_Column535`` <- reader.GetOrdinal "Column535"
+      ``ordinal_Column536`` <- reader.GetOrdinal "Column536"
+      ``ordinal_Column537`` <- reader.GetOrdinal "Column537"
+      ``ordinal_Column538`` <- reader.GetOrdinal "Column538"
+      ``ordinal_Column539`` <- reader.GetOrdinal "Column539"
+      ``ordinal_Column540`` <- reader.GetOrdinal "Column540"
+      ``ordinal_Column541`` <- reader.GetOrdinal "Column541"
+      ``ordinal_Column542`` <- reader.GetOrdinal "Column542"
+      ``ordinal_Column543`` <- reader.GetOrdinal "Column543"
+      ``ordinal_Column544`` <- reader.GetOrdinal "Column544"
+      ``ordinal_Column545`` <- reader.GetOrdinal "Column545"
+      ``ordinal_Column546`` <- reader.GetOrdinal "Column546"
+      ``ordinal_Column547`` <- reader.GetOrdinal "Column547"
+      ``ordinal_Column548`` <- reader.GetOrdinal "Column548"
+      ``ordinal_Column549`` <- reader.GetOrdinal "Column549"
+      ``ordinal_Column550`` <- reader.GetOrdinal "Column550"
+      ``ordinal_Column551`` <- reader.GetOrdinal "Column551"
+      ``ordinal_Column552`` <- reader.GetOrdinal "Column552"
+      ``ordinal_Column553`` <- reader.GetOrdinal "Column553"
+      ``ordinal_Column554`` <- reader.GetOrdinal "Column554"
+      ``ordinal_Column555`` <- reader.GetOrdinal "Column555"
+      ``ordinal_Column556`` <- reader.GetOrdinal "Column556"
+      ``ordinal_Column557`` <- reader.GetOrdinal "Column557"
+      ``ordinal_Column558`` <- reader.GetOrdinal "Column558"
+      ``ordinal_Column559`` <- reader.GetOrdinal "Column559"
+      ``ordinal_Column560`` <- reader.GetOrdinal "Column560"
+      ``ordinal_Column561`` <- reader.GetOrdinal "Column561"
+      ``ordinal_Column562`` <- reader.GetOrdinal "Column562"
+      ``ordinal_Column563`` <- reader.GetOrdinal "Column563"
+      ``ordinal_Column564`` <- reader.GetOrdinal "Column564"
+      ``ordinal_Column565`` <- reader.GetOrdinal "Column565"
+      ``ordinal_Column566`` <- reader.GetOrdinal "Column566"
+      ``ordinal_Column567`` <- reader.GetOrdinal "Column567"
+      ``ordinal_Column568`` <- reader.GetOrdinal "Column568"
+      ``ordinal_Column569`` <- reader.GetOrdinal "Column569"
+      ``ordinal_Column570`` <- reader.GetOrdinal "Column570"
+      ``ordinal_Column571`` <- reader.GetOrdinal "Column571"
+      ``ordinal_Column572`` <- reader.GetOrdinal "Column572"
+      ``ordinal_Column573`` <- reader.GetOrdinal "Column573"
+      ``ordinal_Column574`` <- reader.GetOrdinal "Column574"
+      ``ordinal_Column575`` <- reader.GetOrdinal "Column575"
+      ``ordinal_Column576`` <- reader.GetOrdinal "Column576"
+      ``ordinal_Column577`` <- reader.GetOrdinal "Column577"
+      ``ordinal_Column578`` <- reader.GetOrdinal "Column578"
+      ``ordinal_Column579`` <- reader.GetOrdinal "Column579"
+      ``ordinal_Column580`` <- reader.GetOrdinal "Column580"
+      ``ordinal_Column581`` <- reader.GetOrdinal "Column581"
+      ``ordinal_Column582`` <- reader.GetOrdinal "Column582"
+      ``ordinal_Column583`` <- reader.GetOrdinal "Column583"
+      ``ordinal_Column584`` <- reader.GetOrdinal "Column584"
+      ``ordinal_Column585`` <- reader.GetOrdinal "Column585"
+      ``ordinal_Column586`` <- reader.GetOrdinal "Column586"
+      ``ordinal_Column587`` <- reader.GetOrdinal "Column587"
+      ``ordinal_Column588`` <- reader.GetOrdinal "Column588"
+      ``ordinal_Column589`` <- reader.GetOrdinal "Column589"
+      ``ordinal_Column590`` <- reader.GetOrdinal "Column590"
+      ``ordinal_Column591`` <- reader.GetOrdinal "Column591"
+      ``ordinal_Column592`` <- reader.GetOrdinal "Column592"
+      ``ordinal_Column593`` <- reader.GetOrdinal "Column593"
+      ``ordinal_Column594`` <- reader.GetOrdinal "Column594"
+      ``ordinal_Column595`` <- reader.GetOrdinal "Column595"
+      ``ordinal_Column596`` <- reader.GetOrdinal "Column596"
+      ``ordinal_Column597`` <- reader.GetOrdinal "Column597"
+      ``ordinal_Column598`` <- reader.GetOrdinal "Column598"
+      ``ordinal_Column599`` <- reader.GetOrdinal "Column599"
+      ``ordinal_Column600`` <- reader.GetOrdinal "Column600"
+
+    let getItem (reader: SqlDataReader) =
+      let ``Column1`` = if reader.IsDBNull ``ordinal_Column1`` then None else reader.GetInt32 ``ordinal_Column1`` |> Some
+      let ``Column2`` = if reader.IsDBNull ``ordinal_Column2`` then None else reader.GetInt32 ``ordinal_Column2`` |> Some
+      let ``Column3`` = if reader.IsDBNull ``ordinal_Column3`` then None else reader.GetInt32 ``ordinal_Column3`` |> Some
+      let ``Column4`` = if reader.IsDBNull ``ordinal_Column4`` then None else reader.GetInt32 ``ordinal_Column4`` |> Some
+      let ``Column5`` = if reader.IsDBNull ``ordinal_Column5`` then None else reader.GetInt32 ``ordinal_Column5`` |> Some
+      let ``Column6`` = if reader.IsDBNull ``ordinal_Column6`` then None else reader.GetInt32 ``ordinal_Column6`` |> Some
+      let ``Column7`` = if reader.IsDBNull ``ordinal_Column7`` then None else reader.GetInt32 ``ordinal_Column7`` |> Some
+      let ``Column8`` = if reader.IsDBNull ``ordinal_Column8`` then None else reader.GetInt32 ``ordinal_Column8`` |> Some
+      let ``Column9`` = if reader.IsDBNull ``ordinal_Column9`` then None else reader.GetInt32 ``ordinal_Column9`` |> Some
+      let ``Column10`` = if reader.IsDBNull ``ordinal_Column10`` then None else reader.GetInt32 ``ordinal_Column10`` |> Some
+      let ``Column11`` = if reader.IsDBNull ``ordinal_Column11`` then None else reader.GetInt32 ``ordinal_Column11`` |> Some
+      let ``Column12`` = if reader.IsDBNull ``ordinal_Column12`` then None else reader.GetInt32 ``ordinal_Column12`` |> Some
+      let ``Column13`` = if reader.IsDBNull ``ordinal_Column13`` then None else reader.GetInt32 ``ordinal_Column13`` |> Some
+      let ``Column14`` = if reader.IsDBNull ``ordinal_Column14`` then None else reader.GetInt32 ``ordinal_Column14`` |> Some
+      let ``Column15`` = if reader.IsDBNull ``ordinal_Column15`` then None else reader.GetInt32 ``ordinal_Column15`` |> Some
+      let ``Column16`` = if reader.IsDBNull ``ordinal_Column16`` then None else reader.GetInt32 ``ordinal_Column16`` |> Some
+      let ``Column17`` = if reader.IsDBNull ``ordinal_Column17`` then None else reader.GetInt32 ``ordinal_Column17`` |> Some
+      let ``Column18`` = if reader.IsDBNull ``ordinal_Column18`` then None else reader.GetInt32 ``ordinal_Column18`` |> Some
+      let ``Column19`` = if reader.IsDBNull ``ordinal_Column19`` then None else reader.GetInt32 ``ordinal_Column19`` |> Some
+      let ``Column20`` = if reader.IsDBNull ``ordinal_Column20`` then None else reader.GetInt32 ``ordinal_Column20`` |> Some
+      let ``Column21`` = if reader.IsDBNull ``ordinal_Column21`` then None else reader.GetInt32 ``ordinal_Column21`` |> Some
+      let ``Column22`` = if reader.IsDBNull ``ordinal_Column22`` then None else reader.GetInt32 ``ordinal_Column22`` |> Some
+      let ``Column23`` = if reader.IsDBNull ``ordinal_Column23`` then None else reader.GetInt32 ``ordinal_Column23`` |> Some
+      let ``Column24`` = if reader.IsDBNull ``ordinal_Column24`` then None else reader.GetInt32 ``ordinal_Column24`` |> Some
+      let ``Column25`` = if reader.IsDBNull ``ordinal_Column25`` then None else reader.GetInt32 ``ordinal_Column25`` |> Some
+      let ``Column26`` = if reader.IsDBNull ``ordinal_Column26`` then None else reader.GetInt32 ``ordinal_Column26`` |> Some
+      let ``Column27`` = if reader.IsDBNull ``ordinal_Column27`` then None else reader.GetInt32 ``ordinal_Column27`` |> Some
+      let ``Column28`` = if reader.IsDBNull ``ordinal_Column28`` then None else reader.GetInt32 ``ordinal_Column28`` |> Some
+      let ``Column29`` = if reader.IsDBNull ``ordinal_Column29`` then None else reader.GetInt32 ``ordinal_Column29`` |> Some
+      let ``Column30`` = if reader.IsDBNull ``ordinal_Column30`` then None else reader.GetInt32 ``ordinal_Column30`` |> Some
+      let ``Column31`` = if reader.IsDBNull ``ordinal_Column31`` then None else reader.GetInt32 ``ordinal_Column31`` |> Some
+      let ``Column32`` = if reader.IsDBNull ``ordinal_Column32`` then None else reader.GetInt32 ``ordinal_Column32`` |> Some
+      let ``Column33`` = if reader.IsDBNull ``ordinal_Column33`` then None else reader.GetInt32 ``ordinal_Column33`` |> Some
+      let ``Column34`` = if reader.IsDBNull ``ordinal_Column34`` then None else reader.GetInt32 ``ordinal_Column34`` |> Some
+      let ``Column35`` = if reader.IsDBNull ``ordinal_Column35`` then None else reader.GetInt32 ``ordinal_Column35`` |> Some
+      let ``Column36`` = if reader.IsDBNull ``ordinal_Column36`` then None else reader.GetInt32 ``ordinal_Column36`` |> Some
+      let ``Column37`` = if reader.IsDBNull ``ordinal_Column37`` then None else reader.GetInt32 ``ordinal_Column37`` |> Some
+      let ``Column38`` = if reader.IsDBNull ``ordinal_Column38`` then None else reader.GetInt32 ``ordinal_Column38`` |> Some
+      let ``Column39`` = if reader.IsDBNull ``ordinal_Column39`` then None else reader.GetInt32 ``ordinal_Column39`` |> Some
+      let ``Column40`` = if reader.IsDBNull ``ordinal_Column40`` then None else reader.GetInt32 ``ordinal_Column40`` |> Some
+      let ``Column41`` = if reader.IsDBNull ``ordinal_Column41`` then None else reader.GetInt32 ``ordinal_Column41`` |> Some
+      let ``Column42`` = if reader.IsDBNull ``ordinal_Column42`` then None else reader.GetInt32 ``ordinal_Column42`` |> Some
+      let ``Column43`` = if reader.IsDBNull ``ordinal_Column43`` then None else reader.GetInt32 ``ordinal_Column43`` |> Some
+      let ``Column44`` = if reader.IsDBNull ``ordinal_Column44`` then None else reader.GetInt32 ``ordinal_Column44`` |> Some
+      let ``Column45`` = if reader.IsDBNull ``ordinal_Column45`` then None else reader.GetInt32 ``ordinal_Column45`` |> Some
+      let ``Column46`` = if reader.IsDBNull ``ordinal_Column46`` then None else reader.GetInt32 ``ordinal_Column46`` |> Some
+      let ``Column47`` = if reader.IsDBNull ``ordinal_Column47`` then None else reader.GetInt32 ``ordinal_Column47`` |> Some
+      let ``Column48`` = if reader.IsDBNull ``ordinal_Column48`` then None else reader.GetInt32 ``ordinal_Column48`` |> Some
+      let ``Column49`` = if reader.IsDBNull ``ordinal_Column49`` then None else reader.GetInt32 ``ordinal_Column49`` |> Some
+      let ``Column50`` = if reader.IsDBNull ``ordinal_Column50`` then None else reader.GetInt32 ``ordinal_Column50`` |> Some
+      let ``Column51`` = if reader.IsDBNull ``ordinal_Column51`` then None else reader.GetInt32 ``ordinal_Column51`` |> Some
+      let ``Column52`` = if reader.IsDBNull ``ordinal_Column52`` then None else reader.GetInt32 ``ordinal_Column52`` |> Some
+      let ``Column53`` = if reader.IsDBNull ``ordinal_Column53`` then None else reader.GetInt32 ``ordinal_Column53`` |> Some
+      let ``Column54`` = if reader.IsDBNull ``ordinal_Column54`` then None else reader.GetInt32 ``ordinal_Column54`` |> Some
+      let ``Column55`` = if reader.IsDBNull ``ordinal_Column55`` then None else reader.GetInt32 ``ordinal_Column55`` |> Some
+      let ``Column56`` = if reader.IsDBNull ``ordinal_Column56`` then None else reader.GetInt32 ``ordinal_Column56`` |> Some
+      let ``Column57`` = if reader.IsDBNull ``ordinal_Column57`` then None else reader.GetInt32 ``ordinal_Column57`` |> Some
+      let ``Column58`` = if reader.IsDBNull ``ordinal_Column58`` then None else reader.GetInt32 ``ordinal_Column58`` |> Some
+      let ``Column59`` = if reader.IsDBNull ``ordinal_Column59`` then None else reader.GetInt32 ``ordinal_Column59`` |> Some
+      let ``Column60`` = if reader.IsDBNull ``ordinal_Column60`` then None else reader.GetInt32 ``ordinal_Column60`` |> Some
+      let ``Column61`` = if reader.IsDBNull ``ordinal_Column61`` then None else reader.GetInt32 ``ordinal_Column61`` |> Some
+      let ``Column62`` = if reader.IsDBNull ``ordinal_Column62`` then None else reader.GetInt32 ``ordinal_Column62`` |> Some
+      let ``Column63`` = if reader.IsDBNull ``ordinal_Column63`` then None else reader.GetInt32 ``ordinal_Column63`` |> Some
+      let ``Column64`` = if reader.IsDBNull ``ordinal_Column64`` then None else reader.GetInt32 ``ordinal_Column64`` |> Some
+      let ``Column65`` = if reader.IsDBNull ``ordinal_Column65`` then None else reader.GetInt32 ``ordinal_Column65`` |> Some
+      let ``Column66`` = if reader.IsDBNull ``ordinal_Column66`` then None else reader.GetInt32 ``ordinal_Column66`` |> Some
+      let ``Column67`` = if reader.IsDBNull ``ordinal_Column67`` then None else reader.GetInt32 ``ordinal_Column67`` |> Some
+      let ``Column68`` = if reader.IsDBNull ``ordinal_Column68`` then None else reader.GetInt32 ``ordinal_Column68`` |> Some
+      let ``Column69`` = if reader.IsDBNull ``ordinal_Column69`` then None else reader.GetInt32 ``ordinal_Column69`` |> Some
+      let ``Column70`` = if reader.IsDBNull ``ordinal_Column70`` then None else reader.GetInt32 ``ordinal_Column70`` |> Some
+      let ``Column71`` = if reader.IsDBNull ``ordinal_Column71`` then None else reader.GetInt32 ``ordinal_Column71`` |> Some
+      let ``Column72`` = if reader.IsDBNull ``ordinal_Column72`` then None else reader.GetInt32 ``ordinal_Column72`` |> Some
+      let ``Column73`` = if reader.IsDBNull ``ordinal_Column73`` then None else reader.GetInt32 ``ordinal_Column73`` |> Some
+      let ``Column74`` = if reader.IsDBNull ``ordinal_Column74`` then None else reader.GetInt32 ``ordinal_Column74`` |> Some
+      let ``Column75`` = if reader.IsDBNull ``ordinal_Column75`` then None else reader.GetInt32 ``ordinal_Column75`` |> Some
+      let ``Column76`` = if reader.IsDBNull ``ordinal_Column76`` then None else reader.GetInt32 ``ordinal_Column76`` |> Some
+      let ``Column77`` = if reader.IsDBNull ``ordinal_Column77`` then None else reader.GetInt32 ``ordinal_Column77`` |> Some
+      let ``Column78`` = if reader.IsDBNull ``ordinal_Column78`` then None else reader.GetInt32 ``ordinal_Column78`` |> Some
+      let ``Column79`` = if reader.IsDBNull ``ordinal_Column79`` then None else reader.GetInt32 ``ordinal_Column79`` |> Some
+      let ``Column80`` = if reader.IsDBNull ``ordinal_Column80`` then None else reader.GetInt32 ``ordinal_Column80`` |> Some
+      let ``Column81`` = if reader.IsDBNull ``ordinal_Column81`` then None else reader.GetInt32 ``ordinal_Column81`` |> Some
+      let ``Column82`` = if reader.IsDBNull ``ordinal_Column82`` then None else reader.GetInt32 ``ordinal_Column82`` |> Some
+      let ``Column83`` = if reader.IsDBNull ``ordinal_Column83`` then None else reader.GetInt32 ``ordinal_Column83`` |> Some
+      let ``Column84`` = if reader.IsDBNull ``ordinal_Column84`` then None else reader.GetInt32 ``ordinal_Column84`` |> Some
+      let ``Column85`` = if reader.IsDBNull ``ordinal_Column85`` then None else reader.GetInt32 ``ordinal_Column85`` |> Some
+      let ``Column86`` = if reader.IsDBNull ``ordinal_Column86`` then None else reader.GetInt32 ``ordinal_Column86`` |> Some
+      let ``Column87`` = if reader.IsDBNull ``ordinal_Column87`` then None else reader.GetInt32 ``ordinal_Column87`` |> Some
+      let ``Column88`` = if reader.IsDBNull ``ordinal_Column88`` then None else reader.GetInt32 ``ordinal_Column88`` |> Some
+      let ``Column89`` = if reader.IsDBNull ``ordinal_Column89`` then None else reader.GetInt32 ``ordinal_Column89`` |> Some
+      let ``Column90`` = if reader.IsDBNull ``ordinal_Column90`` then None else reader.GetInt32 ``ordinal_Column90`` |> Some
+      let ``Column91`` = if reader.IsDBNull ``ordinal_Column91`` then None else reader.GetInt32 ``ordinal_Column91`` |> Some
+      let ``Column92`` = if reader.IsDBNull ``ordinal_Column92`` then None else reader.GetInt32 ``ordinal_Column92`` |> Some
+      let ``Column93`` = if reader.IsDBNull ``ordinal_Column93`` then None else reader.GetInt32 ``ordinal_Column93`` |> Some
+      let ``Column94`` = if reader.IsDBNull ``ordinal_Column94`` then None else reader.GetInt32 ``ordinal_Column94`` |> Some
+      let ``Column95`` = if reader.IsDBNull ``ordinal_Column95`` then None else reader.GetInt32 ``ordinal_Column95`` |> Some
+      let ``Column96`` = if reader.IsDBNull ``ordinal_Column96`` then None else reader.GetInt32 ``ordinal_Column96`` |> Some
+      let ``Column97`` = if reader.IsDBNull ``ordinal_Column97`` then None else reader.GetInt32 ``ordinal_Column97`` |> Some
+      let ``Column98`` = if reader.IsDBNull ``ordinal_Column98`` then None else reader.GetInt32 ``ordinal_Column98`` |> Some
+      let ``Column99`` = if reader.IsDBNull ``ordinal_Column99`` then None else reader.GetInt32 ``ordinal_Column99`` |> Some
+      let ``Column100`` = if reader.IsDBNull ``ordinal_Column100`` then None else reader.GetInt32 ``ordinal_Column100`` |> Some
+      let ``Column101`` = if reader.IsDBNull ``ordinal_Column101`` then None else reader.GetInt32 ``ordinal_Column101`` |> Some
+      let ``Column102`` = if reader.IsDBNull ``ordinal_Column102`` then None else reader.GetInt32 ``ordinal_Column102`` |> Some
+      let ``Column103`` = if reader.IsDBNull ``ordinal_Column103`` then None else reader.GetInt32 ``ordinal_Column103`` |> Some
+      let ``Column104`` = if reader.IsDBNull ``ordinal_Column104`` then None else reader.GetInt32 ``ordinal_Column104`` |> Some
+      let ``Column105`` = if reader.IsDBNull ``ordinal_Column105`` then None else reader.GetInt32 ``ordinal_Column105`` |> Some
+      let ``Column106`` = if reader.IsDBNull ``ordinal_Column106`` then None else reader.GetInt32 ``ordinal_Column106`` |> Some
+      let ``Column107`` = if reader.IsDBNull ``ordinal_Column107`` then None else reader.GetInt32 ``ordinal_Column107`` |> Some
+      let ``Column108`` = if reader.IsDBNull ``ordinal_Column108`` then None else reader.GetInt32 ``ordinal_Column108`` |> Some
+      let ``Column109`` = if reader.IsDBNull ``ordinal_Column109`` then None else reader.GetInt32 ``ordinal_Column109`` |> Some
+      let ``Column110`` = if reader.IsDBNull ``ordinal_Column110`` then None else reader.GetInt32 ``ordinal_Column110`` |> Some
+      let ``Column111`` = if reader.IsDBNull ``ordinal_Column111`` then None else reader.GetInt32 ``ordinal_Column111`` |> Some
+      let ``Column112`` = if reader.IsDBNull ``ordinal_Column112`` then None else reader.GetInt32 ``ordinal_Column112`` |> Some
+      let ``Column113`` = if reader.IsDBNull ``ordinal_Column113`` then None else reader.GetInt32 ``ordinal_Column113`` |> Some
+      let ``Column114`` = if reader.IsDBNull ``ordinal_Column114`` then None else reader.GetInt32 ``ordinal_Column114`` |> Some
+      let ``Column115`` = if reader.IsDBNull ``ordinal_Column115`` then None else reader.GetInt32 ``ordinal_Column115`` |> Some
+      let ``Column116`` = if reader.IsDBNull ``ordinal_Column116`` then None else reader.GetInt32 ``ordinal_Column116`` |> Some
+      let ``Column117`` = if reader.IsDBNull ``ordinal_Column117`` then None else reader.GetInt32 ``ordinal_Column117`` |> Some
+      let ``Column118`` = if reader.IsDBNull ``ordinal_Column118`` then None else reader.GetInt32 ``ordinal_Column118`` |> Some
+      let ``Column119`` = if reader.IsDBNull ``ordinal_Column119`` then None else reader.GetInt32 ``ordinal_Column119`` |> Some
+      let ``Column120`` = if reader.IsDBNull ``ordinal_Column120`` then None else reader.GetInt32 ``ordinal_Column120`` |> Some
+      let ``Column121`` = if reader.IsDBNull ``ordinal_Column121`` then None else reader.GetInt32 ``ordinal_Column121`` |> Some
+      let ``Column122`` = if reader.IsDBNull ``ordinal_Column122`` then None else reader.GetInt32 ``ordinal_Column122`` |> Some
+      let ``Column123`` = if reader.IsDBNull ``ordinal_Column123`` then None else reader.GetInt32 ``ordinal_Column123`` |> Some
+      let ``Column124`` = if reader.IsDBNull ``ordinal_Column124`` then None else reader.GetInt32 ``ordinal_Column124`` |> Some
+      let ``Column125`` = if reader.IsDBNull ``ordinal_Column125`` then None else reader.GetInt32 ``ordinal_Column125`` |> Some
+      let ``Column126`` = if reader.IsDBNull ``ordinal_Column126`` then None else reader.GetInt32 ``ordinal_Column126`` |> Some
+      let ``Column127`` = if reader.IsDBNull ``ordinal_Column127`` then None else reader.GetInt32 ``ordinal_Column127`` |> Some
+      let ``Column128`` = if reader.IsDBNull ``ordinal_Column128`` then None else reader.GetInt32 ``ordinal_Column128`` |> Some
+      let ``Column129`` = if reader.IsDBNull ``ordinal_Column129`` then None else reader.GetInt32 ``ordinal_Column129`` |> Some
+      let ``Column130`` = if reader.IsDBNull ``ordinal_Column130`` then None else reader.GetInt32 ``ordinal_Column130`` |> Some
+      let ``Column131`` = if reader.IsDBNull ``ordinal_Column131`` then None else reader.GetInt32 ``ordinal_Column131`` |> Some
+      let ``Column132`` = if reader.IsDBNull ``ordinal_Column132`` then None else reader.GetInt32 ``ordinal_Column132`` |> Some
+      let ``Column133`` = if reader.IsDBNull ``ordinal_Column133`` then None else reader.GetInt32 ``ordinal_Column133`` |> Some
+      let ``Column134`` = if reader.IsDBNull ``ordinal_Column134`` then None else reader.GetInt32 ``ordinal_Column134`` |> Some
+      let ``Column135`` = if reader.IsDBNull ``ordinal_Column135`` then None else reader.GetInt32 ``ordinal_Column135`` |> Some
+      let ``Column136`` = if reader.IsDBNull ``ordinal_Column136`` then None else reader.GetInt32 ``ordinal_Column136`` |> Some
+      let ``Column137`` = if reader.IsDBNull ``ordinal_Column137`` then None else reader.GetInt32 ``ordinal_Column137`` |> Some
+      let ``Column138`` = if reader.IsDBNull ``ordinal_Column138`` then None else reader.GetInt32 ``ordinal_Column138`` |> Some
+      let ``Column139`` = if reader.IsDBNull ``ordinal_Column139`` then None else reader.GetInt32 ``ordinal_Column139`` |> Some
+      let ``Column140`` = if reader.IsDBNull ``ordinal_Column140`` then None else reader.GetInt32 ``ordinal_Column140`` |> Some
+      let ``Column141`` = if reader.IsDBNull ``ordinal_Column141`` then None else reader.GetInt32 ``ordinal_Column141`` |> Some
+      let ``Column142`` = if reader.IsDBNull ``ordinal_Column142`` then None else reader.GetInt32 ``ordinal_Column142`` |> Some
+      let ``Column143`` = if reader.IsDBNull ``ordinal_Column143`` then None else reader.GetInt32 ``ordinal_Column143`` |> Some
+      let ``Column144`` = if reader.IsDBNull ``ordinal_Column144`` then None else reader.GetInt32 ``ordinal_Column144`` |> Some
+      let ``Column145`` = if reader.IsDBNull ``ordinal_Column145`` then None else reader.GetInt32 ``ordinal_Column145`` |> Some
+      let ``Column146`` = if reader.IsDBNull ``ordinal_Column146`` then None else reader.GetInt32 ``ordinal_Column146`` |> Some
+      let ``Column147`` = if reader.IsDBNull ``ordinal_Column147`` then None else reader.GetInt32 ``ordinal_Column147`` |> Some
+      let ``Column148`` = if reader.IsDBNull ``ordinal_Column148`` then None else reader.GetInt32 ``ordinal_Column148`` |> Some
+      let ``Column149`` = if reader.IsDBNull ``ordinal_Column149`` then None else reader.GetInt32 ``ordinal_Column149`` |> Some
+      let ``Column150`` = if reader.IsDBNull ``ordinal_Column150`` then None else reader.GetInt32 ``ordinal_Column150`` |> Some
+      let ``Column151`` = if reader.IsDBNull ``ordinal_Column151`` then None else reader.GetInt32 ``ordinal_Column151`` |> Some
+      let ``Column152`` = if reader.IsDBNull ``ordinal_Column152`` then None else reader.GetInt32 ``ordinal_Column152`` |> Some
+      let ``Column153`` = if reader.IsDBNull ``ordinal_Column153`` then None else reader.GetInt32 ``ordinal_Column153`` |> Some
+      let ``Column154`` = if reader.IsDBNull ``ordinal_Column154`` then None else reader.GetInt32 ``ordinal_Column154`` |> Some
+      let ``Column155`` = if reader.IsDBNull ``ordinal_Column155`` then None else reader.GetInt32 ``ordinal_Column155`` |> Some
+      let ``Column156`` = if reader.IsDBNull ``ordinal_Column156`` then None else reader.GetInt32 ``ordinal_Column156`` |> Some
+      let ``Column157`` = if reader.IsDBNull ``ordinal_Column157`` then None else reader.GetInt32 ``ordinal_Column157`` |> Some
+      let ``Column158`` = if reader.IsDBNull ``ordinal_Column158`` then None else reader.GetInt32 ``ordinal_Column158`` |> Some
+      let ``Column159`` = if reader.IsDBNull ``ordinal_Column159`` then None else reader.GetInt32 ``ordinal_Column159`` |> Some
+      let ``Column160`` = if reader.IsDBNull ``ordinal_Column160`` then None else reader.GetInt32 ``ordinal_Column160`` |> Some
+      let ``Column161`` = if reader.IsDBNull ``ordinal_Column161`` then None else reader.GetInt32 ``ordinal_Column161`` |> Some
+      let ``Column162`` = if reader.IsDBNull ``ordinal_Column162`` then None else reader.GetInt32 ``ordinal_Column162`` |> Some
+      let ``Column163`` = if reader.IsDBNull ``ordinal_Column163`` then None else reader.GetInt32 ``ordinal_Column163`` |> Some
+      let ``Column164`` = if reader.IsDBNull ``ordinal_Column164`` then None else reader.GetInt32 ``ordinal_Column164`` |> Some
+      let ``Column165`` = if reader.IsDBNull ``ordinal_Column165`` then None else reader.GetInt32 ``ordinal_Column165`` |> Some
+      let ``Column166`` = if reader.IsDBNull ``ordinal_Column166`` then None else reader.GetInt32 ``ordinal_Column166`` |> Some
+      let ``Column167`` = if reader.IsDBNull ``ordinal_Column167`` then None else reader.GetInt32 ``ordinal_Column167`` |> Some
+      let ``Column168`` = if reader.IsDBNull ``ordinal_Column168`` then None else reader.GetInt32 ``ordinal_Column168`` |> Some
+      let ``Column169`` = if reader.IsDBNull ``ordinal_Column169`` then None else reader.GetInt32 ``ordinal_Column169`` |> Some
+      let ``Column170`` = if reader.IsDBNull ``ordinal_Column170`` then None else reader.GetInt32 ``ordinal_Column170`` |> Some
+      let ``Column171`` = if reader.IsDBNull ``ordinal_Column171`` then None else reader.GetInt32 ``ordinal_Column171`` |> Some
+      let ``Column172`` = if reader.IsDBNull ``ordinal_Column172`` then None else reader.GetInt32 ``ordinal_Column172`` |> Some
+      let ``Column173`` = if reader.IsDBNull ``ordinal_Column173`` then None else reader.GetInt32 ``ordinal_Column173`` |> Some
+      let ``Column174`` = if reader.IsDBNull ``ordinal_Column174`` then None else reader.GetInt32 ``ordinal_Column174`` |> Some
+      let ``Column175`` = if reader.IsDBNull ``ordinal_Column175`` then None else reader.GetInt32 ``ordinal_Column175`` |> Some
+      let ``Column176`` = if reader.IsDBNull ``ordinal_Column176`` then None else reader.GetInt32 ``ordinal_Column176`` |> Some
+      let ``Column177`` = if reader.IsDBNull ``ordinal_Column177`` then None else reader.GetInt32 ``ordinal_Column177`` |> Some
+      let ``Column178`` = if reader.IsDBNull ``ordinal_Column178`` then None else reader.GetInt32 ``ordinal_Column178`` |> Some
+      let ``Column179`` = if reader.IsDBNull ``ordinal_Column179`` then None else reader.GetInt32 ``ordinal_Column179`` |> Some
+      let ``Column180`` = if reader.IsDBNull ``ordinal_Column180`` then None else reader.GetInt32 ``ordinal_Column180`` |> Some
+      let ``Column181`` = if reader.IsDBNull ``ordinal_Column181`` then None else reader.GetInt32 ``ordinal_Column181`` |> Some
+      let ``Column182`` = if reader.IsDBNull ``ordinal_Column182`` then None else reader.GetInt32 ``ordinal_Column182`` |> Some
+      let ``Column183`` = if reader.IsDBNull ``ordinal_Column183`` then None else reader.GetInt32 ``ordinal_Column183`` |> Some
+      let ``Column184`` = if reader.IsDBNull ``ordinal_Column184`` then None else reader.GetInt32 ``ordinal_Column184`` |> Some
+      let ``Column185`` = if reader.IsDBNull ``ordinal_Column185`` then None else reader.GetInt32 ``ordinal_Column185`` |> Some
+      let ``Column186`` = if reader.IsDBNull ``ordinal_Column186`` then None else reader.GetInt32 ``ordinal_Column186`` |> Some
+      let ``Column187`` = if reader.IsDBNull ``ordinal_Column187`` then None else reader.GetInt32 ``ordinal_Column187`` |> Some
+      let ``Column188`` = if reader.IsDBNull ``ordinal_Column188`` then None else reader.GetInt32 ``ordinal_Column188`` |> Some
+      let ``Column189`` = if reader.IsDBNull ``ordinal_Column189`` then None else reader.GetInt32 ``ordinal_Column189`` |> Some
+      let ``Column190`` = if reader.IsDBNull ``ordinal_Column190`` then None else reader.GetInt32 ``ordinal_Column190`` |> Some
+      let ``Column191`` = if reader.IsDBNull ``ordinal_Column191`` then None else reader.GetInt32 ``ordinal_Column191`` |> Some
+      let ``Column192`` = if reader.IsDBNull ``ordinal_Column192`` then None else reader.GetInt32 ``ordinal_Column192`` |> Some
+      let ``Column193`` = if reader.IsDBNull ``ordinal_Column193`` then None else reader.GetInt32 ``ordinal_Column193`` |> Some
+      let ``Column194`` = if reader.IsDBNull ``ordinal_Column194`` then None else reader.GetInt32 ``ordinal_Column194`` |> Some
+      let ``Column195`` = if reader.IsDBNull ``ordinal_Column195`` then None else reader.GetInt32 ``ordinal_Column195`` |> Some
+      let ``Column196`` = if reader.IsDBNull ``ordinal_Column196`` then None else reader.GetInt32 ``ordinal_Column196`` |> Some
+      let ``Column197`` = if reader.IsDBNull ``ordinal_Column197`` then None else reader.GetInt32 ``ordinal_Column197`` |> Some
+      let ``Column198`` = if reader.IsDBNull ``ordinal_Column198`` then None else reader.GetInt32 ``ordinal_Column198`` |> Some
+      let ``Column199`` = if reader.IsDBNull ``ordinal_Column199`` then None else reader.GetInt32 ``ordinal_Column199`` |> Some
+      let ``Column200`` = if reader.IsDBNull ``ordinal_Column200`` then None else reader.GetInt32 ``ordinal_Column200`` |> Some
+      let ``Column201`` = if reader.IsDBNull ``ordinal_Column201`` then None else reader.GetInt32 ``ordinal_Column201`` |> Some
+      let ``Column202`` = if reader.IsDBNull ``ordinal_Column202`` then None else reader.GetInt32 ``ordinal_Column202`` |> Some
+      let ``Column203`` = if reader.IsDBNull ``ordinal_Column203`` then None else reader.GetInt32 ``ordinal_Column203`` |> Some
+      let ``Column204`` = if reader.IsDBNull ``ordinal_Column204`` then None else reader.GetInt32 ``ordinal_Column204`` |> Some
+      let ``Column205`` = if reader.IsDBNull ``ordinal_Column205`` then None else reader.GetInt32 ``ordinal_Column205`` |> Some
+      let ``Column206`` = if reader.IsDBNull ``ordinal_Column206`` then None else reader.GetInt32 ``ordinal_Column206`` |> Some
+      let ``Column207`` = if reader.IsDBNull ``ordinal_Column207`` then None else reader.GetInt32 ``ordinal_Column207`` |> Some
+      let ``Column208`` = if reader.IsDBNull ``ordinal_Column208`` then None else reader.GetInt32 ``ordinal_Column208`` |> Some
+      let ``Column209`` = if reader.IsDBNull ``ordinal_Column209`` then None else reader.GetInt32 ``ordinal_Column209`` |> Some
+      let ``Column210`` = if reader.IsDBNull ``ordinal_Column210`` then None else reader.GetInt32 ``ordinal_Column210`` |> Some
+      let ``Column211`` = if reader.IsDBNull ``ordinal_Column211`` then None else reader.GetInt32 ``ordinal_Column211`` |> Some
+      let ``Column212`` = if reader.IsDBNull ``ordinal_Column212`` then None else reader.GetInt32 ``ordinal_Column212`` |> Some
+      let ``Column213`` = if reader.IsDBNull ``ordinal_Column213`` then None else reader.GetInt32 ``ordinal_Column213`` |> Some
+      let ``Column214`` = if reader.IsDBNull ``ordinal_Column214`` then None else reader.GetInt32 ``ordinal_Column214`` |> Some
+      let ``Column215`` = if reader.IsDBNull ``ordinal_Column215`` then None else reader.GetInt32 ``ordinal_Column215`` |> Some
+      let ``Column216`` = if reader.IsDBNull ``ordinal_Column216`` then None else reader.GetInt32 ``ordinal_Column216`` |> Some
+      let ``Column217`` = if reader.IsDBNull ``ordinal_Column217`` then None else reader.GetInt32 ``ordinal_Column217`` |> Some
+      let ``Column218`` = if reader.IsDBNull ``ordinal_Column218`` then None else reader.GetInt32 ``ordinal_Column218`` |> Some
+      let ``Column219`` = if reader.IsDBNull ``ordinal_Column219`` then None else reader.GetInt32 ``ordinal_Column219`` |> Some
+      let ``Column220`` = if reader.IsDBNull ``ordinal_Column220`` then None else reader.GetInt32 ``ordinal_Column220`` |> Some
+      let ``Column221`` = if reader.IsDBNull ``ordinal_Column221`` then None else reader.GetInt32 ``ordinal_Column221`` |> Some
+      let ``Column222`` = if reader.IsDBNull ``ordinal_Column222`` then None else reader.GetInt32 ``ordinal_Column222`` |> Some
+      let ``Column223`` = if reader.IsDBNull ``ordinal_Column223`` then None else reader.GetInt32 ``ordinal_Column223`` |> Some
+      let ``Column224`` = if reader.IsDBNull ``ordinal_Column224`` then None else reader.GetInt32 ``ordinal_Column224`` |> Some
+      let ``Column225`` = if reader.IsDBNull ``ordinal_Column225`` then None else reader.GetInt32 ``ordinal_Column225`` |> Some
+      let ``Column226`` = if reader.IsDBNull ``ordinal_Column226`` then None else reader.GetInt32 ``ordinal_Column226`` |> Some
+      let ``Column227`` = if reader.IsDBNull ``ordinal_Column227`` then None else reader.GetInt32 ``ordinal_Column227`` |> Some
+      let ``Column228`` = if reader.IsDBNull ``ordinal_Column228`` then None else reader.GetInt32 ``ordinal_Column228`` |> Some
+      let ``Column229`` = if reader.IsDBNull ``ordinal_Column229`` then None else reader.GetInt32 ``ordinal_Column229`` |> Some
+      let ``Column230`` = if reader.IsDBNull ``ordinal_Column230`` then None else reader.GetInt32 ``ordinal_Column230`` |> Some
+      let ``Column231`` = if reader.IsDBNull ``ordinal_Column231`` then None else reader.GetInt32 ``ordinal_Column231`` |> Some
+      let ``Column232`` = if reader.IsDBNull ``ordinal_Column232`` then None else reader.GetInt32 ``ordinal_Column232`` |> Some
+      let ``Column233`` = if reader.IsDBNull ``ordinal_Column233`` then None else reader.GetInt32 ``ordinal_Column233`` |> Some
+      let ``Column234`` = if reader.IsDBNull ``ordinal_Column234`` then None else reader.GetInt32 ``ordinal_Column234`` |> Some
+      let ``Column235`` = if reader.IsDBNull ``ordinal_Column235`` then None else reader.GetInt32 ``ordinal_Column235`` |> Some
+      let ``Column236`` = if reader.IsDBNull ``ordinal_Column236`` then None else reader.GetInt32 ``ordinal_Column236`` |> Some
+      let ``Column237`` = if reader.IsDBNull ``ordinal_Column237`` then None else reader.GetInt32 ``ordinal_Column237`` |> Some
+      let ``Column238`` = if reader.IsDBNull ``ordinal_Column238`` then None else reader.GetInt32 ``ordinal_Column238`` |> Some
+      let ``Column239`` = if reader.IsDBNull ``ordinal_Column239`` then None else reader.GetInt32 ``ordinal_Column239`` |> Some
+      let ``Column240`` = if reader.IsDBNull ``ordinal_Column240`` then None else reader.GetInt32 ``ordinal_Column240`` |> Some
+      let ``Column241`` = if reader.IsDBNull ``ordinal_Column241`` then None else reader.GetInt32 ``ordinal_Column241`` |> Some
+      let ``Column242`` = if reader.IsDBNull ``ordinal_Column242`` then None else reader.GetInt32 ``ordinal_Column242`` |> Some
+      let ``Column243`` = if reader.IsDBNull ``ordinal_Column243`` then None else reader.GetInt32 ``ordinal_Column243`` |> Some
+      let ``Column244`` = if reader.IsDBNull ``ordinal_Column244`` then None else reader.GetInt32 ``ordinal_Column244`` |> Some
+      let ``Column245`` = if reader.IsDBNull ``ordinal_Column245`` then None else reader.GetInt32 ``ordinal_Column245`` |> Some
+      let ``Column246`` = if reader.IsDBNull ``ordinal_Column246`` then None else reader.GetInt32 ``ordinal_Column246`` |> Some
+      let ``Column247`` = if reader.IsDBNull ``ordinal_Column247`` then None else reader.GetInt32 ``ordinal_Column247`` |> Some
+      let ``Column248`` = if reader.IsDBNull ``ordinal_Column248`` then None else reader.GetInt32 ``ordinal_Column248`` |> Some
+      let ``Column249`` = if reader.IsDBNull ``ordinal_Column249`` then None else reader.GetInt32 ``ordinal_Column249`` |> Some
+      let ``Column250`` = if reader.IsDBNull ``ordinal_Column250`` then None else reader.GetInt32 ``ordinal_Column250`` |> Some
+      let ``Column251`` = if reader.IsDBNull ``ordinal_Column251`` then None else reader.GetInt32 ``ordinal_Column251`` |> Some
+      let ``Column252`` = if reader.IsDBNull ``ordinal_Column252`` then None else reader.GetInt32 ``ordinal_Column252`` |> Some
+      let ``Column253`` = if reader.IsDBNull ``ordinal_Column253`` then None else reader.GetInt32 ``ordinal_Column253`` |> Some
+      let ``Column254`` = if reader.IsDBNull ``ordinal_Column254`` then None else reader.GetInt32 ``ordinal_Column254`` |> Some
+      let ``Column255`` = if reader.IsDBNull ``ordinal_Column255`` then None else reader.GetInt32 ``ordinal_Column255`` |> Some
+      let ``Column256`` = if reader.IsDBNull ``ordinal_Column256`` then None else reader.GetInt32 ``ordinal_Column256`` |> Some
+      let ``Column257`` = if reader.IsDBNull ``ordinal_Column257`` then None else reader.GetInt32 ``ordinal_Column257`` |> Some
+      let ``Column258`` = if reader.IsDBNull ``ordinal_Column258`` then None else reader.GetInt32 ``ordinal_Column258`` |> Some
+      let ``Column259`` = if reader.IsDBNull ``ordinal_Column259`` then None else reader.GetInt32 ``ordinal_Column259`` |> Some
+      let ``Column260`` = if reader.IsDBNull ``ordinal_Column260`` then None else reader.GetInt32 ``ordinal_Column260`` |> Some
+      let ``Column261`` = if reader.IsDBNull ``ordinal_Column261`` then None else reader.GetInt32 ``ordinal_Column261`` |> Some
+      let ``Column262`` = if reader.IsDBNull ``ordinal_Column262`` then None else reader.GetInt32 ``ordinal_Column262`` |> Some
+      let ``Column263`` = if reader.IsDBNull ``ordinal_Column263`` then None else reader.GetInt32 ``ordinal_Column263`` |> Some
+      let ``Column264`` = if reader.IsDBNull ``ordinal_Column264`` then None else reader.GetInt32 ``ordinal_Column264`` |> Some
+      let ``Column265`` = if reader.IsDBNull ``ordinal_Column265`` then None else reader.GetInt32 ``ordinal_Column265`` |> Some
+      let ``Column266`` = if reader.IsDBNull ``ordinal_Column266`` then None else reader.GetInt32 ``ordinal_Column266`` |> Some
+      let ``Column267`` = if reader.IsDBNull ``ordinal_Column267`` then None else reader.GetInt32 ``ordinal_Column267`` |> Some
+      let ``Column268`` = if reader.IsDBNull ``ordinal_Column268`` then None else reader.GetInt32 ``ordinal_Column268`` |> Some
+      let ``Column269`` = if reader.IsDBNull ``ordinal_Column269`` then None else reader.GetInt32 ``ordinal_Column269`` |> Some
+      let ``Column270`` = if reader.IsDBNull ``ordinal_Column270`` then None else reader.GetInt32 ``ordinal_Column270`` |> Some
+      let ``Column271`` = if reader.IsDBNull ``ordinal_Column271`` then None else reader.GetInt32 ``ordinal_Column271`` |> Some
+      let ``Column272`` = if reader.IsDBNull ``ordinal_Column272`` then None else reader.GetInt32 ``ordinal_Column272`` |> Some
+      let ``Column273`` = if reader.IsDBNull ``ordinal_Column273`` then None else reader.GetInt32 ``ordinal_Column273`` |> Some
+      let ``Column274`` = if reader.IsDBNull ``ordinal_Column274`` then None else reader.GetInt32 ``ordinal_Column274`` |> Some
+      let ``Column275`` = if reader.IsDBNull ``ordinal_Column275`` then None else reader.GetInt32 ``ordinal_Column275`` |> Some
+      let ``Column276`` = if reader.IsDBNull ``ordinal_Column276`` then None else reader.GetInt32 ``ordinal_Column276`` |> Some
+      let ``Column277`` = if reader.IsDBNull ``ordinal_Column277`` then None else reader.GetInt32 ``ordinal_Column277`` |> Some
+      let ``Column278`` = if reader.IsDBNull ``ordinal_Column278`` then None else reader.GetInt32 ``ordinal_Column278`` |> Some
+      let ``Column279`` = if reader.IsDBNull ``ordinal_Column279`` then None else reader.GetInt32 ``ordinal_Column279`` |> Some
+      let ``Column280`` = if reader.IsDBNull ``ordinal_Column280`` then None else reader.GetInt32 ``ordinal_Column280`` |> Some
+      let ``Column281`` = if reader.IsDBNull ``ordinal_Column281`` then None else reader.GetInt32 ``ordinal_Column281`` |> Some
+      let ``Column282`` = if reader.IsDBNull ``ordinal_Column282`` then None else reader.GetInt32 ``ordinal_Column282`` |> Some
+      let ``Column283`` = if reader.IsDBNull ``ordinal_Column283`` then None else reader.GetInt32 ``ordinal_Column283`` |> Some
+      let ``Column284`` = if reader.IsDBNull ``ordinal_Column284`` then None else reader.GetInt32 ``ordinal_Column284`` |> Some
+      let ``Column285`` = if reader.IsDBNull ``ordinal_Column285`` then None else reader.GetInt32 ``ordinal_Column285`` |> Some
+      let ``Column286`` = if reader.IsDBNull ``ordinal_Column286`` then None else reader.GetInt32 ``ordinal_Column286`` |> Some
+      let ``Column287`` = if reader.IsDBNull ``ordinal_Column287`` then None else reader.GetInt32 ``ordinal_Column287`` |> Some
+      let ``Column288`` = if reader.IsDBNull ``ordinal_Column288`` then None else reader.GetInt32 ``ordinal_Column288`` |> Some
+      let ``Column289`` = if reader.IsDBNull ``ordinal_Column289`` then None else reader.GetInt32 ``ordinal_Column289`` |> Some
+      let ``Column290`` = if reader.IsDBNull ``ordinal_Column290`` then None else reader.GetInt32 ``ordinal_Column290`` |> Some
+      let ``Column291`` = if reader.IsDBNull ``ordinal_Column291`` then None else reader.GetInt32 ``ordinal_Column291`` |> Some
+      let ``Column292`` = if reader.IsDBNull ``ordinal_Column292`` then None else reader.GetInt32 ``ordinal_Column292`` |> Some
+      let ``Column293`` = if reader.IsDBNull ``ordinal_Column293`` then None else reader.GetInt32 ``ordinal_Column293`` |> Some
+      let ``Column294`` = if reader.IsDBNull ``ordinal_Column294`` then None else reader.GetInt32 ``ordinal_Column294`` |> Some
+      let ``Column295`` = if reader.IsDBNull ``ordinal_Column295`` then None else reader.GetInt32 ``ordinal_Column295`` |> Some
+      let ``Column296`` = if reader.IsDBNull ``ordinal_Column296`` then None else reader.GetInt32 ``ordinal_Column296`` |> Some
+      let ``Column297`` = if reader.IsDBNull ``ordinal_Column297`` then None else reader.GetInt32 ``ordinal_Column297`` |> Some
+      let ``Column298`` = if reader.IsDBNull ``ordinal_Column298`` then None else reader.GetInt32 ``ordinal_Column298`` |> Some
+      let ``Column299`` = if reader.IsDBNull ``ordinal_Column299`` then None else reader.GetInt32 ``ordinal_Column299`` |> Some
+      let ``Column300`` = if reader.IsDBNull ``ordinal_Column300`` then None else reader.GetInt32 ``ordinal_Column300`` |> Some
+      let ``Column301`` = if reader.IsDBNull ``ordinal_Column301`` then None else reader.GetInt32 ``ordinal_Column301`` |> Some
+      let ``Column302`` = if reader.IsDBNull ``ordinal_Column302`` then None else reader.GetInt32 ``ordinal_Column302`` |> Some
+      let ``Column303`` = if reader.IsDBNull ``ordinal_Column303`` then None else reader.GetInt32 ``ordinal_Column303`` |> Some
+      let ``Column304`` = if reader.IsDBNull ``ordinal_Column304`` then None else reader.GetInt32 ``ordinal_Column304`` |> Some
+      let ``Column305`` = if reader.IsDBNull ``ordinal_Column305`` then None else reader.GetInt32 ``ordinal_Column305`` |> Some
+      let ``Column306`` = if reader.IsDBNull ``ordinal_Column306`` then None else reader.GetInt32 ``ordinal_Column306`` |> Some
+      let ``Column307`` = if reader.IsDBNull ``ordinal_Column307`` then None else reader.GetInt32 ``ordinal_Column307`` |> Some
+      let ``Column308`` = if reader.IsDBNull ``ordinal_Column308`` then None else reader.GetInt32 ``ordinal_Column308`` |> Some
+      let ``Column309`` = if reader.IsDBNull ``ordinal_Column309`` then None else reader.GetInt32 ``ordinal_Column309`` |> Some
+      let ``Column310`` = if reader.IsDBNull ``ordinal_Column310`` then None else reader.GetInt32 ``ordinal_Column310`` |> Some
+      let ``Column311`` = if reader.IsDBNull ``ordinal_Column311`` then None else reader.GetInt32 ``ordinal_Column311`` |> Some
+      let ``Column312`` = if reader.IsDBNull ``ordinal_Column312`` then None else reader.GetInt32 ``ordinal_Column312`` |> Some
+      let ``Column313`` = if reader.IsDBNull ``ordinal_Column313`` then None else reader.GetInt32 ``ordinal_Column313`` |> Some
+      let ``Column314`` = if reader.IsDBNull ``ordinal_Column314`` then None else reader.GetInt32 ``ordinal_Column314`` |> Some
+      let ``Column315`` = if reader.IsDBNull ``ordinal_Column315`` then None else reader.GetInt32 ``ordinal_Column315`` |> Some
+      let ``Column316`` = if reader.IsDBNull ``ordinal_Column316`` then None else reader.GetInt32 ``ordinal_Column316`` |> Some
+      let ``Column317`` = if reader.IsDBNull ``ordinal_Column317`` then None else reader.GetInt32 ``ordinal_Column317`` |> Some
+      let ``Column318`` = if reader.IsDBNull ``ordinal_Column318`` then None else reader.GetInt32 ``ordinal_Column318`` |> Some
+      let ``Column319`` = if reader.IsDBNull ``ordinal_Column319`` then None else reader.GetInt32 ``ordinal_Column319`` |> Some
+      let ``Column320`` = if reader.IsDBNull ``ordinal_Column320`` then None else reader.GetInt32 ``ordinal_Column320`` |> Some
+      let ``Column321`` = if reader.IsDBNull ``ordinal_Column321`` then None else reader.GetInt32 ``ordinal_Column321`` |> Some
+      let ``Column322`` = if reader.IsDBNull ``ordinal_Column322`` then None else reader.GetInt32 ``ordinal_Column322`` |> Some
+      let ``Column323`` = if reader.IsDBNull ``ordinal_Column323`` then None else reader.GetInt32 ``ordinal_Column323`` |> Some
+      let ``Column324`` = if reader.IsDBNull ``ordinal_Column324`` then None else reader.GetInt32 ``ordinal_Column324`` |> Some
+      let ``Column325`` = if reader.IsDBNull ``ordinal_Column325`` then None else reader.GetInt32 ``ordinal_Column325`` |> Some
+      let ``Column326`` = if reader.IsDBNull ``ordinal_Column326`` then None else reader.GetInt32 ``ordinal_Column326`` |> Some
+      let ``Column327`` = if reader.IsDBNull ``ordinal_Column327`` then None else reader.GetInt32 ``ordinal_Column327`` |> Some
+      let ``Column328`` = if reader.IsDBNull ``ordinal_Column328`` then None else reader.GetInt32 ``ordinal_Column328`` |> Some
+      let ``Column329`` = if reader.IsDBNull ``ordinal_Column329`` then None else reader.GetInt32 ``ordinal_Column329`` |> Some
+      let ``Column330`` = if reader.IsDBNull ``ordinal_Column330`` then None else reader.GetInt32 ``ordinal_Column330`` |> Some
+      let ``Column331`` = if reader.IsDBNull ``ordinal_Column331`` then None else reader.GetInt32 ``ordinal_Column331`` |> Some
+      let ``Column332`` = if reader.IsDBNull ``ordinal_Column332`` then None else reader.GetInt32 ``ordinal_Column332`` |> Some
+      let ``Column333`` = if reader.IsDBNull ``ordinal_Column333`` then None else reader.GetInt32 ``ordinal_Column333`` |> Some
+      let ``Column334`` = if reader.IsDBNull ``ordinal_Column334`` then None else reader.GetInt32 ``ordinal_Column334`` |> Some
+      let ``Column335`` = if reader.IsDBNull ``ordinal_Column335`` then None else reader.GetInt32 ``ordinal_Column335`` |> Some
+      let ``Column336`` = if reader.IsDBNull ``ordinal_Column336`` then None else reader.GetInt32 ``ordinal_Column336`` |> Some
+      let ``Column337`` = if reader.IsDBNull ``ordinal_Column337`` then None else reader.GetInt32 ``ordinal_Column337`` |> Some
+      let ``Column338`` = if reader.IsDBNull ``ordinal_Column338`` then None else reader.GetInt32 ``ordinal_Column338`` |> Some
+      let ``Column339`` = if reader.IsDBNull ``ordinal_Column339`` then None else reader.GetInt32 ``ordinal_Column339`` |> Some
+      let ``Column340`` = if reader.IsDBNull ``ordinal_Column340`` then None else reader.GetInt32 ``ordinal_Column340`` |> Some
+      let ``Column341`` = if reader.IsDBNull ``ordinal_Column341`` then None else reader.GetInt32 ``ordinal_Column341`` |> Some
+      let ``Column342`` = if reader.IsDBNull ``ordinal_Column342`` then None else reader.GetInt32 ``ordinal_Column342`` |> Some
+      let ``Column343`` = if reader.IsDBNull ``ordinal_Column343`` then None else reader.GetInt32 ``ordinal_Column343`` |> Some
+      let ``Column344`` = if reader.IsDBNull ``ordinal_Column344`` then None else reader.GetInt32 ``ordinal_Column344`` |> Some
+      let ``Column345`` = if reader.IsDBNull ``ordinal_Column345`` then None else reader.GetInt32 ``ordinal_Column345`` |> Some
+      let ``Column346`` = if reader.IsDBNull ``ordinal_Column346`` then None else reader.GetInt32 ``ordinal_Column346`` |> Some
+      let ``Column347`` = if reader.IsDBNull ``ordinal_Column347`` then None else reader.GetInt32 ``ordinal_Column347`` |> Some
+      let ``Column348`` = if reader.IsDBNull ``ordinal_Column348`` then None else reader.GetInt32 ``ordinal_Column348`` |> Some
+      let ``Column349`` = if reader.IsDBNull ``ordinal_Column349`` then None else reader.GetInt32 ``ordinal_Column349`` |> Some
+      let ``Column350`` = if reader.IsDBNull ``ordinal_Column350`` then None else reader.GetInt32 ``ordinal_Column350`` |> Some
+      let ``Column351`` = if reader.IsDBNull ``ordinal_Column351`` then None else reader.GetInt32 ``ordinal_Column351`` |> Some
+      let ``Column352`` = if reader.IsDBNull ``ordinal_Column352`` then None else reader.GetInt32 ``ordinal_Column352`` |> Some
+      let ``Column353`` = if reader.IsDBNull ``ordinal_Column353`` then None else reader.GetInt32 ``ordinal_Column353`` |> Some
+      let ``Column354`` = if reader.IsDBNull ``ordinal_Column354`` then None else reader.GetInt32 ``ordinal_Column354`` |> Some
+      let ``Column355`` = if reader.IsDBNull ``ordinal_Column355`` then None else reader.GetInt32 ``ordinal_Column355`` |> Some
+      let ``Column356`` = if reader.IsDBNull ``ordinal_Column356`` then None else reader.GetInt32 ``ordinal_Column356`` |> Some
+      let ``Column357`` = if reader.IsDBNull ``ordinal_Column357`` then None else reader.GetInt32 ``ordinal_Column357`` |> Some
+      let ``Column358`` = if reader.IsDBNull ``ordinal_Column358`` then None else reader.GetInt32 ``ordinal_Column358`` |> Some
+      let ``Column359`` = if reader.IsDBNull ``ordinal_Column359`` then None else reader.GetInt32 ``ordinal_Column359`` |> Some
+      let ``Column360`` = if reader.IsDBNull ``ordinal_Column360`` then None else reader.GetInt32 ``ordinal_Column360`` |> Some
+      let ``Column361`` = if reader.IsDBNull ``ordinal_Column361`` then None else reader.GetInt32 ``ordinal_Column361`` |> Some
+      let ``Column362`` = if reader.IsDBNull ``ordinal_Column362`` then None else reader.GetInt32 ``ordinal_Column362`` |> Some
+      let ``Column363`` = if reader.IsDBNull ``ordinal_Column363`` then None else reader.GetInt32 ``ordinal_Column363`` |> Some
+      let ``Column364`` = if reader.IsDBNull ``ordinal_Column364`` then None else reader.GetInt32 ``ordinal_Column364`` |> Some
+      let ``Column365`` = if reader.IsDBNull ``ordinal_Column365`` then None else reader.GetInt32 ``ordinal_Column365`` |> Some
+      let ``Column366`` = if reader.IsDBNull ``ordinal_Column366`` then None else reader.GetInt32 ``ordinal_Column366`` |> Some
+      let ``Column367`` = if reader.IsDBNull ``ordinal_Column367`` then None else reader.GetInt32 ``ordinal_Column367`` |> Some
+      let ``Column368`` = if reader.IsDBNull ``ordinal_Column368`` then None else reader.GetInt32 ``ordinal_Column368`` |> Some
+      let ``Column369`` = if reader.IsDBNull ``ordinal_Column369`` then None else reader.GetInt32 ``ordinal_Column369`` |> Some
+      let ``Column370`` = if reader.IsDBNull ``ordinal_Column370`` then None else reader.GetInt32 ``ordinal_Column370`` |> Some
+      let ``Column371`` = if reader.IsDBNull ``ordinal_Column371`` then None else reader.GetInt32 ``ordinal_Column371`` |> Some
+      let ``Column372`` = if reader.IsDBNull ``ordinal_Column372`` then None else reader.GetInt32 ``ordinal_Column372`` |> Some
+      let ``Column373`` = if reader.IsDBNull ``ordinal_Column373`` then None else reader.GetInt32 ``ordinal_Column373`` |> Some
+      let ``Column374`` = if reader.IsDBNull ``ordinal_Column374`` then None else reader.GetInt32 ``ordinal_Column374`` |> Some
+      let ``Column375`` = if reader.IsDBNull ``ordinal_Column375`` then None else reader.GetInt32 ``ordinal_Column375`` |> Some
+      let ``Column376`` = if reader.IsDBNull ``ordinal_Column376`` then None else reader.GetInt32 ``ordinal_Column376`` |> Some
+      let ``Column377`` = if reader.IsDBNull ``ordinal_Column377`` then None else reader.GetInt32 ``ordinal_Column377`` |> Some
+      let ``Column378`` = if reader.IsDBNull ``ordinal_Column378`` then None else reader.GetInt32 ``ordinal_Column378`` |> Some
+      let ``Column379`` = if reader.IsDBNull ``ordinal_Column379`` then None else reader.GetInt32 ``ordinal_Column379`` |> Some
+      let ``Column380`` = if reader.IsDBNull ``ordinal_Column380`` then None else reader.GetInt32 ``ordinal_Column380`` |> Some
+      let ``Column381`` = if reader.IsDBNull ``ordinal_Column381`` then None else reader.GetInt32 ``ordinal_Column381`` |> Some
+      let ``Column382`` = if reader.IsDBNull ``ordinal_Column382`` then None else reader.GetInt32 ``ordinal_Column382`` |> Some
+      let ``Column383`` = if reader.IsDBNull ``ordinal_Column383`` then None else reader.GetInt32 ``ordinal_Column383`` |> Some
+      let ``Column384`` = if reader.IsDBNull ``ordinal_Column384`` then None else reader.GetInt32 ``ordinal_Column384`` |> Some
+      let ``Column385`` = if reader.IsDBNull ``ordinal_Column385`` then None else reader.GetInt32 ``ordinal_Column385`` |> Some
+      let ``Column386`` = if reader.IsDBNull ``ordinal_Column386`` then None else reader.GetInt32 ``ordinal_Column386`` |> Some
+      let ``Column387`` = if reader.IsDBNull ``ordinal_Column387`` then None else reader.GetInt32 ``ordinal_Column387`` |> Some
+      let ``Column388`` = if reader.IsDBNull ``ordinal_Column388`` then None else reader.GetInt32 ``ordinal_Column388`` |> Some
+      let ``Column389`` = if reader.IsDBNull ``ordinal_Column389`` then None else reader.GetInt32 ``ordinal_Column389`` |> Some
+      let ``Column390`` = if reader.IsDBNull ``ordinal_Column390`` then None else reader.GetInt32 ``ordinal_Column390`` |> Some
+      let ``Column391`` = if reader.IsDBNull ``ordinal_Column391`` then None else reader.GetInt32 ``ordinal_Column391`` |> Some
+      let ``Column392`` = if reader.IsDBNull ``ordinal_Column392`` then None else reader.GetInt32 ``ordinal_Column392`` |> Some
+      let ``Column393`` = if reader.IsDBNull ``ordinal_Column393`` then None else reader.GetInt32 ``ordinal_Column393`` |> Some
+      let ``Column394`` = if reader.IsDBNull ``ordinal_Column394`` then None else reader.GetInt32 ``ordinal_Column394`` |> Some
+      let ``Column395`` = if reader.IsDBNull ``ordinal_Column395`` then None else reader.GetInt32 ``ordinal_Column395`` |> Some
+      let ``Column396`` = if reader.IsDBNull ``ordinal_Column396`` then None else reader.GetInt32 ``ordinal_Column396`` |> Some
+      let ``Column397`` = if reader.IsDBNull ``ordinal_Column397`` then None else reader.GetInt32 ``ordinal_Column397`` |> Some
+      let ``Column398`` = if reader.IsDBNull ``ordinal_Column398`` then None else reader.GetInt32 ``ordinal_Column398`` |> Some
+      let ``Column399`` = if reader.IsDBNull ``ordinal_Column399`` then None else reader.GetInt32 ``ordinal_Column399`` |> Some
+      let ``Column400`` = if reader.IsDBNull ``ordinal_Column400`` then None else reader.GetInt32 ``ordinal_Column400`` |> Some
+      let ``Column401`` = if reader.IsDBNull ``ordinal_Column401`` then None else reader.GetInt32 ``ordinal_Column401`` |> Some
+      let ``Column402`` = if reader.IsDBNull ``ordinal_Column402`` then None else reader.GetInt32 ``ordinal_Column402`` |> Some
+      let ``Column403`` = if reader.IsDBNull ``ordinal_Column403`` then None else reader.GetInt32 ``ordinal_Column403`` |> Some
+      let ``Column404`` = if reader.IsDBNull ``ordinal_Column404`` then None else reader.GetInt32 ``ordinal_Column404`` |> Some
+      let ``Column405`` = if reader.IsDBNull ``ordinal_Column405`` then None else reader.GetInt32 ``ordinal_Column405`` |> Some
+      let ``Column406`` = if reader.IsDBNull ``ordinal_Column406`` then None else reader.GetInt32 ``ordinal_Column406`` |> Some
+      let ``Column407`` = if reader.IsDBNull ``ordinal_Column407`` then None else reader.GetInt32 ``ordinal_Column407`` |> Some
+      let ``Column408`` = if reader.IsDBNull ``ordinal_Column408`` then None else reader.GetInt32 ``ordinal_Column408`` |> Some
+      let ``Column409`` = if reader.IsDBNull ``ordinal_Column409`` then None else reader.GetInt32 ``ordinal_Column409`` |> Some
+      let ``Column410`` = if reader.IsDBNull ``ordinal_Column410`` then None else reader.GetInt32 ``ordinal_Column410`` |> Some
+      let ``Column411`` = if reader.IsDBNull ``ordinal_Column411`` then None else reader.GetInt32 ``ordinal_Column411`` |> Some
+      let ``Column412`` = if reader.IsDBNull ``ordinal_Column412`` then None else reader.GetInt32 ``ordinal_Column412`` |> Some
+      let ``Column413`` = if reader.IsDBNull ``ordinal_Column413`` then None else reader.GetInt32 ``ordinal_Column413`` |> Some
+      let ``Column414`` = if reader.IsDBNull ``ordinal_Column414`` then None else reader.GetInt32 ``ordinal_Column414`` |> Some
+      let ``Column415`` = if reader.IsDBNull ``ordinal_Column415`` then None else reader.GetInt32 ``ordinal_Column415`` |> Some
+      let ``Column416`` = if reader.IsDBNull ``ordinal_Column416`` then None else reader.GetInt32 ``ordinal_Column416`` |> Some
+      let ``Column417`` = if reader.IsDBNull ``ordinal_Column417`` then None else reader.GetInt32 ``ordinal_Column417`` |> Some
+      let ``Column418`` = if reader.IsDBNull ``ordinal_Column418`` then None else reader.GetInt32 ``ordinal_Column418`` |> Some
+      let ``Column419`` = if reader.IsDBNull ``ordinal_Column419`` then None else reader.GetInt32 ``ordinal_Column419`` |> Some
+      let ``Column420`` = if reader.IsDBNull ``ordinal_Column420`` then None else reader.GetInt32 ``ordinal_Column420`` |> Some
+      let ``Column421`` = if reader.IsDBNull ``ordinal_Column421`` then None else reader.GetInt32 ``ordinal_Column421`` |> Some
+      let ``Column422`` = if reader.IsDBNull ``ordinal_Column422`` then None else reader.GetInt32 ``ordinal_Column422`` |> Some
+      let ``Column423`` = if reader.IsDBNull ``ordinal_Column423`` then None else reader.GetInt32 ``ordinal_Column423`` |> Some
+      let ``Column424`` = if reader.IsDBNull ``ordinal_Column424`` then None else reader.GetInt32 ``ordinal_Column424`` |> Some
+      let ``Column425`` = if reader.IsDBNull ``ordinal_Column425`` then None else reader.GetInt32 ``ordinal_Column425`` |> Some
+      let ``Column426`` = if reader.IsDBNull ``ordinal_Column426`` then None else reader.GetInt32 ``ordinal_Column426`` |> Some
+      let ``Column427`` = if reader.IsDBNull ``ordinal_Column427`` then None else reader.GetInt32 ``ordinal_Column427`` |> Some
+      let ``Column428`` = if reader.IsDBNull ``ordinal_Column428`` then None else reader.GetInt32 ``ordinal_Column428`` |> Some
+      let ``Column429`` = if reader.IsDBNull ``ordinal_Column429`` then None else reader.GetInt32 ``ordinal_Column429`` |> Some
+      let ``Column430`` = if reader.IsDBNull ``ordinal_Column430`` then None else reader.GetInt32 ``ordinal_Column430`` |> Some
+      let ``Column431`` = if reader.IsDBNull ``ordinal_Column431`` then None else reader.GetInt32 ``ordinal_Column431`` |> Some
+      let ``Column432`` = if reader.IsDBNull ``ordinal_Column432`` then None else reader.GetInt32 ``ordinal_Column432`` |> Some
+      let ``Column433`` = if reader.IsDBNull ``ordinal_Column433`` then None else reader.GetInt32 ``ordinal_Column433`` |> Some
+      let ``Column434`` = if reader.IsDBNull ``ordinal_Column434`` then None else reader.GetInt32 ``ordinal_Column434`` |> Some
+      let ``Column435`` = if reader.IsDBNull ``ordinal_Column435`` then None else reader.GetInt32 ``ordinal_Column435`` |> Some
+      let ``Column436`` = if reader.IsDBNull ``ordinal_Column436`` then None else reader.GetInt32 ``ordinal_Column436`` |> Some
+      let ``Column437`` = if reader.IsDBNull ``ordinal_Column437`` then None else reader.GetInt32 ``ordinal_Column437`` |> Some
+      let ``Column438`` = if reader.IsDBNull ``ordinal_Column438`` then None else reader.GetInt32 ``ordinal_Column438`` |> Some
+      let ``Column439`` = if reader.IsDBNull ``ordinal_Column439`` then None else reader.GetInt32 ``ordinal_Column439`` |> Some
+      let ``Column440`` = if reader.IsDBNull ``ordinal_Column440`` then None else reader.GetInt32 ``ordinal_Column440`` |> Some
+      let ``Column441`` = if reader.IsDBNull ``ordinal_Column441`` then None else reader.GetInt32 ``ordinal_Column441`` |> Some
+      let ``Column442`` = if reader.IsDBNull ``ordinal_Column442`` then None else reader.GetInt32 ``ordinal_Column442`` |> Some
+      let ``Column443`` = if reader.IsDBNull ``ordinal_Column443`` then None else reader.GetInt32 ``ordinal_Column443`` |> Some
+      let ``Column444`` = if reader.IsDBNull ``ordinal_Column444`` then None else reader.GetInt32 ``ordinal_Column444`` |> Some
+      let ``Column445`` = if reader.IsDBNull ``ordinal_Column445`` then None else reader.GetInt32 ``ordinal_Column445`` |> Some
+      let ``Column446`` = if reader.IsDBNull ``ordinal_Column446`` then None else reader.GetInt32 ``ordinal_Column446`` |> Some
+      let ``Column447`` = if reader.IsDBNull ``ordinal_Column447`` then None else reader.GetInt32 ``ordinal_Column447`` |> Some
+      let ``Column448`` = if reader.IsDBNull ``ordinal_Column448`` then None else reader.GetInt32 ``ordinal_Column448`` |> Some
+      let ``Column449`` = if reader.IsDBNull ``ordinal_Column449`` then None else reader.GetInt32 ``ordinal_Column449`` |> Some
+      let ``Column450`` = if reader.IsDBNull ``ordinal_Column450`` then None else reader.GetInt32 ``ordinal_Column450`` |> Some
+      let ``Column451`` = if reader.IsDBNull ``ordinal_Column451`` then None else reader.GetInt32 ``ordinal_Column451`` |> Some
+      let ``Column452`` = if reader.IsDBNull ``ordinal_Column452`` then None else reader.GetInt32 ``ordinal_Column452`` |> Some
+      let ``Column453`` = if reader.IsDBNull ``ordinal_Column453`` then None else reader.GetInt32 ``ordinal_Column453`` |> Some
+      let ``Column454`` = if reader.IsDBNull ``ordinal_Column454`` then None else reader.GetInt32 ``ordinal_Column454`` |> Some
+      let ``Column455`` = if reader.IsDBNull ``ordinal_Column455`` then None else reader.GetInt32 ``ordinal_Column455`` |> Some
+      let ``Column456`` = if reader.IsDBNull ``ordinal_Column456`` then None else reader.GetInt32 ``ordinal_Column456`` |> Some
+      let ``Column457`` = if reader.IsDBNull ``ordinal_Column457`` then None else reader.GetInt32 ``ordinal_Column457`` |> Some
+      let ``Column458`` = if reader.IsDBNull ``ordinal_Column458`` then None else reader.GetInt32 ``ordinal_Column458`` |> Some
+      let ``Column459`` = if reader.IsDBNull ``ordinal_Column459`` then None else reader.GetInt32 ``ordinal_Column459`` |> Some
+      let ``Column460`` = if reader.IsDBNull ``ordinal_Column460`` then None else reader.GetInt32 ``ordinal_Column460`` |> Some
+      let ``Column461`` = if reader.IsDBNull ``ordinal_Column461`` then None else reader.GetInt32 ``ordinal_Column461`` |> Some
+      let ``Column462`` = if reader.IsDBNull ``ordinal_Column462`` then None else reader.GetInt32 ``ordinal_Column462`` |> Some
+      let ``Column463`` = if reader.IsDBNull ``ordinal_Column463`` then None else reader.GetInt32 ``ordinal_Column463`` |> Some
+      let ``Column464`` = if reader.IsDBNull ``ordinal_Column464`` then None else reader.GetInt32 ``ordinal_Column464`` |> Some
+      let ``Column465`` = if reader.IsDBNull ``ordinal_Column465`` then None else reader.GetInt32 ``ordinal_Column465`` |> Some
+      let ``Column466`` = if reader.IsDBNull ``ordinal_Column466`` then None else reader.GetInt32 ``ordinal_Column466`` |> Some
+      let ``Column467`` = if reader.IsDBNull ``ordinal_Column467`` then None else reader.GetInt32 ``ordinal_Column467`` |> Some
+      let ``Column468`` = if reader.IsDBNull ``ordinal_Column468`` then None else reader.GetInt32 ``ordinal_Column468`` |> Some
+      let ``Column469`` = if reader.IsDBNull ``ordinal_Column469`` then None else reader.GetInt32 ``ordinal_Column469`` |> Some
+      let ``Column470`` = if reader.IsDBNull ``ordinal_Column470`` then None else reader.GetInt32 ``ordinal_Column470`` |> Some
+      let ``Column471`` = if reader.IsDBNull ``ordinal_Column471`` then None else reader.GetInt32 ``ordinal_Column471`` |> Some
+      let ``Column472`` = if reader.IsDBNull ``ordinal_Column472`` then None else reader.GetInt32 ``ordinal_Column472`` |> Some
+      let ``Column473`` = if reader.IsDBNull ``ordinal_Column473`` then None else reader.GetInt32 ``ordinal_Column473`` |> Some
+      let ``Column474`` = if reader.IsDBNull ``ordinal_Column474`` then None else reader.GetInt32 ``ordinal_Column474`` |> Some
+      let ``Column475`` = if reader.IsDBNull ``ordinal_Column475`` then None else reader.GetInt32 ``ordinal_Column475`` |> Some
+      let ``Column476`` = if reader.IsDBNull ``ordinal_Column476`` then None else reader.GetInt32 ``ordinal_Column476`` |> Some
+      let ``Column477`` = if reader.IsDBNull ``ordinal_Column477`` then None else reader.GetInt32 ``ordinal_Column477`` |> Some
+      let ``Column478`` = if reader.IsDBNull ``ordinal_Column478`` then None else reader.GetInt32 ``ordinal_Column478`` |> Some
+      let ``Column479`` = if reader.IsDBNull ``ordinal_Column479`` then None else reader.GetInt32 ``ordinal_Column479`` |> Some
+      let ``Column480`` = if reader.IsDBNull ``ordinal_Column480`` then None else reader.GetInt32 ``ordinal_Column480`` |> Some
+      let ``Column481`` = if reader.IsDBNull ``ordinal_Column481`` then None else reader.GetInt32 ``ordinal_Column481`` |> Some
+      let ``Column482`` = if reader.IsDBNull ``ordinal_Column482`` then None else reader.GetInt32 ``ordinal_Column482`` |> Some
+      let ``Column483`` = if reader.IsDBNull ``ordinal_Column483`` then None else reader.GetInt32 ``ordinal_Column483`` |> Some
+      let ``Column484`` = if reader.IsDBNull ``ordinal_Column484`` then None else reader.GetInt32 ``ordinal_Column484`` |> Some
+      let ``Column485`` = if reader.IsDBNull ``ordinal_Column485`` then None else reader.GetInt32 ``ordinal_Column485`` |> Some
+      let ``Column486`` = if reader.IsDBNull ``ordinal_Column486`` then None else reader.GetInt32 ``ordinal_Column486`` |> Some
+      let ``Column487`` = if reader.IsDBNull ``ordinal_Column487`` then None else reader.GetInt32 ``ordinal_Column487`` |> Some
+      let ``Column488`` = if reader.IsDBNull ``ordinal_Column488`` then None else reader.GetInt32 ``ordinal_Column488`` |> Some
+      let ``Column489`` = if reader.IsDBNull ``ordinal_Column489`` then None else reader.GetInt32 ``ordinal_Column489`` |> Some
+      let ``Column490`` = if reader.IsDBNull ``ordinal_Column490`` then None else reader.GetInt32 ``ordinal_Column490`` |> Some
+      let ``Column491`` = if reader.IsDBNull ``ordinal_Column491`` then None else reader.GetInt32 ``ordinal_Column491`` |> Some
+      let ``Column492`` = if reader.IsDBNull ``ordinal_Column492`` then None else reader.GetInt32 ``ordinal_Column492`` |> Some
+      let ``Column493`` = if reader.IsDBNull ``ordinal_Column493`` then None else reader.GetInt32 ``ordinal_Column493`` |> Some
+      let ``Column494`` = if reader.IsDBNull ``ordinal_Column494`` then None else reader.GetInt32 ``ordinal_Column494`` |> Some
+      let ``Column495`` = if reader.IsDBNull ``ordinal_Column495`` then None else reader.GetInt32 ``ordinal_Column495`` |> Some
+      let ``Column496`` = if reader.IsDBNull ``ordinal_Column496`` then None else reader.GetInt32 ``ordinal_Column496`` |> Some
+      let ``Column497`` = if reader.IsDBNull ``ordinal_Column497`` then None else reader.GetInt32 ``ordinal_Column497`` |> Some
+      let ``Column498`` = if reader.IsDBNull ``ordinal_Column498`` then None else reader.GetInt32 ``ordinal_Column498`` |> Some
+      let ``Column499`` = if reader.IsDBNull ``ordinal_Column499`` then None else reader.GetInt32 ``ordinal_Column499`` |> Some
+      let ``Column500`` = if reader.IsDBNull ``ordinal_Column500`` then None else reader.GetInt32 ``ordinal_Column500`` |> Some
+      let ``Column501`` = if reader.IsDBNull ``ordinal_Column501`` then None else reader.GetInt32 ``ordinal_Column501`` |> Some
+      let ``Column502`` = if reader.IsDBNull ``ordinal_Column502`` then None else reader.GetInt32 ``ordinal_Column502`` |> Some
+      let ``Column503`` = if reader.IsDBNull ``ordinal_Column503`` then None else reader.GetInt32 ``ordinal_Column503`` |> Some
+      let ``Column504`` = if reader.IsDBNull ``ordinal_Column504`` then None else reader.GetInt32 ``ordinal_Column504`` |> Some
+      let ``Column505`` = if reader.IsDBNull ``ordinal_Column505`` then None else reader.GetInt32 ``ordinal_Column505`` |> Some
+      let ``Column506`` = if reader.IsDBNull ``ordinal_Column506`` then None else reader.GetInt32 ``ordinal_Column506`` |> Some
+      let ``Column507`` = if reader.IsDBNull ``ordinal_Column507`` then None else reader.GetInt32 ``ordinal_Column507`` |> Some
+      let ``Column508`` = if reader.IsDBNull ``ordinal_Column508`` then None else reader.GetInt32 ``ordinal_Column508`` |> Some
+      let ``Column509`` = if reader.IsDBNull ``ordinal_Column509`` then None else reader.GetInt32 ``ordinal_Column509`` |> Some
+      let ``Column510`` = if reader.IsDBNull ``ordinal_Column510`` then None else reader.GetInt32 ``ordinal_Column510`` |> Some
+      let ``Column511`` = if reader.IsDBNull ``ordinal_Column511`` then None else reader.GetInt32 ``ordinal_Column511`` |> Some
+      let ``Column512`` = if reader.IsDBNull ``ordinal_Column512`` then None else reader.GetInt32 ``ordinal_Column512`` |> Some
+      let ``Column513`` = if reader.IsDBNull ``ordinal_Column513`` then None else reader.GetInt32 ``ordinal_Column513`` |> Some
+      let ``Column514`` = if reader.IsDBNull ``ordinal_Column514`` then None else reader.GetInt32 ``ordinal_Column514`` |> Some
+      let ``Column515`` = if reader.IsDBNull ``ordinal_Column515`` then None else reader.GetInt32 ``ordinal_Column515`` |> Some
+      let ``Column516`` = if reader.IsDBNull ``ordinal_Column516`` then None else reader.GetInt32 ``ordinal_Column516`` |> Some
+      let ``Column517`` = if reader.IsDBNull ``ordinal_Column517`` then None else reader.GetInt32 ``ordinal_Column517`` |> Some
+      let ``Column518`` = if reader.IsDBNull ``ordinal_Column518`` then None else reader.GetInt32 ``ordinal_Column518`` |> Some
+      let ``Column519`` = if reader.IsDBNull ``ordinal_Column519`` then None else reader.GetInt32 ``ordinal_Column519`` |> Some
+      let ``Column520`` = if reader.IsDBNull ``ordinal_Column520`` then None else reader.GetInt32 ``ordinal_Column520`` |> Some
+      let ``Column521`` = if reader.IsDBNull ``ordinal_Column521`` then None else reader.GetInt32 ``ordinal_Column521`` |> Some
+      let ``Column522`` = if reader.IsDBNull ``ordinal_Column522`` then None else reader.GetInt32 ``ordinal_Column522`` |> Some
+      let ``Column523`` = if reader.IsDBNull ``ordinal_Column523`` then None else reader.GetInt32 ``ordinal_Column523`` |> Some
+      let ``Column524`` = if reader.IsDBNull ``ordinal_Column524`` then None else reader.GetInt32 ``ordinal_Column524`` |> Some
+      let ``Column525`` = if reader.IsDBNull ``ordinal_Column525`` then None else reader.GetInt32 ``ordinal_Column525`` |> Some
+      let ``Column526`` = if reader.IsDBNull ``ordinal_Column526`` then None else reader.GetInt32 ``ordinal_Column526`` |> Some
+      let ``Column527`` = if reader.IsDBNull ``ordinal_Column527`` then None else reader.GetInt32 ``ordinal_Column527`` |> Some
+      let ``Column528`` = if reader.IsDBNull ``ordinal_Column528`` then None else reader.GetInt32 ``ordinal_Column528`` |> Some
+      let ``Column529`` = if reader.IsDBNull ``ordinal_Column529`` then None else reader.GetInt32 ``ordinal_Column529`` |> Some
+      let ``Column530`` = if reader.IsDBNull ``ordinal_Column530`` then None else reader.GetInt32 ``ordinal_Column530`` |> Some
+      let ``Column531`` = if reader.IsDBNull ``ordinal_Column531`` then None else reader.GetInt32 ``ordinal_Column531`` |> Some
+      let ``Column532`` = if reader.IsDBNull ``ordinal_Column532`` then None else reader.GetInt32 ``ordinal_Column532`` |> Some
+      let ``Column533`` = if reader.IsDBNull ``ordinal_Column533`` then None else reader.GetInt32 ``ordinal_Column533`` |> Some
+      let ``Column534`` = if reader.IsDBNull ``ordinal_Column534`` then None else reader.GetInt32 ``ordinal_Column534`` |> Some
+      let ``Column535`` = if reader.IsDBNull ``ordinal_Column535`` then None else reader.GetInt32 ``ordinal_Column535`` |> Some
+      let ``Column536`` = if reader.IsDBNull ``ordinal_Column536`` then None else reader.GetInt32 ``ordinal_Column536`` |> Some
+      let ``Column537`` = if reader.IsDBNull ``ordinal_Column537`` then None else reader.GetInt32 ``ordinal_Column537`` |> Some
+      let ``Column538`` = if reader.IsDBNull ``ordinal_Column538`` then None else reader.GetInt32 ``ordinal_Column538`` |> Some
+      let ``Column539`` = if reader.IsDBNull ``ordinal_Column539`` then None else reader.GetInt32 ``ordinal_Column539`` |> Some
+      let ``Column540`` = if reader.IsDBNull ``ordinal_Column540`` then None else reader.GetInt32 ``ordinal_Column540`` |> Some
+      let ``Column541`` = if reader.IsDBNull ``ordinal_Column541`` then None else reader.GetInt32 ``ordinal_Column541`` |> Some
+      let ``Column542`` = if reader.IsDBNull ``ordinal_Column542`` then None else reader.GetInt32 ``ordinal_Column542`` |> Some
+      let ``Column543`` = if reader.IsDBNull ``ordinal_Column543`` then None else reader.GetInt32 ``ordinal_Column543`` |> Some
+      let ``Column544`` = if reader.IsDBNull ``ordinal_Column544`` then None else reader.GetInt32 ``ordinal_Column544`` |> Some
+      let ``Column545`` = if reader.IsDBNull ``ordinal_Column545`` then None else reader.GetInt32 ``ordinal_Column545`` |> Some
+      let ``Column546`` = if reader.IsDBNull ``ordinal_Column546`` then None else reader.GetInt32 ``ordinal_Column546`` |> Some
+      let ``Column547`` = if reader.IsDBNull ``ordinal_Column547`` then None else reader.GetInt32 ``ordinal_Column547`` |> Some
+      let ``Column548`` = if reader.IsDBNull ``ordinal_Column548`` then None else reader.GetInt32 ``ordinal_Column548`` |> Some
+      let ``Column549`` = if reader.IsDBNull ``ordinal_Column549`` then None else reader.GetInt32 ``ordinal_Column549`` |> Some
+      let ``Column550`` = if reader.IsDBNull ``ordinal_Column550`` then None else reader.GetInt32 ``ordinal_Column550`` |> Some
+      let ``Column551`` = if reader.IsDBNull ``ordinal_Column551`` then None else reader.GetInt32 ``ordinal_Column551`` |> Some
+      let ``Column552`` = if reader.IsDBNull ``ordinal_Column552`` then None else reader.GetInt32 ``ordinal_Column552`` |> Some
+      let ``Column553`` = if reader.IsDBNull ``ordinal_Column553`` then None else reader.GetInt32 ``ordinal_Column553`` |> Some
+      let ``Column554`` = if reader.IsDBNull ``ordinal_Column554`` then None else reader.GetInt32 ``ordinal_Column554`` |> Some
+      let ``Column555`` = if reader.IsDBNull ``ordinal_Column555`` then None else reader.GetInt32 ``ordinal_Column555`` |> Some
+      let ``Column556`` = if reader.IsDBNull ``ordinal_Column556`` then None else reader.GetInt32 ``ordinal_Column556`` |> Some
+      let ``Column557`` = if reader.IsDBNull ``ordinal_Column557`` then None else reader.GetInt32 ``ordinal_Column557`` |> Some
+      let ``Column558`` = if reader.IsDBNull ``ordinal_Column558`` then None else reader.GetInt32 ``ordinal_Column558`` |> Some
+      let ``Column559`` = if reader.IsDBNull ``ordinal_Column559`` then None else reader.GetInt32 ``ordinal_Column559`` |> Some
+      let ``Column560`` = if reader.IsDBNull ``ordinal_Column560`` then None else reader.GetInt32 ``ordinal_Column560`` |> Some
+      let ``Column561`` = if reader.IsDBNull ``ordinal_Column561`` then None else reader.GetInt32 ``ordinal_Column561`` |> Some
+      let ``Column562`` = if reader.IsDBNull ``ordinal_Column562`` then None else reader.GetInt32 ``ordinal_Column562`` |> Some
+      let ``Column563`` = if reader.IsDBNull ``ordinal_Column563`` then None else reader.GetInt32 ``ordinal_Column563`` |> Some
+      let ``Column564`` = if reader.IsDBNull ``ordinal_Column564`` then None else reader.GetInt32 ``ordinal_Column564`` |> Some
+      let ``Column565`` = if reader.IsDBNull ``ordinal_Column565`` then None else reader.GetInt32 ``ordinal_Column565`` |> Some
+      let ``Column566`` = if reader.IsDBNull ``ordinal_Column566`` then None else reader.GetInt32 ``ordinal_Column566`` |> Some
+      let ``Column567`` = if reader.IsDBNull ``ordinal_Column567`` then None else reader.GetInt32 ``ordinal_Column567`` |> Some
+      let ``Column568`` = if reader.IsDBNull ``ordinal_Column568`` then None else reader.GetInt32 ``ordinal_Column568`` |> Some
+      let ``Column569`` = if reader.IsDBNull ``ordinal_Column569`` then None else reader.GetInt32 ``ordinal_Column569`` |> Some
+      let ``Column570`` = if reader.IsDBNull ``ordinal_Column570`` then None else reader.GetInt32 ``ordinal_Column570`` |> Some
+      let ``Column571`` = if reader.IsDBNull ``ordinal_Column571`` then None else reader.GetInt32 ``ordinal_Column571`` |> Some
+      let ``Column572`` = if reader.IsDBNull ``ordinal_Column572`` then None else reader.GetInt32 ``ordinal_Column572`` |> Some
+      let ``Column573`` = if reader.IsDBNull ``ordinal_Column573`` then None else reader.GetInt32 ``ordinal_Column573`` |> Some
+      let ``Column574`` = if reader.IsDBNull ``ordinal_Column574`` then None else reader.GetInt32 ``ordinal_Column574`` |> Some
+      let ``Column575`` = if reader.IsDBNull ``ordinal_Column575`` then None else reader.GetInt32 ``ordinal_Column575`` |> Some
+      let ``Column576`` = if reader.IsDBNull ``ordinal_Column576`` then None else reader.GetInt32 ``ordinal_Column576`` |> Some
+      let ``Column577`` = if reader.IsDBNull ``ordinal_Column577`` then None else reader.GetInt32 ``ordinal_Column577`` |> Some
+      let ``Column578`` = if reader.IsDBNull ``ordinal_Column578`` then None else reader.GetInt32 ``ordinal_Column578`` |> Some
+      let ``Column579`` = if reader.IsDBNull ``ordinal_Column579`` then None else reader.GetInt32 ``ordinal_Column579`` |> Some
+      let ``Column580`` = if reader.IsDBNull ``ordinal_Column580`` then None else reader.GetInt32 ``ordinal_Column580`` |> Some
+      let ``Column581`` = if reader.IsDBNull ``ordinal_Column581`` then None else reader.GetInt32 ``ordinal_Column581`` |> Some
+      let ``Column582`` = if reader.IsDBNull ``ordinal_Column582`` then None else reader.GetInt32 ``ordinal_Column582`` |> Some
+      let ``Column583`` = if reader.IsDBNull ``ordinal_Column583`` then None else reader.GetInt32 ``ordinal_Column583`` |> Some
+      let ``Column584`` = if reader.IsDBNull ``ordinal_Column584`` then None else reader.GetInt32 ``ordinal_Column584`` |> Some
+      let ``Column585`` = if reader.IsDBNull ``ordinal_Column585`` then None else reader.GetInt32 ``ordinal_Column585`` |> Some
+      let ``Column586`` = if reader.IsDBNull ``ordinal_Column586`` then None else reader.GetInt32 ``ordinal_Column586`` |> Some
+      let ``Column587`` = if reader.IsDBNull ``ordinal_Column587`` then None else reader.GetInt32 ``ordinal_Column587`` |> Some
+      let ``Column588`` = if reader.IsDBNull ``ordinal_Column588`` then None else reader.GetInt32 ``ordinal_Column588`` |> Some
+      let ``Column589`` = if reader.IsDBNull ``ordinal_Column589`` then None else reader.GetInt32 ``ordinal_Column589`` |> Some
+      let ``Column590`` = if reader.IsDBNull ``ordinal_Column590`` then None else reader.GetInt32 ``ordinal_Column590`` |> Some
+      let ``Column591`` = if reader.IsDBNull ``ordinal_Column591`` then None else reader.GetInt32 ``ordinal_Column591`` |> Some
+      let ``Column592`` = if reader.IsDBNull ``ordinal_Column592`` then None else reader.GetInt32 ``ordinal_Column592`` |> Some
+      let ``Column593`` = if reader.IsDBNull ``ordinal_Column593`` then None else reader.GetInt32 ``ordinal_Column593`` |> Some
+      let ``Column594`` = if reader.IsDBNull ``ordinal_Column594`` then None else reader.GetInt32 ``ordinal_Column594`` |> Some
+      let ``Column595`` = if reader.IsDBNull ``ordinal_Column595`` then None else reader.GetInt32 ``ordinal_Column595`` |> Some
+      let ``Column596`` = if reader.IsDBNull ``ordinal_Column596`` then None else reader.GetInt32 ``ordinal_Column596`` |> Some
+      let ``Column597`` = if reader.IsDBNull ``ordinal_Column597`` then None else reader.GetInt32 ``ordinal_Column597`` |> Some
+      let ``Column598`` = if reader.IsDBNull ``ordinal_Column598`` then None else reader.GetInt32 ``ordinal_Column598`` |> Some
+      let ``Column599`` = if reader.IsDBNull ``ordinal_Column599`` then None else reader.GetInt32 ``ordinal_Column599`` |> Some
+      let ``Column600`` = if reader.IsDBNull ``ordinal_Column600`` then None else reader.GetInt32 ``ordinal_Column600`` |> Some
+      {|
+        ``Column1`` = ``Column1``
+        ``Column2`` = ``Column2``
+        ``Column3`` = ``Column3``
+        ``Column4`` = ``Column4``
+        ``Column5`` = ``Column5``
+        ``Column6`` = ``Column6``
+        ``Column7`` = ``Column7``
+        ``Column8`` = ``Column8``
+        ``Column9`` = ``Column9``
+        ``Column10`` = ``Column10``
+        ``Column11`` = ``Column11``
+        ``Column12`` = ``Column12``
+        ``Column13`` = ``Column13``
+        ``Column14`` = ``Column14``
+        ``Column15`` = ``Column15``
+        ``Column16`` = ``Column16``
+        ``Column17`` = ``Column17``
+        ``Column18`` = ``Column18``
+        ``Column19`` = ``Column19``
+        ``Column20`` = ``Column20``
+        ``Column21`` = ``Column21``
+        ``Column22`` = ``Column22``
+        ``Column23`` = ``Column23``
+        ``Column24`` = ``Column24``
+        ``Column25`` = ``Column25``
+        ``Column26`` = ``Column26``
+        ``Column27`` = ``Column27``
+        ``Column28`` = ``Column28``
+        ``Column29`` = ``Column29``
+        ``Column30`` = ``Column30``
+        ``Column31`` = ``Column31``
+        ``Column32`` = ``Column32``
+        ``Column33`` = ``Column33``
+        ``Column34`` = ``Column34``
+        ``Column35`` = ``Column35``
+        ``Column36`` = ``Column36``
+        ``Column37`` = ``Column37``
+        ``Column38`` = ``Column38``
+        ``Column39`` = ``Column39``
+        ``Column40`` = ``Column40``
+        ``Column41`` = ``Column41``
+        ``Column42`` = ``Column42``
+        ``Column43`` = ``Column43``
+        ``Column44`` = ``Column44``
+        ``Column45`` = ``Column45``
+        ``Column46`` = ``Column46``
+        ``Column47`` = ``Column47``
+        ``Column48`` = ``Column48``
+        ``Column49`` = ``Column49``
+        ``Column50`` = ``Column50``
+        ``Column51`` = ``Column51``
+        ``Column52`` = ``Column52``
+        ``Column53`` = ``Column53``
+        ``Column54`` = ``Column54``
+        ``Column55`` = ``Column55``
+        ``Column56`` = ``Column56``
+        ``Column57`` = ``Column57``
+        ``Column58`` = ``Column58``
+        ``Column59`` = ``Column59``
+        ``Column60`` = ``Column60``
+        ``Column61`` = ``Column61``
+        ``Column62`` = ``Column62``
+        ``Column63`` = ``Column63``
+        ``Column64`` = ``Column64``
+        ``Column65`` = ``Column65``
+        ``Column66`` = ``Column66``
+        ``Column67`` = ``Column67``
+        ``Column68`` = ``Column68``
+        ``Column69`` = ``Column69``
+        ``Column70`` = ``Column70``
+        ``Column71`` = ``Column71``
+        ``Column72`` = ``Column72``
+        ``Column73`` = ``Column73``
+        ``Column74`` = ``Column74``
+        ``Column75`` = ``Column75``
+        ``Column76`` = ``Column76``
+        ``Column77`` = ``Column77``
+        ``Column78`` = ``Column78``
+        ``Column79`` = ``Column79``
+        ``Column80`` = ``Column80``
+        ``Column81`` = ``Column81``
+        ``Column82`` = ``Column82``
+        ``Column83`` = ``Column83``
+        ``Column84`` = ``Column84``
+        ``Column85`` = ``Column85``
+        ``Column86`` = ``Column86``
+        ``Column87`` = ``Column87``
+        ``Column88`` = ``Column88``
+        ``Column89`` = ``Column89``
+        ``Column90`` = ``Column90``
+        ``Column91`` = ``Column91``
+        ``Column92`` = ``Column92``
+        ``Column93`` = ``Column93``
+        ``Column94`` = ``Column94``
+        ``Column95`` = ``Column95``
+        ``Column96`` = ``Column96``
+        ``Column97`` = ``Column97``
+        ``Column98`` = ``Column98``
+        ``Column99`` = ``Column99``
+        ``Column100`` = ``Column100``
+        ``Column101`` = ``Column101``
+        ``Column102`` = ``Column102``
+        ``Column103`` = ``Column103``
+        ``Column104`` = ``Column104``
+        ``Column105`` = ``Column105``
+        ``Column106`` = ``Column106``
+        ``Column107`` = ``Column107``
+        ``Column108`` = ``Column108``
+        ``Column109`` = ``Column109``
+        ``Column110`` = ``Column110``
+        ``Column111`` = ``Column111``
+        ``Column112`` = ``Column112``
+        ``Column113`` = ``Column113``
+        ``Column114`` = ``Column114``
+        ``Column115`` = ``Column115``
+        ``Column116`` = ``Column116``
+        ``Column117`` = ``Column117``
+        ``Column118`` = ``Column118``
+        ``Column119`` = ``Column119``
+        ``Column120`` = ``Column120``
+        ``Column121`` = ``Column121``
+        ``Column122`` = ``Column122``
+        ``Column123`` = ``Column123``
+        ``Column124`` = ``Column124``
+        ``Column125`` = ``Column125``
+        ``Column126`` = ``Column126``
+        ``Column127`` = ``Column127``
+        ``Column128`` = ``Column128``
+        ``Column129`` = ``Column129``
+        ``Column130`` = ``Column130``
+        ``Column131`` = ``Column131``
+        ``Column132`` = ``Column132``
+        ``Column133`` = ``Column133``
+        ``Column134`` = ``Column134``
+        ``Column135`` = ``Column135``
+        ``Column136`` = ``Column136``
+        ``Column137`` = ``Column137``
+        ``Column138`` = ``Column138``
+        ``Column139`` = ``Column139``
+        ``Column140`` = ``Column140``
+        ``Column141`` = ``Column141``
+        ``Column142`` = ``Column142``
+        ``Column143`` = ``Column143``
+        ``Column144`` = ``Column144``
+        ``Column145`` = ``Column145``
+        ``Column146`` = ``Column146``
+        ``Column147`` = ``Column147``
+        ``Column148`` = ``Column148``
+        ``Column149`` = ``Column149``
+        ``Column150`` = ``Column150``
+        ``Column151`` = ``Column151``
+        ``Column152`` = ``Column152``
+        ``Column153`` = ``Column153``
+        ``Column154`` = ``Column154``
+        ``Column155`` = ``Column155``
+        ``Column156`` = ``Column156``
+        ``Column157`` = ``Column157``
+        ``Column158`` = ``Column158``
+        ``Column159`` = ``Column159``
+        ``Column160`` = ``Column160``
+        ``Column161`` = ``Column161``
+        ``Column162`` = ``Column162``
+        ``Column163`` = ``Column163``
+        ``Column164`` = ``Column164``
+        ``Column165`` = ``Column165``
+        ``Column166`` = ``Column166``
+        ``Column167`` = ``Column167``
+        ``Column168`` = ``Column168``
+        ``Column169`` = ``Column169``
+        ``Column170`` = ``Column170``
+        ``Column171`` = ``Column171``
+        ``Column172`` = ``Column172``
+        ``Column173`` = ``Column173``
+        ``Column174`` = ``Column174``
+        ``Column175`` = ``Column175``
+        ``Column176`` = ``Column176``
+        ``Column177`` = ``Column177``
+        ``Column178`` = ``Column178``
+        ``Column179`` = ``Column179``
+        ``Column180`` = ``Column180``
+        ``Column181`` = ``Column181``
+        ``Column182`` = ``Column182``
+        ``Column183`` = ``Column183``
+        ``Column184`` = ``Column184``
+        ``Column185`` = ``Column185``
+        ``Column186`` = ``Column186``
+        ``Column187`` = ``Column187``
+        ``Column188`` = ``Column188``
+        ``Column189`` = ``Column189``
+        ``Column190`` = ``Column190``
+        ``Column191`` = ``Column191``
+        ``Column192`` = ``Column192``
+        ``Column193`` = ``Column193``
+        ``Column194`` = ``Column194``
+        ``Column195`` = ``Column195``
+        ``Column196`` = ``Column196``
+        ``Column197`` = ``Column197``
+        ``Column198`` = ``Column198``
+        ``Column199`` = ``Column199``
+        ``Column200`` = ``Column200``
+        ``Column201`` = ``Column201``
+        ``Column202`` = ``Column202``
+        ``Column203`` = ``Column203``
+        ``Column204`` = ``Column204``
+        ``Column205`` = ``Column205``
+        ``Column206`` = ``Column206``
+        ``Column207`` = ``Column207``
+        ``Column208`` = ``Column208``
+        ``Column209`` = ``Column209``
+        ``Column210`` = ``Column210``
+        ``Column211`` = ``Column211``
+        ``Column212`` = ``Column212``
+        ``Column213`` = ``Column213``
+        ``Column214`` = ``Column214``
+        ``Column215`` = ``Column215``
+        ``Column216`` = ``Column216``
+        ``Column217`` = ``Column217``
+        ``Column218`` = ``Column218``
+        ``Column219`` = ``Column219``
+        ``Column220`` = ``Column220``
+        ``Column221`` = ``Column221``
+        ``Column222`` = ``Column222``
+        ``Column223`` = ``Column223``
+        ``Column224`` = ``Column224``
+        ``Column225`` = ``Column225``
+        ``Column226`` = ``Column226``
+        ``Column227`` = ``Column227``
+        ``Column228`` = ``Column228``
+        ``Column229`` = ``Column229``
+        ``Column230`` = ``Column230``
+        ``Column231`` = ``Column231``
+        ``Column232`` = ``Column232``
+        ``Column233`` = ``Column233``
+        ``Column234`` = ``Column234``
+        ``Column235`` = ``Column235``
+        ``Column236`` = ``Column236``
+        ``Column237`` = ``Column237``
+        ``Column238`` = ``Column238``
+        ``Column239`` = ``Column239``
+        ``Column240`` = ``Column240``
+        ``Column241`` = ``Column241``
+        ``Column242`` = ``Column242``
+        ``Column243`` = ``Column243``
+        ``Column244`` = ``Column244``
+        ``Column245`` = ``Column245``
+        ``Column246`` = ``Column246``
+        ``Column247`` = ``Column247``
+        ``Column248`` = ``Column248``
+        ``Column249`` = ``Column249``
+        ``Column250`` = ``Column250``
+        ``Column251`` = ``Column251``
+        ``Column252`` = ``Column252``
+        ``Column253`` = ``Column253``
+        ``Column254`` = ``Column254``
+        ``Column255`` = ``Column255``
+        ``Column256`` = ``Column256``
+        ``Column257`` = ``Column257``
+        ``Column258`` = ``Column258``
+        ``Column259`` = ``Column259``
+        ``Column260`` = ``Column260``
+        ``Column261`` = ``Column261``
+        ``Column262`` = ``Column262``
+        ``Column263`` = ``Column263``
+        ``Column264`` = ``Column264``
+        ``Column265`` = ``Column265``
+        ``Column266`` = ``Column266``
+        ``Column267`` = ``Column267``
+        ``Column268`` = ``Column268``
+        ``Column269`` = ``Column269``
+        ``Column270`` = ``Column270``
+        ``Column271`` = ``Column271``
+        ``Column272`` = ``Column272``
+        ``Column273`` = ``Column273``
+        ``Column274`` = ``Column274``
+        ``Column275`` = ``Column275``
+        ``Column276`` = ``Column276``
+        ``Column277`` = ``Column277``
+        ``Column278`` = ``Column278``
+        ``Column279`` = ``Column279``
+        ``Column280`` = ``Column280``
+        ``Column281`` = ``Column281``
+        ``Column282`` = ``Column282``
+        ``Column283`` = ``Column283``
+        ``Column284`` = ``Column284``
+        ``Column285`` = ``Column285``
+        ``Column286`` = ``Column286``
+        ``Column287`` = ``Column287``
+        ``Column288`` = ``Column288``
+        ``Column289`` = ``Column289``
+        ``Column290`` = ``Column290``
+        ``Column291`` = ``Column291``
+        ``Column292`` = ``Column292``
+        ``Column293`` = ``Column293``
+        ``Column294`` = ``Column294``
+        ``Column295`` = ``Column295``
+        ``Column296`` = ``Column296``
+        ``Column297`` = ``Column297``
+        ``Column298`` = ``Column298``
+        ``Column299`` = ``Column299``
+        ``Column300`` = ``Column300``
+        ``Column301`` = ``Column301``
+        ``Column302`` = ``Column302``
+        ``Column303`` = ``Column303``
+        ``Column304`` = ``Column304``
+        ``Column305`` = ``Column305``
+        ``Column306`` = ``Column306``
+        ``Column307`` = ``Column307``
+        ``Column308`` = ``Column308``
+        ``Column309`` = ``Column309``
+        ``Column310`` = ``Column310``
+        ``Column311`` = ``Column311``
+        ``Column312`` = ``Column312``
+        ``Column313`` = ``Column313``
+        ``Column314`` = ``Column314``
+        ``Column315`` = ``Column315``
+        ``Column316`` = ``Column316``
+        ``Column317`` = ``Column317``
+        ``Column318`` = ``Column318``
+        ``Column319`` = ``Column319``
+        ``Column320`` = ``Column320``
+        ``Column321`` = ``Column321``
+        ``Column322`` = ``Column322``
+        ``Column323`` = ``Column323``
+        ``Column324`` = ``Column324``
+        ``Column325`` = ``Column325``
+        ``Column326`` = ``Column326``
+        ``Column327`` = ``Column327``
+        ``Column328`` = ``Column328``
+        ``Column329`` = ``Column329``
+        ``Column330`` = ``Column330``
+        ``Column331`` = ``Column331``
+        ``Column332`` = ``Column332``
+        ``Column333`` = ``Column333``
+        ``Column334`` = ``Column334``
+        ``Column335`` = ``Column335``
+        ``Column336`` = ``Column336``
+        ``Column337`` = ``Column337``
+        ``Column338`` = ``Column338``
+        ``Column339`` = ``Column339``
+        ``Column340`` = ``Column340``
+        ``Column341`` = ``Column341``
+        ``Column342`` = ``Column342``
+        ``Column343`` = ``Column343``
+        ``Column344`` = ``Column344``
+        ``Column345`` = ``Column345``
+        ``Column346`` = ``Column346``
+        ``Column347`` = ``Column347``
+        ``Column348`` = ``Column348``
+        ``Column349`` = ``Column349``
+        ``Column350`` = ``Column350``
+        ``Column351`` = ``Column351``
+        ``Column352`` = ``Column352``
+        ``Column353`` = ``Column353``
+        ``Column354`` = ``Column354``
+        ``Column355`` = ``Column355``
+        ``Column356`` = ``Column356``
+        ``Column357`` = ``Column357``
+        ``Column358`` = ``Column358``
+        ``Column359`` = ``Column359``
+        ``Column360`` = ``Column360``
+        ``Column361`` = ``Column361``
+        ``Column362`` = ``Column362``
+        ``Column363`` = ``Column363``
+        ``Column364`` = ``Column364``
+        ``Column365`` = ``Column365``
+        ``Column366`` = ``Column366``
+        ``Column367`` = ``Column367``
+        ``Column368`` = ``Column368``
+        ``Column369`` = ``Column369``
+        ``Column370`` = ``Column370``
+        ``Column371`` = ``Column371``
+        ``Column372`` = ``Column372``
+        ``Column373`` = ``Column373``
+        ``Column374`` = ``Column374``
+        ``Column375`` = ``Column375``
+        ``Column376`` = ``Column376``
+        ``Column377`` = ``Column377``
+        ``Column378`` = ``Column378``
+        ``Column379`` = ``Column379``
+        ``Column380`` = ``Column380``
+        ``Column381`` = ``Column381``
+        ``Column382`` = ``Column382``
+        ``Column383`` = ``Column383``
+        ``Column384`` = ``Column384``
+        ``Column385`` = ``Column385``
+        ``Column386`` = ``Column386``
+        ``Column387`` = ``Column387``
+        ``Column388`` = ``Column388``
+        ``Column389`` = ``Column389``
+        ``Column390`` = ``Column390``
+        ``Column391`` = ``Column391``
+        ``Column392`` = ``Column392``
+        ``Column393`` = ``Column393``
+        ``Column394`` = ``Column394``
+        ``Column395`` = ``Column395``
+        ``Column396`` = ``Column396``
+        ``Column397`` = ``Column397``
+        ``Column398`` = ``Column398``
+        ``Column399`` = ``Column399``
+        ``Column400`` = ``Column400``
+        ``Column401`` = ``Column401``
+        ``Column402`` = ``Column402``
+        ``Column403`` = ``Column403``
+        ``Column404`` = ``Column404``
+        ``Column405`` = ``Column405``
+        ``Column406`` = ``Column406``
+        ``Column407`` = ``Column407``
+        ``Column408`` = ``Column408``
+        ``Column409`` = ``Column409``
+        ``Column410`` = ``Column410``
+        ``Column411`` = ``Column411``
+        ``Column412`` = ``Column412``
+        ``Column413`` = ``Column413``
+        ``Column414`` = ``Column414``
+        ``Column415`` = ``Column415``
+        ``Column416`` = ``Column416``
+        ``Column417`` = ``Column417``
+        ``Column418`` = ``Column418``
+        ``Column419`` = ``Column419``
+        ``Column420`` = ``Column420``
+        ``Column421`` = ``Column421``
+        ``Column422`` = ``Column422``
+        ``Column423`` = ``Column423``
+        ``Column424`` = ``Column424``
+        ``Column425`` = ``Column425``
+        ``Column426`` = ``Column426``
+        ``Column427`` = ``Column427``
+        ``Column428`` = ``Column428``
+        ``Column429`` = ``Column429``
+        ``Column430`` = ``Column430``
+        ``Column431`` = ``Column431``
+        ``Column432`` = ``Column432``
+        ``Column433`` = ``Column433``
+        ``Column434`` = ``Column434``
+        ``Column435`` = ``Column435``
+        ``Column436`` = ``Column436``
+        ``Column437`` = ``Column437``
+        ``Column438`` = ``Column438``
+        ``Column439`` = ``Column439``
+        ``Column440`` = ``Column440``
+        ``Column441`` = ``Column441``
+        ``Column442`` = ``Column442``
+        ``Column443`` = ``Column443``
+        ``Column444`` = ``Column444``
+        ``Column445`` = ``Column445``
+        ``Column446`` = ``Column446``
+        ``Column447`` = ``Column447``
+        ``Column448`` = ``Column448``
+        ``Column449`` = ``Column449``
+        ``Column450`` = ``Column450``
+        ``Column451`` = ``Column451``
+        ``Column452`` = ``Column452``
+        ``Column453`` = ``Column453``
+        ``Column454`` = ``Column454``
+        ``Column455`` = ``Column455``
+        ``Column456`` = ``Column456``
+        ``Column457`` = ``Column457``
+        ``Column458`` = ``Column458``
+        ``Column459`` = ``Column459``
+        ``Column460`` = ``Column460``
+        ``Column461`` = ``Column461``
+        ``Column462`` = ``Column462``
+        ``Column463`` = ``Column463``
+        ``Column464`` = ``Column464``
+        ``Column465`` = ``Column465``
+        ``Column466`` = ``Column466``
+        ``Column467`` = ``Column467``
+        ``Column468`` = ``Column468``
+        ``Column469`` = ``Column469``
+        ``Column470`` = ``Column470``
+        ``Column471`` = ``Column471``
+        ``Column472`` = ``Column472``
+        ``Column473`` = ``Column473``
+        ``Column474`` = ``Column474``
+        ``Column475`` = ``Column475``
+        ``Column476`` = ``Column476``
+        ``Column477`` = ``Column477``
+        ``Column478`` = ``Column478``
+        ``Column479`` = ``Column479``
+        ``Column480`` = ``Column480``
+        ``Column481`` = ``Column481``
+        ``Column482`` = ``Column482``
+        ``Column483`` = ``Column483``
+        ``Column484`` = ``Column484``
+        ``Column485`` = ``Column485``
+        ``Column486`` = ``Column486``
+        ``Column487`` = ``Column487``
+        ``Column488`` = ``Column488``
+        ``Column489`` = ``Column489``
+        ``Column490`` = ``Column490``
+        ``Column491`` = ``Column491``
+        ``Column492`` = ``Column492``
+        ``Column493`` = ``Column493``
+        ``Column494`` = ``Column494``
+        ``Column495`` = ``Column495``
+        ``Column496`` = ``Column496``
+        ``Column497`` = ``Column497``
+        ``Column498`` = ``Column498``
+        ``Column499`` = ``Column499``
+        ``Column500`` = ``Column500``
+        ``Column501`` = ``Column501``
+        ``Column502`` = ``Column502``
+        ``Column503`` = ``Column503``
+        ``Column504`` = ``Column504``
+        ``Column505`` = ``Column505``
+        ``Column506`` = ``Column506``
+        ``Column507`` = ``Column507``
+        ``Column508`` = ``Column508``
+        ``Column509`` = ``Column509``
+        ``Column510`` = ``Column510``
+        ``Column511`` = ``Column511``
+        ``Column512`` = ``Column512``
+        ``Column513`` = ``Column513``
+        ``Column514`` = ``Column514``
+        ``Column515`` = ``Column515``
+        ``Column516`` = ``Column516``
+        ``Column517`` = ``Column517``
+        ``Column518`` = ``Column518``
+        ``Column519`` = ``Column519``
+        ``Column520`` = ``Column520``
+        ``Column521`` = ``Column521``
+        ``Column522`` = ``Column522``
+        ``Column523`` = ``Column523``
+        ``Column524`` = ``Column524``
+        ``Column525`` = ``Column525``
+        ``Column526`` = ``Column526``
+        ``Column527`` = ``Column527``
+        ``Column528`` = ``Column528``
+        ``Column529`` = ``Column529``
+        ``Column530`` = ``Column530``
+        ``Column531`` = ``Column531``
+        ``Column532`` = ``Column532``
+        ``Column533`` = ``Column533``
+        ``Column534`` = ``Column534``
+        ``Column535`` = ``Column535``
+        ``Column536`` = ``Column536``
+        ``Column537`` = ``Column537``
+        ``Column538`` = ``Column538``
+        ``Column539`` = ``Column539``
+        ``Column540`` = ``Column540``
+        ``Column541`` = ``Column541``
+        ``Column542`` = ``Column542``
+        ``Column543`` = ``Column543``
+        ``Column544`` = ``Column544``
+        ``Column545`` = ``Column545``
+        ``Column546`` = ``Column546``
+        ``Column547`` = ``Column547``
+        ``Column548`` = ``Column548``
+        ``Column549`` = ``Column549``
+        ``Column550`` = ``Column550``
+        ``Column551`` = ``Column551``
+        ``Column552`` = ``Column552``
+        ``Column553`` = ``Column553``
+        ``Column554`` = ``Column554``
+        ``Column555`` = ``Column555``
+        ``Column556`` = ``Column556``
+        ``Column557`` = ``Column557``
+        ``Column558`` = ``Column558``
+        ``Column559`` = ``Column559``
+        ``Column560`` = ``Column560``
+        ``Column561`` = ``Column561``
+        ``Column562`` = ``Column562``
+        ``Column563`` = ``Column563``
+        ``Column564`` = ``Column564``
+        ``Column565`` = ``Column565``
+        ``Column566`` = ``Column566``
+        ``Column567`` = ``Column567``
+        ``Column568`` = ``Column568``
+        ``Column569`` = ``Column569``
+        ``Column570`` = ``Column570``
+        ``Column571`` = ``Column571``
+        ``Column572`` = ``Column572``
+        ``Column573`` = ``Column573``
+        ``Column574`` = ``Column574``
+        ``Column575`` = ``Column575``
+        ``Column576`` = ``Column576``
+        ``Column577`` = ``Column577``
+        ``Column578`` = ``Column578``
+        ``Column579`` = ``Column579``
+        ``Column580`` = ``Column580``
+        ``Column581`` = ``Column581``
+        ``Column582`` = ``Column582``
+        ``Column583`` = ``Column583``
+        ``Column584`` = ``Column584``
+        ``Column585`` = ``Column585``
+        ``Column586`` = ``Column586``
+        ``Column587`` = ``Column587``
+        ``Column588`` = ``Column588``
+        ``Column589`` = ``Column589``
+        ``Column590`` = ``Column590``
+        ``Column591`` = ``Column591``
+        ``Column592`` = ``Column592``
+        ``Column593`` = ``Column593``
+        ``Column594`` = ``Column594``
+        ``Column595`` = ``Column595``
+        ``Column596`` = ``Column596``
+        ``Column597`` = ``Column597``
+        ``Column598`` = ``Column598``
+        ``Column599`` = ``Column599``
+        ``Column600`` = ``Column600``
+      |}
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``ManyColumns``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``ManyColumns``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member this.Execute() =
+      executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+    member this.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    #endif
+
+    member this.LazyExecute() =
+      executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteSingle() =
+      executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+
   [<EditorBrowsable(EditorBrowsableState.Never)>]
   type ``MultipleTempTables_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
 
@@ -10533,10 +13366,13 @@ module Scripts =
       ``ordinal_Col3`` <- reader.GetOrdinal "Col3"
 
     let getItem (reader: SqlDataReader) =
+      let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+      let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+      let ``Col3`` = reader.GetString ``ordinal_Col3``
       {|
-        ``Col1`` = reader.GetInt32 ``ordinal_Col1``
-        ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
-        ``Col3`` = reader.GetString ``ordinal_Col3``
+        ``Col1`` = ``Col1``
+        ``Col2`` = ``Col2``
+        ``Col3`` = ``Col3``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -10759,9 +13595,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -10850,9 +13688,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -10991,9 +13831,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -11241,10 +14083,13 @@ module Scripts =
       ``ordinal_Col3`` <- reader.GetOrdinal "Col3"
 
     let getItem (reader: SqlDataReader) =
+      let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetInt32 ``ordinal_Col1`` |> Some
+      let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt64 ``ordinal_Col2`` |> Some
+      let ``Col3`` = if reader.IsDBNull ``ordinal_Col3`` then None else reader.GetBoolean ``ordinal_Col3`` |> Some
       {|
-        ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetInt32 ``ordinal_Col1`` |> Some
-        ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt64 ``ordinal_Col2`` |> Some
-        ``Col3`` = if reader.IsDBNull ``ordinal_Col3`` then None else reader.GetBoolean ``ordinal_Col3`` |> Some
+        ``Col1`` = ``Col1``
+        ``Col2`` = ``Col2``
+        ``Col3`` = ``Col3``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -11373,9 +14218,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -11496,9 +14343,11 @@ module Scripts =
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
     let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
-        ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-        ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
       }
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -11583,8 +14432,9 @@ module Scripts =
       ``ordinal_Test`` <- reader.GetOrdinal "Test"
 
     let getItem (reader: SqlDataReader) =
+      let ``Test`` = reader.GetInt32 ``ordinal_Test``
       {|
-        ``Test`` = reader.GetInt32 ``ordinal_Test``
+        ``Test`` = ``Test``
       |}
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -11676,9 +14526,11 @@ module Scripts =
       ``ordinal_SupportedCol2`` <- reader.GetOrdinal "SupportedCol2"
 
     let getItem (reader: SqlDataReader) =
+      let ``SupportedCol1`` = reader.GetInt32 ``ordinal_SupportedCol1``
+      let ``SupportedCol2`` = reader.GetString ``ordinal_SupportedCol2``
       {|
-        ``SupportedCol1`` = reader.GetInt32 ``ordinal_SupportedCol1``
-        ``SupportedCol2`` = reader.GetString ``ordinal_SupportedCol2``
+        ``SupportedCol1`` = ``SupportedCol1``
+        ``SupportedCol2`` = ``SupportedCol2``
       |}
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -11819,35 +14671,63 @@ module Scripts =
       ``ordinal_Xml`` <- reader.GetOrdinal "Xml"
 
     let getItem (reader: SqlDataReader) =
+      let ``Bigint`` = reader.GetInt64 ``ordinal_Bigint``
+      let ``Binary`` = reader.GetBytes ``ordinal_Binary``
+      let ``Bit`` = reader.GetBoolean ``ordinal_Bit``
+      let ``Char`` = reader.GetString ``ordinal_Char``
+      let ``Date`` = reader.GetDateTime ``ordinal_Date``
+      let ``Datetime`` = reader.GetDateTime ``ordinal_Datetime``
+      let ``Datetime2`` = reader.GetDateTime ``ordinal_Datetime2``
+      let ``Datetimeoffset`` = reader.GetDateTimeOffset ``ordinal_Datetimeoffset``
+      let ``Decimal`` = reader.GetDecimal ``ordinal_Decimal``
+      let ``Float`` = reader.GetDouble ``ordinal_Float``
+      let ``Image`` = reader.GetBytes ``ordinal_Image``
+      let ``Int`` = reader.GetInt32 ``ordinal_Int``
+      let ``Money`` = reader.GetDecimal ``ordinal_Money``
+      let ``Nchar`` = reader.GetString ``ordinal_Nchar``
+      let ``Ntext`` = reader.GetString ``ordinal_Ntext``
+      let ``Numeric`` = reader.GetDecimal ``ordinal_Numeric``
+      let ``Nvarchar`` = reader.GetString ``ordinal_Nvarchar``
+      let ``Real`` = reader.GetFloat ``ordinal_Real``
+      let ``Smalldatetime`` = reader.GetDateTime ``ordinal_Smalldatetime``
+      let ``Smallint`` = reader.GetInt16 ``ordinal_Smallint``
+      let ``Smallmoney`` = reader.GetDecimal ``ordinal_Smallmoney``
+      let ``Text`` = reader.GetString ``ordinal_Text``
+      let ``Time`` = reader.GetTimeSpan ``ordinal_Time``
+      let ``Tinyint`` = reader.GetByte ``ordinal_Tinyint``
+      let ``Uniqueidentifier`` = reader.GetGuid ``ordinal_Uniqueidentifier``
+      let ``Varbinary`` = reader.GetBytes ``ordinal_Varbinary``
+      let ``Varchar`` = reader.GetString ``ordinal_Varchar``
+      let ``Xml`` = reader.GetString ``ordinal_Xml``
       {|
-        ``Bigint`` = reader.GetInt64 ``ordinal_Bigint``
-        ``Binary`` = reader.GetBytes ``ordinal_Binary``
-        ``Bit`` = reader.GetBoolean ``ordinal_Bit``
-        ``Char`` = reader.GetString ``ordinal_Char``
-        ``Date`` = reader.GetDateTime ``ordinal_Date``
-        ``Datetime`` = reader.GetDateTime ``ordinal_Datetime``
-        ``Datetime2`` = reader.GetDateTime ``ordinal_Datetime2``
-        ``Datetimeoffset`` = reader.GetDateTimeOffset ``ordinal_Datetimeoffset``
-        ``Decimal`` = reader.GetDecimal ``ordinal_Decimal``
-        ``Float`` = reader.GetDouble ``ordinal_Float``
-        ``Image`` = reader.GetBytes ``ordinal_Image``
-        ``Int`` = reader.GetInt32 ``ordinal_Int``
-        ``Money`` = reader.GetDecimal ``ordinal_Money``
-        ``Nchar`` = reader.GetString ``ordinal_Nchar``
-        ``Ntext`` = reader.GetString ``ordinal_Ntext``
-        ``Numeric`` = reader.GetDecimal ``ordinal_Numeric``
-        ``Nvarchar`` = reader.GetString ``ordinal_Nvarchar``
-        ``Real`` = reader.GetFloat ``ordinal_Real``
-        ``Smalldatetime`` = reader.GetDateTime ``ordinal_Smalldatetime``
-        ``Smallint`` = reader.GetInt16 ``ordinal_Smallint``
-        ``Smallmoney`` = reader.GetDecimal ``ordinal_Smallmoney``
-        ``Text`` = reader.GetString ``ordinal_Text``
-        ``Time`` = reader.GetTimeSpan ``ordinal_Time``
-        ``Tinyint`` = reader.GetByte ``ordinal_Tinyint``
-        ``Uniqueidentifier`` = reader.GetGuid ``ordinal_Uniqueidentifier``
-        ``Varbinary`` = reader.GetBytes ``ordinal_Varbinary``
-        ``Varchar`` = reader.GetString ``ordinal_Varchar``
-        ``Xml`` = reader.GetString ``ordinal_Xml``
+        ``Bigint`` = ``Bigint``
+        ``Binary`` = ``Binary``
+        ``Bit`` = ``Bit``
+        ``Char`` = ``Char``
+        ``Date`` = ``Date``
+        ``Datetime`` = ``Datetime``
+        ``Datetime2`` = ``Datetime2``
+        ``Datetimeoffset`` = ``Datetimeoffset``
+        ``Decimal`` = ``Decimal``
+        ``Float`` = ``Float``
+        ``Image`` = ``Image``
+        ``Int`` = ``Int``
+        ``Money`` = ``Money``
+        ``Nchar`` = ``Nchar``
+        ``Ntext`` = ``Ntext``
+        ``Numeric`` = ``Numeric``
+        ``Nvarchar`` = ``Nvarchar``
+        ``Real`` = ``Real``
+        ``Smalldatetime`` = ``Smalldatetime``
+        ``Smallint`` = ``Smallint``
+        ``Smallmoney`` = ``Smallmoney``
+        ``Text`` = ``Text``
+        ``Time`` = ``Time``
+        ``Tinyint`` = ``Tinyint``
+        ``Uniqueidentifier`` = ``Uniqueidentifier``
+        ``Varbinary`` = ``Varbinary``
+        ``Varchar`` = ``Varchar``
+        ``Xml`` = ``Xml``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -12187,35 +15067,63 @@ module Scripts =
       ``ordinal_Xml`` <- reader.GetOrdinal "Xml"
 
     let getItem (reader: SqlDataReader) =
+      let ``Bigint`` = if reader.IsDBNull ``ordinal_Bigint`` then None else reader.GetInt64 ``ordinal_Bigint`` |> Some
+      let ``Binary`` = if reader.IsDBNull ``ordinal_Binary`` then None else reader.GetBytes ``ordinal_Binary`` |> Some
+      let ``Bit`` = if reader.IsDBNull ``ordinal_Bit`` then None else reader.GetBoolean ``ordinal_Bit`` |> Some
+      let ``Char`` = if reader.IsDBNull ``ordinal_Char`` then None else reader.GetString ``ordinal_Char`` |> Some
+      let ``Date`` = if reader.IsDBNull ``ordinal_Date`` then None else reader.GetDateTime ``ordinal_Date`` |> Some
+      let ``Datetime`` = if reader.IsDBNull ``ordinal_Datetime`` then None else reader.GetDateTime ``ordinal_Datetime`` |> Some
+      let ``Datetime2`` = if reader.IsDBNull ``ordinal_Datetime2`` then None else reader.GetDateTime ``ordinal_Datetime2`` |> Some
+      let ``Datetimeoffset`` = if reader.IsDBNull ``ordinal_Datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_Datetimeoffset`` |> Some
+      let ``Decimal`` = if reader.IsDBNull ``ordinal_Decimal`` then None else reader.GetDecimal ``ordinal_Decimal`` |> Some
+      let ``Float`` = if reader.IsDBNull ``ordinal_Float`` then None else reader.GetDouble ``ordinal_Float`` |> Some
+      let ``Image`` = if reader.IsDBNull ``ordinal_Image`` then None else reader.GetBytes ``ordinal_Image`` |> Some
+      let ``Int`` = if reader.IsDBNull ``ordinal_Int`` then None else reader.GetInt32 ``ordinal_Int`` |> Some
+      let ``Money`` = if reader.IsDBNull ``ordinal_Money`` then None else reader.GetDecimal ``ordinal_Money`` |> Some
+      let ``Nchar`` = if reader.IsDBNull ``ordinal_Nchar`` then None else reader.GetString ``ordinal_Nchar`` |> Some
+      let ``Ntext`` = if reader.IsDBNull ``ordinal_Ntext`` then None else reader.GetString ``ordinal_Ntext`` |> Some
+      let ``Numeric`` = if reader.IsDBNull ``ordinal_Numeric`` then None else reader.GetDecimal ``ordinal_Numeric`` |> Some
+      let ``Nvarchar`` = if reader.IsDBNull ``ordinal_Nvarchar`` then None else reader.GetString ``ordinal_Nvarchar`` |> Some
+      let ``Real`` = if reader.IsDBNull ``ordinal_Real`` then None else reader.GetFloat ``ordinal_Real`` |> Some
+      let ``Smalldatetime`` = if reader.IsDBNull ``ordinal_Smalldatetime`` then None else reader.GetDateTime ``ordinal_Smalldatetime`` |> Some
+      let ``Smallint`` = if reader.IsDBNull ``ordinal_Smallint`` then None else reader.GetInt16 ``ordinal_Smallint`` |> Some
+      let ``Smallmoney`` = if reader.IsDBNull ``ordinal_Smallmoney`` then None else reader.GetDecimal ``ordinal_Smallmoney`` |> Some
+      let ``Text`` = if reader.IsDBNull ``ordinal_Text`` then None else reader.GetString ``ordinal_Text`` |> Some
+      let ``Time`` = if reader.IsDBNull ``ordinal_Time`` then None else reader.GetTimeSpan ``ordinal_Time`` |> Some
+      let ``Tinyint`` = if reader.IsDBNull ``ordinal_Tinyint`` then None else reader.GetByte ``ordinal_Tinyint`` |> Some
+      let ``Uniqueidentifier`` = if reader.IsDBNull ``ordinal_Uniqueidentifier`` then None else reader.GetGuid ``ordinal_Uniqueidentifier`` |> Some
+      let ``Varbinary`` = if reader.IsDBNull ``ordinal_Varbinary`` then None else reader.GetBytes ``ordinal_Varbinary`` |> Some
+      let ``Varchar`` = if reader.IsDBNull ``ordinal_Varchar`` then None else reader.GetString ``ordinal_Varchar`` |> Some
+      let ``Xml`` = if reader.IsDBNull ``ordinal_Xml`` then None else reader.GetString ``ordinal_Xml`` |> Some
       {|
-        ``Bigint`` = if reader.IsDBNull ``ordinal_Bigint`` then None else reader.GetInt64 ``ordinal_Bigint`` |> Some
-        ``Binary`` = if reader.IsDBNull ``ordinal_Binary`` then None else reader.GetBytes ``ordinal_Binary`` |> Some
-        ``Bit`` = if reader.IsDBNull ``ordinal_Bit`` then None else reader.GetBoolean ``ordinal_Bit`` |> Some
-        ``Char`` = if reader.IsDBNull ``ordinal_Char`` then None else reader.GetString ``ordinal_Char`` |> Some
-        ``Date`` = if reader.IsDBNull ``ordinal_Date`` then None else reader.GetDateTime ``ordinal_Date`` |> Some
-        ``Datetime`` = if reader.IsDBNull ``ordinal_Datetime`` then None else reader.GetDateTime ``ordinal_Datetime`` |> Some
-        ``Datetime2`` = if reader.IsDBNull ``ordinal_Datetime2`` then None else reader.GetDateTime ``ordinal_Datetime2`` |> Some
-        ``Datetimeoffset`` = if reader.IsDBNull ``ordinal_Datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_Datetimeoffset`` |> Some
-        ``Decimal`` = if reader.IsDBNull ``ordinal_Decimal`` then None else reader.GetDecimal ``ordinal_Decimal`` |> Some
-        ``Float`` = if reader.IsDBNull ``ordinal_Float`` then None else reader.GetDouble ``ordinal_Float`` |> Some
-        ``Image`` = if reader.IsDBNull ``ordinal_Image`` then None else reader.GetBytes ``ordinal_Image`` |> Some
-        ``Int`` = if reader.IsDBNull ``ordinal_Int`` then None else reader.GetInt32 ``ordinal_Int`` |> Some
-        ``Money`` = if reader.IsDBNull ``ordinal_Money`` then None else reader.GetDecimal ``ordinal_Money`` |> Some
-        ``Nchar`` = if reader.IsDBNull ``ordinal_Nchar`` then None else reader.GetString ``ordinal_Nchar`` |> Some
-        ``Ntext`` = if reader.IsDBNull ``ordinal_Ntext`` then None else reader.GetString ``ordinal_Ntext`` |> Some
-        ``Numeric`` = if reader.IsDBNull ``ordinal_Numeric`` then None else reader.GetDecimal ``ordinal_Numeric`` |> Some
-        ``Nvarchar`` = if reader.IsDBNull ``ordinal_Nvarchar`` then None else reader.GetString ``ordinal_Nvarchar`` |> Some
-        ``Real`` = if reader.IsDBNull ``ordinal_Real`` then None else reader.GetFloat ``ordinal_Real`` |> Some
-        ``Smalldatetime`` = if reader.IsDBNull ``ordinal_Smalldatetime`` then None else reader.GetDateTime ``ordinal_Smalldatetime`` |> Some
-        ``Smallint`` = if reader.IsDBNull ``ordinal_Smallint`` then None else reader.GetInt16 ``ordinal_Smallint`` |> Some
-        ``Smallmoney`` = if reader.IsDBNull ``ordinal_Smallmoney`` then None else reader.GetDecimal ``ordinal_Smallmoney`` |> Some
-        ``Text`` = if reader.IsDBNull ``ordinal_Text`` then None else reader.GetString ``ordinal_Text`` |> Some
-        ``Time`` = if reader.IsDBNull ``ordinal_Time`` then None else reader.GetTimeSpan ``ordinal_Time`` |> Some
-        ``Tinyint`` = if reader.IsDBNull ``ordinal_Tinyint`` then None else reader.GetByte ``ordinal_Tinyint`` |> Some
-        ``Uniqueidentifier`` = if reader.IsDBNull ``ordinal_Uniqueidentifier`` then None else reader.GetGuid ``ordinal_Uniqueidentifier`` |> Some
-        ``Varbinary`` = if reader.IsDBNull ``ordinal_Varbinary`` then None else reader.GetBytes ``ordinal_Varbinary`` |> Some
-        ``Varchar`` = if reader.IsDBNull ``ordinal_Varchar`` then None else reader.GetString ``ordinal_Varchar`` |> Some
-        ``Xml`` = if reader.IsDBNull ``ordinal_Xml`` then None else reader.GetString ``ordinal_Xml`` |> Some
+        ``Bigint`` = ``Bigint``
+        ``Binary`` = ``Binary``
+        ``Bit`` = ``Bit``
+        ``Char`` = ``Char``
+        ``Date`` = ``Date``
+        ``Datetime`` = ``Datetime``
+        ``Datetime2`` = ``Datetime2``
+        ``Datetimeoffset`` = ``Datetimeoffset``
+        ``Decimal`` = ``Decimal``
+        ``Float`` = ``Float``
+        ``Image`` = ``Image``
+        ``Int`` = ``Int``
+        ``Money`` = ``Money``
+        ``Nchar`` = ``Nchar``
+        ``Ntext`` = ``Ntext``
+        ``Numeric`` = ``Numeric``
+        ``Nvarchar`` = ``Nvarchar``
+        ``Real`` = ``Real``
+        ``Smalldatetime`` = ``Smalldatetime``
+        ``Smallint`` = ``Smallint``
+        ``Smallmoney`` = ``Smallmoney``
+        ``Text`` = ``Text``
+        ``Time`` = ``Time``
+        ``Tinyint`` = ``Tinyint``
+        ``Uniqueidentifier`` = ``Uniqueidentifier``
+        ``Varbinary`` = ``Varbinary``
+        ``Varchar`` = ``Varchar``
+        ``Xml`` = ``Xml``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -12555,35 +15463,63 @@ module Scripts =
       ``ordinal_Xml`` <- reader.GetOrdinal "Xml"
 
     let getItem (reader: SqlDataReader) =
+      let ``Bigint`` = if reader.IsDBNull ``ordinal_Bigint`` then None else reader.GetInt64 ``ordinal_Bigint`` |> Some
+      let ``Binary`` = if reader.IsDBNull ``ordinal_Binary`` then None else reader.GetBytes ``ordinal_Binary`` |> Some
+      let ``Bit`` = if reader.IsDBNull ``ordinal_Bit`` then None else reader.GetBoolean ``ordinal_Bit`` |> Some
+      let ``Char`` = if reader.IsDBNull ``ordinal_Char`` then None else reader.GetString ``ordinal_Char`` |> Some
+      let ``Date`` = if reader.IsDBNull ``ordinal_Date`` then None else reader.GetDateTime ``ordinal_Date`` |> Some
+      let ``Datetime`` = if reader.IsDBNull ``ordinal_Datetime`` then None else reader.GetDateTime ``ordinal_Datetime`` |> Some
+      let ``Datetime2`` = if reader.IsDBNull ``ordinal_Datetime2`` then None else reader.GetDateTime ``ordinal_Datetime2`` |> Some
+      let ``Datetimeoffset`` = if reader.IsDBNull ``ordinal_Datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_Datetimeoffset`` |> Some
+      let ``Decimal`` = if reader.IsDBNull ``ordinal_Decimal`` then None else reader.GetDecimal ``ordinal_Decimal`` |> Some
+      let ``Float`` = if reader.IsDBNull ``ordinal_Float`` then None else reader.GetDouble ``ordinal_Float`` |> Some
+      let ``Image`` = if reader.IsDBNull ``ordinal_Image`` then None else reader.GetBytes ``ordinal_Image`` |> Some
+      let ``Int`` = if reader.IsDBNull ``ordinal_Int`` then None else reader.GetInt32 ``ordinal_Int`` |> Some
+      let ``Money`` = if reader.IsDBNull ``ordinal_Money`` then None else reader.GetDecimal ``ordinal_Money`` |> Some
+      let ``Nchar`` = if reader.IsDBNull ``ordinal_Nchar`` then None else reader.GetString ``ordinal_Nchar`` |> Some
+      let ``Ntext`` = if reader.IsDBNull ``ordinal_Ntext`` then None else reader.GetString ``ordinal_Ntext`` |> Some
+      let ``Numeric`` = if reader.IsDBNull ``ordinal_Numeric`` then None else reader.GetDecimal ``ordinal_Numeric`` |> Some
+      let ``Nvarchar`` = if reader.IsDBNull ``ordinal_Nvarchar`` then None else reader.GetString ``ordinal_Nvarchar`` |> Some
+      let ``Real`` = if reader.IsDBNull ``ordinal_Real`` then None else reader.GetFloat ``ordinal_Real`` |> Some
+      let ``Smalldatetime`` = if reader.IsDBNull ``ordinal_Smalldatetime`` then None else reader.GetDateTime ``ordinal_Smalldatetime`` |> Some
+      let ``Smallint`` = if reader.IsDBNull ``ordinal_Smallint`` then None else reader.GetInt16 ``ordinal_Smallint`` |> Some
+      let ``Smallmoney`` = if reader.IsDBNull ``ordinal_Smallmoney`` then None else reader.GetDecimal ``ordinal_Smallmoney`` |> Some
+      let ``Text`` = if reader.IsDBNull ``ordinal_Text`` then None else reader.GetString ``ordinal_Text`` |> Some
+      let ``Time`` = if reader.IsDBNull ``ordinal_Time`` then None else reader.GetTimeSpan ``ordinal_Time`` |> Some
+      let ``Tinyint`` = if reader.IsDBNull ``ordinal_Tinyint`` then None else reader.GetByte ``ordinal_Tinyint`` |> Some
+      let ``Uniqueidentifier`` = if reader.IsDBNull ``ordinal_Uniqueidentifier`` then None else reader.GetGuid ``ordinal_Uniqueidentifier`` |> Some
+      let ``Varbinary`` = if reader.IsDBNull ``ordinal_Varbinary`` then None else reader.GetBytes ``ordinal_Varbinary`` |> Some
+      let ``Varchar`` = if reader.IsDBNull ``ordinal_Varchar`` then None else reader.GetString ``ordinal_Varchar`` |> Some
+      let ``Xml`` = if reader.IsDBNull ``ordinal_Xml`` then None else reader.GetString ``ordinal_Xml`` |> Some
       {|
-        ``Bigint`` = if reader.IsDBNull ``ordinal_Bigint`` then None else reader.GetInt64 ``ordinal_Bigint`` |> Some
-        ``Binary`` = if reader.IsDBNull ``ordinal_Binary`` then None else reader.GetBytes ``ordinal_Binary`` |> Some
-        ``Bit`` = if reader.IsDBNull ``ordinal_Bit`` then None else reader.GetBoolean ``ordinal_Bit`` |> Some
-        ``Char`` = if reader.IsDBNull ``ordinal_Char`` then None else reader.GetString ``ordinal_Char`` |> Some
-        ``Date`` = if reader.IsDBNull ``ordinal_Date`` then None else reader.GetDateTime ``ordinal_Date`` |> Some
-        ``Datetime`` = if reader.IsDBNull ``ordinal_Datetime`` then None else reader.GetDateTime ``ordinal_Datetime`` |> Some
-        ``Datetime2`` = if reader.IsDBNull ``ordinal_Datetime2`` then None else reader.GetDateTime ``ordinal_Datetime2`` |> Some
-        ``Datetimeoffset`` = if reader.IsDBNull ``ordinal_Datetimeoffset`` then None else reader.GetDateTimeOffset ``ordinal_Datetimeoffset`` |> Some
-        ``Decimal`` = if reader.IsDBNull ``ordinal_Decimal`` then None else reader.GetDecimal ``ordinal_Decimal`` |> Some
-        ``Float`` = if reader.IsDBNull ``ordinal_Float`` then None else reader.GetDouble ``ordinal_Float`` |> Some
-        ``Image`` = if reader.IsDBNull ``ordinal_Image`` then None else reader.GetBytes ``ordinal_Image`` |> Some
-        ``Int`` = if reader.IsDBNull ``ordinal_Int`` then None else reader.GetInt32 ``ordinal_Int`` |> Some
-        ``Money`` = if reader.IsDBNull ``ordinal_Money`` then None else reader.GetDecimal ``ordinal_Money`` |> Some
-        ``Nchar`` = if reader.IsDBNull ``ordinal_Nchar`` then None else reader.GetString ``ordinal_Nchar`` |> Some
-        ``Ntext`` = if reader.IsDBNull ``ordinal_Ntext`` then None else reader.GetString ``ordinal_Ntext`` |> Some
-        ``Numeric`` = if reader.IsDBNull ``ordinal_Numeric`` then None else reader.GetDecimal ``ordinal_Numeric`` |> Some
-        ``Nvarchar`` = if reader.IsDBNull ``ordinal_Nvarchar`` then None else reader.GetString ``ordinal_Nvarchar`` |> Some
-        ``Real`` = if reader.IsDBNull ``ordinal_Real`` then None else reader.GetFloat ``ordinal_Real`` |> Some
-        ``Smalldatetime`` = if reader.IsDBNull ``ordinal_Smalldatetime`` then None else reader.GetDateTime ``ordinal_Smalldatetime`` |> Some
-        ``Smallint`` = if reader.IsDBNull ``ordinal_Smallint`` then None else reader.GetInt16 ``ordinal_Smallint`` |> Some
-        ``Smallmoney`` = if reader.IsDBNull ``ordinal_Smallmoney`` then None else reader.GetDecimal ``ordinal_Smallmoney`` |> Some
-        ``Text`` = if reader.IsDBNull ``ordinal_Text`` then None else reader.GetString ``ordinal_Text`` |> Some
-        ``Time`` = if reader.IsDBNull ``ordinal_Time`` then None else reader.GetTimeSpan ``ordinal_Time`` |> Some
-        ``Tinyint`` = if reader.IsDBNull ``ordinal_Tinyint`` then None else reader.GetByte ``ordinal_Tinyint`` |> Some
-        ``Uniqueidentifier`` = if reader.IsDBNull ``ordinal_Uniqueidentifier`` then None else reader.GetGuid ``ordinal_Uniqueidentifier`` |> Some
-        ``Varbinary`` = if reader.IsDBNull ``ordinal_Varbinary`` then None else reader.GetBytes ``ordinal_Varbinary`` |> Some
-        ``Varchar`` = if reader.IsDBNull ``ordinal_Varchar`` then None else reader.GetString ``ordinal_Varchar`` |> Some
-        ``Xml`` = if reader.IsDBNull ``ordinal_Xml`` then None else reader.GetString ``ordinal_Xml`` |> Some
+        ``Bigint`` = ``Bigint``
+        ``Binary`` = ``Binary``
+        ``Bit`` = ``Bit``
+        ``Char`` = ``Char``
+        ``Date`` = ``Date``
+        ``Datetime`` = ``Datetime``
+        ``Datetime2`` = ``Datetime2``
+        ``Datetimeoffset`` = ``Datetimeoffset``
+        ``Decimal`` = ``Decimal``
+        ``Float`` = ``Float``
+        ``Image`` = ``Image``
+        ``Int`` = ``Int``
+        ``Money`` = ``Money``
+        ``Nchar`` = ``Nchar``
+        ``Ntext`` = ``Ntext``
+        ``Numeric`` = ``Numeric``
+        ``Nvarchar`` = ``Nvarchar``
+        ``Real`` = ``Real``
+        ``Smalldatetime`` = ``Smalldatetime``
+        ``Smallint`` = ``Smallint``
+        ``Smallmoney`` = ``Smallmoney``
+        ``Text`` = ``Text``
+        ``Time`` = ``Time``
+        ``Tinyint`` = ``Tinyint``
+        ``Uniqueidentifier`` = ``Uniqueidentifier``
+        ``Varbinary`` = ``Varbinary``
+        ``Varchar`` = ``Varchar``
+        ``Xml`` = ``Xml``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -12871,9 +15807,11 @@ module Scripts =
       ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
     let getItem (reader: SqlDataReader) =
+      let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+      let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
       {|
-        ``Col1`` = reader.GetInt32 ``ordinal_Col1``
-        ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+        ``Col1`` = ``Col1``
+        ``Col2`` = ``Col2``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -13056,9 +15994,11 @@ module Scripts =
       ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
     let getItem (reader: SqlDataReader) =
+      let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+      let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
       {|
-        ``Col1`` = reader.GetInt32 ``ordinal_Col1``
-        ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+        ``Col1`` = ``Col1``
+        ``Col2`` = ``Col2``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -13240,9 +16180,11 @@ module Scripts =
       ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
     let getItem (reader: SqlDataReader) =
+      let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
+      let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
       {|
-        ``Col1`` = reader.GetInt32 ``ordinal_Col1``
-        ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetString ``ordinal_Col2`` |> Some
+        ``Col1`` = ``Col1``
+        ``Col2`` = ``Col2``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -13433,13 +16375,19 @@ module Scripts =
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
     let getItem (reader: SqlDataReader) =
+      let ``binary`` = reader.GetBytes ``ordinal_binary``
+      let ``char`` = reader.GetString ``ordinal_char``
+      let ``nchar`` = reader.GetString ``ordinal_nchar``
+      let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
+      let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
+      let ``varchar`` = reader.GetString ``ordinal_varchar``
       {|
-        ``binary`` = reader.GetBytes ``ordinal_binary``
-        ``char`` = reader.GetString ``ordinal_char``
-        ``nchar`` = reader.GetString ``ordinal_nchar``
-        ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
-        ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
-        ``varchar`` = reader.GetString ``ordinal_varchar``
+        ``binary`` = ``binary``
+        ``char`` = ``char``
+        ``nchar`` = ``nchar``
+        ``nvarchar`` = ``nvarchar``
+        ``varbinary`` = ``varbinary``
+        ``varchar`` = ``varchar``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -13641,10 +16589,13 @@ module Scripts =
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
     let getItem (reader: SqlDataReader) =
+      let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
+      let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
+      let ``varchar`` = reader.GetString ``ordinal_varchar``
       {|
-        ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
-        ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
-        ``varchar`` = reader.GetString ``ordinal_varchar``
+        ``nvarchar`` = ``nvarchar``
+        ``varbinary`` = ``varbinary``
+        ``varchar`` = ``varchar``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -13832,9 +16783,11 @@ module Scripts =
       ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
     let getItem (reader: SqlDataReader) =
+      let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+      let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
       {|
-        ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-        ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+        ``Foo`` = ``Foo``
+        ``Bar`` = ``Bar``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =
@@ -14192,9 +17145,11 @@ module Scripts =
           ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
         let getItem (reader: SqlDataReader) : TableDtos.dbo.OptionTableWithDto =
+          let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
+          let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
           {
-            ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
-            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
+            ``Col1`` = ``Col1``
+            ``Col2`` = ``Col2``
           }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -14281,9 +17236,11 @@ module Scripts =
           ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
         let getItem (reader: SqlDataReader) =
+          let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
+          let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
           {|
-            ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
-            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
+            ``Col1`` = ``Col1``
+            ``Col2`` = ``Col2``
           |}
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -14372,9 +17329,11 @@ module Scripts =
           ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
         let getItem (reader: SqlDataReader) =
+          let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
+          let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
           {|
-            ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then None else reader.GetInt32 ``ordinal_Foo`` |> Some
-            ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then None else reader.GetString ``ordinal_Bar`` |> Some
+            ``Foo`` = ``Foo``
+            ``Bar`` = ``Bar``
           |}
 
         member __.ExecuteAsync(?cancellationToken) =
@@ -14498,9 +17457,11 @@ module Scripts =
           ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
         let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+          let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+          let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
           {
-            ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
-            ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+            ``TableCol1`` = ``TableCol1``
+            ``TableCol2`` = ``TableCol2``
           }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -14824,9 +17785,11 @@ module Scripts =
           ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
         let getItem (reader: SqlDataReader) : TableDtos.dbo.VoptionTableWithDto =
+          let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
+          let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
           {
-            ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
-            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
+            ``Col1`` = ``Col1``
+            ``Col2`` = ``Col2``
           }
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -14913,9 +17876,11 @@ module Scripts =
           ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
         let getItem (reader: SqlDataReader) =
+          let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
+          let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
           {|
-            ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
-            ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
+            ``Col1`` = ``Col1``
+            ``Col2`` = ``Col2``
           |}
 
         [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -15004,9 +17969,11 @@ module Scripts =
           ``ordinal_Bar`` <- reader.GetOrdinal "Bar"
 
         let getItem (reader: SqlDataReader) =
+          let ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then ValueNone else reader.GetInt32 ``ordinal_Foo`` |> ValueSome
+          let ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then ValueNone else reader.GetString ``ordinal_Bar`` |> ValueSome
           {|
-            ``Foo`` = if reader.IsDBNull ``ordinal_Foo`` then ValueNone else reader.GetInt32 ``ordinal_Foo`` |> ValueSome
-            ``Bar`` = if reader.IsDBNull ``ordinal_Bar`` then ValueNone else reader.GetString ``ordinal_Bar`` |> ValueSome
+            ``Foo`` = ``Foo``
+            ``Bar`` = ``Bar``
           |}
 
         member __.ExecuteAsync(?cancellationToken) =
