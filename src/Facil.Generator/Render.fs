@@ -302,13 +302,18 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
             $"let getItem (reader: SqlDataReader){getItemReturnTypeExpr} ="
             yield! indent [
+              for c in cols do
+                if c.IsNullable then
+                  $"let ``{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
+                else
+                  $"let ``{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+            ]
+
+            yield! indent [
               getItemRecordStart
               yield! indent [
                 for c in cols do
-                  if c.IsNullable then
-                    $"``{getColName c}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
-                  else
-                    $"``{getColName c}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+                    $"``{getColName c}`` = ``{c.Name.Value}``"
               ]
               getItemRecordEnd
             ]
@@ -485,13 +490,18 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
             $"let getItem (reader: SqlDataReader){getItemReturnTypeExpr} ="
             yield! indent [
+              for c in cols do
+                if c.IsNullable then
+                  $"let ``{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
+                else
+                  $"let ``{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+            ]
+
+            yield! indent [
               getItemRecordStart
               yield! indent [
                 for c in cols do
-                  if c.IsNullable then
-                    $"``{getColName c}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
-                  else
-                    $"``{getColName c}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+                  $"``{getColName c}`` = ``{c.Name.Value}``"
               ]
               getItemRecordEnd
             ]
