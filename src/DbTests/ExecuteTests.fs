@@ -2807,6 +2807,19 @@ let execTests =
         )
     ]
 
+    testList (nameof DbGen.Scripts.MenyColumns) [
+      yield!
+        allExecuteMethodsAsSingle<DbGen.Scripts.MenyColumns, _>
+        |> List.map (fun (name, exec) ->
+            testCase name <| fun () ->
+              let res =
+                DbGen.Scripts.MenyColumns
+                  .WithConnection(Config.connStr)
+                |> exec
+              test <@ res.Value.Column1 = None @>
+              test <@ res.Value.Column500 = None @>
+        )
+    ]
 
     testList (nameof DbGen.Scripts.NormalParams) [
       yield!
