@@ -3,7 +3,7 @@ Release notes
 
 ### 0.2.7 (2021-02-15)
 
-* Adjust generated code to avoid stack overflow when there are very many (several hundreds) nullable output columns, due to particularities of the F# compiler
+* Adjust generated code to avoid stack overflow when there are very many (several hundreds) nullable output columns, due to particularities of the F# compiler ([#9](https://github.com/cmeeren/Facil/issues/9)/[#10](https://github.com/cmeeren/Facil/issues/10), thanks [@davidtme](https://github.com/davidtme))
 
 ### 0.2.6 (2021-02-11)
 
