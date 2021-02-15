@@ -58,6 +58,7 @@
     <None Include="SQL\TempTableWithLengthTypes.sql" />
     <None Include="SQL\TempTableWithMaxLengthTypes.sql" />
     <None Include="SQL\NominalResult.sql" />
+    <None Include="SQL\ManyColumns.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />
@@ -69,7 +70,7 @@
     <Compile Include="ConfigTests.fs" />
     <Compile Include="OutParameterAndReturnValueTests.fs" />
     <Compile Include="TempTableTests.fs" />
-    <Compile Include="MiscTests.fs" />
+    <None Include="MiscTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
