@@ -192,8 +192,6 @@ rulesets:
           tvp:
             type: dbo.SingleColNonNull
 
-      - for: ManyColumns.sql
-
       - for: TempTableAllTypesNonNull.sql
         tempTables:
           - definition: TempTableDefinitions/TempTableAllTypesNonNull.sql

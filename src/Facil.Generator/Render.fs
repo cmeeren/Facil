@@ -304,16 +304,16 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             yield! indent [
               for c in cols do
                 if c.IsNullable then
-                  $"let ``value_{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
+                  $"let ``{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
                 else
-                  $"let ``value_{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+                  $"let ``{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
             ]
 
             yield! indent [
               getItemRecordStart
               yield! indent [
                 for c in cols do
-                    $"``{getColName c}`` = ``value_{c.Name.Value}``"
+                    $"``{getColName c}`` = ``{c.Name.Value}``"
               ]
               getItemRecordEnd
             ]
