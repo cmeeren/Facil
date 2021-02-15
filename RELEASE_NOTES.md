@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.7 (2021-02-15)
+
+* Adjust generated code to avoid stack overflow when there are very many (several hundreds) nullable output columns, due to particularities of the F# compiler
+
 ### 0.2.6 (2021-02-11)
 
 * Make the generated code more compatible with older F# versions
