@@ -307,6 +307,9 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                   $"let ``{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
                 else
                   $"let ``{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+
+              if cols.Length > 100 then // Arbitrary amount for a big record
+                "reader.IsClosed |> ignore // Disable compiler optimization that causes stack overflow at runtime for large records"
             ]
 
             yield! indent [
@@ -495,6 +498,9 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                   $"let ``{c.Name.Value}`` = if reader.IsDBNull ``ordinal_{c.Name.Value}`` then {outOptionNone} else reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}`` |> {outOptionSome}"
                 else
                   $"let ``{c.Name.Value}`` = reader.{c.TypeInfo.SqlDataReaderGetMethodName} ``ordinal_{c.Name.Value}``"
+
+              if cols.Length > 100 then // Arbitrary amount for a big record
+                "reader.IsClosed |> ignore // Disable compiler optimization that causes stack overflow at runtime for large records"
             ]
 
             yield! indent [
