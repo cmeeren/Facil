@@ -475,12 +475,19 @@ let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableT
       use reader = cmd.ExecuteReader()
       let sprocs = ResizeArray()
       while reader.Read() do
+        let schemaName = reader.["SchemaName"] |> unbox<string>
+        let name = reader.["name"] |> unbox<string>
+
         sprocs.Add(
           { 
             ObjectId = reader.["object_id"] |> unbox<int>
-            SchemaName = reader.["SchemaName"] |> unbox<string>
-            Name = reader.["name"] |> unbox<string>
-            Definition = reader.["Definition"] |> unbox<string>
+            SchemaName = schemaName
+            Name = name
+            Definition =
+              if reader.IsDBNull "Definition" then
+                failwith $"Unable to get definition of procedure {schemaName}.{name}. Ensure the current principal has the VIEW DEFINITION permission on the procedure."
+              else
+                reader.["Definition"] |> unbox<string>
             Parameters = []  // Added later
             ResultSet = None  // Added later
           }

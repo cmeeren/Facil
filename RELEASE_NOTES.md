@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.8 (2021-02-23)
+
+* Improved error message when lacking permission to view the definition of a stored procedure.
+
 ### 0.2.7 (2021-02-15)
 
 * Adjust generated code to avoid stack overflow when there are very many (several hundreds) nullable output columns, due to particularities of the F# compiler ([#9](https://github.com/cmeeren/Facil/issues/9)/[#10](https://github.com/cmeeren/Facil/issues/10), thanks [@davidtme](https://github.com/davidtme))
