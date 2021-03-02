@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 0.2.9 (2021-03-02)
+
+* `tableDtos` now includes views in addition to tables
+
 ### 0.2.8 (2021-02-23)
 
 * Improved error message when lacking permission to view the definition of a stored procedure.

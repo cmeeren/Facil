@@ -65,6 +65,7 @@
     <Folder Include="dbo\User Defined Types\" />
     <Folder Include="dbo\Storage" />
     <Folder Include="dbo\Storage\Full Text Catalogs" />
+    <Folder Include="dbo\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Table1.sql" />
@@ -158,6 +159,7 @@
     <Build Include="dbo\Tables\CamelCaseColNames.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithCamelCaseColNames.sql" />
     <Build Include="dbo\Stored Procedures\ProcNominalResult.sql" />
+    <Build Include="dbo\Views\View1.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDB.publish.xml" />

@@ -276,6 +276,14 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time view DTO test" <| fun () ->
+        let f (x: DbGen.TableDtos.dbo.View1) =
+          ignore<string> x.TableCol1
+          ignore<int option> x.TableCol2
+          ignore<int> x.Foo
+        ignore f
+
+
       testList "MAX length work correctly" [
 
 

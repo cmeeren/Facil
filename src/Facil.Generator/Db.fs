@@ -615,6 +615,21 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
       INNER JOIN
         sys.all_columns
           ON sys.all_columns.object_id = sys.tables.object_id
+
+      UNION
+
+      SELECT
+        SCHEMA_NAME(sys.views.schema_id) AS SchemaName,
+        sys.views.name AS TableName,
+        sys.all_columns.name AS ColName,
+        sys.all_columns.column_id,
+        sys.all_columns.is_nullable,
+        sys.all_columns.system_type_id
+      FROM
+        sys.views
+      INNER JOIN
+        sys.all_columns
+          ON sys.all_columns.object_id = sys.views.object_id
     "
     use reader = cmd.ExecuteReader()
     let tableDtos = ResizeArray()
