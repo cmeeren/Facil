@@ -248,6 +248,9 @@ rulesets:
       - for: NominalResult.sql
         result: nominal
 
+      - for: TableScriptSubdir/TableScriptConfiguredWithScriptRules
+        voptionIn: true
+
 
     tableDtos:
       - include: .*
@@ -281,3 +284,62 @@ rulesets:
     tableTypes:
       - for: Voption
         voption: true
+
+
+    tableScripts:
+      - include: dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.LengthTypes|dbo\.MaxLengthTypes
+        scripts:
+          - type: insert
+          - type: update
+          - type: delete
+          - type: getById
+
+
+      - include: dbo\.TableWithIdentityCol
+        scripts:
+          - type: insert
+            columns:
+              "":
+                output: true
+              Id:
+                output: true
+              BAR:
+                paramName: bar
+
+
+          - type: insert
+            name: "TableScriptSubdir/TableScriptConfiguredWithScriptRules"
+
+          - type: update
+            columns:
+              "":
+                output: true
+              Id:
+                output: false
+              BAR:
+                paramName: bar
+
+          - type: delete
+            columns:
+              "":
+                output: true
+
+          - type: getById
+            columns:
+              BAR:
+                skip: true
+
+          - type: getById
+            name: TableScriptSubdir/{SchemaName}_{TableName}_GetById
+
+          - type: getByIdBatch
+
+          - type: getByColumns
+            filterColumns:
+              - Foo
+
+          - type: getByColumnsBatch
+            tableType: dbo.FilterForTableWithIdentityCol
+            filterColumns:
+              - Id
+              - Foo

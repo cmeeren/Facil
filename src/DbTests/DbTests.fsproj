@@ -31,6 +31,7 @@
     <None Include="SQL\Voption\TableOutWithoutDto.sql" />
     <None Include="SQL\Voption\TvpInOut.sql" />
     <None Include="SQL\SubPath\SelectAllFromTable.sql" />
+    <None Include="SQL\DeleteAllFromTableScriptTables.sql" />
     <None Include="SQL\NormalParams.sql" />
     <None Include="SQL\ParamsUsedTwice.sql" />
     <None Include="SQL\OptionRecompileAndFetch.sql" />
@@ -70,6 +71,7 @@
     <Compile Include="ConfigTests.fs" />
     <Compile Include="OutParameterAndReturnValueTests.fs" />
     <Compile Include="TempTableTests.fs" />
+    <Compile Include="TableScriptTests.fs" />
     <Compile Include="MiscTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

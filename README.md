@@ -86,7 +86,8 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 
 #### Core features
 
-* Primary goal: Provide the simplest way (yet highly configurable) to call stored procedures and SQL scripts as if they were F# functions, and otherwise get out of your way and let you get on with providing actual business value
+* Primary goal: Provide the simplest way (yet highly configurable) to call SQL scripts and stored procedures as if they were F# functions, and otherwise get out of your way and let you get on with providing actual business value
+* Can also [generate simple per-table CRUD scripts](#can-facil-generate-sql-scripts)
 * Good API ergonomics – succinct and discoverable fluent-style syntax, no boilerplate
 * Supports SQL Server 2012 and up
 * Built for the future, compatible with .NET Standard 2.0
@@ -116,6 +117,30 @@ It’s still at 0.x because it's still new and I may still be discovering improv
 
 FAQ
 ---
+
+### Can Facil generate SQL scripts?
+
+Yes, Facil can automatically generate the following simple per-table CRUD scripts, saving you from both writing and configuring them:
+
+* Insert a row (supports output columns)
+* Update a row by its primary key (supports output columns)
+* Delete a row by its primary key (supports output columns)
+* Get a row by its primary key
+* Get rows by a batch of primary keys (using a TVP)
+* Get a row by a set of arbitrary columns
+* Get rows by a batch of arbitrary columns
+
+For details, see [the full config reference](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml) and search for `tableScripts`.
+
+### Ooh, neat! Can you auto-generate this and that script too?
+
+Probably not.
+
+Facil’s primary focus is allowing you to call your existing TSQL in the simplest fashion possible. There are no plans on adding more queries or options than the ones currently implemented. Adding ever new script types or making the existing ones more flexible is a bottomless rabbit hole of scope creep, so I have to draw the line somewhere.
+
+I welcome suggestions, but due to my limited capacity for open-source maintenance, any additions or improvements will likely need a very high utility-to-maintenance ratio, or scratch a personal itch of mine.
+
+If the above queries with the available configuration options doesn’t satisfy your needs, you can, after all, just write the queries manually and consume them using Facil.
 
 ### Why not a type provider?
 
@@ -204,10 +229,6 @@ If Facil’s current approach does not work for you, please open an issue and de
 ### Can Facil support user-defined functions?
 
 If you need this, I’m willing to hear you out, but I have limited OSS maintenance resources and this isn’t high on my priority list right now. A simple workaround is to simply call the function from a script or stored procedure, and then use Facil with that script/procedure instead.
-
-### Can Facil generate SQL, too?
-
-No, this is not currently supported and not planned. While it may sound useful to generate boilerplate scripts for “select from table by primary key” or “update/insert/merge table”, there are in my experience enough considerations and slight variants of these patterns to take into account that I’m not convinced it would be all that useful. Facil is focused on allowing you to call your existing TSQL in the simplest fashion possible; it won’t generate TSQL for you.
 
 ### Does Facil use column names or ordinals?
 

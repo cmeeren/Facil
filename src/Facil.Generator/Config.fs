@@ -206,8 +206,6 @@ type ScriptRuleDto = {
 type ScriptRule = {
   IncludeOrFor: IncludeOrFor
   Except: string option
-  IncludeMatches: Set<string>
-  ForMatches: Set<string>
   Result: ResultKind option
   VoptionIn: bool option
   VoptionOut: bool option
@@ -228,6 +226,80 @@ type EffectiveScriptRule = {
   ParametersFromAllRules: Map<string option, ScriptParameter> list
   TempTables: ScriptTempTableRule list
   ColumnsFromAllRules: Map<string option, ScriptColumn> list
+}
+
+
+[<CLIMutable>]
+type TableScriptColumnDto = {
+  skip: bool option
+  output: bool option
+  paramName: string option
+}
+
+
+type TableScriptColumn = {
+  Skip: bool option
+  Output: bool option
+  ParamName: string option
+}
+
+
+[<CLIMutable>]
+type TableScriptTypeRuleDto = {
+  ``type``: string
+  name: string option
+  tableType: string option
+  filterColumns: string list option
+  columns: Map<string, TableScriptColumnDto> option
+}
+
+
+type TableScriptType =
+  | Insert
+  | Update
+  | Delete
+  | GetById
+  | GetByIdBatch
+  | GetByColumns
+  | GetByColumnsBatch
+
+
+type TableScriptTypeRule = {
+  Type: TableScriptType
+  Name: string option
+  TableType: string option
+  FilterColumns: string list option
+  Columns: Map<string option, TableScriptColumn>
+}
+
+
+type EffectiveTableScriptTypeRule = {
+  Type: TableScriptType
+  Name: string
+  TableType: string option
+  FilterColumns: string list option
+  ColumnsFromAllRules: Map<string option, TableScriptColumn> list
+}
+
+
+[<CLIMutable>]
+type TableScriptRuleDto = {
+  ``include``: string option
+  ``for``: string option
+  except: string option
+  scripts: TableScriptTypeRuleDto list
+}
+
+
+type TableScriptRule = {
+  IncludeOrFor: IncludeOrFor
+  Except: string option
+  Scripts: TableScriptTypeRule list
+}
+
+
+type EffectiveTableScriptRule = {
+  Scripts: Map<TableScriptType * string, EffectiveTableScriptTypeRule>
 }
 
 
@@ -265,6 +337,7 @@ type RuleSetDto = {
   tableTypes: TableTypeRuleDto list option
   procedures: ProcedureRuleDto list option
   scripts: ScriptRuleDto list option
+  tableScripts: TableScriptRuleDto list option
 }
 
 
@@ -278,6 +351,7 @@ type RuleSet = {
   TableTypes: TableTypeRule list
   Procedures: ProcedureRule list
   Scripts: ScriptRule list
+  TableScripts: TableScriptRule list
 }
 
 
@@ -695,14 +769,6 @@ module ScriptRule =
 
 
   let fromDto (basePath: string) fullYamlPath (dto: ScriptRuleDto) : ScriptRule =
-    let exceptMatches =
-      match dto.except with
-      | Some pattern ->
-          let matches = Glob.Files(basePath, pattern) |> set
-          if matches.IsEmpty then
-            logYamlWarning fullYamlPath 0 0 $"The 'except' glob pattern '{pattern}' does not match any files"
-          matches
-      | None -> Set.empty
     {
       IncludeOrFor =
         match dto.``include``, dto.``for`` with
@@ -711,36 +777,6 @@ module ScriptRule =
         | None, Some f -> For f
         | Some _, Some _ -> failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a script rule"
       Except = dto.except
-      IncludeMatches =
-        match dto.``include`` with
-        | None -> Set.empty
-        | Some pattern ->
-            let includeMatches = Glob.Files(basePath, pattern) |> set
-
-            if includeMatches.IsEmpty then
-              logYamlWarning fullYamlPath 0 0 $"The 'include' glob pattern '{pattern}' does not match any files"
-
-            let finalMatches = includeMatches - exceptMatches
-
-            if not includeMatches.IsEmpty && finalMatches.IsEmpty then
-              logYamlWarning fullYamlPath 0 0 $"The 'include' glob pattern '{pattern}' does not match any files after subtracting the corresponding 'except' pattern '{dto.except.Value}'"
-
-            finalMatches
-      ForMatches =
-        match dto.``for`` with
-        | None -> Set.empty
-        | Some pattern ->
-            let forMatches = Glob.Files(basePath, pattern) |> set
-
-            if forMatches.IsEmpty then
-              logYamlWarning fullYamlPath 0 0 $"The 'for' glob pattern '{pattern}' does not match any files"
-
-            let finalMatches = forMatches - exceptMatches
-
-            if not forMatches.IsEmpty && finalMatches.IsEmpty then
-              logYamlWarning fullYamlPath 0 0 $"The 'for' glob pattern '{pattern}' does not match any files after subtracting the corresponding 'except' pattern '{dto.except.Value}'"
-
-            finalMatches
       Result =
         dto.result
         |> Option.map (function
@@ -784,8 +820,18 @@ module ScriptRule =
 
 
   let matches (globMatchOutput: string) (rule: ScriptRule) =
-    rule.IncludeMatches.Contains globMatchOutput
-    || rule.ForMatches.Contains globMatchOutput
+    let matchPattern =
+      match rule.IncludeOrFor with
+      | Include pattern -> pattern
+      | For pattern -> pattern
+
+    let matchesPattern = Glob.IsMatch(globMatchOutput, matchPattern)
+    let matchesExceptPattern =
+      rule.Except
+      |> Option.map (fun p -> Glob.IsMatch(globMatchOutput, p))
+      |> Option.defaultValue false
+
+    matchesPattern && not matchesExceptPattern
 
 
   let merge (eff: EffectiveScriptRule) (rule: ScriptRule) : EffectiveScriptRule =
@@ -844,6 +890,160 @@ module EffectiveScriptRule =
     |> set
 
 
+module TableScriptColumn =
+
+
+  let empty : TableScriptColumn =
+    {
+      Skip = None
+      Output = None
+      ParamName = None
+    }
+
+
+  let fromDto (dto: TableScriptColumnDto) : TableScriptColumn =
+    {
+      Skip = dto.skip
+      Output = dto.output
+      ParamName = dto.paramName
+    }
+
+
+  let merge (c1: TableScriptColumn) (c2: TableScriptColumn) : TableScriptColumn = {
+    Skip = c2.Skip |> Option.orElse c1.Skip
+    Output = c2.Output |> Option.orElse c1.Output
+    ParamName = c2.ParamName |> Option.orElse c1.ParamName
+  }
+
+
+
+module TableScriptTypeRule =
+
+
+  let defaultEffectiveRuleFor (rule: TableScriptTypeRule) : EffectiveTableScriptTypeRule = {
+    Type = rule.Type
+    Name =
+      let defaultName =
+        match rule.Type with
+        | Insert -> "{TableName}_Insert"
+        | Update -> "{TableName}_Update"
+        | Delete -> "{TableName}_Delete"
+        | GetById -> "{TableName}_ById"
+        | GetByIdBatch -> "{TableName}_ByIds"
+        | GetByColumns -> "{TableName}_By{ColumnNames}"
+        | GetByColumnsBatch -> "{TableName}_By{ColumnNames}s"
+      rule.Name |> Option.defaultValue defaultName
+    TableType = rule.TableType
+    FilterColumns = rule.FilterColumns
+    ColumnsFromAllRules = [rule.Columns]
+  }
+
+
+  let fromDto fullYamlPath (dto: TableScriptTypeRuleDto) : TableScriptTypeRule = {
+    Type =
+      match dto.``type`` with
+      | "insert" -> Insert
+      | "update" -> Update
+      | "delete" -> Delete
+      | "getById" -> GetById
+      | "getByIdBatch" -> GetByIdBatch
+      | "getByColumns" -> GetByColumns
+      | "getByColumnsBatch" -> GetByColumnsBatch
+      | x -> failwithYamlError fullYamlPath 0 0 $"Invalid table script type: '%s{x}'"
+    Name = dto.name
+    TableType = dto.tableType
+    FilterColumns = dto.filterColumns
+    Columns =
+      dto.columns
+      |> Option.defaultValue Map.empty
+      |> Map.toList
+      |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
+      |> Map.ofList
+      |> Map.map (fun _ -> TableScriptColumn.fromDto)
+  }
+
+
+  let merge (eff: EffectiveTableScriptTypeRule) (rule: TableScriptTypeRule) : EffectiveTableScriptTypeRule =
+    if eff.Type <> rule.Type then
+      failwith $"Facil bug: Attempted to merge table script rules with different types: %A{eff}, %A{rule}"
+    if rule.Name.IsSome && rule.Name <> Some eff.Name then
+      failwith $"Facil bug: Attempted to merge table script rules with different names: %A{eff}, %A{rule}"
+    {
+      Type = rule.Type
+      Name = rule.Name |> Option.defaultValue eff.Name
+      TableType = rule.TableType |> Option.orElse eff.TableType
+      FilterColumns = rule.FilterColumns |> Option.orElse eff.FilterColumns
+      ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]
+    }
+
+
+module EffectiveTableScriptTypeRule =
+
+
+  let getColumn colName (rule: EffectiveTableScriptTypeRule) =
+    rule.ColumnsFromAllRules
+    |> List.collect (fun map ->
+        [
+          yield! map.TryFind None |> Option.toList
+          yield! map.TryFind (Some colName) |> Option.toList
+        ]
+    )
+    |> List.fold TableScriptColumn.merge TableScriptColumn.empty
+
+
+
+module TableScriptRule =
+
+
+  let fromDto fullYamlPath (dto: TableScriptRuleDto) : TableScriptRule = {
+    IncludeOrFor =
+      match dto.``include``, dto.``for`` with
+      | None, None -> failwithYamlError fullYamlPath 0 0 "Either 'include' or 'for' is required in a TableScript rule"
+      | Some inc, None -> Include inc
+      | None, Some f -> For f
+      | Some _, Some _ -> failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a TableScript rule"
+    Except = dto.except
+    Scripts = dto.scripts |> List.map (TableScriptTypeRule.fromDto fullYamlPath)
+  }
+
+
+  let defaultEffectiveRule : EffectiveTableScriptRule = {
+    Scripts = Map.empty
+  }
+
+
+  let rulesFor scriptType (rule: EffectiveTableScriptRule) =
+    rule.Scripts
+    |> Map.toList
+    |> List.filter (fun ((t, _), _) -> t = scriptType)
+    |> List.map snd
+
+
+  let matches schemaName procName (rule: TableScriptRule) =
+    let qualifiedName = $"%s{schemaName}.%s{procName}"
+    let pattern =
+      match rule.IncludeOrFor with
+      | For x -> x
+      | Include x -> x
+    match rule.Except with
+    | None -> Regex.IsMatch(qualifiedName, pattern)
+    | Some exPattern -> Regex.IsMatch(qualifiedName, pattern) && not <| Regex.IsMatch(qualifiedName, exPattern)
+
+
+  let merge (eff: EffectiveTableScriptRule) (rule: TableScriptRule) : EffectiveTableScriptRule =
+    {
+      Scripts =
+        (eff.Scripts, rule.Scripts)
+        ||> List.fold (fun current rule ->
+              let defaultRule = TableScriptTypeRule.defaultEffectiveRuleFor rule
+              let key = rule.Type, (rule.Name |> Option.defaultValue defaultRule.Name)
+              match current.TryFind key with
+              | None -> current.Add(key, defaultRule)
+              | Some effRule -> current.Add(key, TableScriptTypeRule.merge effRule rule)
+        )
+    }
+
+
 
 
 module RuleSet =
@@ -857,7 +1057,7 @@ module RuleSet =
       |> Path.GetFullPath
     {
       ConnectionString =
-        lazy
+        lazy  
           dto.connectionString
           |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "All array items in the 'rulesets' section must have a 'connectionString' property")
           |> resolveVariable
@@ -881,6 +1081,10 @@ module RuleSet =
         dto.scripts
         |> Option.defaultValue []
         |> List.map (ScriptRule.fromDto scriptBasePath fullYamlPath)
+      TableScripts =
+        dto.tableScripts
+        |> Option.defaultValue []
+        |> List.map (TableScriptRule.fromDto fullYamlPath)
     }
 
 
@@ -899,6 +1103,18 @@ module RuleSet =
   let shouldIncludeTableDto schemaName tableName (cfg: RuleSet) =
     let qualifiedName = $"{schemaName}.{tableName}"
     cfg.TableDtos
+    |> List.exists (fun rule ->
+        match rule.IncludeOrFor, rule.Except with
+        | For _, _ -> false
+        | Include pattern, None -> Regex.IsMatch(qualifiedName, pattern)
+        | Include incPattern, Some exPattern ->
+            Regex.IsMatch(qualifiedName, incPattern) && not <| Regex.IsMatch(qualifiedName, exPattern)
+    )
+
+
+  let shouldIncludeTableScripts schemaName tableName (cfg: RuleSet) =
+    let qualifiedName = $"{schemaName}.{tableName}"
+    cfg.TableScripts
     |> List.exists (fun rule ->
         match rule.IncludeOrFor, rule.Except with
         | For _, _ -> false
@@ -930,6 +1146,12 @@ module RuleSet =
     cfg.TableTypes
     |> List.filter (TableTypeRule.matches schemaName typeName)
     |> List.fold TableTypeRule.merge TableTypeRule.defaultEffectiveRule
+
+
+  let getEffectiveTableScriptRuleFor schemaName tableName (cfg: RuleSet) =
+    cfg.TableScripts
+    |> List.filter (TableScriptRule.matches schemaName tableName)
+    |> List.fold TableScriptRule.merge TableScriptRule.defaultEffectiveRule
 
 
 

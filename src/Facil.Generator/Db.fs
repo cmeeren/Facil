@@ -249,9 +249,15 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
             |> Option.defaultWith (fun () -> failwith $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
 
       cols.Add { 
-          Name = colName
+          OutputColumn.Name = colName
           SortKey = reader.["column_ordinal"] |> unbox<int>
           IsNullable = reader.["is_nullable"] |> unbox<bool>
+          Size =
+            reader.["max_length"]
+            |> unbox<int16>
+            |> adjustSizeForDbType typeInfo.SqlDbType
+          Precision = reader.["precision"] |> unbox<byte>
+          Scale = reader.["scale"] |> unbox<byte>
           TypeInfo = typeInfo
       }
 
@@ -353,9 +359,25 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
               |> Option.defaultWith (fun () -> failwith $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
 
         cols.Add {
-          Name = colName
+          OutputColumn.Name = colName
           SortKey = schema.ColumnOrdinal.Value
           IsNullable = schema.AllowDBNull.Value
+          Size =
+            schema.ColumnSize
+            |> Option.ofNullable
+            |> Option.map int16
+            |> Option.defaultValue 0s
+            |> adjustSizeForDbType typeInfo.SqlDbType
+          Precision =
+            schema.NumericPrecision
+            |> Option.ofNullable
+            |> Option.map byte
+            |> Option.defaultValue 0uy
+          Scale =
+            schema.NumericScale
+            |> Option.ofNullable
+            |> Option.map byte
+            |> Option.defaultValue 0uy
           TypeInfo = typeInfo
         }
 
@@ -369,12 +391,20 @@ let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Scr
     | Choice2Of3 s -> $"script {s.GlobMatchOutput}"
     | Choice3Of3 tt -> $"temp table {tt.Name}"
 
+  let facilGeneratedSource =
+    match executable with
+    | Choice2Of3 s when s.GeneratedByFacil -> Some s.Source
+    | _ -> None
+
   let allColNames, cols =
     try
       try getColumnsFromSpDescribeFirstResultSet cfg sysTypeIdLookup executable conn
       with :? SqlException -> getColumnsFromQuery cfg executable conn
     with ex ->
-      raise <| Exception($"Error getting output columns for {executableName}", ex)
+      match facilGeneratedSource with
+      | None -> raise <| Exception($"Error getting output columns for %s{executableName}", ex)
+      | Some source ->
+          raise <| Exception($"Error getting output columns for Facil-generated table script %s{executableName}. Script source:\n\n%s{source}\n", ex)
 
   let allColumnNamesWithRules =
     match executable with
@@ -406,6 +436,7 @@ let getTableTypes (conn: SqlConnection) =
         sys.columns.precision AS ColumnPrecision,
         sys.columns.scale AS ColumnScale,
         sys.columns.is_nullable AS ColumnIsNullable,
+        sys.columns.is_identity AS ColumnIsIdentity,
         TYPE_NAME(sys.columns.system_type_id) AS ColumnTypeName
       FROM
         sys.table_types
@@ -432,6 +463,7 @@ let getTableTypes (conn: SqlConnection) =
             {
               Name = colName
               IsNullable = reader.["ColumnIsNullable"] |> unbox<bool>
+              IsIdentity = reader.["ColumnIsIdentity"] |> unbox<bool>
               SortKey = reader.["ColumnId"] |> unbox<int>
               Size = reader.["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
               Precision = reader.["ColumnPrecision"] |> unbox<byte>
@@ -609,7 +641,11 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
         sys.all_columns.name AS ColName,
         sys.all_columns.column_id,
         sys.all_columns.is_nullable,
-        sys.all_columns.system_type_id
+        sys.all_columns.system_type_id,
+        sys.all_columns.max_length,
+        sys.all_columns.precision,
+        sys.all_columns.scale,
+        sys.all_columns.is_identity
       FROM
         sys.tables
       INNER JOIN
@@ -624,7 +660,11 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
         sys.all_columns.name AS ColName,
         sys.all_columns.column_id,
         sys.all_columns.is_nullable,
-        sys.all_columns.system_type_id
+        sys.all_columns.system_type_id,
+        sys.all_columns.max_length,
+        sys.all_columns.precision,
+        sys.all_columns.scale,
+        sys.all_columns.is_identity
       FROM
         sys.views
       INNER JOIN
@@ -674,9 +714,16 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
             // Merged later
             Columns = [
               {
-                OutputColumn.Name = colName |> Some
+                TableColumn.Name = colName
                 SortKey = reader.["column_id"] |> unbox<int>
                 IsNullable = reader.["is_nullable"] |> unbox<bool>
+                IsIdentity = reader.["is_identity"] |> unbox<bool>
+                Size =
+                  reader.["max_length"]
+                  |> unbox<int16>
+                  |> adjustSizeForDbType typeInfo.SqlDbType
+                Precision = reader.["precision"] |> unbox<byte>
+                Scale = reader.["scale"] |> unbox<byte>
                 TypeInfo = typeInfo
               }
             ]
@@ -749,14 +796,67 @@ let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition (conn: SqlCo
     raise <| Exception($"Error getting temp table from the following definition:\n%s{definition}", ex)
 
 
+let getPrimaryKeyColumnNamesByTableName (conn: SqlConnection) =
+  try
+    use cmd = conn.CreateCommand()
+    cmd.CommandText <- "
+      SELECT 
+        schema_name(tab.schema_id) AS [schema_name], 
+        tab.[name] AS table_name,
+        ic.index_column_id AS column_id,
+        col.[name] AS column_name
+      from sys.tables AS tab
+      INNER JOIN 
+        sys.indexes pk
+          ON tab.object_id = pk.object_id 
+          AND pk.is_primary_key = 1
+      INNER JOIN 
+        sys.index_columns AS ic
+          ON ic.object_id = pk.object_id
+          AND ic.index_id = pk.index_id
+      INNER JOIN 
+        sys.columns AS col
+          ON pk.object_id = col.object_id
+          AND col.column_id = ic.column_id
+      ORDER BY
+        schema_name(tab.schema_id),
+        tab.[name],
+        ic.index_column_id
+    "
+    use reader = cmd.ExecuteReader()
+    let data = ResizeArray()
+    while reader.Read() do
+
+      let rowData =
+        reader.["schema_name"] |> unbox<string>,
+        reader.["table_name"] |> unbox<string>,
+        reader.["column_name"] |> unbox<string>
+      data.Add(rowData)
+
+    data
+    |> Seq.toList
+    |> List.groupBy (fun (schemaName, tableName, _) -> schemaName, tableName)
+    |> Map.ofList
+    |> Map.map (fun _ rowData -> rowData |> Seq.map (fun (_, _, colName) -> colName) |> Seq.toList)
+  with ex ->
+    raise <| Exception("Error getting primary key info", ex)
+
+
 
 let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsOrTempTables: Script list) (conn: SqlConnection) =
 
   let sysTypeIdLookup = getSysTypeIdLookup conn
 
-  let tableTypes = getTableTypes conn
+  let allTableTypes = getTableTypes conn
 
-  let tableTypesByUserId = tableTypes |> List.map (fun t -> t.UserTypeId, t) |> Map.ofList
+  let tableTypesByUserId = allTableTypes |> List.map (fun t -> t.UserTypeId, t) |> Map.ofList
+  
+  let allTableDtos = getTableDtos cfg sysTypeIdLookup conn
+    
+  let tableDtos =
+    allTableDtos
+    |> List.filter (fun dto -> RuleSet.shouldIncludeTableDto dto.SchemaName dto.Name cfg)
+    |> List.sortBy (fun dto -> dto.SchemaName, dto.Name)
 
   let tempTablesByDefinition =
     cfg.Scripts
@@ -766,8 +866,543 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     |> List.map (fun definition -> definition, getTempTable cfg sysTypeIdLookup definition conn)
     |> Map.ofList
 
+
+  // This whole solution with inserting table scripts as normal scripts which are then
+  // parsed is fairly hacky, but works
+  let tableScripts =
+    let toInclude =
+      allTableDtos
+      |> List.filter (fun dto -> RuleSet.shouldIncludeTableScripts dto.SchemaName dto.Name cfg)
+    if toInclude.IsEmpty then []
+    else
+      let getParamNameFromColAndRule (col: TableColumn) (rule: TableScriptColumn) =
+        rule.ParamName |> Option.defaultValue (String.firstLower col.Name)
+
+      let parameterFromColAndRule (col, rule) =
+        {
+          Name = getParamNameFromColAndRule col rule
+          SortKey = col.SortKey
+          Size = col.Size
+          Precision = col.Precision
+          Scale = col.Scale
+          FSharpDefaultValueString = if col.IsNullable then Some "null" else None
+          TypeInfo = Scalar col.TypeInfo
+          IsOutput = false
+          IsCursorRef = false
+        }
+
+      let getTableTypeColMappingIfCanUse (tt: TableType) (tableCols: TableColumn list) =
+        match tt.Columns, tableCols with
+        | [ttCol], [tableCol] ->
+            if
+              { ttCol with Name = ""; SortKey = 0; IsIdentity = false }
+              = { tableCol with Name = ""; SortKey = 0; IsIdentity = false }
+            then
+              Some [ttCol.Name, tableCol.Name]
+            else None
+        | ttCols, tableCols when ttCols.Length = tableCols.Length ->
+            let ttAndTableCols = List.zip ttCols tableCols
+            if ttAndTableCols
+               |> List.forall (fun (ttCol, tableCol) ->
+                    { ttCol with SortKey = 0; IsIdentity = false } = { tableCol with SortKey = 0; IsIdentity = false })
+            then
+              ttAndTableCols
+              |> List.map (fun (ttCol, tableCol) -> ttCol.Name, tableCol.Name)
+              |> Some
+            else None
+        | _ -> None
+
+      let getTableTypeAndColumnMappingForBatchScript (rule: EffectiveTableScriptTypeRule) (cols: TableColumn list) (scriptName: string) =
+        match rule.TableType with
+        | Some ttName ->
+            let tableType =
+              allTableTypes
+              |> List.tryFind (fun tt -> ttName = $"%s{tt.SchemaName}.%s{tt.Name}")
+              |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 $"Unable to find table type %s{ttName} specified in rule for table script %s{scriptName}")
+            let mapping =
+              getTableTypeColMappingIfCanUse tableType cols
+              |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 $"The specified table type %s{ttName} can not be used in table script %s{scriptName}")
+            tableType, mapping
+        | None ->
+            let matching =
+              allTableTypes
+              |> List.choose (fun tt ->
+                   getTableTypeColMappingIfCanUse tt cols
+                   |> Option.map (fun mapping -> tt, mapping)
+              )
+            match matching with
+            | [] -> failwithError $"Unable to find a suitable table type for table script %s{scriptName}"
+            | [(tt, mapping)] -> (tt, mapping)
+            | xs -> failwithYamlError fullYamlPath 0 0 $"""Found multiple suitable table types for table script %s{scriptName}. Specify which to use. The matching types are: %s{ xs |> List.map (fun (tt, _) -> tt.SchemaName + "." + tt.Name) |> String.concat ", " }"""
+
+
+      let primaryKeyColumnNamesByTable = getPrimaryKeyColumnNamesByTableName conn
+
+      toInclude
+      |> List.collect (fun dto ->
+           let rule = RuleSet.getEffectiveTableScriptRuleFor dto.SchemaName dto.Name cfg
+           [
+
+            // 'getById' scripts
+            for rule in rule |> TableScriptRule.rulesFor GetById do
+
+              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
+
+              let pkColsWithRule =
+                match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
+                | None | Some [] -> failwithError $"Table %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for a 'get' table script"
+                | Some colNames ->
+                    colNames
+                    |> List.map (fun n ->
+                        colsWithRule
+                        |> List.tryFind (fun (c, _) -> c.Name = n)
+                        |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
+                    )
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+                  [
+                    "SELECT"
+
+                    yield!
+                      colsToOutputWithRule
+                      |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    $"FROM"
+                    $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                    "WHERE"
+
+                    yield!
+                      pkColsWithRule
+                      |> List.map (fun (col, rule) ->
+                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                      |> List.mapAllExceptFirst (sprintf "AND %s")
+                      |> List.map (sprintf "  %s")
+                  ]
+                  |> String.concat "\n"
+                Parameters = pkColsWithRule |> List.map parameterFromColAndRule
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+            // 'getByIdBatch' scripts
+            for rule in rule |> TableScriptRule.rulesFor GetByIdBatch do
+
+              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
+
+              let pkColsWithRule =
+                match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
+                | None | Some [] -> failwithError $"Table %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for a 'getByIdBatch' table script"
+                | Some colNames ->
+                    colNames
+                    |> List.map (fun n ->
+                        colsWithRule
+                        |> List.tryFind (fun (c, _) -> c.Name = n)
+                        |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
+                    )
+
+              let tableType, columnMapping = getTableTypeAndColumnMappingForBatchScript rule (pkColsWithRule |> List.map fst) name
+
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+                  [
+                    "SELECT"
+
+                    yield!
+                      colsToOutputWithRule
+                      |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    $"FROM"
+                    $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                    "WHERE"
+                    "  EXISTS ("
+                    "    SELECT * FROM @ids ids"
+                    "    WHERE"
+
+                    yield!
+                      columnMapping
+                      |> List.map (fun (ttColName, tableColName) ->
+                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}")
+                      |> List.mapAllExceptFirst (sprintf "AND %s")
+                      |> List.map (sprintf "      %s")
+
+                    "  )"
+
+                  ]
+                  |> String.concat "\n"
+                Parameters =
+                  [
+                    {
+                      Name = "ids"
+                      SortKey = 0
+                      Size = 0s
+                      Precision = 0uy
+                      Scale = 0uy
+                      FSharpDefaultValueString = None
+                      TypeInfo = Table tableType
+                      IsOutput = false
+                      IsCursorRef = false
+                    }
+                  ]
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+            // 'getByColumns' scripts
+            for rule in rule |> TableScriptRule.rulesFor GetByColumns do
+
+              let filterColNames =
+                rule.FilterColumns
+                |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "Table scripts with type 'getByColumns' must specify 'filterColumns'")
+
+              if filterColNames.IsEmpty then
+                failwithYamlError fullYamlPath 0 0 "Table scripts with type 'getByColumns' must specify a non-empty list of 'filterColumns'"
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
+
+              let name =
+                rule.Name
+                  .Replace("{SchemaName}", dto.SchemaName)
+                  .Replace("{TableName}", dto.Name)
+                  .Replace("{ColumnNames}", filterColNames |> String.concat "And")
+
+              let filterColsWithRule =
+                filterColNames
+                |> List.map (fun n ->
+                    colsWithRule
+                    |> List.tryFind (fun (c, _) -> c.Name = n)
+                    |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 $"Unable to find the specified filter column '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
+                )
+
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+                  [
+                    "SELECT"
+
+                    yield!
+                      colsToOutputWithRule
+                      |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    $"FROM"
+                    $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                    "WHERE"
+
+                    yield!
+                      filterColsWithRule
+                      |> List.map (fun (col, rule) ->
+                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                      |> List.mapAllExceptFirst (sprintf "AND %s")
+                      |> List.map (sprintf "  %s")
+                  ]
+                  |> String.concat "\n"
+                Parameters = filterColsWithRule |> List.map parameterFromColAndRule
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+            // 'getByColumnsBatch' scripts
+            for rule in rule |> TableScriptRule.rulesFor GetByColumnsBatch do
+
+              let filterColNames =
+                rule.FilterColumns
+                |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "Table scripts with type 'getByColumnsBatch' must specify 'filterColumns'")
+
+              if filterColNames.IsEmpty then
+                failwithYamlError fullYamlPath 0 0 "Table scripts with type 'getByColumnsBatch' must specify a non-empty list of 'filterColumns'"
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
+
+              let name =
+                rule.Name
+                  .Replace("{SchemaName}", dto.SchemaName)
+                  .Replace("{TableName}", dto.Name)
+                  .Replace("{ColumnNames}", filterColNames |> String.concat "And")
+
+              let filterColsWithRule =
+                filterColNames
+                |> List.map (fun n ->
+                    colsWithRule
+                    |> List.tryFind (fun (c, _) -> c.Name = n)
+                    |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 $"Unable to find the specified filter column '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
+                )
+
+              let tableType, columnMapping = getTableTypeAndColumnMappingForBatchScript rule (filterColsWithRule |> List.map fst) name
+
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+                  [
+                    "SELECT"
+
+                    yield!
+                      colsToOutputWithRule
+                      |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    $"FROM"
+                    $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                    "WHERE"
+                    "  EXISTS ("
+                    "    SELECT * FROM @ids ids"
+                    "    WHERE"
+
+                    yield!
+                      columnMapping
+                      |> List.map (fun (ttColName, tableColName) ->
+                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}")
+                      |> List.mapAllExceptFirst (sprintf "AND %s")
+                      |> List.map (sprintf "      %s")
+
+                    "  )"
+
+                  ]
+                  |> String.concat "\n"
+                Parameters =
+                  [
+                    {
+                      Name = "ids"
+                      SortKey = 0
+                      Size = 0s
+                      Precision = 0uy
+                      Scale = 0uy
+                      FSharpDefaultValueString = None
+                      TypeInfo = Table tableType
+                      IsOutput = false
+                      IsCursorRef = false
+                    }
+                  ]
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+
+            // 'insert' scripts
+            for rule in rule |> TableScriptRule.rulesFor Insert do
+                
+              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToInsertWithRule =
+                colsWithRule
+                |> List.filter (fun (col, rule) ->
+                     match rule.Skip with
+                     | None when col.IsIdentity -> false
+                     | None -> true
+                     | Some skip -> not skip
+                )
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+
+                  [
+                    $"INSERT INTO [%s{dto.SchemaName}].[%s{dto.Name}]"
+                    "("
+
+                    yield!
+                      colsToInsertWithRule
+                      |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    ")"
+
+                    if not colsToOutputWithRule.IsEmpty then
+                      "OUTPUT"
+                      yield!
+                        colsToOutputWithRule
+                        |> List.map (fun (c, _) -> $"  inserted.[%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                    "VALUES"
+                    "("
+
+                    yield!
+                      colsToInsertWithRule
+                      |> List.map (fun (c, rule) -> $"  @%s{getParamNameFromColAndRule c rule}")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    ")"
+                  ]
+                  |> String.concat "\n"
+                Parameters = colsToInsertWithRule |> List.map parameterFromColAndRule
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+
+            // 'update' scripts
+            for rule in rule |> TableScriptRule.rulesFor Update do
+                
+              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+              let pkColsWithRule =
+                match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
+                | None | Some [] -> failwithError $"Table %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for an 'update' table script"
+                | Some colNames ->
+                    colNames
+                    |> List.map (fun n ->
+                        colsWithRule
+                        |> List.tryFind (fun (c, _) -> c.Name = n)
+                        |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
+                    )
+
+              let colsToUpdateWithRule =
+                colsWithRule
+                |> List.filter (fun (c, rule) ->
+                      rule.Skip <> Some true
+                      && not (pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)))
+
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+
+                  [
+                    "UPDATE"
+                    $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                    "SET"
+
+                    yield!
+                      colsToUpdateWithRule
+                      |> List.map (fun (c, rule) -> $"  [%s{c.Name}] = @%s{getParamNameFromColAndRule c rule}")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    if not colsToOutputWithRule.IsEmpty then
+                      "OUTPUT"
+                      yield!
+                        colsToOutputWithRule
+                        |> List.map (fun (c, _) -> $"  inserted.[%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                    "WHERE"
+
+                    yield!
+                      pkColsWithRule
+                      |> List.map (fun (col, rule) ->
+                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                      |> List.mapAllExceptFirst (sprintf "AND %s")
+                      |> List.map (sprintf "  %s")
+                  ]
+                  |> String.concat "\n"
+                Parameters = pkColsWithRule @ colsToUpdateWithRule |> List.map parameterFromColAndRule
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+
+            // 'delete' scripts
+            for rule in rule |> TableScriptRule.rulesFor Delete do
+                
+              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+              let pkColsWithRule =
+                match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
+                | None | Some [] -> failwithError $"Table %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for an 'update' table script"
+                | Some colNames ->
+                    colNames
+                    |> List.map (fun n ->
+                        colsWithRule
+                        |> List.tryFind (fun (c, _) -> c.Name = n)
+                        |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
+                    )
+
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+
+                  [
+                    $"DELETE FROM [%s{dto.SchemaName}].[%s{dto.Name}]"
+
+                    if not colsToOutputWithRule.IsEmpty then
+                      "OUTPUT"
+                      yield!
+                        colsToOutputWithRule
+                        |> List.map (fun (c, _) -> $"  deleted.[%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                    "WHERE"
+
+                    yield!
+                      pkColsWithRule
+                      |> List.map (fun (col, rule) ->
+                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                      |> List.mapAllExceptFirst (sprintf "AND %s")
+                      |> List.map (sprintf "  %s")
+                  ]
+                  |> String.concat "\n"
+                Parameters = pkColsWithRule |> List.map parameterFromColAndRule
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+
+           ]
+      )
+
+
   let scripts =
-    scriptsWithoutParamsOrResultSetsOrTempTables
+    scriptsWithoutParamsOrResultSetsOrTempTables @ tableScripts
     |> List.map (fun script ->
         let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
         let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition.[tt.Definition])
@@ -783,8 +1418,10 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
         { script with TempTables = tempTables }
     )
     |> List.map (fun script ->
-        let parameters = getScriptParameters cfg sysTypeIdLookup tableTypesByUserId script conn
-        { script with Parameters = parameters }
+        if script.GeneratedByFacil then script
+        else
+          let parameters = getScriptParameters cfg sysTypeIdLookup tableTypesByUserId script conn
+          { script with Parameters = parameters }
     )
     |> List.map (fun script ->
         let resultSet = getColumns conn cfg sysTypeIdLookup (Choice2Of3 script)
@@ -871,14 +1508,9 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     |> set
 
   let tableTypes =
-    tableTypes
+    allTableTypes
     |> List.filter (fun tt -> usedTableTypes |> Set.contains (tt.SchemaName, tt.Name))
     |> List.sortBy (fun tt -> tt.SchemaName, tt.Name)
-
-  let tableDtos =
-    getTableDtos cfg sysTypeIdLookup conn
-    |> List.filter (fun dto -> RuleSet.shouldIncludeTableDto dto.SchemaName dto.Name cfg)
-    |> List.sortBy (fun dto -> dto.SchemaName, dto.Name)
 
 
   for i, rule in Seq.indexed cfg.TableDtos do

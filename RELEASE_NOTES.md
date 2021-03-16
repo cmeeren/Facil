@@ -1,6 +1,17 @@
 Release notes
 ==============
 
+### vNext
+
+* Facil can now automatically generate the following simple per-table CRUD scripts, saving you from both writing and configuring them:
+  * insert
+  * update
+  * delete
+  * get by primary key
+  * get batch by primary key
+  * get by a set of arbitrary columns
+  * get batch by a set of arbitrary columns
+
 ### 0.2.9 (2021-03-02)
 
 * `tableDtos` now includes views in addition to tables

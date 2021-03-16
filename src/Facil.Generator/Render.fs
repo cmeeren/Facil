@@ -18,7 +18,7 @@ let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
       "{"
       yield! indent [
         for c in dto.Columns do
-          $"""``{c.PascalCaseName.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}"""
+          $"""``{c.PascalCaseName}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}"""
       ]
       "}"
     ]

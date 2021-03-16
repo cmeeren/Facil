@@ -152,7 +152,6 @@ rulesets:
     #
     # The SQL files must exist under scriptBasePath (by default the project directory);
     # you may not use .. to go out of this directory.
-
     #
     # The SQL files do not need to be included in the build output; the script contents
     # will be inlined in the generated code.)
@@ -240,6 +239,112 @@ rulesets:
             skip: true
           SomeColumn:
             skip: false
+
+
+    # Facil can generate simple boilerplate per-table CRUD scripts.
+    #
+    # These scripts are not stored on disk, but work just like you had written them
+    # yourself and placed them in scriptBasePath. You can therefore further configure them
+    # using script rules as demonstrated above, except for parameter config, which will be
+    # ignored (Facil has enough information to know the type and nullability of all
+    # parameters for table scripts).
+    tableScripts:
+      - include: .*
+        except: dbo\.SomeTable
+
+        # The scripts to create. For rules where include/for matches more than one table,
+        # rules for scripts with the same type and name will be merged, with values for
+        # later rules taking precedence (columns will be merged). It is possible to have
+        # more than one rule of the same type for any given table.
+        scripts:
+
+            # Generates a script to insert a row.
+          - type: insert
+
+            # The name of the script. The values '{SchemaName}' and '{TableName}' will be
+            # replaced with the schema and table name, respectively. The default is
+            # '{TableName}_Insert'. You can use path separators to "place" the script in a
+            # subdirectory.
+            name: "subdir/{SchemaName}_{TableName}_Insert"
+
+            # The following work similarly to column rules in in stored procedure rules.
+            columns:
+              # Rules inherited by all columns.
+              "": {}
+              MyIdentityColumn:
+                # Don't insert this column. Default true for identity columns, false for
+                # normal columns.
+                skip: true
+                # Output this column. You can output as many columns as you want.
+                output: true
+              Column With Spaces:
+                # The name of the script parameter.
+                paramName: columnWithSpaces
+
+            # Generates a script to update a row by its primary key.
+            #
+            # Supports the same rules as 'insert'. The default name is
+            # '{TableName}_Update'. Skipping a column means it's not updated. (Identity
+            # columns are not skipped by default, but this is likely irrelevant for most
+            # updates).
+          - type: update
+
+            # Generates a script to delete a row by its primary key.
+            #
+            # Supports the same rules as 'insert'. The default name is
+            # '{TableName}_Delete'. Column skip rules are irrelevant and ignored.
+          - type: delete
+
+            # Generates a script to get a row by its primary key.
+            #
+            # Supports the same rules as 'insert'. The default name is '{TableName}_ById'.
+            # Skipping a column means it's not in the SELECT list. The 'output' and
+            # 'paramName' column rules are ignored.
+          - type: getById
+
+            # Generates a script to get rows by a batch of primary keys using a
+            # table-valued parameter.
+            #
+            # Supports the same rules as 'getById'. The default name is
+            # '{TableName}_ByIds'.
+          - type: getByIdBatch
+
+            # Facil can use a table type in this script if:
+            #  - For single-column types/PKs: The table type column data type matches the
+            #    PK column data type.
+            #  - For multi-column types/PKs: The table type columns exactly match the
+            #    primary key columns (names, data types, and order).
+            #
+            # If there are more than one matching table type, you must specify the fully
+            # qualified name of the table type to use.
+            tableType: dbo.MyTableType
+
+            # Generates a script to get a row by a set of column values.
+            #
+            # Supports the same rules as 'getById'. The default name is
+            # '{TableName}_By{ColumnNames}' where '{ColumnNames}' is e.g. 'Col1' or
+            # 'Col1AndCol2'
+          - type: getByColumns
+
+            # The columns to select by. Mandatory.
+            filterColumns:
+              - Col1
+              - Col2
+
+            # Generates a script to get rows by a batch of column values.
+            #
+            # Supports the same rules as 'getByIdBatch' and 'getByColumns'. The default
+            # name is '{TableName}_By{ColumnNames}s' where '{ColumnNames}' is e.g. 'Col1'
+            # or 'Col1AndCol2'
+          - type: getByColumnsBatch
+
+            # Works like in getByIdBatch scripts.
+            tableType: dbo.MyTableType
+
+            # Works like in getByColumns scripts.
+            filterColumns:
+              - Col1
+              - Col2
         
 
     # Facil can generate DTO record types for tables. These can then (automatically or

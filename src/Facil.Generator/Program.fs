@@ -3,6 +3,7 @@
 open System
 open System.IO
 open Microsoft.Data.SqlClient
+open GlobExpressions
 
 
 module Program =
@@ -47,7 +48,31 @@ module Program =
 
         let scriptsWithoutParamsOrResultSetsOrTempTables =
           cfg.Scripts
-          |> List.collect (fun rule -> Set.toList rule.IncludeMatches)
+          |> List.collect (fun rule ->
+               match rule.IncludeOrFor with
+               | For _ -> []
+               | Include pattern ->
+                   let exceptMatches =
+                     match rule.Except with
+                     | Some pattern ->
+                         let matches = Glob.Files(cfg.ScriptBasePath, pattern) |> set
+                         if matches.IsEmpty then
+                           logYamlWarning yamlFilePath 0 0 $"The 'except' glob pattern '{pattern}' does not match any files"
+                         matches
+                     | None -> Set.empty
+
+                   let includeMatches = Glob.Files(cfg.ScriptBasePath, pattern) |> set
+
+                   if includeMatches.IsEmpty then
+                     logYamlWarning yamlFilePath 0 0 $"The 'include' glob pattern '{pattern}' does not match any files"
+
+                   let finalMatches = includeMatches - exceptMatches
+
+                   if not includeMatches.IsEmpty && finalMatches.IsEmpty then
+                     logYamlWarning yamlFilePath 0 0 $"The 'include' glob pattern '{pattern}' does not match any files after subtracting the corresponding 'except' pattern '{rule.Except.Value}'"
+
+                   Set.toList finalMatches
+          )
           |> List.map (fun globOutput ->
               {
                 GlobMatchOutput = globOutput
@@ -60,6 +85,7 @@ module Program =
                 Parameters = []
                 ResultSet = None
                 TempTables = []
+                GeneratedByFacil = false
               }
           )
 

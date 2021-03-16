@@ -68,7 +68,7 @@
 
   <Target Name="DeleteOldNupkgFiles" BeforeTargets="GenerateNuspec">
     <ItemGroup>
-      <FilesToDelete Include="..\..\nupkg\*.nupkg"/>
+      <FilesToDelete Include="..\..\nupkg\*.nupkg" />
     </ItemGroup>   
     <Delete Files="@(FilesToDelete)" />   
   </Target>

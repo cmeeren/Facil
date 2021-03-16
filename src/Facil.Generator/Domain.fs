@@ -273,23 +273,28 @@ type OutputColumn = {
   /// A value that can be used for ordering columns.
   SortKey: int
   IsNullable: bool
+  Size: int16
+  Precision: byte
+  Scale: byte
   TypeInfo: SqlTypeInfo
 } with
   member this.StringEscapedName = this.Name |> Option.map (fun s -> s.Replace("\"", "\\\""))
   member this.PascalCaseName = this.Name |> Option.map String.firstUpper
 
 
-type TableTypeColumn = {
+type TableColumn = {
   Name: string
   /// A value that can be used for ordering columns.
   SortKey: int
   IsNullable: bool
+  IsIdentity: bool
   Size: int16
   Precision: byte
   Scale: byte
   TypeInfo: SqlTypeInfo
 } with
   member this.StringEscapedName = this.Name.Replace("\"", "\\\"")
+  member this.PascalCaseName = this.Name |> String.firstUpper
   member this.PrecisionForSqlMetaData =
     match this.TypeInfo.SqlDbType with
     | SqlDbType.DateTime2 | SqlDbType.DateTimeOffset | SqlDbType.Time -> 0uy
@@ -301,7 +306,7 @@ type TableType = {
   UserTypeId: int
   SchemaName: string
   Name: string
-  Columns: TableTypeColumn list
+  Columns: TableColumn list
 }
 
 
@@ -353,13 +358,14 @@ type Script = {
   Parameters: Parameter list
   ResultSet: OutputColumn list option
   TempTables: TempTable list
+  GeneratedByFacil: bool
 }
 
 
 type TableDto = {
   SchemaName: string
   Name: string
-  Columns: OutputColumn list
+  Columns: TableColumn list
 }
 
 
@@ -371,6 +377,21 @@ type Everything = {
 }
 
 
+module TableColumn =
+
+
+  let toOutputColumn (c: TableColumn) : OutputColumn =
+    {
+      Name = Some c.Name
+      SortKey = c.SortKey
+      IsNullable = c.IsNullable
+      Size = c.Size
+      Precision = c.Precision
+      Scale = c.Scale
+      TypeInfo = c.TypeInfo
+    }
+
+
 module TableDto =
 
   let canBeUsedBy (resultSet: OutputColumn list option) (procOrScriptRule: EffectiveProcedureOrScriptRule) cfg (dto: TableDto) =
@@ -379,7 +400,7 @@ module TableDto =
     | Auto ->
         let dtoRule = RuleSet.getEffectiveTableDtoRuleFor dto.SchemaName dto.Name cfg
         resultSet |> Option.map (List.map (fun c -> { c with SortKey = 0 }))
-          = Some (dto.Columns |> List.map (fun c -> { c with SortKey = 0 }))
+          = Some (dto.Columns |> List.map (fun c -> { c with SortKey = 0 } |> TableColumn.toOutputColumn))
         && procOrScriptRule.VoptionOut = dtoRule.Voption
 
 

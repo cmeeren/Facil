@@ -60,6 +60,9 @@ module String =
 
 module List =
 
+  let mapAllExceptFirst f list =
+    list |> List.mapi (fun i x -> if i <> 0 then f x else x)
+
   let mapAllExceptLast f list =
     let length = List.length list
     list |> List.mapi (fun i x -> if i <> length - 1 then f x else x)
