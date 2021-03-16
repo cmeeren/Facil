@@ -386,7 +386,7 @@ Release notes
 
 ### A note on versioning
 
-While at 0.x, I’ll try to increment the minor version for breaking changes and the patch version for anything else.
+Facil follows [SemVer](https://semver.org/).
 
 Note on what a “breaking change” is: A lot of the generated code needs to be public to support inlining, but is still considered implementation details. These parts of the API are hidden from the IDE using the `[<EditorBrowsable>]` attribute to ensure you won’t use them by accident, but there’s nothing stopping you from looking at the generated code and referencing these parts of the API in your own code. Don’t do that. These are implementation details and may change at any time.
 
