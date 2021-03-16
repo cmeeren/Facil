@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### 1.0.1 (2021-03-16)
+
+* Fix regression causing false negatives in check for whether a table DTO can be returned by a script/procedure
+* Fix bug where table DTO could not be used as a result set if it was explicitly specified using  `result`
+
 ### 1.0.0 (2021-03-16)
 
 * Facil can now automatically generate the following simple per-table CRUD scripts, saving you from both writing and configuring them:
