@@ -284,6 +284,15 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time manual result as DTO test" <| fun () ->
+        let f () =
+          DbGen.Scripts.ManualTableDtoResult
+            .WithConnection(Config.connStr)
+            .ExecuteSingle()
+          |> ignore<DbGen.TableDtos.dbo.Table1 option>
+        ignore f
+
+
       testList "MAX length work correctly" [
 
 

@@ -251,6 +251,9 @@ rulesets:
       - for: TableScriptSubdir/TableScriptConfiguredWithScriptRules
         voptionIn: true
 
+      - for: ManualTableDtoResult.sql
+        result: dbo.Table1
+
 
     tableDtos:
       - include: .*

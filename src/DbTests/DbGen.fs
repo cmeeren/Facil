@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 9e67ee7dc6c40e4bc110076521d8e3e5857898230851dad37b8d11a5473a4aa7
+// Hash: bfca8bb7e499bdc33723b181f2452f34094b4d585c90ad1d0bcf7fe48900da46
 
 //////////////////////////////////////////
 //
@@ -1626,13 +1626,13 @@ module Procedures =
         ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
         ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-      let getItem (reader: SqlDataReader) =
+      let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
         let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
         let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-        {|
+        {
           ``TableCol1`` = ``TableCol1``
           ``TableCol2`` = ``TableCol2``
-        |}
+        }
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]
       member val configureConn : SqlConnection -> unit = ignore with get, set
@@ -10098,7 +10098,7 @@ module Scripts =
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
       ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.AllTypesNonNull =
       let ``key`` = reader.GetInt32 ``ordinal_key``
       let ``bigint`` = reader.GetInt64 ``ordinal_bigint``
       let ``binary`` = reader.GetBytes ``ordinal_binary``
@@ -10128,37 +10128,37 @@ module Scripts =
       let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
       let ``varchar`` = reader.GetString ``ordinal_varchar``
       let ``xml`` = reader.GetString ``ordinal_xml``
-      {|
-        ``key`` = ``key``
-        ``bigint`` = ``bigint``
-        ``binary`` = ``binary``
-        ``bit`` = ``bit``
-        ``char`` = ``char``
-        ``date`` = ``date``
-        ``datetime`` = ``datetime``
-        ``datetime2`` = ``datetime2``
-        ``datetimeoffset`` = ``datetimeoffset``
-        ``decimal`` = ``decimal``
-        ``float`` = ``float``
-        ``image`` = ``image``
-        ``int`` = ``int``
-        ``money`` = ``money``
-        ``nchar`` = ``nchar``
-        ``ntext`` = ``ntext``
-        ``numeric`` = ``numeric``
-        ``nvarchar`` = ``nvarchar``
-        ``real`` = ``real``
-        ``smalldatetime`` = ``smalldatetime``
-        ``smallint`` = ``smallint``
-        ``smallmoney`` = ``smallmoney``
-        ``text`` = ``text``
-        ``time`` = ``time``
-        ``tinyint`` = ``tinyint``
-        ``uniqueidentifier`` = ``uniqueidentifier``
-        ``varbinary`` = ``varbinary``
-        ``varchar`` = ``varchar``
-        ``xml`` = ``xml``
-      |}
+      {
+        ``Key`` = ``key``
+        ``Bigint`` = ``bigint``
+        ``Binary`` = ``binary``
+        ``Bit`` = ``bit``
+        ``Char`` = ``char``
+        ``Date`` = ``date``
+        ``Datetime`` = ``datetime``
+        ``Datetime2`` = ``datetime2``
+        ``Datetimeoffset`` = ``datetimeoffset``
+        ``Decimal`` = ``decimal``
+        ``Float`` = ``float``
+        ``Image`` = ``image``
+        ``Int`` = ``int``
+        ``Money`` = ``money``
+        ``Nchar`` = ``nchar``
+        ``Ntext`` = ``ntext``
+        ``Numeric`` = ``numeric``
+        ``Nvarchar`` = ``nvarchar``
+        ``Real`` = ``real``
+        ``Smalldatetime`` = ``smalldatetime``
+        ``Smallint`` = ``smallint``
+        ``Smallmoney`` = ``smallmoney``
+        ``Text`` = ``text``
+        ``Time`` = ``time``
+        ``Tinyint`` = ``tinyint``
+        ``Uniqueidentifier`` = ``uniqueidentifier``
+        ``Varbinary`` = ``varbinary``
+        ``Varchar`` = ``varchar``
+        ``Xml`` = ``xml``
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -10851,7 +10851,7 @@ module Scripts =
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
       ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.AllTypesNull =
       let ``key1`` = reader.GetInt32 ``ordinal_key1``
       let ``key2`` = reader.GetInt32 ``ordinal_key2``
       let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
@@ -10882,38 +10882,38 @@ module Scripts =
       let ``varbinary`` = if reader.IsDBNull ``ordinal_varbinary`` then None else reader.GetBytes ``ordinal_varbinary`` |> Some
       let ``varchar`` = if reader.IsDBNull ``ordinal_varchar`` then None else reader.GetString ``ordinal_varchar`` |> Some
       let ``xml`` = if reader.IsDBNull ``ordinal_xml`` then None else reader.GetString ``ordinal_xml`` |> Some
-      {|
-        ``key1`` = ``key1``
-        ``key2`` = ``key2``
-        ``bigint`` = ``bigint``
-        ``binary`` = ``binary``
-        ``bit`` = ``bit``
-        ``char`` = ``char``
-        ``date`` = ``date``
-        ``datetime`` = ``datetime``
-        ``datetime2`` = ``datetime2``
-        ``datetimeoffset`` = ``datetimeoffset``
-        ``decimal`` = ``decimal``
-        ``float`` = ``float``
-        ``image`` = ``image``
-        ``int`` = ``int``
-        ``money`` = ``money``
-        ``nchar`` = ``nchar``
-        ``ntext`` = ``ntext``
-        ``numeric`` = ``numeric``
-        ``nvarchar`` = ``nvarchar``
-        ``real`` = ``real``
-        ``smalldatetime`` = ``smalldatetime``
-        ``smallint`` = ``smallint``
-        ``smallmoney`` = ``smallmoney``
-        ``text`` = ``text``
-        ``time`` = ``time``
-        ``tinyint`` = ``tinyint``
-        ``uniqueidentifier`` = ``uniqueidentifier``
-        ``varbinary`` = ``varbinary``
-        ``varchar`` = ``varchar``
-        ``xml`` = ``xml``
-      |}
+      {
+        ``Key1`` = ``key1``
+        ``Key2`` = ``key2``
+        ``Bigint`` = ``bigint``
+        ``Binary`` = ``binary``
+        ``Bit`` = ``bit``
+        ``Char`` = ``char``
+        ``Date`` = ``date``
+        ``Datetime`` = ``datetime``
+        ``Datetime2`` = ``datetime2``
+        ``Datetimeoffset`` = ``datetimeoffset``
+        ``Decimal`` = ``decimal``
+        ``Float`` = ``float``
+        ``Image`` = ``image``
+        ``Int`` = ``int``
+        ``Money`` = ``money``
+        ``Nchar`` = ``nchar``
+        ``Ntext`` = ``ntext``
+        ``Numeric`` = ``numeric``
+        ``Nvarchar`` = ``nvarchar``
+        ``Real`` = ``real``
+        ``Smalldatetime`` = ``smalldatetime``
+        ``Smallint`` = ``smallint``
+        ``Smallmoney`` = ``smallmoney``
+        ``Text`` = ``text``
+        ``Time`` = ``time``
+        ``Tinyint`` = ``tinyint``
+        ``Uniqueidentifier`` = ``uniqueidentifier``
+        ``Varbinary`` = ``varbinary``
+        ``Varchar`` = ``varchar``
+        ``Xml`` = ``xml``
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -11675,13 +11675,13 @@ module Scripts =
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-      {|
+      {
         ``TableCol1`` = ``TableCol1``
         ``TableCol2`` = ``TableCol2``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -11935,13 +11935,13 @@ module Scripts =
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-      {|
+      {
         ``TableCol1`` = ``TableCol1``
         ``TableCol2`` = ``TableCol2``
-      |}
+      }
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     member val configureConn : SqlConnection -> unit = ignore with get, set
@@ -12036,13 +12036,13 @@ module Scripts =
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-      {|
+      {
         ``TableCol1`` = ``TableCol1``
         ``TableCol2`` = ``TableCol2``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -12169,13 +12169,13 @@ module Scripts =
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-      {|
+      {
         ``TableCol1`` = ``TableCol1``
         ``TableCol2`` = ``TableCol2``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -12306,13 +12306,13 @@ module Scripts =
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-      {|
+      {
         ``TableCol1`` = ``TableCol1``
         ``TableCol2`` = ``TableCol2``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -12439,13 +12439,13 @@ module Scripts =
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-      {|
+      {
         ``TableCol1`` = ``TableCol1``
         ``TableCol2`` = ``TableCol2``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -12988,6 +12988,97 @@ module Scripts =
           SqlParameter("varchar", SqlDbType.VarChar, Size = 3, Value = (^a: (member ``Varchar``: string) dto))
         |]
       ``LengthTypes_Update_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+
+  type ``ManualTableDtoResult`` private (connStr: string, conn: SqlConnection) =
+
+    let configureCmd userConfigureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        SELECT * FROM Table1
+      """
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_TableCol1`` = 0
+    let mutable ``ordinal_TableCol2`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
+      ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
+
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+      {
+        ``TableCol1`` = ``TableCol1``
+        ``TableCol2`` = ``TableCol2``
+      }
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``ManualTableDtoResult``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``ManualTableDtoResult``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member this.Execute() =
+      executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+    member this.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    #endif
+
+    member this.LazyExecute() =
+      executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteSingle() =
+      executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
   type ``ManyColumns`` private (connStr: string, conn: SqlConnection) =
@@ -16376,13 +16467,13 @@ module Scripts =
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
-      {|
+      {
         ``TableCol1`` = ``TableCol1``
         ``TableCol2`` = ``TableCol2``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -17449,15 +17540,15 @@ module Scripts =
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
       ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
       let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
       let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
-      {|
+      {
         ``Id`` = ``Id``
         ``Foo`` = ``Foo``
         ``BAR`` = ``BAR``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -17591,15 +17682,15 @@ module Scripts =
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
       ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-    let getItem (reader: SqlDataReader) =
+    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
       let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
       let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
-      {|
+      {
         ``Id`` = ``Id``
         ``Foo`` = ``Foo``
         ``BAR`` = ``BAR``
-      |}
+      }
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
