@@ -252,12 +252,6 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
           OutputColumn.Name = colName
           SortKey = reader.["column_ordinal"] |> unbox<int>
           IsNullable = reader.["is_nullable"] |> unbox<bool>
-          Size =
-            reader.["max_length"]
-            |> unbox<int16>
-            |> adjustSizeForDbType typeInfo.SqlDbType
-          Precision = reader.["precision"] |> unbox<byte>
-          Scale = reader.["scale"] |> unbox<byte>
           TypeInfo = typeInfo
       }
 
@@ -362,22 +356,6 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
           OutputColumn.Name = colName
           SortKey = schema.ColumnOrdinal.Value
           IsNullable = schema.AllowDBNull.Value
-          Size =
-            schema.ColumnSize
-            |> Option.ofNullable
-            |> Option.map int16
-            |> Option.defaultValue 0s
-            |> adjustSizeForDbType typeInfo.SqlDbType
-          Precision =
-            schema.NumericPrecision
-            |> Option.ofNullable
-            |> Option.map byte
-            |> Option.defaultValue 0uy
-          Scale =
-            schema.NumericScale
-            |> Option.ofNullable
-            |> Option.map byte
-            |> Option.defaultValue 0uy
           TypeInfo = typeInfo
         }
 

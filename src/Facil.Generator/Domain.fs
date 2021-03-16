@@ -273,9 +273,6 @@ type OutputColumn = {
   /// A value that can be used for ordering columns.
   SortKey: int
   IsNullable: bool
-  Size: int16
-  Precision: byte
-  Scale: byte
   TypeInfo: SqlTypeInfo
 } with
   member this.StringEscapedName = this.Name |> Option.map (fun s -> s.Replace("\"", "\\\""))
@@ -385,9 +382,6 @@ module TableColumn =
       Name = Some c.Name
       SortKey = c.SortKey
       IsNullable = c.IsNullable
-      Size = c.Size
-      Precision = c.Precision
-      Scale = c.Scale
       TypeInfo = c.TypeInfo
     }
 
