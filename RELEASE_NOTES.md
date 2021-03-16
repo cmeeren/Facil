@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### vNext
+### 1.0.0 (2021-03-16)
 
 * Facil can now automatically generate the following simple per-table CRUD scripts, saving you from both writing and configuring them:
   * insert
