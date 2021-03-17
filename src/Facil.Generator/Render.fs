@@ -322,6 +322,14 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ]
             ""
 
+        "[<EditorBrowsable(EditorBrowsableState.Never)>]"
+        "new() ="
+        yield! indent [
+          "failwith \"This constructor is for aiding reflection and type constraints only\""
+          $"``{className}``(null, null)"
+        ]
+        ""
+
         if wrapResult then yield! wrapResultDef
 
         "[<EditorBrowsable(EditorBrowsableState.Never)>]"
@@ -675,6 +683,13 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
       $"type ``{className}`` private (connStr: string, conn: SqlConnection) ="
       ""
       yield! indent [
+        "[<EditorBrowsable(EditorBrowsableState.Never)>]"
+        "new() ="
+        yield! indent [
+          "failwith \"This constructor is for aiding reflection and type constraints only\""
+          $"``{className}``(null, null)"
+        ]
+        ""
         "[<EditorBrowsable(EditorBrowsableState.Never)>]"
         "member val connStr = connStr"
         ""

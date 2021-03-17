@@ -293,6 +293,14 @@ let tests =
         ignore f
 
 
+      testCase "Parametrized scripts have a public constructor that throws (but can be used for reflection or to aid SRTP)" <| fun () ->
+        Expect.throws (DbGen.Procedures.dbo.ProcWithMultipleColumnsAndNoParams >> ignore) ""
+
+
+      testCase "Unparametrized scripts have a public constructor that throws (but can be used for reflection or to aid SRTP)" <| fun () ->
+        Expect.throws (DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNonDefaultParams >> ignore) ""
+
+
       testList "MAX length work correctly" [
 
 

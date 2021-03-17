@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.1.0 (2021-03-17)
+
+* Added a public constructor to all script/procedure entry types to help reflection/SRTP (the constructor throws if called)
+
 ### 1.0.1 (2021-03-16)
 
 * Fix regression causing false negatives in check for whether a table DTO can be returned by a script/procedure
