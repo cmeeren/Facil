@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.2.2 (2021-03-18)
+
+* `getByColumns` and `getByColumnsBatch` table scripts now require non-null parameters even if filtering on nullable columns
+
 ### 1.2.1 (2021-03-18)
 
 * Changed the new `getPrimaryKey` function from a module function to a static member on the table DTO type to avoid conflicts when there are table DTOs that only differ by one of them ending with `Module`

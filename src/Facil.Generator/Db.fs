@@ -1086,6 +1086,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                     |> List.tryFind (fun (c, _) -> c.Name = n)
                     |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 $"Unable to find the specified filter column '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
                 )
+                // Treat all filter columns as non-nullable
+                |> List.map (fun (c, r) -> { c with IsNullable = false }, r)
 
               {
                 GlobMatchOutput = name
@@ -1147,6 +1149,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                     |> List.tryFind (fun (c, _) -> c.Name = n)
                     |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 $"Unable to find the specified filter column '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
                 )
+                // Treat all filter columns as non-nullable
+                |> List.map (fun (c, r) -> { c with IsNullable = false }, r)
 
               let tableType, columnMapping = getTableTypeAndColumnMappingForBatchScript rule (filterColsWithRule |> List.map fst) name
 

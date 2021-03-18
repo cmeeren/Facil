@@ -949,6 +949,28 @@ let tests =
             .Execute()
 
 
+      testCase "getByColumn with nullable columns use non-nullable parameters" <| fun () ->
+        let f () =
+          let res =
+            DbGen.Scripts.Table1_ByTableCol2
+              .WithConnection(Config.connStr)
+              .WithParameters(1)
+              .ExecuteSingle()
+          res.Value.TableCol2 |> ignore<int option>
+        ignore f
+
+
+      testCase "getByColumnBatch with nullable columns use non-nullable parameters" <| fun () ->
+        let f () =
+          let res =
+            DbGen.Scripts.Table1_ByTableCol2s
+              .WithConnection(Config.connStr)
+              .WithParameters([DbGen.TableTypes.dbo.SingleColNonNull.create 1])
+              .ExecuteSingle()
+          res.Value.TableCol2 |> ignore<int option>
+        ignore f
+
+
     ]
 
   ]

@@ -351,3 +351,12 @@ rulesets:
             filterColumns:
               - Id
               - Foo
+
+      - include: dbo\.Table1
+        scripts:
+          - type: getByColumns
+            filterColumns:
+              - TableCol2
+          - type: getByColumnsBatch
+            filterColumns:
+              - TableCol2
