@@ -553,10 +553,10 @@ let tests =
         
         testCase "Correctly handles skipped PK columns" <| fun () ->
           // Sanity check
-          Expect.isSome getCorrespondingModuleForType<DbGen.TableDtos.dbo.MaxLengthTypes> ""
+          Expect.isSome staticGetPrimaryKeyMethod<DbGen.TableDtos.dbo.MaxLengthTypes> ""
 
           // Actual test
-          Expect.isNone getCorrespondingModuleForType<DbGen.TableDtos.dbo.TableWithSkippedPkColumn> ""
+          Expect.isNone staticGetPrimaryKeyMethod<DbGen.TableDtos.dbo.TableWithSkippedPkColumn> ""
       ]
 
   ]

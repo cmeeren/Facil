@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.2.1 (2021-03-18)
+
+* Changed the new `getPrimaryKey` function from a module function to a static member on the table DTO type to avoid conflicts when there are table DTOs that only differ by one of them ending with `Module`
+
 ### 1.2.0 (2021-03-18)
 
 * Add a table DTO module alongside each table DTO containing a function to get the DTO’s primary key (if none of the PK columns are skipped)

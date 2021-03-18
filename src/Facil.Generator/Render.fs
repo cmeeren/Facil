@@ -21,16 +21,12 @@ let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
           $"""``%s{c.PascalCaseName}``: %s{c.TypeInfo.FSharpTypeString}%s{if c.IsNullable then " " + optionType else ""}"""
       ]
       "}"
-    ]
 
-    match dto.PrimaryKeyColumns with
-    | [] -> ()
-    | first :: rest ->
-        ""
-        $"module ``%s{dto.Name}`` ="
-        yield! indent [
+      match dto.PrimaryKeyColumns with
+      | [] -> ()
+      | first :: rest ->
           ""
-          $"let getPrimaryKey (dto: ``%s{dto.Name}``) ="
+          $"static member getPrimaryKey (dto: ``%s{dto.Name}``) ="
           yield! indent [
             match rest with
             | [] -> $"dto.``%s{first.PascalCaseName}``"
@@ -42,8 +38,8 @@ let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
               ]
               "|}"
           ]
-        ]
 
+    ]
   ]
 
 

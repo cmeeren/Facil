@@ -5,6 +5,7 @@ open System
 open System.Data.SqlTypes
 open System.Threading
 open System.Threading.Tasks
+open System.Reflection
 open FSharp.Control
 open Hedgehog
 
@@ -18,13 +19,9 @@ let (|InnerException|) ex =
   getInnerEx ex
 
 
-/// Given a type defined in a module, returns the System.Type representing a module with
-/// the same name as the type defined in the same module.
-let getCorrespondingModuleForType<'a> =
-  typeof<'a>
-    .DeclaringType
-    .GetNestedType($"{typeof<'a>.Name}Module")
-  |> Option.ofObj
+/// Gets the type's static 'getPrimaryKey' method, if it exists.
+let staticGetPrimaryKeyMethod<'a> =
+  typeof<'a>.GetMethod("getPrimaryKey") |> Option.ofObj
 
 
 module Seq =
