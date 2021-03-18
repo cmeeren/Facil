@@ -13,15 +13,37 @@ let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
   [
     ""
     ""
-    $"type ``{dto.Name}`` ="
+    $"type ``%s{dto.Name}`` ="
     yield! indent [
       "{"
       yield! indent [
         for c in dto.Columns do
-          $"""``{c.PascalCaseName}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}"""
+          $"""``%s{c.PascalCaseName}``: %s{c.TypeInfo.FSharpTypeString}%s{if c.IsNullable then " " + optionType else ""}"""
       ]
       "}"
     ]
+
+    match dto.PrimaryKeyColumns with
+    | [] -> ()
+    | first :: rest ->
+        ""
+        $"module ``%s{dto.Name}`` ="
+        yield! indent [
+          ""
+          $"let getPrimaryKey (dto: ``%s{dto.Name}``) ="
+          yield! indent [
+            match rest with
+            | [] -> $"dto.``%s{first.PascalCaseName}``"
+            | _ ->
+              "{|"
+              yield! indent [
+                for c in first :: rest do
+                  $"""``%s{c.PascalCaseName}`` = dto.``%s{c.PascalCaseName}``"""
+              ]
+              "|}"
+          ]
+        ]
+
   ]
 
 

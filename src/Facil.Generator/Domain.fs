@@ -363,6 +363,7 @@ type TableDto = {
   SchemaName: string
   Name: string
   Columns: TableColumn list
+  PrimaryKeyColumns: TableColumn list
 }
 
 

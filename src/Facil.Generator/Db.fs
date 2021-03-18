@@ -609,7 +609,53 @@ let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableT
   )
 
 
-let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
+let getPrimaryKeyColumnNamesByTableName (conn: SqlConnection) =
+  try
+    use cmd = conn.CreateCommand()
+    cmd.CommandText <- "
+      SELECT 
+        schema_name(tab.schema_id) AS [schema_name], 
+        tab.[name] AS table_name,
+        ic.index_column_id AS column_id,
+        col.[name] AS column_name
+      from sys.tables AS tab
+      INNER JOIN 
+        sys.indexes pk
+          ON tab.object_id = pk.object_id 
+          AND pk.is_primary_key = 1
+      INNER JOIN 
+        sys.index_columns AS ic
+          ON ic.object_id = pk.object_id
+          AND ic.index_id = pk.index_id
+      INNER JOIN 
+        sys.columns AS col
+          ON pk.object_id = col.object_id
+          AND col.column_id = ic.column_id
+      ORDER BY
+        schema_name(tab.schema_id),
+        tab.[name],
+        ic.index_column_id
+    "
+    use reader = cmd.ExecuteReader()
+    let data = ResizeArray()
+    while reader.Read() do
+
+      let rowData =
+        reader.["schema_name"] |> unbox<string>,
+        reader.["table_name"] |> unbox<string>,
+        reader.["column_name"] |> unbox<string>
+      data.Add(rowData)
+
+    data
+    |> Seq.toList
+    |> List.groupBy (fun (schemaName, tableName, _) -> schemaName, tableName)
+    |> Map.ofList
+    |> Map.map (fun _ rowData -> rowData |> Seq.map (fun (_, _, colName) -> colName) |> Seq.toList)
+  with ex ->
+    raise <| Exception("Error getting primary key info", ex)
+
+
+let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesByTable: Map<string * string, string list>) (conn: SqlConnection) =
   try
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "
@@ -705,6 +751,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
                 TypeInfo = typeInfo
               }
             ]
+            PrimaryKeyColumns = []  // Set later
           }
         )
 
@@ -721,10 +768,22 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (conn: SqlConnection) =
         for unmatchedColumn in allColumnNamesWithRules - set allColumnsByTableSchemaAndName.[key] do
           logWarning $"Config contains unmatched rule for column '%s{unmatchedColumn}' in table {schemaName}.{tableName}"
 
+        let cols = xs |> List.collect (fun x -> x.Columns) |> List.sortBy (fun c -> c.SortKey)
+
         { 
           SchemaName = schemaName
           Name = tableName
-          Columns = xs |> List.collect (fun x -> x.Columns) |> List.sortBy (fun c -> c.SortKey)
+          Columns = cols
+          PrimaryKeyColumns =
+            match primaryKeyColumnNamesByTable.TryFind (schemaName, tableName) with
+            | None -> []
+            | Some colNames ->
+                let foundPrimaryKeyColumns =
+                  colNames
+                  |> List.choose (fun n -> cols |> List.tryFind (fun c -> c.Name = n))
+                if colNames.Length = foundPrimaryKeyColumns.Length then
+                  foundPrimaryKeyColumns
+                else []
         }
     )
   with ex ->
@@ -774,52 +833,6 @@ let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition (conn: SqlCo
     raise <| Exception($"Error getting temp table from the following definition:\n%s{definition}", ex)
 
 
-let getPrimaryKeyColumnNamesByTableName (conn: SqlConnection) =
-  try
-    use cmd = conn.CreateCommand()
-    cmd.CommandText <- "
-      SELECT 
-        schema_name(tab.schema_id) AS [schema_name], 
-        tab.[name] AS table_name,
-        ic.index_column_id AS column_id,
-        col.[name] AS column_name
-      from sys.tables AS tab
-      INNER JOIN 
-        sys.indexes pk
-          ON tab.object_id = pk.object_id 
-          AND pk.is_primary_key = 1
-      INNER JOIN 
-        sys.index_columns AS ic
-          ON ic.object_id = pk.object_id
-          AND ic.index_id = pk.index_id
-      INNER JOIN 
-        sys.columns AS col
-          ON pk.object_id = col.object_id
-          AND col.column_id = ic.column_id
-      ORDER BY
-        schema_name(tab.schema_id),
-        tab.[name],
-        ic.index_column_id
-    "
-    use reader = cmd.ExecuteReader()
-    let data = ResizeArray()
-    while reader.Read() do
-
-      let rowData =
-        reader.["schema_name"] |> unbox<string>,
-        reader.["table_name"] |> unbox<string>,
-        reader.["column_name"] |> unbox<string>
-      data.Add(rowData)
-
-    data
-    |> Seq.toList
-    |> List.groupBy (fun (schemaName, tableName, _) -> schemaName, tableName)
-    |> Map.ofList
-    |> Map.map (fun _ rowData -> rowData |> Seq.map (fun (_, _, colName) -> colName) |> Seq.toList)
-  with ex ->
-    raise <| Exception("Error getting primary key info", ex)
-
-
 
 let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsOrTempTables: Script list) (conn: SqlConnection) =
 
@@ -829,7 +842,9 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
   let tableTypesByUserId = allTableTypes |> List.map (fun t -> t.UserTypeId, t) |> Map.ofList
   
-  let allTableDtos = getTableDtos cfg sysTypeIdLookup conn
+  let primaryKeyColumnNamesByTable = getPrimaryKeyColumnNamesByTableName conn
+
+  let allTableDtos = getTableDtos cfg sysTypeIdLookup primaryKeyColumnNamesByTable conn
     
   let tableDtos =
     allTableDtos
@@ -913,8 +928,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             | [(tt, mapping)] -> (tt, mapping)
             | xs -> failwithYamlError fullYamlPath 0 0 $"""Found multiple suitable table types for table script %s{scriptName}. Specify which to use. The matching types are: %s{ xs |> List.map (fun (tt, _) -> tt.SchemaName + "." + tt.Name) |> String.concat ", " }"""
 
-
-      let primaryKeyColumnNamesByTable = getPrimaryKeyColumnNamesByTableName conn
 
       toInclude
       |> List.collect (fun dto ->

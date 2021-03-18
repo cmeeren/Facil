@@ -1,6 +1,7 @@
 ﻿module MiscTests
 
 open Expecto
+open Hedgehog
 open Microsoft.Data.SqlClient
 open Swensen.Unquote
 
@@ -523,5 +524,39 @@ let tests =
         do! comp |> Async.Ignore
         do! comp |> Async.Ignore
       }
+
+
+      testList "Table DTO primary key tests" [
+
+
+        testCase "Returns correct value for single-column keys" <| fun () ->
+          Property.check <| property {
+            let! dto = GenX.auto<DbGen.TableDtos.dbo.MaxLengthTypes>
+
+            let expected = dto.Key
+            let actual = DbGen.TableDtos.dbo.MaxLengthTypes.getPrimaryKey dto
+
+            Expect.equal actual expected ""
+          }
+
+
+        testCase "Returns correct value for multi-column keys" <| fun () ->
+          Property.check <| property {
+            let! dto = GenX.auto<DbGen.TableDtos.dbo.AllTypesNull>
+
+            let expected = {| Key1 = dto.Key1; Key2 = dto.Key2 |}
+            let actual = DbGen.TableDtos.dbo.AllTypesNull.getPrimaryKey dto
+
+            Expect.equal actual expected ""
+          }
+
+        
+        testCase "Correctly handles skipped PK columns" <| fun () ->
+          // Sanity check
+          Expect.isSome getCorrespondingModuleForType<DbGen.TableDtos.dbo.MaxLengthTypes> ""
+
+          // Actual test
+          Expect.isNone getCorrespondingModuleForType<DbGen.TableDtos.dbo.TableWithSkippedPkColumn> ""
+      ]
 
   ]

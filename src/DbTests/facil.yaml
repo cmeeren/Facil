@@ -283,6 +283,11 @@ rulesets:
           Col4:
             skip: true
 
+      - for: TableWithSkippedPkColumn
+        columns:
+          Key1:
+            skip: true
+
 
     tableTypes:
       - for: Voption

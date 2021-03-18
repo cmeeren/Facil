@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.2.0 (2021-03-18)
+
+* Add a table DTO module alongside each table DTO containing a function to get the DTO’s primary key (if none of the PK columns are skipped)
+
 ### 1.1.0 (2021-03-17)
 
 * Added a public constructor to all script/procedure entry types to help reflection/SRTP (the constructor throws if called)
