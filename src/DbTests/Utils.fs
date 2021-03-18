@@ -200,7 +200,11 @@ module Gen =
       // Don't include NULL because it seems to mess with test output.
       Gen.char '\001' '\127' |> Gen.string (Range.constant n n)
 
-    let date = Gen.dateTime |> Gen.map (fun dt -> dt.Date)
+    let date =
+      Range.exponentialFrom (DateTime(2000, 1, 1).Ticks) DateTime.MinValue.Ticks DateTime.MaxValue.Ticks
+      |> Range.map DateTime
+      |> Gen.dateTime
+      |> Gen.map (fun dt -> dt.Date)
 
     let datetime =
       gen {
