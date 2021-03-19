@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### vNext
+### 1.3.1 (2021-03-19)
 
 * Fixed build targets on Linux
 
