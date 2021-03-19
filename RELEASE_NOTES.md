@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Fixed build targets on Linux
+
 ### 1.3.0 (2021-03-19)
 
 * Added ability to generate `MERGE` table script (“upsert”)

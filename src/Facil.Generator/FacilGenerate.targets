@@ -1,5 +1,0 @@
-<Project>
-  <Target Name="FacilGenerate" BeforeTargets="Build">
-    <Exec Command="dotnet &quot;$(MSBuildThisFileDirectory)/netcoreapp3.1/Facil.Generator.dll\&quot; $(TargetPathWithTargetPlatformMoniker)" />
-  </Target>
-</Project>
