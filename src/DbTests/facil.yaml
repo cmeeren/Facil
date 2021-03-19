@@ -376,6 +376,11 @@ rulesets:
           - type: getByColumns
             filterColumns:
               - TableCol2
+
           - type: getByColumnsBatch
             filterColumns:
               - TableCol2
+
+          - type: getByColumns
+            filterColumns:
+              - TableCol1

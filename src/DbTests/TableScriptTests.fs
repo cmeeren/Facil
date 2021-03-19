@@ -1518,6 +1518,23 @@ let tests =
         ignore f
 
 
+      testCase "Can have multiple getByColumns with different columns" <| fun () ->
+        let f () =
+          DbGen.Scripts.Table1_ByTableCol1
+            .WithConnection(Config.connStr)
+            .WithParameters("")
+            .ExecuteSingle()
+          |> ignore
+
+          DbGen.Scripts.Table1_ByTableCol2
+            .WithConnection(Config.connStr)
+            .WithParameters(0)
+            .ExecuteSingle()
+          |> ignore
+
+        ignore f
+
+
     ]
 
   ]

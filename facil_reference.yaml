@@ -253,9 +253,9 @@ rulesets:
         except: dbo\.SomeTable
 
         # The scripts to create. For rules where include/for matches more than one table,
-        # rules for scripts with the same type and name will be merged, with values for
-        # later rules taking precedence (columns will be merged). It is possible to have
-        # more than one rule of the same type for any given table.
+        # rules for scripts with the same type and (final) name will be merged, with
+        # values for later rules taking precedence (columns will be merged). It is
+        # possible to have more than one rule of the same type for any given table.
         scripts:
 
             # Generates a script to insert a row.

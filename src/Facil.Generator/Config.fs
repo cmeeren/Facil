@@ -926,10 +926,10 @@ module TableScriptColumn =
 module TableScriptTypeRule =
 
 
-  let defaultEffectiveRuleFor (rule: TableScriptTypeRule) : EffectiveTableScriptTypeRule = {
+  let defaultEffectiveRuleFor (rule: TableScriptTypeRule) (schemaName: string) (tableName: string) fullYamlPath : EffectiveTableScriptTypeRule = {
     Type = rule.Type
     Name =
-      let defaultName =
+      let defaultNameTemplate =
         match rule.Type with
         | Insert -> "{TableName}_Insert"
         | Update -> "{TableName}_Update"
@@ -939,7 +939,22 @@ module TableScriptTypeRule =
         | GetByIdBatch -> "{TableName}_ByIds"
         | GetByColumns -> "{TableName}_By{ColumnNames}"
         | GetByColumnsBatch -> "{TableName}_By{ColumnNames}s"
-      rule.Name |> Option.defaultValue defaultName
+
+      let nameTemplate = rule.Name |> Option.defaultValue defaultNameTemplate
+
+      match rule.Type with
+      | Insert | Update | Merge | Delete | GetById | GetByIdBatch ->
+          nameTemplate
+            .Replace("{SchemaName}", schemaName)
+            .Replace("{TableName}", tableName)
+      | GetByColumns | GetByColumnsBatch ->
+          let filterColNames =
+            rule.FilterColumns
+            |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "Table scripts with type 'getByColumns' and 'getByColumnsBatch' must specify 'filterColumns'")
+          nameTemplate
+            .Replace("{SchemaName}", schemaName)
+            .Replace("{TableName}", tableName)
+            .Replace("{ColumnNames}", filterColNames |> String.concat "And")
     TableType = rule.TableType
     Holdlock = rule.Holdlock |> Option.defaultValue false
     FilterColumns = rule.FilterColumns
@@ -1062,12 +1077,12 @@ module TableScriptRule =
     | Some exPattern -> Regex.IsMatch(qualifiedName, pattern) && not <| Regex.IsMatch(qualifiedName, exPattern)
 
 
-  let merge (eff: EffectiveTableScriptRule) (rule: TableScriptRule) : EffectiveTableScriptRule =
+  let merge schemaName tableName fullYamlPath (eff: EffectiveTableScriptRule) (rule: TableScriptRule) : EffectiveTableScriptRule =
     {
       Scripts =
         (eff.Scripts, rule.Scripts)
         ||> List.fold (fun current rule ->
-              let defaultRule = TableScriptTypeRule.defaultEffectiveRuleFor rule
+              let defaultRule = TableScriptTypeRule.defaultEffectiveRuleFor rule schemaName tableName fullYamlPath
               let key = rule.Type, (rule.Name |> Option.defaultValue defaultRule.Name)
               match current.TryFind key with
               | None -> current.Add(key, defaultRule)
@@ -1180,10 +1195,10 @@ module RuleSet =
     |> List.fold TableTypeRule.merge TableTypeRule.defaultEffectiveRule
 
 
-  let getEffectiveTableScriptRuleFor schemaName tableName (cfg: RuleSet) =
+  let getEffectiveTableScriptRuleFor schemaName tableName fullYamlPath (cfg: RuleSet) =
     cfg.TableScripts
     |> List.filter (TableScriptRule.matches schemaName tableName)
-    |> List.fold TableScriptRule.merge TableScriptRule.defaultEffectiveRule
+    |> List.fold (TableScriptRule.merge schemaName tableName fullYamlPath) TableScriptRule.defaultEffectiveRule
 
 
 

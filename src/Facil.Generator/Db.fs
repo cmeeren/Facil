@@ -931,13 +931,11 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
       toInclude
       |> List.collect (fun dto ->
-           let rule = RuleSet.getEffectiveTableScriptRuleFor dto.SchemaName dto.Name cfg
+           let rule = RuleSet.getEffectiveTableScriptRuleFor dto.SchemaName dto.Name fullYamlPath cfg
            [
 
             // 'getById' scripts
             for rule in rule |> TableScriptRule.rulesFor GetById do
-
-              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
 
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
@@ -953,12 +951,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                         |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
                     )
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
                   [
                     "SELECT"
@@ -989,8 +987,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'getByIdBatch' scripts
             for rule in rule |> TableScriptRule.rulesFor GetByIdBatch do
 
-              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
-
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
 
@@ -1005,15 +1001,15 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                         |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
                     )
 
-              let tableType, columnMapping = getTableTypeAndColumnMappingForBatchScript rule (pkColsWithRule |> List.map fst) name
+              let tableType, columnMapping = getTableTypeAndColumnMappingForBatchScript rule (pkColsWithRule |> List.map fst) rule.Name
 
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
                   [
                     "SELECT"
@@ -1073,12 +1069,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
 
-              let name =
-                rule.Name
-                  .Replace("{SchemaName}", dto.SchemaName)
-                  .Replace("{TableName}", dto.Name)
-                  .Replace("{ColumnNames}", filterColNames |> String.concat "And")
-
               let filterColsWithRule =
                 filterColNames
                 |> List.map (fun n ->
@@ -1090,12 +1080,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 |> List.map (fun (c, r) -> { c with IsNullable = false }, r)
 
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
                   [
                     "SELECT"
@@ -1136,12 +1126,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
 
-              let name =
-                rule.Name
-                  .Replace("{SchemaName}", dto.SchemaName)
-                  .Replace("{TableName}", dto.Name)
-                  .Replace("{ColumnNames}", filterColNames |> String.concat "And")
-
               let filterColsWithRule =
                 filterColNames
                 |> List.map (fun n ->
@@ -1152,15 +1136,15 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 // Treat all filter columns as non-nullable
                 |> List.map (fun (c, r) -> { c with IsNullable = false }, r)
 
-              let tableType, columnMapping = getTableTypeAndColumnMappingForBatchScript rule (filterColsWithRule |> List.map fst) name
+              let tableType, columnMapping = getTableTypeAndColumnMappingForBatchScript rule (filterColsWithRule |> List.map fst) rule.Name
 
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
                   [
                     "SELECT"
@@ -1211,8 +1195,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'insert' scripts
             for rule in rule |> TableScriptRule.rulesFor Insert do
                 
-              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
-
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToInsertWithRule =
                 colsWithRule
@@ -1225,12 +1207,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
 
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
 
                   [
@@ -1272,8 +1254,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'update' scripts
             for rule in rule |> TableScriptRule.rulesFor Update do
                 
-              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
-
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
 
@@ -1295,12 +1275,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                       && not (pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)))
 
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
 
                   [
@@ -1340,8 +1320,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'merge' scripts
             for rule in rule |> TableScriptRule.rulesFor Merge do
                 
-              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
-
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
 
@@ -1380,12 +1358,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 )
 
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
 
                   [
@@ -1465,8 +1443,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'delete' scripts
             for rule in rule |> TableScriptRule.rulesFor Delete do
                 
-              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
-
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
 
@@ -1482,12 +1458,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                     )
 
               {
-                GlobMatchOutput = name
+                GlobMatchOutput = rule.Name
                 RelativePathSegments =
-                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
                   segmentsWithName.[0..segmentsWithName.Length-2]
                   |> Array.toList
-                NameWithoutExtension = Path.GetFileName name
+                NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
 
                   [

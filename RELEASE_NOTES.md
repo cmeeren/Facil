@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.3.2 (2021-03-19)
+
+* Fixed table script merge (now merges based on the final name, not the template name with `{TableName}` and other tokens)
+
 ### 1.3.1 (2021-03-19)
 
 * Fixed build targets on Linux
