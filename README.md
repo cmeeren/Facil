@@ -124,6 +124,7 @@ Yes, Facil can automatically generate the following simple per-table CRUD script
 
 * Insert a row (supports output columns)
 * Update a row by its primary key (supports output columns)
+* “Upsert” - use MERGE to insert or update a row by its primary key (supports output columns)
 * Delete a row by its primary key (supports output columns)
 * Get a row by its primary key
 * Get rows by a batch of primary keys (using a TVP)
@@ -140,7 +141,7 @@ Facil’s primary focus is allowing you to call your existing TSQL in the simple
 
 I welcome suggestions, but due to my limited capacity for open-source maintenance, any additions or improvements will likely need a very high utility-to-maintenance ratio, or scratch a personal itch of mine.
 
-If the above queries with the available configuration options doesn’t satisfy your needs, you can, after all, just write the queries manually and consume them using Facil.
+If the above queries with the available configuration options don’t satisfy your needs, you can, after all, just write the queries manually and consume them using Facil.
 
 ### Why not a type provider?
 

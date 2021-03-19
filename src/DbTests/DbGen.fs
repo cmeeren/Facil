@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: f491134a2e23d35f9417d2f546cd0422c4c6c6f8fd6bff05190df383d704d148
+// Hash: 230538bd715e8693ad5342d60ac6a531276f756072235c39d888182b06335d4a
 
 //////////////////////////////////////////
 //
@@ -10958,6 +10958,302 @@ module Scripts =
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``AllTypesNonNull_Merge_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        MERGE [dbo].[AllTypesNonNull]
+        USING
+        (
+          SELECT
+            [key] = @key,
+            [bigint] = @bigint,
+            [binary] = @binary,
+            [bit] = @bit,
+            [char] = @char,
+            [date] = @date,
+            [datetime] = @datetime,
+            [datetime2] = @datetime2,
+            [datetimeoffset] = @datetimeoffset,
+            [decimal] = @decimal,
+            [float] = @float,
+            [image] = @image,
+            [int] = @int,
+            [money] = @money,
+            [nchar] = @nchar,
+            [ntext] = @ntext,
+            [numeric] = @numeric,
+            [nvarchar] = @nvarchar,
+            [real] = @real,
+            [smalldatetime] = @smalldatetime,
+            [smallint] = @smallint,
+            [smallmoney] = @smallmoney,
+            [text] = @text,
+            [time] = @time,
+            [tinyint] = @tinyint,
+            [uniqueidentifier] = @uniqueidentifier,
+            [varbinary] = @varbinary,
+            [varchar] = @varchar,
+            [xml] = @xml
+        )
+        AS x
+        ON
+          [AllTypesNonNull].[key] = x.[key]
+
+        WHEN MATCHED THEN
+          UPDATE
+          SET
+            [bigint] = x.[bigint],
+            [binary] = x.[binary],
+            [bit] = x.[bit],
+            [char] = x.[char],
+            [date] = x.[date],
+            [datetime] = x.[datetime],
+            [datetime2] = x.[datetime2],
+            [datetimeoffset] = x.[datetimeoffset],
+            [decimal] = x.[decimal],
+            [float] = x.[float],
+            [image] = x.[image],
+            [int] = x.[int],
+            [money] = x.[money],
+            [nchar] = x.[nchar],
+            [ntext] = x.[ntext],
+            [numeric] = x.[numeric],
+            [nvarchar] = x.[nvarchar],
+            [real] = x.[real],
+            [smalldatetime] = x.[smalldatetime],
+            [smallint] = x.[smallint],
+            [smallmoney] = x.[smallmoney],
+            [text] = x.[text],
+            [time] = x.[time],
+            [tinyint] = x.[tinyint],
+            [uniqueidentifier] = x.[uniqueidentifier],
+            [varbinary] = x.[varbinary],
+            [varchar] = x.[varchar],
+            [xml] = x.[xml]
+
+        WHEN NOT MATCHED THEN
+          INSERT
+          (
+            [key],
+            [bigint],
+            [binary],
+            [bit],
+            [char],
+            [date],
+            [datetime],
+            [datetime2],
+            [datetimeoffset],
+            [decimal],
+            [float],
+            [image],
+            [int],
+            [money],
+            [nchar],
+            [ntext],
+            [numeric],
+            [nvarchar],
+            [real],
+            [smalldatetime],
+            [smallint],
+            [smallmoney],
+            [text],
+            [time],
+            [tinyint],
+            [uniqueidentifier],
+            [varbinary],
+            [varchar],
+            [xml]
+          )
+          VALUES
+          (
+            x.[key],
+            x.[bigint],
+            x.[binary],
+            x.[bit],
+            x.[char],
+            x.[date],
+            x.[datetime],
+            x.[datetime2],
+            x.[datetimeoffset],
+            x.[decimal],
+            x.[float],
+            x.[image],
+            x.[int],
+            x.[money],
+            x.[nchar],
+            x.[ntext],
+            x.[numeric],
+            x.[nvarchar],
+            x.[real],
+            x.[smalldatetime],
+            x.[smallint],
+            x.[smallmoney],
+            x.[text],
+            x.[time],
+            x.[tinyint],
+            x.[uniqueidentifier],
+            x.[varbinary],
+            x.[varchar],
+            x.[xml]
+          )
+        ;
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    member __.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeNonQueryAsync connStr conn configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.Execute() =
+      let sqlParams = getSqlParams ()
+      executeNonQuery connStr conn configureConn (configureCmd sqlParams) tempTableData
+
+
+  type ``AllTypesNonNull_Merge`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``AllTypesNonNull_Merge``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``AllTypesNonNull_Merge``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``AllTypesNonNull_Merge``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``key``: int,
+        ``bigint``: int64,
+        ``binary``: byte [],
+        ``bit``: bool,
+        ``char``: string,
+        ``date``: DateTime,
+        ``datetime``: DateTime,
+        ``datetime2``: DateTime,
+        ``datetimeoffset``: DateTimeOffset,
+        ``decimal``: decimal,
+        ``float``: float,
+        ``image``: byte [],
+        ``int``: int,
+        ``money``: decimal,
+        ``nchar``: string,
+        ``ntext``: string,
+        ``numeric``: decimal,
+        ``nvarchar``: string,
+        ``real``: float32,
+        ``smalldatetime``: DateTime,
+        ``smallint``: int16,
+        ``smallmoney``: decimal,
+        ``text``: string,
+        ``time``: TimeSpan,
+        ``tinyint``: byte,
+        ``uniqueidentifier``: Guid,
+        ``varbinary``: byte [],
+        ``varchar``: string,
+        ``xml``: string
+      ) =
+      let getSqlParams () =
+        [|
+          SqlParameter("key", SqlDbType.Int, Value = ``key``)
+          SqlParameter("bigint", SqlDbType.BigInt, Value = ``bigint``)
+          SqlParameter("binary", SqlDbType.Binary, Size = 42, Value = ``binary``)
+          SqlParameter("bit", SqlDbType.Bit, Value = ``bit``)
+          SqlParameter("char", SqlDbType.Char, Size = 42, Value = ``char``)
+          SqlParameter("date", SqlDbType.Date, Value = ``date``)
+          SqlParameter("datetime", SqlDbType.DateTime, Value = ``datetime``)
+          SqlParameter("datetime2", SqlDbType.DateTime2, Size = 7, Value = ``datetime2``)
+          SqlParameter("datetimeoffset", SqlDbType.DateTimeOffset, Size = 8, Value = ``datetimeoffset``)
+          SqlParameter("decimal", SqlDbType.Decimal, Precision = 10uy, Scale = 5uy, Value = ``decimal``)
+          SqlParameter("float", SqlDbType.Float, Size = 8, Value = ``float``)
+          SqlParameter("image", SqlDbType.Image, Value = ``image``)
+          SqlParameter("int", SqlDbType.Int, Value = ``int``)
+          SqlParameter("money", SqlDbType.Money, Value = ``money``)
+          SqlParameter("nchar", SqlDbType.NChar, Size = 42, Value = ``nchar``)
+          SqlParameter("ntext", SqlDbType.NText, Value = ``ntext``)
+          SqlParameter("numeric", SqlDbType.Decimal, Precision = 8uy, Scale = 3uy, Value = ``numeric``)
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 42, Value = ``nvarchar``)
+          SqlParameter("real", SqlDbType.Real, Value = ``real``)
+          SqlParameter("smalldatetime", SqlDbType.SmallDateTime, Value = ``smalldatetime``)
+          SqlParameter("smallint", SqlDbType.SmallInt, Value = ``smallint``)
+          SqlParameter("smallmoney", SqlDbType.SmallMoney, Value = ``smallmoney``)
+          SqlParameter("text", SqlDbType.Text, Value = ``text``)
+          SqlParameter("time", SqlDbType.Time, Size = 3, Value = ``time``)
+          SqlParameter("tinyint", SqlDbType.TinyInt, Value = ``tinyint``)
+          SqlParameter("uniqueidentifier", SqlDbType.UniqueIdentifier, Value = ``uniqueidentifier``)
+          SqlParameter("varbinary", SqlDbType.VarBinary, Size = 42, Value = ``varbinary``)
+          SqlParameter("varchar", SqlDbType.VarChar, Size = 42, Value = ``varchar``)
+          SqlParameter("xml", SqlDbType.Xml, Value = ``xml``)
+        |]
+      ``AllTypesNonNull_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+          SqlParameter("key", SqlDbType.Int, Value = (^a: (member ``Key``: int) dto))
+          SqlParameter("bigint", SqlDbType.BigInt, Value = (^a: (member ``Bigint``: int64) dto))
+          SqlParameter("binary", SqlDbType.Binary, Size = 42, Value = (^a: (member ``Binary``: byte []) dto))
+          SqlParameter("bit", SqlDbType.Bit, Value = (^a: (member ``Bit``: bool) dto))
+          SqlParameter("char", SqlDbType.Char, Size = 42, Value = (^a: (member ``Char``: string) dto))
+          SqlParameter("date", SqlDbType.Date, Value = (^a: (member ``Date``: DateTime) dto))
+          SqlParameter("datetime", SqlDbType.DateTime, Value = (^a: (member ``Datetime``: DateTime) dto))
+          SqlParameter("datetime2", SqlDbType.DateTime2, Size = 7, Value = (^a: (member ``Datetime2``: DateTime) dto))
+          SqlParameter("datetimeoffset", SqlDbType.DateTimeOffset, Size = 8, Value = (^a: (member ``Datetimeoffset``: DateTimeOffset) dto))
+          SqlParameter("decimal", SqlDbType.Decimal, Precision = 10uy, Scale = 5uy, Value = (^a: (member ``Decimal``: decimal) dto))
+          SqlParameter("float", SqlDbType.Float, Size = 8, Value = (^a: (member ``Float``: float) dto))
+          SqlParameter("image", SqlDbType.Image, Value = (^a: (member ``Image``: byte []) dto))
+          SqlParameter("int", SqlDbType.Int, Value = (^a: (member ``Int``: int) dto))
+          SqlParameter("money", SqlDbType.Money, Value = (^a: (member ``Money``: decimal) dto))
+          SqlParameter("nchar", SqlDbType.NChar, Size = 42, Value = (^a: (member ``Nchar``: string) dto))
+          SqlParameter("ntext", SqlDbType.NText, Value = (^a: (member ``Ntext``: string) dto))
+          SqlParameter("numeric", SqlDbType.Decimal, Precision = 8uy, Scale = 3uy, Value = (^a: (member ``Numeric``: decimal) dto))
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 42, Value = (^a: (member ``Nvarchar``: string) dto))
+          SqlParameter("real", SqlDbType.Real, Value = (^a: (member ``Real``: float32) dto))
+          SqlParameter("smalldatetime", SqlDbType.SmallDateTime, Value = (^a: (member ``Smalldatetime``: DateTime) dto))
+          SqlParameter("smallint", SqlDbType.SmallInt, Value = (^a: (member ``Smallint``: int16) dto))
+          SqlParameter("smallmoney", SqlDbType.SmallMoney, Value = (^a: (member ``Smallmoney``: decimal) dto))
+          SqlParameter("text", SqlDbType.Text, Value = (^a: (member ``Text``: string) dto))
+          SqlParameter("time", SqlDbType.Time, Size = 3, Value = (^a: (member ``Time``: TimeSpan) dto))
+          SqlParameter("tinyint", SqlDbType.TinyInt, Value = (^a: (member ``Tinyint``: byte) dto))
+          SqlParameter("uniqueidentifier", SqlDbType.UniqueIdentifier, Value = (^a: (member ``Uniqueidentifier``: Guid) dto))
+          SqlParameter("varbinary", SqlDbType.VarBinary, Size = 42, Value = (^a: (member ``Varbinary``: byte []) dto))
+          SqlParameter("varchar", SqlDbType.VarChar, Size = 42, Value = (^a: (member ``Varchar``: string) dto))
+          SqlParameter("xml", SqlDbType.Xml, Value = (^a: (member ``Xml``: string) dto))
+        |]
+      ``AllTypesNonNull_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
   type ``AllTypesNonNull_Update_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
 
     let configureCmd sqlParams (cmd: SqlCommand) =
@@ -11742,6 +12038,309 @@ module Scripts =
           SqlParameter("xml", SqlDbType.Xml, Value = Option.toDbNull (^a: (member ``Xml``: string option) dto))
         |]
       ``AllTypesNull_Insert_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``AllTypesNull_Merge_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        MERGE [dbo].[AllTypesNull]
+        USING
+        (
+          SELECT
+            [key1] = @key1,
+            [key2] = @key2,
+            [bigint] = @bigint,
+            [binary] = @binary,
+            [bit] = @bit,
+            [char] = @char,
+            [date] = @date,
+            [datetime] = @datetime,
+            [datetime2] = @datetime2,
+            [datetimeoffset] = @datetimeoffset,
+            [decimal] = @decimal,
+            [float] = @float,
+            [image] = @image,
+            [int] = @int,
+            [money] = @money,
+            [nchar] = @nchar,
+            [ntext] = @ntext,
+            [numeric] = @numeric,
+            [nvarchar] = @nvarchar,
+            [real] = @real,
+            [smalldatetime] = @smalldatetime,
+            [smallint] = @smallint,
+            [smallmoney] = @smallmoney,
+            [text] = @text,
+            [time] = @time,
+            [tinyint] = @tinyint,
+            [uniqueidentifier] = @uniqueidentifier,
+            [varbinary] = @varbinary,
+            [varchar] = @varchar,
+            [xml] = @xml
+        )
+        AS x
+        ON
+          [AllTypesNull].[key1] = x.[key1]
+          AND [AllTypesNull].[key2] = x.[key2]
+
+        WHEN MATCHED THEN
+          UPDATE
+          SET
+            [bigint] = x.[bigint],
+            [binary] = x.[binary],
+            [bit] = x.[bit],
+            [char] = x.[char],
+            [date] = x.[date],
+            [datetime] = x.[datetime],
+            [datetime2] = x.[datetime2],
+            [datetimeoffset] = x.[datetimeoffset],
+            [decimal] = x.[decimal],
+            [float] = x.[float],
+            [image] = x.[image],
+            [int] = x.[int],
+            [money] = x.[money],
+            [nchar] = x.[nchar],
+            [ntext] = x.[ntext],
+            [numeric] = x.[numeric],
+            [nvarchar] = x.[nvarchar],
+            [real] = x.[real],
+            [smalldatetime] = x.[smalldatetime],
+            [smallint] = x.[smallint],
+            [smallmoney] = x.[smallmoney],
+            [text] = x.[text],
+            [time] = x.[time],
+            [tinyint] = x.[tinyint],
+            [uniqueidentifier] = x.[uniqueidentifier],
+            [varbinary] = x.[varbinary],
+            [varchar] = x.[varchar],
+            [xml] = x.[xml]
+
+        WHEN NOT MATCHED THEN
+          INSERT
+          (
+            [key1],
+            [key2],
+            [bigint],
+            [binary],
+            [bit],
+            [char],
+            [date],
+            [datetime],
+            [datetime2],
+            [datetimeoffset],
+            [decimal],
+            [float],
+            [image],
+            [int],
+            [money],
+            [nchar],
+            [ntext],
+            [numeric],
+            [nvarchar],
+            [real],
+            [smalldatetime],
+            [smallint],
+            [smallmoney],
+            [text],
+            [time],
+            [tinyint],
+            [uniqueidentifier],
+            [varbinary],
+            [varchar],
+            [xml]
+          )
+          VALUES
+          (
+            x.[key1],
+            x.[key2],
+            x.[bigint],
+            x.[binary],
+            x.[bit],
+            x.[char],
+            x.[date],
+            x.[datetime],
+            x.[datetime2],
+            x.[datetimeoffset],
+            x.[decimal],
+            x.[float],
+            x.[image],
+            x.[int],
+            x.[money],
+            x.[nchar],
+            x.[ntext],
+            x.[numeric],
+            x.[nvarchar],
+            x.[real],
+            x.[smalldatetime],
+            x.[smallint],
+            x.[smallmoney],
+            x.[text],
+            x.[time],
+            x.[tinyint],
+            x.[uniqueidentifier],
+            x.[varbinary],
+            x.[varchar],
+            x.[xml]
+          )
+        ;
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    member __.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeNonQueryAsync connStr conn configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.Execute() =
+      let sqlParams = getSqlParams ()
+      executeNonQuery connStr conn configureConn (configureCmd sqlParams) tempTableData
+
+
+  type ``AllTypesNull_Merge`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``AllTypesNull_Merge``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``AllTypesNull_Merge``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``AllTypesNull_Merge``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``key1``: int,
+        ``key2``: int,
+        ``bigint``: int64 option,
+        ``binary``: byte [] option,
+        ``bit``: bool option,
+        ``char``: string option,
+        ``date``: DateTime option,
+        ``datetime``: DateTime option,
+        ``datetime2``: DateTime option,
+        ``datetimeoffset``: DateTimeOffset option,
+        ``decimal``: decimal option,
+        ``float``: float option,
+        ``image``: byte [] option,
+        ``int``: int option,
+        ``money``: decimal option,
+        ``nchar``: string option,
+        ``ntext``: string option,
+        ``numeric``: decimal option,
+        ``nvarchar``: string option,
+        ``real``: float32 option,
+        ``smalldatetime``: DateTime option,
+        ``smallint``: int16 option,
+        ``smallmoney``: decimal option,
+        ``text``: string option,
+        ``time``: TimeSpan option,
+        ``tinyint``: byte option,
+        ``uniqueidentifier``: Guid option,
+        ``varbinary``: byte [] option,
+        ``varchar``: string option,
+        ``xml``: string option
+      ) =
+      let getSqlParams () =
+        [|
+          SqlParameter("key1", SqlDbType.Int, Value = ``key1``)
+          SqlParameter("key2", SqlDbType.Int, Value = ``key2``)
+          SqlParameter("bigint", SqlDbType.BigInt, Value = Option.toDbNull ``bigint``)
+          SqlParameter("binary", SqlDbType.Binary, Size = 42, Value = Option.toDbNull ``binary``)
+          SqlParameter("bit", SqlDbType.Bit, Value = Option.toDbNull ``bit``)
+          SqlParameter("char", SqlDbType.Char, Size = 42, Value = Option.toDbNull ``char``)
+          SqlParameter("date", SqlDbType.Date, Value = Option.toDbNull ``date``)
+          SqlParameter("datetime", SqlDbType.DateTime, Value = Option.toDbNull ``datetime``)
+          SqlParameter("datetime2", SqlDbType.DateTime2, Size = 7, Value = Option.toDbNull ``datetime2``)
+          SqlParameter("datetimeoffset", SqlDbType.DateTimeOffset, Size = 8, Value = Option.toDbNull ``datetimeoffset``)
+          SqlParameter("decimal", SqlDbType.Decimal, Precision = 10uy, Scale = 5uy, Value = Option.toDbNull ``decimal``)
+          SqlParameter("float", SqlDbType.Float, Size = 8, Value = Option.toDbNull ``float``)
+          SqlParameter("image", SqlDbType.Image, Value = Option.toDbNull ``image``)
+          SqlParameter("int", SqlDbType.Int, Value = Option.toDbNull ``int``)
+          SqlParameter("money", SqlDbType.Money, Value = Option.toDbNull ``money``)
+          SqlParameter("nchar", SqlDbType.NChar, Size = 42, Value = Option.toDbNull ``nchar``)
+          SqlParameter("ntext", SqlDbType.NText, Value = Option.toDbNull ``ntext``)
+          SqlParameter("numeric", SqlDbType.Decimal, Precision = 8uy, Scale = 3uy, Value = Option.toDbNull ``numeric``)
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 42, Value = Option.toDbNull ``nvarchar``)
+          SqlParameter("real", SqlDbType.Real, Value = Option.toDbNull ``real``)
+          SqlParameter("smalldatetime", SqlDbType.SmallDateTime, Value = Option.toDbNull ``smalldatetime``)
+          SqlParameter("smallint", SqlDbType.SmallInt, Value = Option.toDbNull ``smallint``)
+          SqlParameter("smallmoney", SqlDbType.SmallMoney, Value = Option.toDbNull ``smallmoney``)
+          SqlParameter("text", SqlDbType.Text, Value = Option.toDbNull ``text``)
+          SqlParameter("time", SqlDbType.Time, Size = 3, Value = Option.toDbNull ``time``)
+          SqlParameter("tinyint", SqlDbType.TinyInt, Value = Option.toDbNull ``tinyint``)
+          SqlParameter("uniqueidentifier", SqlDbType.UniqueIdentifier, Value = Option.toDbNull ``uniqueidentifier``)
+          SqlParameter("varbinary", SqlDbType.VarBinary, Size = 42, Value = Option.toDbNull ``varbinary``)
+          SqlParameter("varchar", SqlDbType.VarChar, Size = 42, Value = Option.toDbNull ``varchar``)
+          SqlParameter("xml", SqlDbType.Xml, Value = Option.toDbNull ``xml``)
+        |]
+      ``AllTypesNull_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+          SqlParameter("key1", SqlDbType.Int, Value = (^a: (member ``Key1``: int) dto))
+          SqlParameter("key2", SqlDbType.Int, Value = (^a: (member ``Key2``: int) dto))
+          SqlParameter("bigint", SqlDbType.BigInt, Value = Option.toDbNull (^a: (member ``Bigint``: int64 option) dto))
+          SqlParameter("binary", SqlDbType.Binary, Size = 42, Value = Option.toDbNull (^a: (member ``Binary``: byte [] option) dto))
+          SqlParameter("bit", SqlDbType.Bit, Value = Option.toDbNull (^a: (member ``Bit``: bool option) dto))
+          SqlParameter("char", SqlDbType.Char, Size = 42, Value = Option.toDbNull (^a: (member ``Char``: string option) dto))
+          SqlParameter("date", SqlDbType.Date, Value = Option.toDbNull (^a: (member ``Date``: DateTime option) dto))
+          SqlParameter("datetime", SqlDbType.DateTime, Value = Option.toDbNull (^a: (member ``Datetime``: DateTime option) dto))
+          SqlParameter("datetime2", SqlDbType.DateTime2, Size = 7, Value = Option.toDbNull (^a: (member ``Datetime2``: DateTime option) dto))
+          SqlParameter("datetimeoffset", SqlDbType.DateTimeOffset, Size = 8, Value = Option.toDbNull (^a: (member ``Datetimeoffset``: DateTimeOffset option) dto))
+          SqlParameter("decimal", SqlDbType.Decimal, Precision = 10uy, Scale = 5uy, Value = Option.toDbNull (^a: (member ``Decimal``: decimal option) dto))
+          SqlParameter("float", SqlDbType.Float, Size = 8, Value = Option.toDbNull (^a: (member ``Float``: float option) dto))
+          SqlParameter("image", SqlDbType.Image, Value = Option.toDbNull (^a: (member ``Image``: byte [] option) dto))
+          SqlParameter("int", SqlDbType.Int, Value = Option.toDbNull (^a: (member ``Int``: int option) dto))
+          SqlParameter("money", SqlDbType.Money, Value = Option.toDbNull (^a: (member ``Money``: decimal option) dto))
+          SqlParameter("nchar", SqlDbType.NChar, Size = 42, Value = Option.toDbNull (^a: (member ``Nchar``: string option) dto))
+          SqlParameter("ntext", SqlDbType.NText, Value = Option.toDbNull (^a: (member ``Ntext``: string option) dto))
+          SqlParameter("numeric", SqlDbType.Decimal, Precision = 8uy, Scale = 3uy, Value = Option.toDbNull (^a: (member ``Numeric``: decimal option) dto))
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 42, Value = Option.toDbNull (^a: (member ``Nvarchar``: string option) dto))
+          SqlParameter("real", SqlDbType.Real, Value = Option.toDbNull (^a: (member ``Real``: float32 option) dto))
+          SqlParameter("smalldatetime", SqlDbType.SmallDateTime, Value = Option.toDbNull (^a: (member ``Smalldatetime``: DateTime option) dto))
+          SqlParameter("smallint", SqlDbType.SmallInt, Value = Option.toDbNull (^a: (member ``Smallint``: int16 option) dto))
+          SqlParameter("smallmoney", SqlDbType.SmallMoney, Value = Option.toDbNull (^a: (member ``Smallmoney``: decimal option) dto))
+          SqlParameter("text", SqlDbType.Text, Value = Option.toDbNull (^a: (member ``Text``: string option) dto))
+          SqlParameter("time", SqlDbType.Time, Size = 3, Value = Option.toDbNull (^a: (member ``Time``: TimeSpan option) dto))
+          SqlParameter("tinyint", SqlDbType.TinyInt, Value = Option.toDbNull (^a: (member ``Tinyint``: byte option) dto))
+          SqlParameter("uniqueidentifier", SqlDbType.UniqueIdentifier, Value = Option.toDbNull (^a: (member ``Uniqueidentifier``: Guid option) dto))
+          SqlParameter("varbinary", SqlDbType.VarBinary, Size = 42, Value = Option.toDbNull (^a: (member ``Varbinary``: byte [] option) dto))
+          SqlParameter("varchar", SqlDbType.VarChar, Size = 42, Value = Option.toDbNull (^a: (member ``Varchar``: string option) dto))
+          SqlParameter("xml", SqlDbType.Xml, Value = Option.toDbNull (^a: (member ``Xml``: string option) dto))
+        |]
+      ``AllTypesNull_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -16405,6 +17004,127 @@ module Scripts =
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``MaxLengthTypes_Merge_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        MERGE [dbo].[MaxLengthTypes]
+        USING
+        (
+          SELECT
+            [key] = @key,
+            [nvarchar] = @nvarchar,
+            [varbinary] = @varbinary,
+            [varchar] = @varchar
+        )
+        AS x
+        ON
+          [MaxLengthTypes].[key] = x.[key]
+
+        WHEN MATCHED THEN
+          UPDATE
+          SET
+            [nvarchar] = x.[nvarchar],
+            [varbinary] = x.[varbinary],
+            [varchar] = x.[varchar]
+
+        WHEN NOT MATCHED THEN
+          INSERT
+          (
+            [key],
+            [nvarchar],
+            [varbinary],
+            [varchar]
+          )
+          VALUES
+          (
+            x.[key],
+            x.[nvarchar],
+            x.[varbinary],
+            x.[varchar]
+          )
+        ;
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    member __.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeNonQueryAsync connStr conn configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.Execute() =
+      let sqlParams = getSqlParams ()
+      executeNonQuery connStr conn configureConn (configureCmd sqlParams) tempTableData
+
+
+  type ``MaxLengthTypes_Merge`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``MaxLengthTypes_Merge``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``MaxLengthTypes_Merge``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``MaxLengthTypes_Merge``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``key``: int,
+        ``nvarchar``: string,
+        ``varbinary``: byte [],
+        ``varchar``: string
+      ) =
+      let getSqlParams () =
+        [|
+          SqlParameter("key", SqlDbType.Int, Value = ``key``)
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = ``nvarchar``)
+          SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = ``varbinary``)
+          SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = ``varchar``)
+        |]
+      ``MaxLengthTypes_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+          SqlParameter("key", SqlDbType.Int, Value = (^a: (member ``Key``: int) dto))
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``Nvarchar``: string) dto))
+          SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = (^a: (member ``Varbinary``: byte []) dto))
+          SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = (^a: (member ``Varchar``: string) dto))
+        |]
+      ``MaxLengthTypes_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
   type ``MaxLengthTypes_Update_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
 
     let configureCmd sqlParams (cmd: SqlCommand) =
@@ -18820,8 +19540,7 @@ module Scripts =
         )
         OUTPUT
           inserted.[Id],
-          inserted.[Foo],
-          inserted.[BAR]
+          inserted.[Foo]
         VALUES
         (
           @foo,
@@ -18833,22 +19552,18 @@ module Scripts =
 
     let mutable ``ordinal_Id`` = 0
     let mutable ``ordinal_Foo`` = 0
-    let mutable ``ordinal_BAR`` = 0
 
     let initOrdinals (reader: SqlDataReader) =
       ``ordinal_Id`` <- reader.GetOrdinal "Id"
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
-      ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
+    let getItem (reader: SqlDataReader) =
       let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
-      let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
-      {
+      {|
         ``Id`` = ``Id``
         ``Foo`` = ``Foo``
-        ``BAR`` = ``BAR``
-      }
+      |}
 
     member __.ExecuteAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
@@ -18961,6 +19676,288 @@ module Scripts =
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``TableWithIdentityCol_Merge_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        MERGE [dbo].[TableWithIdentityCol]
+        USING
+        (
+          SELECT
+            [Id] = @id,
+            [Foo] = @foo,
+            [BAR] = @bar
+        )
+        AS x
+        ON
+          [TableWithIdentityCol].[Id] = x.[Id]
+
+        WHEN MATCHED THEN
+          UPDATE
+          SET
+            [Foo] = x.[Foo],
+            [BAR] = x.[BAR]
+
+        WHEN NOT MATCHED THEN
+          INSERT
+          (
+            [Foo],
+            [BAR]
+          )
+          VALUES
+          (
+            x.[Foo],
+            x.[BAR]
+          )
+        OUTPUT
+          inserted.[Id],
+          inserted.[Foo]
+        ;
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_Id`` = 0
+    let mutable ``ordinal_Foo`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_Id`` <- reader.GetOrdinal "Id"
+      ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
+
+    let getItem (reader: SqlDataReader) =
+      let ``Id`` = reader.GetInt32 ``ordinal_Id``
+      let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
+      {|
+        ``Id`` = ``Id``
+        ``Foo`` = ``Foo``
+      |}
+
+    member __.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member __.Execute() =
+      let sqlParams = getSqlParams ()
+      executeQueryEager connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+    member __.LazyExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member __.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    #endif
+
+    member __.LazyExecute() =
+      let sqlParams = getSqlParams ()
+      executeQueryLazy connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member __.ExecuteSingleAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQuerySingleAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.ExecuteSingle() =
+      let sqlParams = getSqlParams ()
+      executeQuerySingle connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+
+  type ``TableWithIdentityCol_Merge`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``TableWithIdentityCol_Merge``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``TableWithIdentityCol_Merge``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``TableWithIdentityCol_Merge``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``id``: int,
+        ``foo``: int64,
+        ``bar``: DateTimeOffset option
+      ) =
+      let getSqlParams () =
+        [|
+          SqlParameter("id", SqlDbType.Int, Value = ``id``)
+          SqlParameter("foo", SqlDbType.BigInt, Value = ``foo``)
+          SqlParameter("bar", SqlDbType.DateTimeOffset, Size = 10, Value = Option.toDbNull ``bar``)
+        |]
+      ``TableWithIdentityCol_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+          SqlParameter("id", SqlDbType.Int, Value = (^a: (member ``Id``: int) dto))
+          SqlParameter("foo", SqlDbType.BigInt, Value = (^a: (member ``Foo``: int64) dto))
+          SqlParameter("bar", SqlDbType.DateTimeOffset, Size = 10, Value = Option.toDbNull (^a: (member ``Bar``: DateTimeOffset option) dto))
+        |]
+      ``TableWithIdentityCol_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``TableWithIdentityCol_MergeWithHoldlock_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        MERGE [dbo].[TableWithIdentityCol] WITH (HOLDLOCK)
+        USING
+        (
+          SELECT
+            [Id] = @id,
+            [Foo] = @foo,
+            [BAR] = @bAR
+        )
+        AS x
+        ON
+          [TableWithIdentityCol].[Id] = x.[Id]
+
+        WHEN MATCHED THEN
+          UPDATE
+          SET
+            [Foo] = x.[Foo],
+            [BAR] = x.[BAR]
+
+        WHEN NOT MATCHED THEN
+          INSERT
+          (
+            [Foo],
+            [BAR]
+          )
+          VALUES
+          (
+            x.[Foo],
+            x.[BAR]
+          )
+        ;
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    member __.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeNonQueryAsync connStr conn configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.Execute() =
+      let sqlParams = getSqlParams ()
+      executeNonQuery connStr conn configureConn (configureCmd sqlParams) tempTableData
+
+
+  type ``TableWithIdentityCol_MergeWithHoldlock`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``TableWithIdentityCol_MergeWithHoldlock``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``TableWithIdentityCol_MergeWithHoldlock``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``TableWithIdentityCol_MergeWithHoldlock``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``id``: int,
+        ``foo``: int64,
+        ``bAR``: DateTimeOffset option
+      ) =
+      let getSqlParams () =
+        [|
+          SqlParameter("id", SqlDbType.Int, Value = ``id``)
+          SqlParameter("foo", SqlDbType.BigInt, Value = ``foo``)
+          SqlParameter("bAR", SqlDbType.DateTimeOffset, Size = 10, Value = Option.toDbNull ``bAR``)
+        |]
+      ``TableWithIdentityCol_MergeWithHoldlock_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+          SqlParameter("id", SqlDbType.Int, Value = (^a: (member ``Id``: int) dto))
+          SqlParameter("foo", SqlDbType.BigInt, Value = (^a: (member ``Foo``: int64) dto))
+          SqlParameter("bAR", SqlDbType.DateTimeOffset, Size = 10, Value = Option.toDbNull (^a: (member ``BAR``: DateTimeOffset option) dto))
+        |]
+      ``TableWithIdentityCol_MergeWithHoldlock_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
   type ``TableWithIdentityCol_Update_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
 
     let configureCmd sqlParams (cmd: SqlCommand) =
@@ -18971,27 +19968,27 @@ module Scripts =
           [Foo] = @foo,
           [BAR] = @bar
         OUTPUT
-          inserted.[Foo],
-          inserted.[BAR]
+          inserted.[Id],
+          inserted.[Foo]
         WHERE
           [Id] = @id
       """
       cmd.Parameters.AddRange sqlParams
       userConfigureCmd cmd
 
+    let mutable ``ordinal_Id`` = 0
     let mutable ``ordinal_Foo`` = 0
-    let mutable ``ordinal_BAR`` = 0
 
     let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_Id`` <- reader.GetOrdinal "Id"
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
-      ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
     let getItem (reader: SqlDataReader) =
+      let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
-      let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
       {|
+        ``Id`` = ``Id``
         ``Foo`` = ``Foo``
-        ``BAR`` = ``BAR``
       |}
 
     member __.ExecuteAsync(?cancellationToken) =

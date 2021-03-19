@@ -1337,6 +1337,131 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
               }
 
 
+            // 'merge' scripts
+            for rule in rule |> TableScriptRule.rulesFor Merge do
+                
+              let name = rule.Name.Replace("{SchemaName}", dto.SchemaName).Replace("{TableName}", dto.Name)
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+              let pkColsWithRule =
+                match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
+                | None | Some [] -> failwithError $"Table %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for a 'merge' table script"
+                | Some colNames ->
+                    colNames
+                    |> List.map (fun n ->
+                        colsWithRule
+                        |> List.tryFind (fun (c, _) -> c.Name = n)
+                        |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table '%s{dto.SchemaName}.%s{dto.Name}'")
+                    )
+
+              let colsToInsertWithRule =
+                colsWithRule
+                |> List.filter (fun (col, rule) ->
+                     match rule.Skip with
+                     | None when col.IsIdentity -> false
+                     | None -> true
+                     | Some skip -> not skip
+                )
+
+              let colsToUpdateWithRule =
+                colsWithRule
+                |> List.filter (fun (c, rule) ->
+                      rule.Skip <> Some true
+                      && not (pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)))
+
+              let allColsWithRule =
+                colsWithRule
+                |> List.filter (fun (c, _) ->
+                     pkColsWithRule |> List.map fst |> List.contains c
+                     || colsToInsertWithRule |> List.map fst |> List.contains c
+                     || colsToUpdateWithRule |> List.map fst |> List.contains c
+                )
+
+              {
+                GlobMatchOutput = name
+                RelativePathSegments =
+                  let segmentsWithName = name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName name
+                Source =
+
+                  [
+                    $"""MERGE [%s{dto.SchemaName}].[%s{dto.Name}]{ if rule.Holdlock then " WITH (HOLDLOCK)" else "" }"""
+                    "USING"
+                    "("
+                    "  SELECT"
+
+                    yield!
+                      allColsWithRule
+                      |> List.map (fun (c, rule) -> $"    [%s{c.Name}] = @%s{getParamNameFromColAndRule c rule}")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+                      
+                    ")"
+                    "AS x"
+
+                    "ON"
+
+                    yield!
+                      pkColsWithRule
+                      |> List.map (fun (col, _) ->
+                            $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]")
+                      |> List.mapAllExceptFirst (sprintf "AND %s")
+                      |> List.map (sprintf "  %s")
+
+                    ""
+                    "WHEN MATCHED THEN"
+                    "  UPDATE"
+                    "  SET"
+
+                    yield!
+                      colsToUpdateWithRule
+                      |> List.map (fun (c, _) -> $"    [%s{c.Name}] = x.[%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    ""
+                    "WHEN NOT MATCHED THEN"
+                    "  INSERT"
+                    "  ("
+
+                    yield!
+                      colsToInsertWithRule
+                      |> List.map (fun (c, _) -> $"    [%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    "  )"
+
+                    "  VALUES"
+                    "  ("
+
+                    yield!
+                      colsToInsertWithRule
+                      |> List.map (fun (c, _) -> $"    x.[%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    "  )"
+
+
+                    if not colsToOutputWithRule.IsEmpty then
+                      "OUTPUT"
+                      yield!
+                        colsToOutputWithRule
+                        |> List.map (fun (c, _) -> $"  inserted.[%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                    ";"
+
+                  ]
+                  |> String.concat "\n"
+                Parameters = pkColsWithRule @ colsToUpdateWithRule |> List.map parameterFromColAndRule
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
+
             // 'delete' scripts
             for rule in rule |> TableScriptRule.rulesFor Delete do
                 

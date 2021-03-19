@@ -249,6 +249,7 @@ type TableScriptTypeRuleDto = {
   ``type``: string
   name: string option
   tableType: string option
+  holdlock: bool option
   filterColumns: string list option
   columns: Map<string, TableScriptColumnDto> option
 }
@@ -257,6 +258,7 @@ type TableScriptTypeRuleDto = {
 type TableScriptType =
   | Insert
   | Update
+  | Merge
   | Delete
   | GetById
   | GetByIdBatch
@@ -268,6 +270,7 @@ type TableScriptTypeRule = {
   Type: TableScriptType
   Name: string option
   TableType: string option
+  Holdlock: bool option
   FilterColumns: string list option
   Columns: Map<string option, TableScriptColumn>
 }
@@ -277,6 +280,7 @@ type EffectiveTableScriptTypeRule = {
   Type: TableScriptType
   Name: string
   TableType: string option
+  Holdlock: bool
   FilterColumns: string list option
   ColumnsFromAllRules: Map<string option, TableScriptColumn> list
 }
@@ -927,6 +931,7 @@ module TableScriptTypeRule =
         match rule.Type with
         | Insert -> "{TableName}_Insert"
         | Update -> "{TableName}_Update"
+        | Merge -> "{TableName}_Merge"
         | Delete -> "{TableName}_Delete"
         | GetById -> "{TableName}_ById"
         | GetByIdBatch -> "{TableName}_ByIds"
@@ -934,6 +939,7 @@ module TableScriptTypeRule =
         | GetByColumnsBatch -> "{TableName}_By{ColumnNames}s"
       rule.Name |> Option.defaultValue defaultName
     TableType = rule.TableType
+    Holdlock = rule.Holdlock |> Option.defaultValue false
     FilterColumns = rule.FilterColumns
     ColumnsFromAllRules = [rule.Columns]
   }
@@ -944,6 +950,7 @@ module TableScriptTypeRule =
       match dto.``type`` with
       | "insert" -> Insert
       | "update" -> Update
+      | "merge" -> Merge
       | "delete" -> Delete
       | "getById" -> GetById
       | "getByIdBatch" -> GetByIdBatch
@@ -952,6 +959,7 @@ module TableScriptTypeRule =
       | x -> failwithYamlError fullYamlPath 0 0 $"Invalid table script type: '%s{x}'"
     Name = dto.name
     TableType = dto.tableType
+    Holdlock = dto.holdlock
     FilterColumns = dto.filterColumns
     Columns =
       dto.columns
@@ -972,6 +980,7 @@ module TableScriptTypeRule =
       Type = rule.Type
       Name = rule.Name |> Option.defaultValue eff.Name
       TableType = rule.TableType |> Option.orElse eff.TableType
+      Holdlock = rule.Holdlock |> Option.defaultValue eff.Holdlock
       FilterColumns = rule.FilterColumns |> Option.orElse eff.FilterColumns
       ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]
     }

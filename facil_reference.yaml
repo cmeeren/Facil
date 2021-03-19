@@ -285,9 +285,19 @@ rulesets:
             #
             # Supports the same rules as 'insert'. The default name is
             # '{TableName}_Update'. Skipping a column means it's not updated. (Identity
-            # columns are not skipped by default, but this is likely irrelevant for most
-            # updates).
+            # columns are not skipped by default, but this fact is likely irrelevant for
+            # most updates).
           - type: update
+
+            # Generates a script that uses MERGE to insert a row or update a row by its
+            # primary key.
+            #
+            # Supports the same rules as 'insert'. The default name is
+            # '{TableName}_Merge'. Skipping a column means it's not inserted/updated.
+          - type: update
+
+            # Add WITH (HOLDLOCK) to the merge statement
+            holdlock: true
 
             # Generates a script to delete a row by its primary key.
             #

@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Added ability to generate `MERGE` table script (“upsert”)
+
 ### 1.2.2 (2021-03-18)
 
 * `getByColumns` and `getByColumnsBatch` table scripts now require non-null parameters even if filtering on nullable columns

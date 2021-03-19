@@ -302,6 +302,10 @@ rulesets:
           - type: delete
           - type: getById
 
+      - include: dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.MaxLengthTypes
+        scripts:
+          - type: merge
+
 
       - include: dbo\.TableWithIdentityCol
         scripts:
@@ -309,11 +313,21 @@ rulesets:
             columns:
               "":
                 output: true
-              Id:
-                output: true
               BAR:
+                output: false
                 paramName: bar
 
+          - type: merge
+            columns:
+              "":
+                output: true
+              BAR:
+                output: false
+                paramName: bar
+
+          - type: merge
+            name: "{TableName}_MergeWithHoldlock"
+            holdlock: true
 
           - type: insert
             name: "TableScriptSubdir/TableScriptConfiguredWithScriptRules"
@@ -322,9 +336,8 @@ rulesets:
             columns:
               "":
                 output: true
-              Id:
-                output: false
               BAR:
+                output: false
                 paramName: bar
 
           - type: delete
