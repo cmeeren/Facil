@@ -351,6 +351,12 @@ rulesets:
                 skip: true
 
           - type: getById
+            name: "{TableName}_ById_WithSelectColumns"
+            selectColumns:
+              - Id
+              - Foo
+
+          - type: getById
             name: TableScriptSubdir/{SchemaName}_{TableName}_GetById
 
           - type: getByIdBatch

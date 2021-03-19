@@ -312,6 +312,21 @@ rulesets:
             # 'paramName' column rules are ignored.
           - type: getById
 
+            # Syntactic sugar, see below.
+            selectColumns:
+              - Col1
+              - Col2
+
+            # The above desugars into the following. This is merged with (and overridden
+            # by) any explicit column rules.
+            columns:
+              "":
+                skip: true
+              Col1:
+                skip: false
+              Col2:
+                skip: false
+
             # Generates a script to get rows by a batch of primary keys using a
             # table-valued parameter.
             #

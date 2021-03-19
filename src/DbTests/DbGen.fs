@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 230538bd715e8693ad5342d60ac6a531276f756072235c39d888182b06335d4a
+// Hash: 9213fe13fc1d6f6f4ec82dd54d581435fe1b6bd57f9c4d0fde7860cd090af787
 
 //////////////////////////////////////////
 //
@@ -19089,6 +19089,144 @@ module Scripts =
           SqlParameter("id", SqlDbType.Int, Value = (^a: (member ``Id``: int) dto))
         |]
       ``TableWithIdentityCol_ById_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``TableWithIdentityCol_ById_WithSelectColumns_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """
+        SELECT
+          [Id],
+          [Foo]
+        FROM
+          [dbo].[TableWithIdentityCol]
+        WHERE
+          [Id] = @id
+      """
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_Id`` = 0
+    let mutable ``ordinal_Foo`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_Id`` <- reader.GetOrdinal "Id"
+      ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
+
+    let getItem (reader: SqlDataReader) =
+      let ``Id`` = reader.GetInt32 ``ordinal_Id``
+      let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
+      {|
+        ``Id`` = ``Id``
+        ``Foo`` = ``Foo``
+      |}
+
+    member __.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member __.Execute() =
+      let sqlParams = getSqlParams ()
+      executeQueryEager connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    #if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)
+
+    member __.LazyExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member __.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    #endif
+
+    member __.LazyExecute() =
+      let sqlParams = getSqlParams ()
+      executeQueryLazy connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member __.ExecuteSingleAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQuerySingleAsync connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member __.ExecuteSingle() =
+      let sqlParams = getSqlParams ()
+      executeQuerySingle connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+
+  type ``TableWithIdentityCol_ById_WithSelectColumns`` private (connStr: string, conn: SqlConnection) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``TableWithIdentityCol_ById_WithSelectColumns``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``TableWithIdentityCol_ById_WithSelectColumns``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``TableWithIdentityCol_ById_WithSelectColumns``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``id``: int
+      ) =
+      let getSqlParams () =
+        [|
+          SqlParameter("id", SqlDbType.Int, Value = ``id``)
+        |]
+      ``TableWithIdentityCol_ById_WithSelectColumns_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+          SqlParameter("id", SqlDbType.Int, Value = (^a: (member ``Id``: int) dto))
+        |]
+      ``TableWithIdentityCol_ById_WithSelectColumns_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [])
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]

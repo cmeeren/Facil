@@ -250,6 +250,7 @@ type TableScriptTypeRuleDto = {
   name: string option
   tableType: string option
   holdlock: bool option
+  selectColumns: string list option
   filterColumns: string list option
   columns: Map<string, TableScriptColumnDto> option
 }
@@ -272,6 +273,7 @@ type TableScriptTypeRule = {
   TableType: string option
   Holdlock: bool option
   FilterColumns: string list option
+  SelectColumns: string list option
   Columns: Map<string option, TableScriptColumn>
 }
 
@@ -941,7 +943,27 @@ module TableScriptTypeRule =
     TableType = rule.TableType
     Holdlock = rule.Holdlock |> Option.defaultValue false
     FilterColumns = rule.FilterColumns
-    ColumnsFromAllRules = [rule.Columns]
+    ColumnsFromAllRules =
+      [
+
+        match rule.Type, rule.SelectColumns with
+        | _, None -> ()
+        | (Insert | Update | Merge | Delete), Some _ -> ()
+        | (GetById | GetByIdBatch | GetByColumns | GetByColumnsBatch), Some selectCols ->
+
+            let skipCol skip =
+              { TableScriptColumn.Skip = Some skip
+                ParamName = None
+                Output = None }
+            [
+              None, skipCol true
+              for c in selectCols do
+                Some c, skipCol false
+            ]
+            |> Map.ofList
+
+        rule.Columns
+      ]
   }
 
 
@@ -961,6 +983,7 @@ module TableScriptTypeRule =
     TableType = dto.tableType
     Holdlock = dto.holdlock
     FilterColumns = dto.filterColumns
+    SelectColumns = dto.selectColumns
     Columns =
       dto.columns
       |> Option.defaultValue Map.empty

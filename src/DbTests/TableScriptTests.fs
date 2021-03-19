@@ -1362,6 +1362,26 @@ let tests =
         }
 
 
+      testCase "GetById with selectColumns" <| fun () ->
+        clearTableScriptTables ()
+
+        let insertRes =
+          DbGen.Scripts.TableWithIdentityCol_Insert
+            .WithConnection(Config.connStr)
+            .WithParameters(foo = 123L, bar = None)
+            .ExecuteSingle()
+
+        let getRes =
+          DbGen.Scripts.TableWithIdentityCol_ById_WithSelectColumns
+            .WithConnection(Config.connStr)
+            .WithParameters(insertRes.Value.Id)
+            .ExecuteSingle()
+
+        ignore<{| Id: int; Foo: int64 |}> getRes.Value
+        test <@ getRes.Value.Id = insertRes.Value.Id @>
+        test <@ getRes.Value.Foo = insertRes.Value.Foo @>
+
+
       testCase "GetByIdBatch" <| fun () ->
         clearTableScriptTables ()
 

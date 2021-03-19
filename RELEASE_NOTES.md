@@ -4,6 +4,7 @@ Release notes
 ### vNext
 
 * Added ability to generate `MERGE` table script (“upsert”)
+* Added `selectColumns` as syntactic sugar in `Get*` table scripts
 
 ### 1.2.2 (2021-03-18)
 
