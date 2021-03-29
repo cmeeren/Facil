@@ -60,13 +60,13 @@ let getUser (connStr: string) (UserId userId) : Async<User option> =
 let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArray<Product>> =
   async {
     let dtoWithPrimitiveParams = ProductSearchArgs.toDto args
-      return!
-        GetUserById
-          .WithConnection(connStr)
-          // You can load parameters from any object with the right members
-          // instead of passing each parameter manually
-          .WithParameters(dtoWithPrimitiveParams)
-          .AsyncExecute()
+    return!
+      GetUserById
+        .WithConnection(connStr)
+        // You can load parameters from any object with the right members
+        // instead of passing each parameter manually
+        .WithParameters(dtoWithPrimitiveParams)
+        .AsyncExecute()
   }
 ```
 
