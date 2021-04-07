@@ -123,7 +123,7 @@ module Program =
             let shouldCheckLine (line: string) =
               not <| line.Trim().StartsWith "//"
 
-            let linesToCheck = lines |> List.toArray
+            let linesToCheck = lines |> List.toArray |> Array.collect (fun s -> s.Split Environment.NewLine)
             let existingLinesToCheck = existingLines |> List.toArray
 
             for i in [0 .. (max linesToCheck.Length existingLinesToCheck.Length) - 1] do
