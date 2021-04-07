@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.3.3 (2021-04-07)
+
+* Changed the output format of script source code to clean up and improve telemetry that picks up the script source (specifically, modified the script source indentation and inserted the script name in a comment at the top of the script)
+
 ### 1.3.2 (2021-03-19)
 
 * Fixed table script merge (now merges based on the final name, not the template name with `{TableName}` and other tokens)

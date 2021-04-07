@@ -288,9 +288,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               "cmd.CommandType <- CommandType.StoredProcedure"
               $"cmd.CommandText <- \"{sp.SchemaName}.{sp.Name}\""
           | Choice2Of2 s ->
-              "cmd.CommandText <- \"\"\""
-              yield! indent (s.Source.Split "\n" |> Array.map (fun s -> s.TrimEnd '\r') |> Array.toList)
-              "\"\"\""
+              $"cmd.CommandText <- \"\"\"-- %s{s.GlobMatchOutput}%s{Environment.NewLine}%s{s.Source.Split '\n' |> String.concat Environment.NewLine}\"\"\""
           "userConfigureCmd cmd"
         ]
         ""
@@ -486,9 +484,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               "cmd.CommandType <- CommandType.StoredProcedure"
               $"cmd.CommandText <- \"{sp.SchemaName}.{sp.Name}\""
           | Choice2Of2 s ->
-              "cmd.CommandText <- \"\"\""
-              yield! indent (s.Source.Split "\n" |> Array.map (fun s -> s.TrimEnd '\r') |> Array.toList)
-              "\"\"\""
+              $"cmd.CommandText <- \"\"\"-- %s{s.GlobMatchOutput}%s{Environment.NewLine}%s{s.Source.Split '\n' |> String.concat Environment.NewLine}\"\"\""
           "cmd.Parameters.AddRange sqlParams"
           "userConfigureCmd cmd"
         ]
