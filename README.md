@@ -218,7 +218,7 @@ Type inference in scripts is limited due to limitations in SQL Server's [sp_desc
 
 To work around this, for each problematic parameter (you don't have to specify the ones that work), you can specify in the config which SQL type the parameter is and whether it is nullable. You can also set this for all parameters at once (and override specific parameters).
 
-### How is default and nullable parameter values handled?
+### How are default and nullable parameter values handled?
 
 All stored procedure parameters that have `null` as the default value are treated as nullable and wrapped in `option` (or `voption`). All other default values for stored procedure parameters are ignored; the parameters will be required and non-nullable.
 
