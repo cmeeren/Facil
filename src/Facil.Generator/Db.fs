@@ -589,16 +589,21 @@ let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableT
   // Add parameter default values
   |> List.map (fun sproc ->
       let paramDefaults = getParameterDefaultValues sproc
+      let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
       { sproc with
           Parameters =
             sproc.Parameters
             |> List.map (fun param ->
                 { param with 
                     FSharpDefaultValueString =
-                      match paramDefaults.TryGetValue param.Name with
-                      | false, _ | true, None -> None
-                      | true, Some null -> Some "null"
-                      | true, Some x -> sprintf "%A" x |> Some
+                      match rule |> EffectiveProcedureRule.getParam (param.Name.TrimStart '@') with
+                      | { Nullable = Some true } -> Some "null"
+                      | { Nullable = Some false } -> None
+                      | { Nullable = None } ->
+                          match paramDefaults.TryGetValue param.Name with
+                          | false, _ | true, None -> None
+                          | true, Some null -> Some "null"
+                          | true, Some x -> sprintf "%A" x |> Some
                 }
             )
       }

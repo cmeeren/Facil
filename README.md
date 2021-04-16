@@ -195,8 +195,8 @@ For each procedure/script (or any set of these that matches a specified regex/gl
 * For single-column results, whether to return a record (as with multiple columns) or just return the scalar value
 * Whether to skip the `inline` DTO parameter overloads (for faster compilation if you don’t use them)
 * Whether to use return values (stored procedures only)
-* For each parameter: The name to use in parameter DTO objects
-* For each script parameter: Its type and nullability (to work around type inference limitations for scripts, [see below](#type-inference-limitations-in-scripts))
+* For each parameter: Its nullability and the name to use in parameter DTO objects
+* For each script parameter: Its type (to work around type inference limitations for scripts, [see below](#type-inference-limitations-in-scripts))
 * For scripts: temp tables ([see below](#can-i-use-temp-tables))
 
 For each table DTO, you can configure:

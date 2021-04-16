@@ -123,6 +123,10 @@ rulesets:
           "": {}
 
           someParam:
+            # Whether the parameter is nullable. Parameters are nullable by default if
+            # they are defined with default value NULL in the procedure. You can override
+            # it using this property.
+            nullable: true
             # The property name for this parameter if passing parameters using a DTO
             # object. By default, it's equal to the actual parameter name with the first
             # letter upper-cased.

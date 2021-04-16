@@ -83,4 +83,12 @@ let tests =
           )
       ]
 
+
+      testCase "Procedure parameter nullability override" <| fun () ->
+        let f () =
+          DbGen.Procedures.dbo.ProcWithNullParamOverrides
+            .WithConnection(Config.connStr)
+            .WithParameters(foo = 1, bar = Some 1)
+        ignore f
+
   ]

@@ -85,12 +85,14 @@ type EffectiveTableTypeRule = {
 
 [<CLIMutable>]
 type ProcedureParameterDto = {
+  nullable: bool option
   dtoName: string option
   buildValue: string option
 }
 
 
 type ProcedureParameter = {
+  Nullable: bool option
   DtoName: string option
   BuildValue: string option
 }
@@ -491,18 +493,21 @@ module ProcedureParameter =
 
 
   let empty : ProcedureParameter = {
+    Nullable = None
     DtoName = None
     BuildValue = None
   }
 
 
   let fromDto (dto: ProcedureParameterDto) : ProcedureParameter = {
+    Nullable = dto.nullable
     DtoName = dto.dtoName
     BuildValue = dto.buildValue
   }
 
 
   let merge (p1: ProcedureParameter) (p2: ProcedureParameter) : ProcedureParameter = {
+    Nullable = p2.Nullable |> Option.orElse p1.Nullable
     DtoName = p2.DtoName |> Option.orElse p1.DtoName
     BuildValue = p2.BuildValue |> Option.orElse p1.BuildValue
   }

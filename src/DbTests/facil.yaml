@@ -65,6 +65,13 @@ rulesets:
       - for: ProcNominalResult
         result: nominal
 
+      - for: ProcWithNullParamOverrides
+        params:
+          foo:
+            nullable: false
+          bar:
+            nullable: true
+
 
     scripts:
       - include: "**/*.sql"

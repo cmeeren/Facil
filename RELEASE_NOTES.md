@@ -1,9 +1,10 @@
 Release notes
 ==============
 
-### vNext
+### 1.4.0 (2021-04-16)
 
 * Will now silently ignore insert/update/merge/delete table scripts for matched views
+* Procedure parameters now support `nullable` overrides, just like script parameters
 
 ### 1.3.3 (2021-04-07)
 
