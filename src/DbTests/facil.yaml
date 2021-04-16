@@ -384,3 +384,12 @@ rulesets:
           - type: getByColumns
             filterColumns:
               - TableCol1
+
+      # This is a test in itself: insert/update/delete/merge scripts for views should be
+      # silently ignored. If this 'test' fails, generation should fail.
+      - include: dbo\.View1
+        scripts:
+          - type: insert
+          - type: update
+          - type: delete
+          - type: merge

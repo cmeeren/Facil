@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Will now silently ignore insert/update/merge/delete table scripts for matched views
+
 ### 1.3.3 (2021-04-07)
 
 * Changed the output format of script source code to clean up and improve telemetry that picks up the script source (specifically, modified the script source indentation and inserted the script name in a comment at the top of the script)

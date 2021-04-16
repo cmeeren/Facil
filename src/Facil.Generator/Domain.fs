@@ -364,6 +364,7 @@ type TableDto = {
   Name: string
   Columns: TableColumn list
   PrimaryKeyColumns: TableColumn list
+  IsView: bool
 }
 
 
