@@ -1535,6 +1535,72 @@ let tests =
         ignore f
 
 
+      testCase "Skips computed columns in insert scripts" <| fun () ->
+        let f () =
+          DbGen.Scripts.TableWithComputedCol_Insert
+            .WithConnection(Config.connStr)
+            .WithParameters(0, 0L)
+            .Execute()
+          |> ignore
+
+        ignore f
+
+
+      testCase "Skips computed columns in insert scripts even if skip = false" <| fun () ->
+        let f () =
+          DbGen.Scripts.TableWithComputedCol_Insert_WithSkipFalse
+            .WithConnection(Config.connStr)
+            .WithParameters(0, 0L)
+            .Execute()
+          |> ignore
+
+        ignore f
+
+
+      testCase "Skips computed columns in update scripts" <| fun () ->
+        let f () =
+          DbGen.Scripts.TableWithComputedCol_Update
+            .WithConnection(Config.connStr)
+            .WithParameters(0, 0L)
+            .Execute()
+          |> ignore
+
+        ignore f
+
+
+      testCase "Skips computed columns in update scripts even if skip = false" <| fun () ->
+        let f () =
+          DbGen.Scripts.TableWithComputedCol_Update_WithSkipFalse
+            .WithConnection(Config.connStr)
+            .WithParameters(0, 0L)
+            .Execute()
+          |> ignore
+
+        ignore f
+
+
+      testCase "Skips computed columns in merge scripts" <| fun () ->
+        let f () =
+          DbGen.Scripts.TableWithComputedCol_Merge
+            .WithConnection(Config.connStr)
+            .WithParameters(0, 0L)
+            .Execute()
+          |> ignore
+
+        ignore f
+
+
+      testCase "Skips computed columns in merge scripts even if skip = false" <| fun () ->
+        let f () =
+          DbGen.Scripts.TableWithComputedCol_Merge_WithSkipFalse
+            .WithConnection(Config.connStr)
+            .WithParameters(0, 0L)
+            .Execute()
+          |> ignore
+
+        ignore f
+
+
     ]
 
   ]

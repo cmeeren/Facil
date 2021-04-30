@@ -168,6 +168,7 @@
     <Build Include="dbo\User Defined Types\FilterForTableWithIdentityCol.sql" />
     <Build Include="dbo\Tables\TableWithSkippedPkColumn.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithNullParamOverrides.sql" />
+    <Build Include="dbo\Tables\TableWithComputedCol.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDB.publish.xml" />

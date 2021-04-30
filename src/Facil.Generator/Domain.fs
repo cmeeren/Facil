@@ -285,6 +285,7 @@ type TableColumn = {
   SortKey: int
   IsNullable: bool
   IsIdentity: bool
+  IsComputed: bool
   Size: int16
   Precision: byte
   Scale: byte

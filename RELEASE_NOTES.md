@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.4.1 (2021-04-30)
+
+* Will now always skip computed columns in insert/update/merge table scripts
+
 ### 1.4.0 (2021-04-16)
 
 * Will now silently ignore insert/update/merge/delete table scripts for matched views

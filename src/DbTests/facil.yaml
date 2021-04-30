@@ -400,3 +400,24 @@ rulesets:
           - type: update
           - type: delete
           - type: merge
+
+      - include: dbo\.TableWithComputedCol
+        scripts:
+          - type: insert
+          - type: insert
+            name: TableWithComputedCol_Insert_WithSkipFalse
+            columns:
+              Bar:
+                skip: false
+          - type: update
+          - type: update
+            name: TableWithComputedCol_Update_WithSkipFalse
+            columns:
+              Bar:
+                skip: false
+          - type: merge
+          - type: merge
+            name: TableWithComputedCol_Merge_WithSkipFalse
+            columns:
+              Bar:
+                skip: false

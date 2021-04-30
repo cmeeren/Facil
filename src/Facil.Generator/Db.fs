@@ -415,6 +415,7 @@ let getTableTypes (conn: SqlConnection) =
         sys.columns.scale AS ColumnScale,
         sys.columns.is_nullable AS ColumnIsNullable,
         sys.columns.is_identity AS ColumnIsIdentity,
+        sys.columns.is_computed AS ColumnIsComputed,
         TYPE_NAME(sys.columns.system_type_id) AS ColumnTypeName
       FROM
         sys.table_types
@@ -442,6 +443,7 @@ let getTableTypes (conn: SqlConnection) =
               Name = colName
               IsNullable = reader.["ColumnIsNullable"] |> unbox<bool>
               IsIdentity = reader.["ColumnIsIdentity"] |> unbox<bool>
+              IsComputed = reader.["ColumnIsComputed"] |> unbox<bool>
               SortKey = reader.["ColumnId"] |> unbox<int>
               Size = reader.["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
               Precision = reader.["ColumnPrecision"] |> unbox<byte>
@@ -675,6 +677,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesB
         sys.all_columns.precision,
         sys.all_columns.scale,
         sys.all_columns.is_identity,
+        sys.all_columns.is_computed,
         IsView = CAST(0 AS BIT)
       FROM
         sys.tables
@@ -695,6 +698,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesB
         sys.all_columns.precision,
         sys.all_columns.scale,
         sys.all_columns.is_identity,
+        sys.all_columns.is_computed,
         IsView = CAST(1 AS BIT)
       FROM
         sys.views
@@ -749,6 +753,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesB
                 SortKey = reader.["column_id"] |> unbox<int>
                 IsNullable = reader.["is_nullable"] |> unbox<bool>
                 IsIdentity = reader.["is_identity"] |> unbox<bool>
+                IsComputed = reader.["is_computed"] |> unbox<bool>
                 Size =
                   reader.["max_length"]
                   |> unbox<int16>
@@ -1209,9 +1214,9 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   colsWithRule
                   |> List.filter (fun (col, rule) ->
                        match rule.Skip with
-                       | None when col.IsIdentity -> false
+                       | None when col.IsIdentity || col.IsComputed -> false
                        | None -> true
-                       | Some skip -> not skip
+                       | Some skip -> not skip && not col.IsComputed
                   )
                 let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
 
@@ -1281,9 +1286,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 let colsToUpdateWithRule =
                   colsWithRule
                   |> List.filter (fun (c, rule) ->
-                        rule.Skip <> Some true
-                        && not (pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)))
-
+                        let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
+                        match rule.Skip with
+                        | None when c.IsComputed -> false
+                        | None -> not isPkCol
+                        | Some skip -> not skip && not isPkCol && not c.IsComputed
+                  )
                 {
                   GlobMatchOutput = rule.Name
                   RelativePathSegments =
@@ -1349,16 +1357,20 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   colsWithRule
                   |> List.filter (fun (col, rule) ->
                        match rule.Skip with
-                       | None when col.IsIdentity -> false
+                       | None when col.IsIdentity || col.IsComputed -> false
                        | None -> true
-                       | Some skip -> not skip
+                       | Some skip -> not skip && not col.IsComputed
                   )
 
                 let colsToUpdateWithRule =
                   colsWithRule
                   |> List.filter (fun (c, rule) ->
-                        rule.Skip <> Some true
-                        && not (pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)))
+                        let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
+                        match rule.Skip with
+                        | None when c.IsComputed -> false
+                        | None -> not isPkCol
+                        | Some skip -> not skip && not isPkCol && not c.IsComputed
+                  )
 
                 let allColsWithRule =
                   colsWithRule
