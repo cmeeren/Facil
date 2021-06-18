@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### 1.4.2 (2021-06-18)
+
+* Added `paramDto` config key to procedures and scripts, with values `inline` (default), `nominal` (generate a nominal input DTO type, similar to what `result: nominal` does for output), and `skip` (replacing the old `skipParamDto`).
+* Deprecated `skipParamDto`; use `paramDto: skip` instead.
+
 ### 1.4.1 (2021-04-30)
 
 * Will now always skip computed columns in insert/update/merge table scripts

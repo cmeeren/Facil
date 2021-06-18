@@ -18,6 +18,12 @@ type ResultKind =
   | Custom of string
 
 
+type ParamDtoKind =
+  | Inline
+  | Nominal
+  | Skip
+
+
 [<CLIMutable>]
 type ConfigSourceDto = {
   appSettings: string option
@@ -115,10 +121,11 @@ type ProcedureRuleDto = {
   ``for``: string option
   except: string option
   result: string option
+  paramDto: string option
+  skipParamDto: bool option
   voptionIn: bool option
   voptionOut: bool option
   recordIfSingleCol: bool option
-  skipParamDto: bool option
   useReturnValue: bool option
   ``params``: Map<string, ProcedureParameterDto> option
   columns: Map<string, ProcedureColumnDto> option
@@ -129,10 +136,10 @@ type ProcedureRule = {
   IncludeOrFor: IncludeOrFor
   Except: string option
   Result: ResultKind option
+  ParamDto: ParamDtoKind option
   VoptionIn: bool option
   VoptionOut: bool option
   RecordIfSingleCol: bool option
-  SkipParamDto: bool option
   UseReturnValue: bool option
   Parameters: Map<string option, ProcedureParameter>
   Columns: Map<string option, ProcedureColumn>
@@ -141,10 +148,10 @@ type ProcedureRule = {
 
 type EffectiveProcedureRule = {
   Result: ResultKind
+  ParamDto: ParamDtoKind
   VoptionIn: bool
   VoptionOut: bool
   RecordIfSingleCol: bool
-  SkipParamDto: bool
   UseReturnValue: bool
   ParametersFromAllRules: Map<string option, ProcedureParameter> list
   ColumnsFromAllRules: Map<string option, ProcedureColumn> list
@@ -195,10 +202,11 @@ type ScriptRuleDto = {
   ``for``: string option
   except: string option
   result: string option
+  paramDto: string option
+  skipParamDto: bool option
   voptionIn: bool option
   voptionOut: bool option
   recordIfSingleCol: bool option
-  skipParamDto: bool option
   ``params``: Map<string, ScriptParameterDto> option
   tempTables: ScriptTempTableRuleDto list option
   columns: Map<string, ScriptColumnDto> option
@@ -209,10 +217,10 @@ type ScriptRule = {
   IncludeOrFor: IncludeOrFor
   Except: string option
   Result: ResultKind option
+  ParamDto: ParamDtoKind option
   VoptionIn: bool option
   VoptionOut: bool option
   RecordIfSingleCol: bool option
-  SkipParamDto: bool option
   Parameters: Map<string option, ScriptParameter>
   TempTables: ScriptTempTableRule list option
   Columns: Map<string option, ScriptColumn>
@@ -221,10 +229,10 @@ type ScriptRule = {
 
 type EffectiveScriptRule = {
   Result: ResultKind
+  ParamDto: ParamDtoKind
   VoptionIn: bool
   VoptionOut: bool
   RecordIfSingleCol: bool
-  SkipParamDto: bool
   ParametersFromAllRules: Map<string option, ScriptParameter> list
   TempTables: ScriptTempTableRule list
   ColumnsFromAllRules: Map<string option, ScriptColumn> list
@@ -324,10 +332,10 @@ type ProcedureOrScriptColumn = {
 
 type EffectiveProcedureOrScriptRule = {
   Result: ResultKind
+  ParamDto: ParamDtoKind
   VoptionIn: bool
   VoptionOut: bool
   RecordIfSingleCol: bool
-  SkipParamDto: bool
   UseReturnValue: bool
   ParametersFromAllRules: Map<string option, ProcedureOrScriptParameter> list
   ColumnsFromAllRules: Map<string option, ProcedureOrScriptColumn> list
@@ -535,50 +543,60 @@ module ProcedureColumn =
 module ProcedureRule =
 
 
-  let fromDto fullYamlPath (dto: ProcedureRuleDto) : ProcedureRule = {
-    IncludeOrFor =
-      match dto.``include``, dto.``for`` with
-      | None, None -> failwithYamlError fullYamlPath 0 0 "Either 'include' or 'for' is required in a procedure rule"
-      | Some inc, None -> Include inc
-      | None, Some f -> For f
-      | Some _, Some _ -> failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a procedure rule"
-    Except = dto.except
-    Result =
-      dto.result
-      |> Option.map (function
-          | "auto" -> Auto
-          | "anonymous" -> AnonymousRecord
-          | "nominal" -> NominalRecord
-          | name -> Custom name
-      )
-    VoptionIn = dto.voptionIn
-    VoptionOut = dto.voptionOut
-    RecordIfSingleCol = dto.recordIfSingleCol
-    SkipParamDto = dto.skipParamDto
-    UseReturnValue = dto.useReturnValue
-    Parameters =
-      dto.``params``
-      |> Option.defaultValue Map.empty
-      |> Map.toList
-      |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
-      |> Map.ofList
-      |> Map.map (fun _ -> ProcedureParameter.fromDto)
-    Columns =
-      dto.columns
-      |> Option.defaultValue Map.empty
-      |> Map.toList
-      |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
-      |> Map.ofList
-      |> Map.map (fun _ -> ProcedureColumn.fromDto)
-  }
+  let fromDto fullYamlPath (dto: ProcedureRuleDto) : ProcedureRule =
+    if dto.skipParamDto.IsSome then
+      logYamlWarning fullYamlPath 0 0 "'skipParamDto' is deprecated; use 'paramDto: skip' instead"
+    {
+      IncludeOrFor =
+        match dto.``include``, dto.``for`` with
+        | None, None -> failwithYamlError fullYamlPath 0 0 "Either 'include' or 'for' is required in a procedure rule"
+        | Some inc, None -> Include inc
+        | None, Some f -> For f
+        | Some _, Some _ -> failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a procedure rule"
+      Except = dto.except
+      Result =
+        dto.result
+        |> Option.map (function
+            | "auto" -> Auto
+            | "anonymous" -> AnonymousRecord
+            | "nominal" -> NominalRecord
+            | name -> Custom name
+        )
+      ParamDto =
+        dto.paramDto
+        |> Option.map (function
+            | "inline" -> Inline
+            | "nominal" -> Nominal
+            | "skip" -> Skip
+            | x -> failwithYamlError fullYamlPath 0 0 $"Invalid 'paramDto' value '%s{x}'"
+        )
+      VoptionIn = dto.voptionIn
+      VoptionOut = dto.voptionOut
+      RecordIfSingleCol = dto.recordIfSingleCol
+      UseReturnValue = dto.useReturnValue
+      Parameters =
+        dto.``params``
+        |> Option.defaultValue Map.empty
+        |> Map.toList
+        |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
+        |> Map.ofList
+        |> Map.map (fun _ -> ProcedureParameter.fromDto)
+      Columns =
+        dto.columns
+        |> Option.defaultValue Map.empty
+        |> Map.toList
+        |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
+        |> Map.ofList
+        |> Map.map (fun _ -> ProcedureColumn.fromDto)
+    }
 
 
   let defaultEffectiveRule : EffectiveProcedureRule = {
     Result = Auto
+    ParamDto = Inline
     VoptionIn = false
     VoptionOut = false
     RecordIfSingleCol = false
-    SkipParamDto = false
     UseReturnValue = false
     ParametersFromAllRules = []
     ColumnsFromAllRules = []
@@ -599,10 +617,10 @@ module ProcedureRule =
   let merge (eff: EffectiveProcedureRule) (rule: ProcedureRule) : EffectiveProcedureRule =
     {
       Result = rule.Result |> Option.defaultValue eff.Result
+      ParamDto = rule.ParamDto |> Option.defaultValue eff.ParamDto
       VoptionIn = rule.VoptionIn |> Option.defaultValue eff.VoptionIn
       VoptionOut = rule.VoptionOut |> Option.defaultValue eff.VoptionOut
       RecordIfSingleCol = rule.RecordIfSingleCol |> Option.defaultValue eff.RecordIfSingleCol
-      SkipParamDto = rule.SkipParamDto |> Option.defaultValue eff.SkipParamDto
       UseReturnValue = rule.UseReturnValue |> Option.defaultValue eff.UseReturnValue
       ParametersFromAllRules = eff.ParametersFromAllRules @ [rule.Parameters]
       ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]
@@ -684,10 +702,10 @@ module EffectiveProcedureOrScriptRule =
 
   let fromEffectiveProcedureRule (rule: EffectiveProcedureRule) : EffectiveProcedureOrScriptRule = {
       Result = rule.Result
+      ParamDto = rule.ParamDto
       VoptionIn = rule.VoptionIn
       VoptionOut = rule.VoptionOut
       RecordIfSingleCol = rule.RecordIfSingleCol
-      SkipParamDto = rule.SkipParamDto
       UseReturnValue = rule.UseReturnValue
       ParametersFromAllRules = rule.ParametersFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptParameter.fromProcedureParameter))
       ColumnsFromAllRules = rule.ColumnsFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptColumn.fromProcedureColumn))
@@ -696,10 +714,10 @@ module EffectiveProcedureOrScriptRule =
 
   let fromEffectiveScriptRule (rule: EffectiveScriptRule) : EffectiveProcedureOrScriptRule = {
       Result = rule.Result
+      ParamDto = rule.ParamDto
       VoptionIn = rule.VoptionIn
       VoptionOut = rule.VoptionOut
       RecordIfSingleCol = rule.RecordIfSingleCol
-      SkipParamDto = rule.SkipParamDto
       UseReturnValue = false
       ParametersFromAllRules = rule.ParametersFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptParameter.fromScriptParameter))
       ColumnsFromAllRules = rule.ColumnsFromAllRules |> List.map (Map.map (fun _ -> ProcedureOrScriptColumn.fromScriptColumn))
@@ -780,6 +798,8 @@ module ScriptRule =
 
 
   let fromDto (basePath: string) fullYamlPath (dto: ScriptRuleDto) : ScriptRule =
+    if dto.skipParamDto.IsSome then
+      logYamlWarning fullYamlPath 0 0 "'skipParamDto' is deprecated; use 'paramDto: skip' instead"
     {
       IncludeOrFor =
         match dto.``include``, dto.``for`` with
@@ -796,10 +816,17 @@ module ScriptRule =
             | "nominal" -> NominalRecord
             | name -> Custom name
         )
+      ParamDto =
+        dto.paramDto
+        |> Option.map (function
+            | "inline" -> Inline
+            | "nominal" -> Nominal
+            | "skip" -> Skip
+            | x -> failwithYamlError fullYamlPath 0 0 $"Invalid 'paramDto' value '%s{x}'"
+        )
       VoptionIn = dto.voptionIn
       VoptionOut = dto.voptionOut
       RecordIfSingleCol = dto.recordIfSingleCol
-      SkipParamDto = dto.skipParamDto
       Parameters =
         dto.``params``
         |> Option.defaultValue Map.empty
@@ -820,10 +847,10 @@ module ScriptRule =
 
   let defaultEffectiveRule : EffectiveScriptRule = {
     Result = Auto
+    ParamDto = Inline
     VoptionIn = false
     VoptionOut = false
     RecordIfSingleCol = false
-    SkipParamDto = false
     ParametersFromAllRules = []
     TempTables = []
     ColumnsFromAllRules = []
@@ -848,10 +875,10 @@ module ScriptRule =
   let merge (eff: EffectiveScriptRule) (rule: ScriptRule) : EffectiveScriptRule =
     {
       Result = rule.Result |> Option.defaultValue eff.Result
+      ParamDto = rule.ParamDto |> Option.defaultValue eff.ParamDto
       VoptionIn = rule.VoptionIn |> Option.defaultValue eff.VoptionIn
       VoptionOut = rule.VoptionOut |> Option.defaultValue eff.VoptionOut
       RecordIfSingleCol = rule.RecordIfSingleCol |> Option.defaultValue eff.RecordIfSingleCol
-      SkipParamDto = rule.SkipParamDto |> Option.defaultValue eff.SkipParamDto
       ParametersFromAllRules = eff.ParametersFromAllRules @ [rule.Parameters]
       TempTables = rule.TempTables |> Option.defaultValue eff.TempTables
       ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]

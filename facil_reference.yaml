@@ -93,6 +93,24 @@ rulesets:
         #    be a record whose record constructor is accessible by the generated code.
         result: dbo.User
 
+        # 'paramDto' specifies the parameter type of the WithParameters overload that
+        # accepts a generic DTO type. Valid values:
+        #  - "inline" (default): Uses SRTP to accept any type that has the correct
+        #    members.
+        #  - "nominal": Generate and use a normal record type (a unique type is defined
+        #    for each procedure).
+        #  - "skip": Skips the overload. If you have many procedures and generally don't
+        #    use these overloads, removing them may improve IDE performance and
+        #    compilation times. Default false.
+        paramDto: nominal
+
+        # Deprecated; use 'paramDto: skip' instead.
+        #
+        # If true, will skip the 'WithParameters' overload that acceps a generic DTO type.
+        # If you have many procedures and generally don't use these overloads, removing
+        # them may improve IDE performance and compilation times. Default false.
+        skipParamDto: true
+
         # Whether to use ValueOption instead of Option for nullable parameters. Default
         # false.
         voptionIn: true
@@ -106,11 +124,6 @@ rulesets:
         # with a single field (e.g. {| col: int |}). If false, returns the scalar value
         # directly (just 'int' in this example). Default false.
         recordIfSingleCol: true
-
-        # If true, will skip the 'WithParameters' overload that acceps a generic DTO type.
-        # If you have many procedures and generally don't use these overloads, removing
-        # them may improve IDE performance and compilation times. Default false.
-        skipParamDto: true
 
         # If true, the return value of the procedure will be made available (except when
         # using lazy execution).
@@ -165,10 +178,11 @@ rulesets:
 
         # The following work exactly like they do in stored procedure rules.
         result: anonymous
+        paramDto: nominal
+        skipParamDto: true
         voptionIn: true
         voptionOut: true
         recordIfSingleCol: true
-        skipParamDto: true
 
       - for: SQL/MyScript.sql
 

@@ -51,6 +51,8 @@
     <None Include="SQL\DynamicSqlWithTvp.sql" />
     <None Include="SQL\TempTableAllTypesNonNull.sql" />
     <None Include="SQL\TempTableAllTypesNull.sql" />
+    <None Include="SQL\TempTableAllTypesNonNullNominalParams.sql" />
+    <None Include="SQL\TempTableAllTypesNullNominalParams.sql" />
     <None Include="SQL\TempTableAllTypesNullVoption.sql" />
     <None Include="SQL\TempTableInlined.sql" />
     <None Include="SQL\TempTableInlinedDynamic.sql" />
@@ -73,6 +75,7 @@
     <Compile Include="OutParameterAndReturnValueTests.fs" />
     <Compile Include="TempTableTests.fs" />
     <Compile Include="TableScriptTests.fs" />
+    <Compile Include="NominalParamDtoTests.fs" />
     <Compile Include="MiscTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

@@ -72,6 +72,9 @@ rulesets:
           bar:
             nullable: true
 
+      - for: NominalParams$
+        paramDto: nominal
+
 
     scripts:
       - include: "**/*.sql"
@@ -206,6 +209,16 @@ rulesets:
       - for: TempTableAllTypesNull.sql
         tempTables:
           - definition: TempTableDefinitions/TempTableAllTypesNull.sql
+
+      - for: TempTableAllTypesNonNullNominalParams.sql
+        tempTables:
+          - definition: TempTableDefinitions/TempTableAllTypesNonNull.sql
+        paramDto: nominal
+
+      - for: TempTableAllTypesNullNominalParams.sql
+        tempTables:
+          - definition: TempTableDefinitions/TempTableAllTypesNull.sql
+        paramDto: nominal
 
       - for: TempTableAllTypesNullVoption.sql
         voptionIn: true

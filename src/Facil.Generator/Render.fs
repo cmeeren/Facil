@@ -236,6 +236,43 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
           ]
       | _ -> []
 
+  let nominalParamDtoDef =
+    if parameters.IsEmpty && tempTables.IsEmpty then []
+    else
+    match rule.ParamDto with
+    | Skip | Inline -> []
+    | Nominal ->
+        [
+          ""
+          ""
+          $"type ``{className}_Params`` ="
+          yield! indent [
+            "{"
+            yield! indent [
+              for p in parameters do
+
+                let dtoName =
+                  rule
+                  |> EffectiveProcedureOrScriptRule.getParam p.FSharpParamName
+                  |> fun p -> p.DtoName
+                  |> Option.defaultValue (p.FSharpParamName |> String.firstUpper)
+
+                match p.TypeInfo with
+                | Scalar ti ->
+                    if p.FSharpDefaultValueString = Some "null" || p.IsOutput then
+                      $"``%s{dtoName}``: %s{ti.FSharpTypeString} %s{inOptionType}"
+                    else
+                      $"``%s{dtoName}``: %s{ti.FSharpTypeString}"
+                | Table tt ->
+                    $"``%s{dtoName}``: seq<TableTypes.``%s{tt.SchemaName}``.``%s{tt.Name}``>"
+
+              for tt in tempTables do
+                $"``{tt.FSharpName |> String.firstUpper}``: seq<``{className}``.``{tt.FSharpName}``>"
+            ]
+            "}"
+          ]
+        ]
+
   let hasOutParams = parameters |> List.exists (fun p -> p.IsOutput)
   let useRetVal = rule.UseReturnValue
   let wrapResult = hasOutParams || useRetVal
@@ -470,7 +507,64 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
   else  // Has parameters or temp tables
     [
+      if not tempTables.IsEmpty then
+        ""
+        ""
+        $"module ``{className}`` ="
+
+      for tt in tempTables do
+        ""
+        ""
+        yield! indent [
+          $"type ``{tt.FSharpName}`` (__: InternalUseOnly, fields: obj []) ="
+          yield! indent [
+            ""
+            "[<EditorBrowsable(EditorBrowsableState.Never)>]"
+            "member __.Fields = fields"
+            ""
+            "static member create"
+            yield! indent [
+              "("
+              yield! indent [
+                yield!
+                  tt.Columns
+                  |> List.map (fun c ->
+                      $"""``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}"""
+                  )
+                  |> List.mapAllExceptLast (fun s -> s + ",")
+              ]
+              $") : ``{tt.FSharpName}`` ="
+              "[|"
+              yield! indent [
+                yield!
+                  tt.Columns
+                  |> List.map (fun c ->
+                      $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}``{c.Name.Value}`` |> box"""
+                  )
+              ]
+              "|]"
+              $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
+            ]
+            if rule.ParamDto <> Skip then
+                ""
+                $"static member inline create (dto: ^a) : ``{tt.FSharpName}`` ="
+                yield! indent [
+                  "[|"
+                  yield! indent [
+                    yield!
+                      tt.Columns
+                      |> List.map (fun c ->
+                          $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}(^a: (member ``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}) dto) |> box"""
+                      )
+                  ]
+                  "|]"
+                  $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
+                ]
+          ]
+        ]
+
       yield! nominalTypeDef
+      yield! nominalParamDtoDef
       ""
       ""
       "[<EditorBrowsable(EditorBrowsableState.Never)>]"
@@ -634,63 +728,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               if wrapResult then "|> wrapResultWithOutParams sqlParams"
             ]
       ]
-
-      if not tempTables.IsEmpty then
-        ""
-        ""
-        $"module ``{className}`` ="
-
-      for tt in tempTables do
-        ""
-        ""
-        yield! indent [
-          $"type ``{tt.FSharpName}`` (__: InternalUseOnly, fields: obj []) ="
-          yield! indent [
-            ""
-            "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-            "member __.Fields = fields"
-            ""
-            "static member create"
-            yield! indent [
-              "("
-              yield! indent [
-                yield!
-                  tt.Columns
-                  |> List.map (fun c ->
-                      $"""``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}"""
-                  )
-                  |> List.mapAllExceptLast (fun s -> s + ",")
-              ]
-              $") : ``{tt.FSharpName}`` ="
-              "[|"
-              yield! indent [
-                yield!
-                  tt.Columns
-                  |> List.map (fun c ->
-                      $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}``{c.Name.Value}`` |> box"""
-                  )
-              ]
-              "|]"
-              $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
-            ]
-            if not rule.SkipParamDto then
-              ""
-              $"static member inline create (dto: ^a) : ``{tt.FSharpName}`` ="
-              yield! indent [
-                "[|"
-                yield! indent [
-                  yield!
-                    tt.Columns
-                    |> List.map (fun c ->
-                        $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}(^a: (member ``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}) dto) |> box"""
-                    )
-                ]
-                "|]"
-                $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
-              ]
-          ]
-        ]
-
 
       ""
       ""
@@ -871,54 +908,89 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
         ""
 
         //  - DTO params
-        if not rule.SkipParamDto then
-          $"member inline this.WithParameters(dto: ^a) ="
-          yield! indent [
-            "let getSqlParams () ="
-            yield! indent [
-              "[|"
-              yield! indent [
-                for p in parameters do
-                  let dtoName =
-                    rule
-                    |> EffectiveProcedureOrScriptRule.getParam p.FSharpParamName
-                    |> fun p -> p.DtoName
-                    |> Option.defaultValue (p.FSharpParamName |> String.firstUpper)
-
-                  let scalarParamValueExpr (ti: SqlTypeInfo) =
+        let paramData =
+          match rule.ParamDto with
+          | Skip -> None
+          | Inline ->
+              {|
+                InputType = "^a"
+                GetScalarParamValueExpr =
+                  fun (p: Parameter) dtoName (ti: SqlTypeInfo) ->
                     if p.FSharpDefaultValueString = Some "null" || p.IsOutput then
-                      $"{inOptionModule}.toDbNull (^a: (member ``{dtoName}``: {ti.FSharpTypeString} {inOptionType}) dto)"
+                      $"{inOptionModule}.toDbNull (^a: (member ``%s{dtoName}``: %s{ti.FSharpTypeString} %s{inOptionType}) dto)"
                     else
-                      $"(^a: (member ``{dtoName}``: {ti.FSharpTypeString}) dto)"
-                  match p.TypeInfo with
-                  | Scalar ti when isSizeRelevantForSqlParameter ti.SqlDbType ->
-                      $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Size = {p.Size}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {scalarParamValueExpr ti})"""
-                  | Scalar ti when isPrecisionAndScaleRelevantForSqlParameter ti.SqlDbType ->
-                      $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Precision = {p.Precision}uy, Scale = {p.Scale}uy, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {scalarParamValueExpr ti})"""
-                  | Scalar ti ->
-                      $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {scalarParamValueExpr ti})"""
-                  | Table tt ->
-                      $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = boxNullIfEmpty (^a: (member ``{dtoName}``: #seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>) dto))"""
+                      $"(^a: (member ``%s{dtoName}``: %s{ti.FSharpTypeString}) dto)"
+                GetTableParamValueExpr =
+                  fun dtoName (tt: TableType) ->
+                    $"boxNullIfEmpty (^a: (member ``%s{dtoName}``: #seq<TableTypes.``%s{tt.SchemaName}``.``%s{tt.Name}``>) dto)"
+                GetCreateTempTableDataValueExpr =
+                  fun (tt: TempTable) ->
+                    $"(^a: (member ``{tt.FSharpName |> String.firstUpper}``: #seq<``{className}``.``{tt.FSharpName}``>) dto)"
+              |}
+              |> Some
+          | Nominal ->
+              {|
+                InputType = $"%s{className}_Params"
+                GetScalarParamValueExpr =
+                  fun (p: Parameter) dtoName (_ti: SqlTypeInfo) ->
+                    if p.FSharpDefaultValueString = Some "null" || p.IsOutput then
+                      $"{inOptionModule}.toDbNull dto.``%s{dtoName}``"
+                    else
+                      $"dto.``%s{dtoName}``"
+                GetTableParamValueExpr =
+                  fun dtoName (_tt: TableType) ->
+                    $"boxNullIfEmpty dto.``%s{dtoName}``"
+                GetCreateTempTableDataValueExpr =
+                  fun (tt: TempTable) ->
+                    $"dto.``{tt.FSharpName |> String.firstUpper}``"
+              |}
+              |> Some
 
-                if useRetVal then
-                  "SqlParameter(\"ReturnValue\", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)"
-              ]
-              "|]"
-            ]
-            if not tempTables.IsEmpty then
-              "let tempTableData ="
+        match paramData with
+        | None -> ()
+        | Some paramData ->
+            $"member inline this.WithParameters(dto: %s{paramData.InputType}) ="
+            yield! indent [
+              "let getSqlParams () ="
               yield! indent [
-                "this.CreateTempTableData("
+                "[|"
                 yield! indent [
-                  yield!
-                    tempTables
-                    |> List.map (fun tt -> $"(^a: (member ``{tt.FSharpName |> String.firstUpper}``: #seq<``{className}``.``{tt.FSharpName}``>) dto)")
-                    |> List.mapAllExceptLast (fun s -> s + ",")
+                  for p in parameters do
+                    let dtoName =
+                      rule
+                      |> EffectiveProcedureOrScriptRule.getParam p.FSharpParamName
+                      |> fun p -> p.DtoName
+                      |> Option.defaultValue (p.FSharpParamName |> String.firstUpper)
+
+                    match p.TypeInfo with
+                    | Scalar ti when isSizeRelevantForSqlParameter ti.SqlDbType ->
+                        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Size = {p.Size}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {paramData.GetScalarParamValueExpr p dtoName ti})"""
+                    | Scalar ti when isPrecisionAndScaleRelevantForSqlParameter ti.SqlDbType ->
+                        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Precision = {p.Precision}uy, Scale = {p.Scale}uy, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {paramData.GetScalarParamValueExpr p dtoName ti})"""
+                    | Scalar ti ->
+                        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then "Direction = ParameterDirection.InputOutput, " else ""}Value = {paramData.GetScalarParamValueExpr p dtoName ti})"""
+                    | Table tt ->
+                        $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = {paramData.GetTableParamValueExpr dtoName tt})"""
+
+                  if useRetVal then
+                    "SqlParameter(\"ReturnValue\", SqlDbType.Int, Direction = ParameterDirection.ReturnValue)"
                 ]
-                ")"
+                "|]"
               ]
-            $"""``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, {if tempTables.IsEmpty then "[]" else "tempTableData"})"""
-          ]
+              if not tempTables.IsEmpty then
+                "let tempTableData ="
+                yield! indent [
+                  "this.CreateTempTableData("
+                  yield! indent [
+                    yield!
+                      tempTables
+                      |> List.map paramData.GetCreateTempTableDataValueExpr
+                      |> List.mapAllExceptLast (fun s -> s + ",")
+                  ]
+                  ")"
+                ]
+              $"""``{className}_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, {if tempTables.IsEmpty then "[]" else "tempTableData"})"""
+            ]
 
       ]
   ]
