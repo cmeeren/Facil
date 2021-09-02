@@ -63,6 +63,7 @@
     <None Include="SQL\NominalResult.sql" />
     <None Include="SQL\ManualTableDtoResult.sql" />
     <None Include="SQL\ManyColumns.sql" />
+    <None Include="SQL\StartsWithCTE.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />

@@ -274,6 +274,13 @@ rulesets:
       - for: ManualTableDtoResult.sql
         result: dbo.Table1
 
+      # This is a test in itself: Build-time inserted parameter definitions must end with
+      # semicolon in order for scripts that start with WITH to be valid
+      - for: StartsWithCTE.sql
+        params:
+          tvp:
+            type: dbo.SingleColNull
+
 
     tableDtos:
       - include: .*

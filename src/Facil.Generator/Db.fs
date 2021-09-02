@@ -91,7 +91,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       ||> Seq.fold (fun source paramName ->
             match rule |> EffectiveScriptRule.getParam paramName with
             | { Type = Some typeDef } ->
-                $"DECLARE @%s{paramName} %s{typeDef} = %s{facilTempVarPrefix}%s{paramName}\n%s{source}"
+                $"DECLARE @%s{paramName} %s{typeDef} = %s{facilTempVarPrefix}%s{paramName};\n%s{source}"
             | _ -> source
       )
       |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix

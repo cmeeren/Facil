@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 1.4.3 (2021-09-02)
+
+* Fix build-time bug where scripts starting with a CTE (`WITH`) and having parameter types configured in `facil.yaml` required a semicolon before `WITH` to build properly. (The semicolon was required because configured parameter types causes Facil to insert parameter definitions at the start of the script during build. Facil now inserts the required semicolon automatically during this process.)
+
 ### 1.4.2 (2021-06-18)
 
 * Added `paramDto` config key to procedures and scripts, with values `inline` (default), `nominal` (generate a nominal input DTO type, similar to what `result: nominal` does for output), and `skip` (replacing the old `skipParamDto`).

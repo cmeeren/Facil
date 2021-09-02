@@ -1,0 +1,3 @@
+﻿WITH cte AS (SELECT * FROM @tvp)
+
+SELECT * FROM CTE
