@@ -5,6 +5,8 @@ Facil
 
 **Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.**
 
+Pro-tip: Facil works great with [Fling](https://github.com/cmeeren/Fling)!
+
 Quick start
 -----------
 
@@ -378,6 +380,10 @@ EXEC sp_executesql @sql, @paramList, @col1Filter
 In order to parse the output columns of dynamic SQL queries, Facil must execute your query and see which columns come back. At build time, Facil generally passes `1` (or `"1"` etc.) for all parameters when executing the query. In the common case of dynamic filters as shown above, where you use `IS NOT NULL` or `@param = 1` to add filters to the executed SQL, this means that your dynamic SQL will be executed with all the optional filters.
 
 Facil may not completely check your dynamic SQL. For example, you may have a parameter that is used to choose one of several different `ORDER BY` clauses. In this case, only one of them will be used at build time (and you may be able to specify the parameter value by using `buildValue` as described previously).
+
+### Can Facil make it easy to save/load domain entities to/from multiple tables?
+
+This is exactly what [Fling](https://github.com/cmeeren/Fling) does. Flink works great with Facil!
 
 Release notes
 -------------
