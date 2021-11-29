@@ -21,12 +21,10 @@ build_script:
   - cmd: dotnet restore src\Facil.Generator --locked-mode
   - cmd: dotnet build src\Facil.Generator -c Release --no-restore
   # Build the package project, which includes the generator output
-  - cmd: dotnet restore src\Facil.Runtime.CSharp --locked-mode
-  - cmd: dotnet restore src\Facil.Runtime --locked-mode
   - cmd: dotnet restore src\Facil.Package --locked-mode
   - cmd: dotnet build src\Facil.Package -c Release --no-restore
   # Pack in a separate step (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
-  - cmd: dotnet pack src\Facil.Package -c Release --no-build
+  - cmd: dotnet pack src\Facil.Package -c Release
   # Build tests, which due to nuget.config should restore the locally built package
   - cmd: dotnet build src\DbTests -c Release
 
