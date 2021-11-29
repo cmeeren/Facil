@@ -13,20 +13,20 @@ init:
   - net start MSSQL$SQL2019
 
 build_script:
-  # Restore
-  - cmd: dotnet restore --locked-mode
   # Build DB
   - cmd: msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
   # Publish DB
   - cmd: sqlpackage.exe /Action:Publish /SourceFile:"src\TestDb\bin\Release\TestDb.dacpac" /TargetConnectionString:"Server=(local)\SQL2019;Database=FacilTest;Integrated Security=SSPI"
   # Build generator
-  - cmd: dotnet build -c Release src\Facil.Generator
+  - cmd: dotnet restore src\Facil.Generator --locked-mode
+  - cmd: dotnet build src\Facil.Generator -c Release --no-restore
   # Build the package project, which includes the generator output
-  - cmd: dotnet build -c Release src\Facil.Package
+  - cmd: dotnet restore src\Facil.Package --locked-mode
+  - cmd: dotnet build src\Facil.Package -c Release --no-restore
   # Pack in a separate step (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
-  - cmd: dotnet pack -c Release src\Facil.Package
+  - cmd: dotnet pack src\Facil.Package -c Release --no-build
   # Build tests, which due to nuget.config should restore the locally built package
-  - cmd: dotnet build -c Release src\DbTests
+  - cmd: dotnet build src\DbTests -c Release
 
 test_script:
   - cmd: dotnet src\DbTests\bin\Release\net6.0\DbTests.dll --fail-on-focused-tests
