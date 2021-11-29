@@ -40,10 +40,8 @@ let inline allExecuteMethodsAsSingle< ^a, 'b when
                                     and ^a: (member AsyncExecuteWithSyncRead: unit -> Async<ResizeArray<'b>>)
                                     and ^a: (member ExecuteAsyncWithSyncRead: CancellationToken option -> Task<ResizeArray<'b>>)
                                     and ^a: (member LazyExecute: unit -> seq<'b>)
-                                    #if NET5_0
                                     and ^a: (member LazyExecuteAsync: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
                                     and ^a: (member LazyExecuteAsyncWithSyncRead: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
-                                    #endif
                             > =
   [
     "ExecuteSingle", fun x -> (^a: (member ExecuteSingle: unit -> _) x)
@@ -55,10 +53,8 @@ let inline allExecuteMethodsAsSingle< ^a, 'b when
     "AsyncExecuteWithSyncRead", fun x -> (^a: (member AsyncExecuteWithSyncRead: unit -> _) x) |> Async.RunSynchronously |> Seq.tryHead
     "ExecuteAsyncWithSyncRead", fun x -> (^a: (member ExecuteAsyncWithSyncRead: _ -> _) (x, None)) |> Async.AwaitTask |> Async.RunSynchronously |> Seq.tryHead
     "LazyExecute", fun x -> (^a: (member LazyExecute: unit -> _) x) |> Seq.tryHead
-    #if NET5_0
     "LazyExecuteAsync", fun x -> (^a: (member LazyExecuteAsync: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq |> Seq.tryHead
     "LazyExecuteAsyncWithSyncRead", fun x -> (^a: (member LazyExecuteAsyncWithSyncRead: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq |> Seq.tryHead
-    #endif
   ]
 
 
@@ -72,10 +68,8 @@ let inline allExecuteMethodsAsSingleVoption< ^a, 'b when
                                             and ^a: (member AsyncExecuteWithSyncRead: unit -> Async<ResizeArray<'b>>)
                                             and ^a: (member ExecuteAsyncWithSyncRead: CancellationToken option -> Task<ResizeArray<'b>>)
                                             and ^a: (member LazyExecute: unit -> seq<'b>)
-                                            #if NET5_0
                                             and ^a: (member LazyExecuteAsync: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
                                             and ^a: (member LazyExecuteAsyncWithSyncRead: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
-                                            #endif
                                          > =
   [
     "ExecuteSingle", fun x -> (^a: (member ExecuteSingle: unit -> _) x)
@@ -87,10 +81,8 @@ let inline allExecuteMethodsAsSingleVoption< ^a, 'b when
     "AsyncExecuteWithSyncRead", fun x -> (^a: (member AsyncExecuteWithSyncRead: unit -> _) x) |> Async.RunSynchronously |> Seq.tryHeadVoption
     "ExecuteAsyncWithSyncRead", fun x -> (^a: (member ExecuteAsyncWithSyncRead: _ -> _) (x, None)) |> Async.AwaitTask |> Async.RunSynchronously |> Seq.tryHeadVoption
     "LazyExecute", fun x -> (^a: (member LazyExecute: unit -> _) x) |> Seq.tryHeadVoption
-    #if NET5_0
     "LazyExecuteAsync", fun x -> (^a: (member LazyExecuteAsync: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq |> Seq.tryHeadVoption
     "LazyExecuteAsyncWithSyncRead", fun x -> (^a: (member LazyExecuteAsyncWithSyncRead: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq |> Seq.tryHeadVoption
-    #endif
   ]
 
 
@@ -129,10 +121,8 @@ let inline allSeqExecuteMethods< ^a, 'b when
                                 and ^a: (member AsyncExecuteWithSyncRead: unit -> Async<ResizeArray<'b>>)
                                 and ^a: (member ExecuteAsyncWithSyncRead: CancellationToken option -> Task<ResizeArray<'b>>)
                                 and ^a: (member LazyExecute: unit -> seq<'b>)
-                                #if NET5_0
                                 and ^a: (member LazyExecuteAsync: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
                                 and ^a: (member LazyExecuteAsyncWithSyncRead: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
-                                #endif
                             > =
   [
     "Execute", fun x -> (^a: (member Execute: unit -> _) x)
@@ -141,26 +131,20 @@ let inline allSeqExecuteMethods< ^a, 'b when
     "AsyncExecuteWithSyncRead", fun x -> (^a: (member AsyncExecuteWithSyncRead: unit -> _) x) |> Async.RunSynchronously
     "ExecuteAsyncWithSyncRead", fun x -> (^a: (member ExecuteAsyncWithSyncRead: _ -> _) (x, None)) |> Async.AwaitTask |> Async.RunSynchronously
     "LazyExecute", fun x -> (^a: (member LazyExecute: unit -> _) x) |> ResizeArray
-    #if NET5_0
     "LazyExecuteAsync", fun x -> (^a: (member LazyExecuteAsync: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq |> ResizeArray
     "LazyExecuteAsyncWithSyncRead", fun x -> (^a: (member LazyExecuteAsyncWithSyncRead: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq |> ResizeArray
-    #endif
   ]
 
 
 let inline allLazyExecuteMethods< ^a, 'b when
                                 ^a: (member LazyExecute: unit -> seq<'b>)
-                                #if NET5_0
                                 and ^a: (member LazyExecuteAsync: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
                                 and ^a: (member LazyExecuteAsyncWithSyncRead: CancellationToken option -> Collections.Generic.IAsyncEnumerable<'b>)
-                                #endif
                             > =
   [
     "LazyExecute", fun x -> (^a: (member LazyExecute: unit -> _) x)
-    #if NET5_0
     "LazyExecuteAsync", fun x -> (^a: (member LazyExecuteAsync: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq
     "LazyExecuteAsyncWithSyncRead", fun x -> (^a: (member LazyExecuteAsyncWithSyncRead: _ -> _) (x, None)) |> AsyncSeq.ofAsyncEnum |> AsyncSeq.toBlockingSeq
-    #endif
   ]
 
 
@@ -264,7 +248,7 @@ module Gen =
           min 
             (14L * 60L)
             ((ticks - DateTimeOffset.MinValue.Ticks) / TimeSpan.TicksPerMinute)
-        let! offsetMinutes = Gen.int (Range.exponentialFrom 0 (int minOffsetMinutes) (int maxOffsetMinutes))
+        let! offsetMinutes = Gen.int32 (Range.exponentialFrom 0 (int minOffsetMinutes) (int maxOffsetMinutes))
         return DateTimeOffset(ticks, TimeSpan.FromMinutes (float offsetMinutes))
       }
       
@@ -294,11 +278,11 @@ module Gen =
           if n >= 1 && n <= 24 then 7
           elif n >= 25 && n <= 53 then 15
           else invalidArg (nameof n) $"Must be between 1 and 53"
-        let! scale = Gen.int (Range.linear 0 precision)
+        let! scale = Gen.int32 (Range.linear 0 precision)
         return! decimal precision scale |> Gen.map float
       }
 
-    let int = Gen.int (Range.exponentialBounded ())
+    let int = Gen.int32 (Range.exponentialBounded ())
 
     let money =
       // TODO: Shrink to no decimals?
@@ -344,7 +328,7 @@ module Gen =
     let smallint = Gen.int16 (Range.exponentialBounded ())
 
     let smallmoney =
-      Gen.int (Range.exponentialBounded ())
+      Gen.int32 (Range.exponentialBounded ())
       |> Gen.map (Operators.decimal >> fun d -> d / 10000M)
 
     let time (n: int) =

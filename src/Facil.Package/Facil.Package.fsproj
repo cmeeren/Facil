@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageId>Facil</PackageId>
     <PackageOutputPath>..\..\nupkg</PackageOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,18 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="4.7.2" />
+    <PackageReference Update="FSharp.Core" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Facil.targets">
-      <PackagePath>build\netstandard2.0\</PackagePath>
-    </Content>
-    <Content Include="Facil.targets">
-      <PackagePath>build\netstandard2.1\</PackagePath>
-    </Content>
-    <Content Include="Facil.targets">
-      <PackagePath>build\net5.0\</PackagePath>
+      <PackagePath>build\net6.0\</PackagePath>
     </Content>
     <Content Include="FacilGenerate.targets">
       <PackagePath>tools\</PackagePath>

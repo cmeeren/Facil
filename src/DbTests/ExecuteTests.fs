@@ -711,13 +711,13 @@ let execTests =
               test <@ res.Value.numeric = None @>
               test <@ res.Value.nvarchar = None @>
               test <@ res.Value.real = None @>
-              // Skip rowversion, that seems to be Some [||] anyway
+              test <@ res.Value.rowversion = None @>
               test <@ res.Value.smalldatetime = None @>
               test <@ res.Value.smallint = None @>
               test <@ res.Value.smallmoney = None @>
               test <@ res.Value.text = None @>
               test <@ res.Value.time = None @>
-              // Skip timestamp, that seems to be Some [||] anyway
+              test <@ res.Value.timestamp = None @>
               test <@ res.Value.tinyint = None @>
               test <@ res.Value.uniqueidentifier = None @>
               test <@ res.Value.varbinary = None @>
@@ -786,13 +786,13 @@ let execTests =
               test <@ res.Value.numeric = None @>
               test <@ res.Value.nvarchar = None @>
               test <@ res.Value.real = None @>
-              // Skip rowversion, that seems to be Some [||] anyway
+              test <@ res.Value.rowversion = None @>
               test <@ res.Value.smalldatetime = None @>
               test <@ res.Value.smallint = None @>
               test <@ res.Value.smallmoney = None @>
               test <@ res.Value.text = None @>
               test <@ res.Value.time = None @>
-              // Skip timestamp, that seems to be Some [||] anyway
+              test <@ res.Value.timestamp = None @>
               test <@ res.Value.tinyint = None @>
               test <@ res.Value.uniqueidentifier = None @>
               test <@ res.Value.varbinary = None @>
@@ -863,13 +863,13 @@ let execTests =
               test <@ res.Value.numeric = None @>
               test <@ res.Value.nvarchar = None @>
               test <@ res.Value.real = None @>
-              // Skip rowversion, that seems to be Some [||] anyway
+              test <@ res.Value.rowversion = None @>
               test <@ res.Value.smalldatetime = None @>
               test <@ res.Value.smallint = None @>
               test <@ res.Value.smallmoney = None @>
               test <@ res.Value.text = None @>
               test <@ res.Value.time = None @>
-              // Skip timestamp, that seems to be Some [||] anyway
+              test <@ res.Value.timestamp = None @>
               test <@ res.Value.tinyint = None @>
               test <@ res.Value.uniqueidentifier = None @>
               test <@ res.Value.varbinary = None @>
@@ -940,13 +940,13 @@ let execTests =
               test <@ res.Value.numeric = None @>
               test <@ res.Value.nvarchar = None @>
               test <@ res.Value.real = None @>
-              // Skip rowversion, that seems to be Some [||] anyway
+              test <@ res.Value.rowversion = None @>
               test <@ res.Value.smalldatetime = None @>
               test <@ res.Value.smallint = None @>
               test <@ res.Value.smallmoney = None @>
               test <@ res.Value.text = None @>
               test <@ res.Value.time = None @>
-              // Skip timestamp, that seems to be Some [||] anyway
+              test <@ res.Value.timestamp = None @>
               test <@ res.Value.tinyint = None @>
               test <@ res.Value.uniqueidentifier = None @>
               test <@ res.Value.varbinary = None @>

@@ -470,8 +470,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               if wrapResult then "|> wrapResultWithOutParams"
             ]
             ""
-            "#if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)"
-            ""
             "member this.LazyExecuteAsync(?cancellationToken) ="
             yield! indent [
               $"executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
@@ -481,8 +479,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             yield! indent [
               $"executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
             ]
-            ""
-            "#endif"
             ""
             "member this.LazyExecute() ="
             yield! indent [
@@ -690,8 +686,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               if wrapResult then "|> wrapResultWithOutParams sqlParams"
             ]
             ""
-            "#if (!NETFRAMEWORK && !NET461 && !NET462 && !NET47 && !NET471 && !NET472 && !NET48 && !NETSTANDARD2_0 && !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NETCOREAPP2_2)"
-            ""
             "member __.LazyExecuteAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
@@ -703,8 +697,6 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               "let sqlParams = getSqlParams ()"
               "executeQueryLazyAsyncWithSyncRead connStr conn configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
             ]
-            ""
-            "#endif"
             ""
             "member __.LazyExecute() ="
             yield! indent [

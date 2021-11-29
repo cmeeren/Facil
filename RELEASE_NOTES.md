@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### 2.0.0 (2021-11-29)
+
+* Now targets only .NET 6 (both for build-time and run-time)
+* Updated Microsoft.Data.SqlClient from 2.1.0 to 4.0.0. For details on which breaking changes this entails, see the package's [3.0.0 release notes](https://github.com/dotnet/SqlClient/blob/main/release-notes/3.0/3.0.0.md) and [4.0.0 release notes](https://github.com/dotnet/SqlClient/blob/main/release-notes/4.0/4.0.0.md). Notably, connections are now encrypted by default.
+
 ### 1.4.3 (2021-09-02)
 
 * Fix build-time bug where scripts starting with a CTE (`WITH`) and having parameter types configured in `facil.yaml` required a semicolon before `WITH` to build properly. (The semicolon was required because configured parameter types causes Facil to insert parameter definitions at the start of the script during build. Facil now inserts the required semicolon automatically during this process.)
@@ -177,4 +182,3 @@ Release notes
 ### 0.1.0 (2020-12-16)
 
 * Initial release
-

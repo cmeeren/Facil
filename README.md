@@ -13,7 +13,7 @@ Quick start
 ### 0. Requirements
 
 * SQL Server 2012 or later at build-time (may work with older versions at runtime; untested)
-* .NET Core 3.1 or later at build-time (for running the generator)
+* .NET 6.0 or later at build-time (for running the generator)
 
 ### 1. Install
 
@@ -92,7 +92,7 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 * Can also [generate simple per-table CRUD scripts](#can-facil-generate-sql-scripts)
 * Good API ergonomics – succinct and discoverable fluent-style syntax, no boilerplate
 * Supports SQL Server 2012 and up
-* Built for the future, compatible with .NET Standard 2.0
+* Built for the future, compatible with .NET 6.0 and later
 * Thoroughly tested
 * Built for speed – inner async read loops written in C# using its native `async`/`await`; allows you to read directly to your chosen DTO records to minimize allocations for heavy queries
 * Highly configurable with simple, yet flexible [YAML configuration](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml)
@@ -104,7 +104,7 @@ Okay, elevator pitch without the alliteration: Facil works similarly to type pro
 * Can accept suitable DTOs instead of a list of parameters, e.g. you can just pass your `UserDto` to your `SaveUser` procedure instead of explicitly supplying all parameters from the DTO – less noise, and one less thing to update each time you add parameters
 * Supports table-valued parameters in both procedures and scripts
 * Supports stored procedure output parameters and return values
-* Supports lazy execution, both sync (returns `seq`) and async (if your target supports .NET Standard 2.1 – returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
+* Supports lazy execution, both sync (returns `seq`) and async (the latter returns `IAsyncEnumerable`, use with e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
 * Supports inferring dynamic SQL result sets *without* `WITH RESULT SETS`
 * To some extent [checks your dynamic SQL at build time](#can-facil-check-my-dynamic-sql)
 * Supports [temp tables](#can-i-use-temp-tables)

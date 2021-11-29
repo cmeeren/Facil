@@ -187,7 +187,7 @@ namespace Facil.Runtime.CSharp
                 throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
             }
         }
-#if !NETSTANDARD2_0
+
         public static async IAsyncEnumerable<T> ExecuteQueryLazyAsync<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, [EnumeratorCancellation] CancellationToken ct)
         {
             if (existingConn is not null)
@@ -269,7 +269,6 @@ namespace Facil.Runtime.CSharp
                 throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
             }
         }
-        #endif
 
         public static IEnumerable<T> ExecuteQueryLazy<T>(SqlConnection? existingConn, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
         {

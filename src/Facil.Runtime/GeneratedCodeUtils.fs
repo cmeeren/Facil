@@ -24,7 +24,6 @@ module GeneratedCodeUtils =
   let inline executeQueryEager connStr conn configureConn configureCmd initOrdinals getItem tempTableData : ResizeArray<_> =
     ExecuteQueryEager(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData)
 
-  #if !NETSTANDARD2_0
   [<EditorBrowsable(EditorBrowsableState.Never)>]
   let inline executeQueryLazyAsync connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct =
     ExecuteQueryLazyAsync(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
@@ -32,7 +31,6 @@ module GeneratedCodeUtils =
   [<EditorBrowsable(EditorBrowsableState.Never)>]
   let inline executeQueryLazyAsyncWithSyncRead connStr conn configureConn configureCmd initOrdinals getItem tempTableData ct =
     ExecuteQueryLazyAsyncWithSyncRead(conn, connStr, Action<_> configureConn, Action<_> configureCmd, Action<_> initOrdinals, Func<_,_> getItem, tempTableData, ct)
-  #endif
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
   let inline executeQueryLazy connStr conn configureConn configureCmd initOrdinals getItem tempTableData =
