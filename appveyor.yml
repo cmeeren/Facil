@@ -13,6 +13,8 @@ init:
   - net start MSSQL$SQL2019
 
 build_script:
+  # Restore
+  - cmd: dotnet restore --locked-mode
   # Build DB
   - cmd: msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
   # Publish DB

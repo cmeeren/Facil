@@ -16,6 +16,8 @@
     <PackageTags>f# fsharp data typeprovider type-provider sql tsql sql-server generator code-generator</PackageTags>
     <PackageIcon>facil-logo-128x128.png</PackageIcon>
     <PackageReleaseNotes>https://github.com/cmeeren/Facil/blob/master/RELEASE_NOTES.md</PackageReleaseNotes>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
   </PropertyGroup>
 
   <PropertyGroup>
