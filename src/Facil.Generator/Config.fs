@@ -271,6 +271,7 @@ type TableScriptType =
   | Update
   | Merge
   | Delete
+  | GetAll
   | GetById
   | GetByIdBatch
   | GetByColumns
@@ -967,6 +968,7 @@ module TableScriptTypeRule =
         | Update -> "{TableName}_Update"
         | Merge -> "{TableName}_Merge"
         | Delete -> "{TableName}_Delete"
+        | GetAll -> "{TableName}_All"
         | GetById -> "{TableName}_ById"
         | GetByIdBatch -> "{TableName}_ByIds"
         | GetByColumns -> "{TableName}_By{ColumnNames}"
@@ -975,7 +977,7 @@ module TableScriptTypeRule =
       let nameTemplate = rule.Name |> Option.defaultValue defaultNameTemplate
 
       match rule.Type with
-      | Insert | Update | Merge | Delete | GetById | GetByIdBatch ->
+      | Insert | Update | Merge | Delete | GetAll | GetById | GetByIdBatch ->
           nameTemplate
             .Replace("{SchemaName}", schemaName)
             .Replace("{TableName}", tableName)
@@ -996,7 +998,7 @@ module TableScriptTypeRule =
         match rule.Type, rule.SelectColumns with
         | _, None -> ()
         | (Insert | Update | Merge | Delete), Some _ -> ()
-        | (GetById | GetByIdBatch | GetByColumns | GetByColumnsBatch), Some selectCols ->
+        | (GetAll | GetById | GetByIdBatch | GetByColumns | GetByColumnsBatch), Some selectCols ->
 
             let skipCol skip =
               { TableScriptColumn.Skip = Some skip
@@ -1021,6 +1023,7 @@ module TableScriptTypeRule =
       | "update" -> Update
       | "merge" -> Merge
       | "delete" -> Delete
+      | "getAll" -> GetAll
       | "getById" -> GetById
       | "getByIdBatch" -> GetByIdBatch
       | "getByColumns" -> GetByColumns

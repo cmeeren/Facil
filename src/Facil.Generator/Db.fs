@@ -948,6 +948,37 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
            let rule = RuleSet.getEffectiveTableScriptRuleFor dto.SchemaName dto.Name fullYamlPath cfg
            [
 
+            // 'getAll' scripts
+            for rule in rule |> TableScriptRule.rulesFor GetAll do
+
+              let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+              let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
+              {
+                GlobMatchOutput = rule.Name
+                RelativePathSegments =
+                  let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  |> Array.toList
+                NameWithoutExtension = Path.GetFileName rule.Name
+                Source =
+                  [
+                    "SELECT"
+
+                    yield!
+                      colsToOutputWithRule
+                      |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
+                      |> List.mapAllExceptLast (sprintf "%s,")
+
+                    $"FROM"
+                    $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                  ]
+                  |> String.concat "\n"
+                Parameters = []
+                ResultSet = None
+                TempTables = []
+                GeneratedByFacil = true
+              }
+
             // 'getById' scripts
             for rule in rule |> TableScriptRule.rulesFor GetById do
 

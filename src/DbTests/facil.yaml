@@ -327,6 +327,7 @@ rulesets:
           - type: insert
           - type: update
           - type: delete
+          - type: getAll
           - type: getById
 
       - include: dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.MaxLengthTypes

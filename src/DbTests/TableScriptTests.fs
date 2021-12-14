@@ -942,6 +942,126 @@ let tests =
         }
 
 
+      testCase "GetAll" <| fun () ->
+        Property.check <| property {
+          clearTableScriptTables ()
+
+          let getRes =
+            DbGen.Scripts.AllTypesNull_All
+              .WithConnection(Config.connStr)
+              .Execute()
+
+          test <@ Seq.isEmpty getRes @>
+
+          let! key1_1, key2_1 = Gen.Sql.int |> Gen.tuple
+          let! key1_2, key2_2 = Gen.Sql.int |> Gen.tuple |> Gen.filter (not << (=) (key1_1, key2_1))
+
+          let! bigint = Gen.Sql.bigint |> Gen.option
+          let! binary_42 = Gen.Sql.binary 42 |> Gen.option
+          let! bit = Gen.Sql.bit |> Gen.option
+          let! char_42 = Gen.Sql.char 42 |> Gen.option
+          let! date = Gen.Sql.date |> Gen.option
+          let! datetime = Gen.Sql.datetime |> Gen.option
+          let! datetime2_3 = Gen.Sql.datetime2 3 |> Gen.option
+          let! datetimeoffset_1 = Gen.Sql.datetimeoffset 1 |> Gen.option
+          let! decimal_10_5 = Gen.Sql.decimal 10 5 |> Gen.option
+          let! float_42 = Gen.Sql.float 42 |> Gen.option
+          let! image = Gen.Sql.image |> Gen.option
+          let! int = Gen.Sql.int |> Gen.option
+          let! money = Gen.Sql.money |> Gen.option
+          let! nchar_42 = Gen.Sql.nchar 42 |> Gen.option
+          let! ntext = Gen.Sql.ntext |> Gen.option
+          let! numeric_8_3 = Gen.Sql.numeric 8 3 |> Gen.option
+          let! nvarchar_42 = Gen.Sql.nvarchar 42 |> Gen.option
+          let! real = Gen.Sql.real |> Gen.option
+          let! smalldatetime = Gen.Sql.smalldatetime |> Gen.option
+          let! smallint = Gen.Sql.smallint |> Gen.option
+          let! smallmoney = Gen.Sql.smallmoney |> Gen.option
+          let! text = Gen.Sql.text |> Gen.option
+          let! time_1 = Gen.Sql.time 1 |> Gen.option
+          let! tinyint = Gen.Sql.tinyint |> Gen.option
+          let! uniqueidentifier = Gen.Sql.uniqueidentifier |> Gen.option
+          let! varbinary_42 = Gen.Sql.varbinary 42 |> Gen.option
+          let! varchar_42 = Gen.Sql.varchar 42 |> Gen.option
+          let! xml = Gen.Sql.xml |> Gen.option
+
+          for i in [0; 1] do
+            let numInsertedRows =
+              DbGen.Scripts.AllTypesNull_Insert
+                .WithConnection(Config.connStr)
+                .WithParameters(
+                  (if i = 0 then key1_1 else key1_2),
+                  (if i = 0 then key2_1 else key2_2),
+                  bigint,
+                  binary_42,
+                  bit,
+                  char_42,
+                  date,
+                  datetime,
+                  datetime2_3,
+                  datetimeoffset_1,
+                  decimal_10_5,
+                  float_42,
+                  image,
+                  int,
+                  money,
+                  nchar_42,
+                  ntext,
+                  numeric_8_3,
+                  nvarchar_42,
+                  real,
+                  smalldatetime,
+                  smallint,
+                  smallmoney,
+                  text,
+                  time_1,
+                  tinyint,
+                  uniqueidentifier,
+                  varbinary_42,
+                  varchar_42,
+                  xml
+                )
+                .Execute()
+
+            test <@ numInsertedRows = 1 @>
+
+          let getRes =
+            DbGen.Scripts.AllTypesNull_All
+              .WithConnection(Config.connStr)
+              .Execute()
+
+          for i in [0; 1] do
+            test <@ bigint = getRes.[i].Bigint @>
+            test <@ binary_42 = getRes.[i].Binary @>
+            test <@ bit = getRes.[i].Bit @>
+            test <@ char_42 = getRes.[i].Char @>
+            test <@ date = getRes.[i].Date @>
+            test <@ datetime = getRes.[i].Datetime @>
+            test <@ datetime2_3 = getRes.[i].Datetime2 @>
+            test <@ datetimeoffset_1 = getRes.[i].Datetimeoffset @>
+            test <@ decimal_10_5 = getRes.[i].Decimal @>
+            test <@ float_42 = getRes.[i].Float @>
+            test <@ image = getRes.[i].Image @>
+            test <@ int = getRes.[i].Int @>
+            test <@ money = getRes.[i].Money @>
+            test <@ nchar_42 = getRes.[i].Nchar @>
+            test <@ ntext = getRes.[i].Ntext @>
+            test <@ numeric_8_3 = getRes.[i].Numeric @>
+            test <@ nvarchar_42 = getRes.[i].Nvarchar @>
+            test <@ real = getRes.[i].Real @>
+            test <@ smalldatetime = getRes.[i].Smalldatetime @>
+            test <@ smallint = getRes.[i].Smallint @>
+            test <@ smallmoney = getRes.[i].Smallmoney @>
+            test <@ text = getRes.[i].Text @>
+            test <@ time_1 = getRes.[i].Time @>
+            test <@ tinyint = getRes.[i].Tinyint @>
+            test <@ uniqueidentifier = getRes.[i].Uniqueidentifier @>
+            test <@ varbinary_42 = getRes.[i].Varbinary @>
+            test <@ varchar_42 = getRes.[i].Varchar @>
+            test <@ xml = getRes.[i].Xml @>
+      }
+
+
       testCase "Length types" <| fun () ->
         Property.check <| property {
           clearTableScriptTables ()

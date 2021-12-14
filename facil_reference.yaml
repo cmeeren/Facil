@@ -323,6 +323,13 @@ rulesets:
             # '{TableName}_Delete'. Column skip rules are irrelevant and ignored.
           - type: delete
 
+            # Generates a script to get all rows from a table.
+            #
+            # Supports the same rules as 'insert'. The default name is '{TableName}_All'.
+            # Skipping a column means it's not in the SELECT list. The 'output' and
+            # 'paramName' column rules are ignored.
+          - type: getAll
+
             # Generates a script to get a row by its primary key.
             #
             # Supports the same rules as 'insert'. The default name is '{TableName}_ById'.

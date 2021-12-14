@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 2.1.0 (2021-12-14)
+
+* Added a `getAll` table script type that simply selects all rows from a table (`SELECT Col1, Col2 FROM TableName`)
+
 ### 2.0.0 (2021-11-29)
 
 * Now targets only .NET 6 (both for build-time and run-time)
