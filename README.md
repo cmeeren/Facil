@@ -179,7 +179,7 @@ Yes. There are two environment variables you can set. You can use either of them
 
 ### What can I configure?
 
-See [the full YAML config reference for details](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml). Note that you can generate multiple source files with separate configs (e.g. to generate from multiple DBs). Here are some highlights of what you can configure.
+See [the full YAML config reference for details](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml). Note that the top-level `rulesets` property is an array, meaning you can generate multiple source files with separate configs (e.g. to generate from multiple DBs) simply by adding another array item with the desired configuration (see the bottom of the reference YAML for details). Here are some highlights of what you can configure.
 
 For each file, you can configure:
 

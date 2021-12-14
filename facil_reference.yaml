@@ -445,3 +445,11 @@ rulesets:
         # have many table types and generally don't use these overloads, removing them may
         # improve IDE performance and compilation times. Default false.
         skipParamDto: true
+
+
+  # Here we start another array item in the top-level 'rulesets' array, to generate another file
+  # with a different configuration.
+  - connectionString: $(ConnectionStrings:AnotherDb)
+    filename: DbGen2.fs
+    namespaceOrModuleDeclaration: module DbGen2
+    # etc.
