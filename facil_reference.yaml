@@ -312,7 +312,7 @@ rulesets:
             #
             # Supports the same rules as 'insert'. The default name is
             # '{TableName}_Merge'. Skipping a column means it's not inserted/updated.
-          - type: update
+          - type: merge
 
             # Add WITH (HOLDLOCK) to the merge statement
             holdlock: true
