@@ -383,7 +383,7 @@ Facil may not completely check your dynamic SQL. For example, you may have a par
 
 ### Can Facil make it easy to save/load domain entities to/from multiple tables?
 
-This is exactly what [Fling](https://github.com/cmeeren/Fling) does. Flink works great with Facil!
+This is exactly what [Fling](https://github.com/cmeeren/Fling) does. Fling works great with Facil!
 
 Release notes
 -------------
