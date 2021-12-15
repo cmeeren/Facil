@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### 2.1.1 (2021-12-15)
+
+* Fixed a bug where generation would fail if the database contains a table that is not actually included, and the table has unsupported columns
+* Generation now uses a rolled-back transaction when it needs to execute procedures and scripts, so that the database is not changed during build-time even if the script makes changes
+
 ### 2.1.0 (2021-12-14)
 
 * Added a `getAll` table script type that simply selects all rows from a table (`SELECT Col1, Col2 FROM TableName`)
