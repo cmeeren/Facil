@@ -559,4 +559,18 @@ let tests =
           Expect.isNone staticGetPrimaryKeyMethod<DbGen.TableDtos.dbo.TableWithSkippedPkColumn> ""
       ]
 
+
+      testAsync "Modifications when executing scripts during build-time are rolled back" {
+        // Make sure they are actually generated
+        ignore DbGen.Scripts.DynamicInsertIntoDesignTimeExecuteTest
+        ignore DbGen.Scripts.DynamicInsertIntoDesignTimeExecuteTest2
+
+        let! res =
+          DbGen.Scripts.DesignTimeExecuteTest_All
+            .WithConnection(Config.connStr)
+            .AsyncExecute()
+
+        Expect.isEmpty res ""
+      }
+
   ]

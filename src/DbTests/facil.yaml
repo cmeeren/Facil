@@ -442,3 +442,7 @@ rulesets:
             columns:
               Bar:
                 skip: false
+
+      - include: dbo\.DesignTimeExecuteTest
+        scripts:
+          - type: getAll

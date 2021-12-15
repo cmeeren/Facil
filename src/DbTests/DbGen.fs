@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: c3bff50f840869559a86297f9ce9bc528702e184817e6640ebf19888c820b64c
+// Hash: c7239a803a07e5400213bffa921d8f928bf76a8e1b21ff4702efb9b440b4f3ce
 
 //////////////////////////////////////////
 //
@@ -122,6 +122,12 @@ module TableDtos =
       {
         ``Col1``: string option
         ``OtherCol``: int option
+      }
+
+
+    type ``DesignTimeExecuteTest`` =
+      {
+        ``Col``: Guid
       }
 
 
@@ -14211,6 +14217,264 @@ DELETE FROM TableWithIdentityCol"""
 
     member this.Execute() =
       executeNonQuery connStr conn this.configureConn (configureCmd this.userConfigureCmd) []
+
+
+  type ``DesignTimeExecuteTest_All`` private (connStr: string, conn: SqlConnection) =
+
+    let configureCmd userConfigureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """-- DesignTimeExecuteTest_All
+SELECT
+  [Col]
+FROM
+  [dbo].[DesignTimeExecuteTest]"""
+      userConfigureCmd cmd
+
+    let initOrdinals = ignore<SqlDataReader>
+
+    let getItem (reader: SqlDataReader) =
+      reader.GetGuid 0
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``DesignTimeExecuteTest_All``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``DesignTimeExecuteTest_All``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``DesignTimeExecuteTest_All``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member this.Execute() =
+      executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecute() =
+      executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteSingle() =
+      executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+
+  type ``DynamicInsertIntoDesignTimeExecuteTest`` private (connStr: string, conn: SqlConnection) =
+
+    let configureCmd userConfigureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """-- DynamicInsertIntoDesignTimeExecuteTest.sql
+DECLARE @sql NVARCHAR(MAX) = '
+INSERT INTO dbo.DesignTimeExecuteTest VALUES (NEWID())
+SELECT * FROM dbo.DesignTimeExecuteTest
+'
+
+IF 1 = 0 SET @sql += 'not used, but will force execute to get columns'
+
+EXEC sp_executesql @sql, N''"""
+      userConfigureCmd cmd
+
+    let initOrdinals = ignore<SqlDataReader>
+
+    let getItem (reader: SqlDataReader) =
+      reader.GetGuid 0
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``DynamicInsertIntoDesignTimeExecuteTest``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``DynamicInsertIntoDesignTimeExecuteTest``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``DynamicInsertIntoDesignTimeExecuteTest``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member this.Execute() =
+      executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecute() =
+      executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteSingle() =
+      executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+
+  type ``DynamicInsertIntoDesignTimeExecuteTest2`` private (connStr: string, conn: SqlConnection) =
+
+    let configureCmd userConfigureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """-- DynamicInsertIntoDesignTimeExecuteTest2.sql
+DECLARE @sql NVARCHAR(MAX) = '
+INSERT INTO dbo.DesignTimeExecuteTest VALUES (NEWID())
+SELECT * FROM dbo.DesignTimeExecuteTest
+'
+
+EXEC sp_executesql @sql, N''"""
+      userConfigureCmd cmd
+
+    let initOrdinals = ignore<SqlDataReader>
+
+    let getItem (reader: SqlDataReader) =
+      reader.GetGuid 0
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``DynamicInsertIntoDesignTimeExecuteTest2``(null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``DynamicInsertIntoDesignTimeExecuteTest2``(connectionString, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection) = ``DynamicInsertIntoDesignTimeExecuteTest2``(null, connection)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member this.Execute() =
+      executeQueryEager connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecute() =
+      executeQueryLazy connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteSingle() =
+      executeQuerySingle connStr conn this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]

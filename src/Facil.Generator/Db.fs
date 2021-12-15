@@ -270,52 +270,69 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
 
   use __ = createAndDropTempTables tempTablesToCreateAndDrop conn
 
-  use cmd = conn.CreateCommand()
+  let getCmd (conn: SqlConnection) =
 
-  match executable with
+    let cmd = conn.CreateCommand()
 
-  | Choice1Of3 sproc ->
-      cmd.CommandText <- sproc.SchemaName + "." + sproc.Name
-      cmd.CommandType <- CommandType.StoredProcedure
-      let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-      for param in sproc.Parameters do
-        match param.TypeInfo with
-        | Scalar ti ->
-            let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
-            rule
-            |> EffectiveProcedureRule.getParam (param.Name.TrimStart '@')
-            |> fun p -> p.BuildValue
-            |> Option.map box
-            |> Option.defaultValue ti.DefaultBuildValue
-            |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
-        | Table tt ->
-            cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+    match executable with
 
-  | Choice2Of3 script ->
-      cmd.CommandText <- script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
-      let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-      for param in script.Parameters do
-        match param.TypeInfo with
-        | Scalar ti ->
-            let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
-            rule
-            |> EffectiveScriptRule.getParam (param.Name.TrimStart '@')
-            |> fun p -> p.BuildValue
-            |> Option.map box
-            |> Option.defaultValue ti.DefaultBuildValue
-            |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
-        | Table tt ->
-            cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
+    | Choice1Of3 sproc ->
+        cmd.CommandText <- sproc.SchemaName + "." + sproc.Name
+        cmd.CommandType <- CommandType.StoredProcedure
+        let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+        for param in sproc.Parameters do
+          match param.TypeInfo with
+          | Scalar ti ->
+              let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+              rule
+              |> EffectiveProcedureRule.getParam (param.Name.TrimStart '@')
+              |> fun p -> p.BuildValue
+              |> Option.map box
+              |> Option.defaultValue ti.DefaultBuildValue
+              |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
+          | Table tt ->
+              cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
 
-  | Choice3Of3 tt -> cmd.CommandText <- $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}"
+    | Choice2Of3 script ->
+        cmd.CommandText <- script.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+        let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+        for param in script.Parameters do
+          match param.TypeInfo with
+          | Scalar ti ->
+              let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+              rule
+              |> EffectiveScriptRule.getParam (param.Name.TrimStart '@')
+              |> fun p -> p.BuildValue
+              |> Option.map box
+              |> Option.defaultValue ti.DefaultBuildValue
+              |> fun v -> p.Value <- if isNull v then box DBNull.Value else v
+          | Table tt ->
+              cmd.Parameters.Add(param.Name, SqlDbType.Structured, TypeName = $"{tt.SchemaName}.{tt.Name}") |> ignore
 
-  use reader =
+    | Choice3Of3 tt -> cmd.CommandText <- $"SELECT * FROM {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}"
+
+    cmd
+
+  let reader, cmd, tran, connToClose =
     try
+      let cmd = getCmd conn
       // SET FMTONLY ON, may fail with dynamic SQL
-      cmd.ExecuteReader(CommandBehavior.SchemaOnly)
+      cmd.ExecuteReader(CommandBehavior.SchemaOnly), cmd, null, null
     with :? SqlException ->
-      // Actually execute query
-      cmd.ExecuteReader(CommandBehavior.SingleRow)
+      // Actually execute query - in case it modifies anything, do this with a new connection
+      // and in a transaction that is rolled back
+      let newConn = new SqlConnection(conn.ConnectionString)
+      newConn.Open()
+      let tran = newConn.BeginTransaction()
+      let cmd = getCmd newConn
+      cmd.Transaction <- tran
+      let reader = cmd.ExecuteReader(CommandBehavior.SingleRow)
+      reader, cmd, null, newConn
+
+  use _ = reader
+  use _ = cmd
+  use _ = tran
+  use _ = connToClose
 
   let schemas = reader.GetColumnSchema()
   if schemas.Count = 0 then [], None

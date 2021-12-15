@@ -386,6 +386,8 @@ In order to parse the output columns of dynamic SQL queries, Facil must execute 
 
 Facil may not completely check your dynamic SQL. For example, you may have a parameter that is used to choose one of several different `ORDER BY` clauses. In this case, only one of them will be used at build time (and you may be able to specify the parameter value by using `buildValue` as described previously).
 
+When executing a query at build time as described above, it is executed in a transaction that is rolled back, to ensure that no changes are made to the database during build time. 
+
 ### Can Facil make it easy to save/load domain entities to/from multiple tables?
 
 This is exactly what [Fling](https://github.com/cmeeren/Fling) does. Fling works great with Facil!

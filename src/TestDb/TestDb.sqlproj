@@ -68,6 +68,7 @@
     <Folder Include="dbo\Views" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="dbo\Tables\DesignTimeExecuteTest.sql" />
     <Build Include="dbo\Tables\Table1.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithMultipleColumnsAndNoParams.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithMultipleColumnsAndSimpleNonDefaultParams.sql" />
