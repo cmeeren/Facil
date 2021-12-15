@@ -65,6 +65,9 @@ rulesets:
       # except the procedure 'dbo.ProcToExclude', and that all the matched procedures
       # should use ValueOption instead of Option for nullable output columns (unless
       # overridden by later rules).
+      #
+      # Note that all regex patterns in the YAML file are case sensitive by default.
+      # Prefix them with '(?i)' to make them case insensitive (e.g. '(?i)^dbo\.myProc$').
       - include: .*
         except: ^dbo\.ProcToExclude$
         voptionOut: true
