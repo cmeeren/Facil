@@ -987,7 +987,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
               let pkColsWithRule =
                 match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
-                | None | Some [] -> failwithError $"Table or view %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for a 'get' table script"
+                | None | Some [] -> failwithError $"Table or view %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for a 'getById' table script"
                 | Some colNames ->
                     colNames
                     |> List.map (fun n ->
