@@ -715,58 +715,60 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesB
       let tableName = reader.["TableName"] |> unbox<string>
       let colName = reader.["ColName"] |> unbox<string>
 
-      let key = $"{schemaName}.{tableName}"
-      match allColumnsByTableSchemaAndName.TryGetValue key with
-      | false, _->
-          let r = ResizeArray()
-          r.Add colName
-          allColumnsByTableSchemaAndName.[key] <- r
-      | true, names -> names.Add colName
+      if RuleSet.hasTableDtoRuleFor schemaName tableName cfg then
 
-      let shouldSkipCol =
-        RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
-        |> EffectiveTableDtoRule.getColumn colName
-        |> fun c -> c.Skip
-        |> Option.defaultValue false
+        let key = $"{schemaName}.{tableName}"
+        match allColumnsByTableSchemaAndName.TryGetValue key with
+        | false, _->
+            let r = ResizeArray()
+            r.Add colName
+            allColumnsByTableSchemaAndName.[key] <- r
+        | true, names -> names.Add colName
 
-      if not shouldSkipCol then
+        let shouldSkipCol =
+          RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
+          |> EffectiveTableDtoRule.getColumn colName
+          |> fun c -> c.Skip
+          |> Option.defaultValue false
 
-        let typeInfo =
-          reader.["system_type_id"]
-          |> unbox<byte>
-          |> int
-          |> fun id ->
-              sysTypeIdLookup.TryFind id
-              |> Option.defaultWith (fun () -> failwith $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'")
-          |> fun typeName ->
-              sqlDbTypeMap.TryFind typeName
-              |> Option.defaultWith (fun () -> failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'")
+        if not shouldSkipCol then
 
-        tableDtos.Add(
-          { 
-            SchemaName = schemaName
-            Name = tableName
-            // Merged later
-            Columns = [
-              {
-                TableColumn.Name = colName
-                SortKey = reader.["column_id"] |> unbox<int>
-                IsNullable = reader.["is_nullable"] |> unbox<bool>
-                IsIdentity = reader.["is_identity"] |> unbox<bool>
-                IsComputed = reader.["is_computed"] |> unbox<bool>
-                Size =
-                  reader.["max_length"]
-                  |> unbox<int16>
-                  |> adjustSizeForDbType typeInfo.SqlDbType
-                Precision = reader.["precision"] |> unbox<byte>
-                Scale = reader.["scale"] |> unbox<byte>
-                TypeInfo = typeInfo
-              }
-            ]
-            PrimaryKeyColumns = []  // Set later
-            IsView = reader.["IsView"] |> unbox<bool>
-          }
-        )
+          let typeInfo =
+            reader.["system_type_id"]
+            |> unbox<byte>
+            |> int
+            |> fun id ->
+                sysTypeIdLookup.TryFind id
+                |> Option.defaultWith (fun () -> failwith $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'")
+            |> fun typeName ->
+                sqlDbTypeMap.TryFind typeName
+                |> Option.defaultWith (fun () -> failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'")
+
+          tableDtos.Add(
+            { 
+              SchemaName = schemaName
+              Name = tableName
+              // Merged later
+              Columns = [
+                {
+                  TableColumn.Name = colName
+                  SortKey = reader.["column_id"] |> unbox<int>
+                  IsNullable = reader.["is_nullable"] |> unbox<bool>
+                  IsIdentity = reader.["is_identity"] |> unbox<bool>
+                  IsComputed = reader.["is_computed"] |> unbox<bool>
+                  Size =
+                    reader.["max_length"]
+                    |> unbox<int16>
+                    |> adjustSizeForDbType typeInfo.SqlDbType
+                  Precision = reader.["precision"] |> unbox<byte>
+                  Scale = reader.["scale"] |> unbox<byte>
+                  TypeInfo = typeInfo
+                }
+              ]
+              PrimaryKeyColumns = []  // Set later
+              IsView = reader.["IsView"] |> unbox<bool>
+            }
+          )
 
     tableDtos
     |> Seq.toList

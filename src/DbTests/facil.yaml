@@ -284,7 +284,7 @@ rulesets:
 
     tableDtos:
       - include: .*
-        except: WithoutDto
+        except: WithoutDto|TableWithSqlVariant
 
       - for: Voption
         voption: true
