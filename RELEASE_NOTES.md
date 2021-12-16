@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 2.1.2 (2021-12-16)
+
+* Fixed a regression in 2.1.1 where table scripts were missing if the table was not included in a table DTO rule 
+
 ### 2.1.1 (2021-12-15)
 
 * Fixed a bug where generation would fail if the database contains a table that is not actually included, and the table has unsupported columns

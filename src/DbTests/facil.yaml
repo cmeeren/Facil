@@ -446,3 +446,7 @@ rulesets:
       - include: dbo\.DesignTimeExecuteTest
         scripts:
           - type: getAll
+
+      - include: dbo\.OptionTableWithoutDto
+        scripts:
+          - type: getAll

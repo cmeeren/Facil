@@ -294,6 +294,11 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time test to ensure table scripts are produced even if there is no rule for the table DTO for that table (#25)" <| fun () ->
+        DbGen.Scripts.OptionTableWithoutDto_All
+        |> ignore
+
+
       testCase "Parametrized scripts have a public constructor that throws (but can be used for reflection or to aid SRTP)" <| fun () ->
         Expect.throws (DbGen.Procedures.dbo.ProcWithMultipleColumnsAndNoParams >> ignore) ""
 
