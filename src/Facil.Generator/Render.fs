@@ -369,7 +369,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
               getItemRecordStart
               yield! indent [
                 for c in cols do
-                    $"``{getColName c}`` = ``{c.Name.Value}``"
+                  $"``{getColName c}`` = ``{c.Name.Value}``"
               ]
               getItemRecordEnd
             ]
