@@ -732,7 +732,7 @@ let getTableDtos cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesB
       let tableName = reader.["TableName"] |> unbox<string>
       let colName = reader.["ColName"] |> unbox<string>
 
-      if RuleSet.hasTableDtoRuleFor schemaName tableName cfg then
+      if RuleSet.shouldIncludeTableDto schemaName tableName cfg then
 
         let key = $"{schemaName}.{tableName}"
         match allColumnsByTableSchemaAndName.TryGetValue key with

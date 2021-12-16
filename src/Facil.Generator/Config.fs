@@ -1218,11 +1218,6 @@ module RuleSet =
     |> List.fold ScriptRule.merge ScriptRule.defaultEffectiveRule
 
 
-  let hasTableDtoRuleFor schemaName tableName (cfg: RuleSet) =
-    cfg.TableDtos
-    |> List.exists (TableDtoRule.matches schemaName tableName)
-
-
   let getEffectiveTableDtoRuleFor schemaName tableName (cfg: RuleSet) =
     cfg.TableDtos
     |> List.filter (TableDtoRule.matches schemaName tableName)
