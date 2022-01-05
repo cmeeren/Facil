@@ -178,8 +178,7 @@ let tests =
                 conn.Open ()
                 use tran = conn.BeginTransaction()
                 DbGen.Procedures.dbo.ProcInsert
-                  .WithConnection(conn)
-                  .ConfigureCommand(fun cmd -> cmd.Transaction <- tran)
+                  .WithConnection(conn, tran)
                 |> exec
                 |> ignore
                 tran.Rollback()

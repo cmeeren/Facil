@@ -578,4 +578,25 @@ let tests =
         Expect.isEmpty res ""
       }
 
+      testAsync "Throws if transaction is set both in WithConnection and ConfigureCommand" {
+        use conn = new SqlConnection(Config.connStr)
+        conn.Open()
+        use tran = conn.BeginTransaction()
+
+
+        let run () =
+          DbGen.Procedures.dbo.ProcWithNoResults
+            .WithConnection(conn, tran)
+            .ConfigureCommand(fun cmd -> cmd.Transaction <- tran)
+            .WithParameters(foo = 1)
+            .Execute()
+          |> ignore
+
+        let cont (ex: exn) _ =
+          Expect.stringContains ex.Message "WithConnection" ""
+          Expect.stringContains ex.Message "ConfigureCommand" ""
+
+        Expect.throwsC run cont ""
+      }
+
   ]

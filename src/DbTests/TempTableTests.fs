@@ -1,6 +1,7 @@
 ﻿module TempTableTests
 
 open System
+open Microsoft.Data.SqlClient
 open Expecto
 open Swensen.Unquote
 
@@ -1131,6 +1132,94 @@ let tests =
               let rowsCopied = rowsCopied
               test <@ rowsCopied = 3 @>
             }
+        )
+    ]
+
+    testList "Can use transactions" [
+      yield!
+        allSeqExecuteMethods<DbGen.Scripts.TempTableAllTypesNonNull_Executable, _>
+        |> List.map (fun (name, exec) ->
+            testCase name <| fun () ->
+              let createTempTableRow () =
+                DbGen.Scripts.TempTableAllTypesNonNull.AllTypesNonNull.create(
+                  Bigint = 1L,
+                  Binary = Array.replicate 42 1uy,
+                  Bit = true,
+                  Char = String.replicate 42 "a",
+                  Date = DateTime(2000, 1, 1),
+                  Datetime = DateTime(2000, 1, 1),
+                  Datetime2 = DateTime(2000, 1, 1),
+                  Datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                  Decimal = 1M,
+                  Float = 1.,
+                  Image = [|1uy|],
+                  Int = 1,
+                  Money = 1M,
+                  Nchar = String.replicate 42 "a",
+                  Ntext = "test",
+                  Numeric = 1M,
+                  Nvarchar = "test",
+                  Real = 1.f,
+                  Smalldatetime = DateTime(2000, 1, 1),
+                  Smallint = 1s,
+                  Smallmoney = 1M,
+                  Text = "test",
+                  Time = TimeSpan.FromSeconds 1.,
+                  Tinyint = 1uy,
+                  Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
+                  Varbinary = [|1uy|],
+                  Varchar = "test",
+                  Xml = "<tag />"
+                )
+
+              use conn = new SqlConnection(Config.connStr)
+              conn.Open()
+              use tran = conn.BeginTransaction()
+
+              let res =
+                DbGen.Scripts.TempTableAllTypesNonNull
+                  .WithConnection(conn, tran)
+                  .WithParameters(
+                    allTypesNonNull = [
+                      createTempTableRow ()
+                      createTempTableRow ()
+                      createTempTableRow ()
+                    ]
+                  )
+                |> exec
+
+              test <@ res.Count = 3 @>
+              for row in res do
+                test <@ row.Bigint = 1L @>
+                test <@ row.Binary = Array.replicate 42 1uy @>
+                test <@ row.Bit = true @>
+                test <@ row.Char = String.replicate 42 "a" @>
+                test <@ row.Date = DateTime(2000, 1, 1) @>
+                test <@ row.Datetime = DateTime(2000, 1, 1) @>
+                test <@ row.Datetime2 = DateTime(2000, 1, 1) @>
+                test <@ row.Datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero) @>
+                test <@ row.Decimal = 1M @>
+                test <@ row.Float = 1. @>
+                test <@ row.Image = [|1uy|] @>
+                test <@ row.Int = 1 @>
+                test <@ row.Money = 1M @>
+                test <@ row.Nchar = String.replicate 42 "a" @>
+                test <@ row.Ntext = "test" @>
+                test <@ row.Numeric = 1M @>
+                test <@ row.Nvarchar = "test" @>
+                test <@ row.Real = 1.f @>
+                test <@ row.Smalldatetime = DateTime(2000, 1, 1) @>
+                test <@ row.Smallint = 1s @>
+                test <@ row.Smallmoney = 1M @>
+                test <@ row.Text = "test" @>
+                test <@ row.Time = TimeSpan.FromSeconds 1. @>
+                test <@ row.Tinyint = 1uy @>
+                test <@ row.Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
+                test <@ row.Varbinary = [|1uy|] @>
+                test <@ row.Varchar = "test" @>
+                test <@ row.Xml = "<tag />" @>
+
+              tran.Commit ()
         )
     ]
 

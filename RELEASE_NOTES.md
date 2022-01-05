@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### 2.2.0 (2022-01-05)
+
+* Added an optional `SqlTransaction` parameter to the `WithConnection` overload accepting a `SqlConnection`. This is now the preferred method of setting a transaction, and may be required for future functionality (see e.g. below). The old one (using `ConfigureCommand`) will continue to work, but an exception will be thrown if both methods are used. 
+* Scripts using temp tables now work with transactions (requires using the new `WithConnection` overload to set the transaction)
+
 ### 2.1.2 (2021-12-16)
 
 * Fixed a regression in 2.1.1 where table scripts were missing if the table was not included in a table DTO rule 
