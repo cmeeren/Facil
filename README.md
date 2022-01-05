@@ -127,6 +127,7 @@ Yes, Facil can automatically generate the following simple per-table CRUD script
 * Update a row by its primary key (supports output columns)
 * “Upsert” - use MERGE to insert or update a row by its primary key (supports output columns)
 * Delete a row by its primary key (supports output columns)
+* Get all rows
 * Get a row by its primary key
 * Get rows by a batch of primary keys (using a TVP)
 * Get a row by a set of arbitrary columns
