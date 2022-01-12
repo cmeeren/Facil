@@ -1028,6 +1028,34 @@ let tests =
               test <@ res.Value.Col2 = Some "test" @>
         )
     ]
+    
+    
+    testList (nameof DbGen.Procedures.dbo.ProcWithTempTable) [
+      yield!
+        allExecuteMethodsAsSingle<DbGen.Procedures.dbo.ProcWithTempTable_Executable, _>
+        |> List.map (fun (name, exec) ->
+            testCase name <| fun () ->
+    
+              let res =
+                DbGen.Procedures.dbo.ProcWithTempTable
+                  .WithConnection(Config.connStr)
+                  .WithParameters(
+                      tempTable = [
+                        DbGen.Procedures.dbo.ProcWithTempTable.tempTable.create(
+                          {|
+                            Col1 = 1
+                            Col2 = Some "test"
+                          |}
+                        )
+                      ],
+                      param = 2
+                  )
+                |> exec
+    
+              test <@ res.Value.Col1 = 1 @>
+              test <@ res.Value.Col2 = Some "test" @>
+        )
+    ]
 
 
     testList (nameof DbGen.Scripts.MultipleTempTables) [

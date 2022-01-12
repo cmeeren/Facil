@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 2.3.0 (2022-01-12)
+
+* Now supports temp tables for procedures (in addition to scripts)
+
 ### 2.2.1 (2022-01-12)
 
 * Table scripts may now use columns that are explicitly skipped in a table DTO for the same table

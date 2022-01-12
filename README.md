@@ -205,7 +205,7 @@ For each procedure/script (or any set of these that matches a specified regex/gl
 * Whether to use return values (stored procedures only)
 * For each parameter: Its nullability and the name to use in parameter DTO objects
 * For each script parameter: Its type (to work around type inference limitations for scripts, [see below](#type-inference-limitations-in-scripts))
-* For scripts: temp tables ([see below](#can-i-use-temp-tables))
+* Temp tables ([see below](#can-i-use-temp-tables))
 
 For each table DTO, you can configure:
 
@@ -244,7 +244,7 @@ Facil uses column names at runtime. This means that you are free to reorder the 
 
 ### Can I use temp tables?
 
-Yes, Facil supports temp tables in scripts. In short, configure your script like this:
+Yes, Facil supports temp tables in scripts and procedures. In short, configure your script/procedures like this:
 
 ```yaml
 scripts:
@@ -301,7 +301,9 @@ MyScriptUsingTempTables
   .WithParameters(..)
 ```
 
-The configuration will apply to the loading of all temp tables for the script; please open an issue if you need separate configuration per temp table.
+The configuration will apply to the loading of all temp tables for the script/procedure; please open an issue if you need separate configuration per temp table.
+
+Note that if a **procedure** uses a **global** temp table (a temp table that starts with two `##` instead of one `#`), that temp table needs to exist at build-time. (This limitation does not apply to scripts.) 
 
 ### Why do the `Execute` methods return `ResizeArray` and not an F# `list`?
 

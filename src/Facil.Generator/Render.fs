@@ -189,7 +189,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
   let tempTables =
     match executable with
-    | Choice1Of2 _ -> []
+    | Choice1Of2 p -> p.TempTables
     | Choice2Of2 s -> s.TempTables
 
   let inOptionModule = if rule.VoptionIn then "ValueOption" else "Option"

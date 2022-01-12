@@ -75,6 +75,10 @@ rulesets:
       - for: NominalParams$
         paramDto: nominal
 
+      - for: ProcWithTempTable$
+        tempTables:
+          - definition: "CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+
 
     scripts:
       - include: "**/*.sql"

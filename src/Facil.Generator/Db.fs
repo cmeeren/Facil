@@ -36,10 +36,10 @@ let rewriteLocalTempTablesToGlobalTempTablesWithPrefix (nameOrDefinition: string
   |> fun s -> Regex.Replace(s, "##(?=\w)", $"##{facilGlobalTempTablePrefix}")
 
 
-let createAndDropTempTables (tempTables: TempTable list) (conn: SqlConnection) =
+let createAndDropTempTables rewrite (tempTables: TempTable list) (conn: SqlConnection) =
   for tt in tempTables do
     use cmd = conn.CreateCommand()
-    cmd.CommandText <- tt.Source |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+    cmd.CommandText <- tt.Source |> if rewrite then rewriteLocalTempTablesToGlobalTempTablesWithPrefix else id
     cmd.ExecuteNonQuery () |> ignore
 
   { new IDisposable with
@@ -47,7 +47,7 @@ let createAndDropTempTables (tempTables: TempTable list) (conn: SqlConnection) =
         // Drop all temp tables
         for tt in tempTables do
           use cmd = conn.CreateCommand()
-          cmd.CommandText <- $"DROP TABLE {tt.Name |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix}"
+          cmd.CommandText <- $"DROP TABLE {tt.Name |> if rewrite then rewriteLocalTempTablesToGlobalTempTablesWithPrefix else id}"
           cmd.ExecuteNonQuery() |> ignore
   }
 
@@ -105,7 +105,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '%s{paramName}' that is not used in the script. Ignoring parameter."
 
 
-    use __ = createAndDropTempTables script.TempTables conn
+    use __ = createAndDropTempTables true script.TempTables conn
     
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "sys.sp_describe_undeclared_parameters"
@@ -183,13 +183,16 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
 
 let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
 
-  let tempTablesToCreateAndDrop =
+  let tempTablesToCreateAndDrop, rewriteTempTableNames =
     match executable with
-    | Choice2Of3 script -> script.TempTables
-    | Choice1Of3 _ -> []
-    | Choice3Of3 tempTable -> [tempTable]
+    | Choice1Of3 sproc ->
+        // Only use local temp tables for procedures; since we can't rewrite the sproc like we can with scripts,
+        // don't touch global temp tables. They must exist at build-time.
+        sproc.TempTables |> List.filter (fun x -> not (x.Name.StartsWith("##"))), false
+    | Choice2Of3 script -> script.TempTables, true
+    | Choice3Of3 tempTable -> [tempTable], true
 
-  use __ = createAndDropTempTables tempTablesToCreateAndDrop conn
+  use __ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
 
   use cmd = conn.CreateCommand()
   cmd.CommandText <- "sys.sp_describe_first_result_set"
@@ -262,13 +265,16 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
 
 
 let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
-  let tempTablesToCreateAndDrop =
+  let tempTablesToCreateAndDrop, rewriteTempTableNames =
     match executable with
-    | Choice2Of3 script -> script.TempTables
-    | Choice1Of3 _ -> []
-    | Choice3Of3 tempTable -> [tempTable]
+    | Choice1Of3 sproc ->
+        // Only use local temp tables for procedures; since we can't rewrite the sproc like we can with scripts,
+        // don't touch global temp tables. They must exist at build-time.
+        sproc.TempTables |> List.filter (fun x -> not (x.Name.StartsWith("##"))), false
+    | Choice2Of3 script -> script.TempTables, true
+    | Choice3Of3 tempTable -> [tempTable], true
 
-  use __ = createAndDropTempTables tempTablesToCreateAndDrop conn
+  use __ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
 
   let getCmd (conn: SqlConnection) =
 
@@ -486,7 +492,7 @@ let getTableTypes (conn: SqlConnection) =
     raise <| Exception("Error getting table types", ex)
 
 
-let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableType>) (conn: SqlConnection) =
+let getStoredProceduresWithoutResultSetOrTempTables cfg (tableTypesByUserId: Map<int, TableType>) (conn: SqlConnection) =
 
   let getStoredProceduresWithoutParamsOrResultSet () =
     try
@@ -519,6 +525,7 @@ let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableT
               else
                 reader.["Definition"] |> unbox<string>
             Parameters = []  // Added later
+            TempTables = []  // Added later
             ResultSet = None  // Added later
           }
         )
@@ -627,10 +634,6 @@ let getStoredProcedures cfg sysTypeIdLookup (tableTypesByUserId: Map<int, TableT
                 }
             )
       }
-  )
-  // Add result sets
-  |> List.map (fun sproc ->
-      { sproc with ResultSet = getColumns conn cfg sysTypeIdLookup (Choice1Of3 sproc) }
   )
 
 
@@ -905,8 +908,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     |> List.sortBy (fun dto -> dto.SchemaName, dto.Name)
 
   let tempTablesByDefinition =
-    cfg.Scripts
-    |> List.collect (fun s -> s.TempTables |> Option.defaultValue [])
+    (cfg.Scripts |> List.collect (fun s -> s.TempTables |> Option.defaultValue []))
+    @ (cfg.Procedures |> List.collect (fun p -> p.TempTables |> Option.defaultValue []))
     |> List.map (fun rule -> rule.Definition)
     |> List.distinct
     |> List.map (fun definition -> definition, getTempTable cfg sysTypeIdLookup definition conn)
@@ -1649,41 +1652,58 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
   let sprocs =
     if cfg.Procedures.IsEmpty then []
     else
-      getStoredProcedures cfg sysTypeIdLookup tableTypesByUserId conn
-      |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
-      |> List.filter (fun sp ->
+      getStoredProceduresWithoutResultSetOrTempTables cfg tableTypesByUserId conn
+      |> List.map (fun sproc ->
+          let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+          let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition.[tt.Definition])
 
-          let hasUnsupportedParameter =
-            sp.Parameters |> List.exists (fun p ->
-              if p.IsCursorRef then
-                logWarning $"Parameter '%s{p.Name}' in stored procedure '%s{sp.SchemaName}.%s{sp.Name}' is a cursor reference, which is not supported. Ignoring stored procedure. To remove this warning, remove the parameter from the stored procedure or make the procedure is not included in any rules."
-                true
-              else false
-            )
+          if tempTables |> List.countBy (fun tt -> tt.Name) |> List.exists (fun (_, count) -> count > 1) then
+            failwithError $"The rule for procedure '%s{sproc.SchemaName}.%s{sproc.Name}' contains multiple temp table definitions using the same temp table name. This is not supported."
 
-          let hasUnsupportedResultColumn =
-            match sp.ResultSet with
-            | None -> false
-            | Some cols ->
-                match cols |> List.tryFindIndex (fun c -> c.Name.IsNone) with
-                | Some idx when idx > 0 || cols.Length > 1 ->
-                    logWarning $"Column #{idx + 1} of {cols.Length} returned by stored procedure '{sp.SchemaName}.{sp.Name}' is missing a name. Columns without names are only supported if they are the only column in the result set. Ignoring stored procedure. To remove this warning, fix the result set make sure this stored procedure is not included in any rules."
-                    true
-                | _ -> false
+          let paramNames = sproc.Parameters |> List.map (fun p -> p.FSharpParamName |> String.firstLower) |> set
+          let tempTableNames = tempTables |> List.map (fun tt -> tt.FSharpName |> String.firstLower) |> set
+          if Set.intersect paramNames tempTableNames |> Set.isEmpty |> not then
+            failwithError $"Procedure '%s{sproc.SchemaName}.%s{sproc.Name}' has a temp table with the same name as a parameter. This is not supported."
 
-          let hasDuplicateColumnNames =
-            match sp.ResultSet with
-            | None -> false
-            | Some cols ->
-                match cols |> List.choose (fun c -> c.Name) |> List.countBy id |> List.filter (fun (_, c) -> c > 1) with
-                | (name, count) :: _ ->
-                    logWarning $"Stored procedure '{sp.SchemaName}.{sp.Name}' returns %i{count} columns named '{name}'. Columns names must be unique. Ignoring stored procedure. To remove this warning, fix the column names or make sure this stored procedure is not included in any rules."
-                    true
-                | _ -> false
+          { sproc with TempTables = tempTables }
+    )
+    |> List.map (fun sproc ->
+        { sproc with ResultSet = getColumns conn cfg sysTypeIdLookup (Choice1Of3 sproc) }
+    )
+    |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
+    |> List.filter (fun sp ->
 
-          not hasUnsupportedParameter && not hasUnsupportedResultColumn && not hasDuplicateColumnNames
-      )
-      |> List.sortBy (fun sp -> sp.SchemaName, sp.Name)
+        let hasUnsupportedParameter =
+          sp.Parameters |> List.exists (fun p ->
+            if p.IsCursorRef then
+              logWarning $"Parameter '%s{p.Name}' in stored procedure '%s{sp.SchemaName}.%s{sp.Name}' is a cursor reference, which is not supported. Ignoring stored procedure. To remove this warning, remove the parameter from the stored procedure or make the procedure is not included in any rules."
+              true
+            else false
+          )
+
+        let hasUnsupportedResultColumn =
+          match sp.ResultSet with
+          | None -> false
+          | Some cols ->
+              match cols |> List.tryFindIndex (fun c -> c.Name.IsNone) with
+              | Some idx when idx > 0 || cols.Length > 1 ->
+                  logWarning $"Column #{idx + 1} of {cols.Length} returned by stored procedure '{sp.SchemaName}.{sp.Name}' is missing a name. Columns without names are only supported if they are the only column in the result set. Ignoring stored procedure. To remove this warning, fix the result set make sure this stored procedure is not included in any rules."
+                  true
+              | _ -> false
+
+        let hasDuplicateColumnNames =
+          match sp.ResultSet with
+          | None -> false
+          | Some cols ->
+              match cols |> List.choose (fun c -> c.Name) |> List.countBy id |> List.filter (fun (_, c) -> c > 1) with
+              | (name, count) :: _ ->
+                  logWarning $"Stored procedure '{sp.SchemaName}.{sp.Name}' returns %i{count} columns named '{name}'. Columns names must be unique. Ignoring stored procedure. To remove this warning, fix the column names or make sure this stored procedure is not included in any rules."
+                  true
+              | _ -> false
+
+        not hasUnsupportedParameter && not hasUnsupportedResultColumn && not hasDuplicateColumnNames
+    )
+    |> List.sortBy (fun sp -> sp.SchemaName, sp.Name)
 
   let usedTableTypes =
     [

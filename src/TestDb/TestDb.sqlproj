@@ -175,6 +175,7 @@
     <Build Include="dbo\Stored Procedures\ProcWithAllTypesNullNominalParams.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithAllTypesFromTvpNullNominalParams.sql" />
     <Build Include="dbo\Stored Procedures\ProcWithAllTypesFromTvpNonNullNominalParams.sql" />
+    <Build Include="dbo\Stored Procedures\ProcWithTempTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDB.publish.xml" />

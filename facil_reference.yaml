@@ -153,6 +153,29 @@ rulesets:
             # NVARCHAR) are supported.
             buildValue: foo
 
+        # If a procedure uses temp tables that must be loaded by Facil (effectively acting as
+        # parameters for the procedure), place the definitions here. Note that while this
+        # property can be overridden by later matching procedure rules, it is not merged (or
+        # removed); the last specified tempTables array for any given procedure will be used.
+        #
+        # Note that the temp table definitions will be executed during build, so don't do
+        # anything dangerous here.
+        tempTables:
+          # You can supply the definition directly as a string.
+          - definition: |
+              CREATE TABLE #myTempTable(
+                Col1 INT NOT NULL PRIMARY KEY,
+                Col2 NVARCHAR(100) NULL
+              )
+
+            # If using a single line, remember to enclose in quotes (otherwise everything
+            # after # will be a YAML comment and not be part of the definition)
+          - definition: "CREATE TABLE #myTempTable(Col1 INT NOT NULL)"
+
+            # You can also specify a path to a SQL file containing the definition. The
+            # path is relative to scriptBasePath (by default the project directory).
+          - definition: path/to/my/tempTableDefinition.sql
+
         # 'columns' allows you to specify settings for individual output columns.
         columns:
           # The keys are the column names. The special value "" (empty string) specifies
@@ -186,6 +209,8 @@ rulesets:
         voptionIn: true
         voptionOut: true
         recordIfSingleCol: true
+        tempTables: ...
+          
 
       - for: SQL/MyScript.sql
 
@@ -226,29 +251,6 @@ rulesets:
             # user-defined table type. Note that table-valued parameters can not be
             # nullable.
             type: dbo.MultiColNull
-
-        # If a script uses temp tables that must be loaded by Facil (effectively acting as
-        # parameters for the script), place the definitions here. Note that while this
-        # property can be overridden by later matching script rules, it is not merged (or
-        # removed); the last specified tempTables array for any given script will be used.
-        #
-        # Note that the temp table definitions will be executed during build, so don't do
-        # anything dangerous here.
-        tempTables:
-            # You can supply the definition directly as a string.
-          - definition: |
-              CREATE TABLE #myTempTable(
-                Col1 INT NOT NULL PRIMARY KEY,
-                Col2 NVARCHAR(100) NULL
-              )
-
-            # If using a single line, remember to enclose in quotes (otherwise everything
-            # after # will be a YAML comment and not be part of the definition)
-          - definition: "CREATE TABLE #myTempTable(Col1 INT NOT NULL)"
-
-            # You can also specify a path to a SQL file containing the definition. The
-            # path is relative to scriptBasePath (by default the project directory).
-          - definition: path/to/my/tempTableDefinition.sql
 
         # 'columns' allows you to specify settings for individual output columns.
         columns:

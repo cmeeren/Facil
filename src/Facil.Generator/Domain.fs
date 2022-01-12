@@ -333,6 +333,14 @@ type Parameter = {
     this.Name |> String.trimStart '@'
 
 
+type TempTable = {
+  Name: string
+  Source: string
+  Columns: OutputColumn list
+} with
+  member this.FSharpName = this.Name.TrimStart '#'
+
+
 type StoredProcedure = {
   ObjectId: int
   SchemaName: string
@@ -340,15 +348,8 @@ type StoredProcedure = {
   Definition: string
   Parameters: Parameter list
   ResultSet: OutputColumn list option
+  TempTables: TempTable list
 }
-
-
-type TempTable = {
-  Name: string
-  Source: string
-  Columns: OutputColumn list
-} with
-  member this.FSharpName = this.Name.TrimStart '#'
 
 
 type Script = {

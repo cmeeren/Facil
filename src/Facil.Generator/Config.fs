@@ -88,6 +88,16 @@ type EffectiveTableTypeRule = {
   SkipParamDto: bool
 }
 
+[<CLIMutable>]
+type TempTableRuleDto = {
+  definition: string
+}
+
+
+type TempTableRule = {
+  Definition: string
+}
+
 
 [<CLIMutable>]
 type ProcedureParameterDto = {
@@ -128,6 +138,7 @@ type ProcedureRuleDto = {
   recordIfSingleCol: bool option
   useReturnValue: bool option
   ``params``: Map<string, ProcedureParameterDto> option
+  tempTables: TempTableRuleDto list option
   columns: Map<string, ProcedureColumnDto> option
 }
 
@@ -142,6 +153,7 @@ type ProcedureRule = {
   RecordIfSingleCol: bool option
   UseReturnValue: bool option
   Parameters: Map<string option, ProcedureParameter>
+  TempTables: TempTableRule list option
   Columns: Map<string option, ProcedureColumn>
 }
 
@@ -154,6 +166,7 @@ type EffectiveProcedureRule = {
   RecordIfSingleCol: bool
   UseReturnValue: bool
   ParametersFromAllRules: Map<string option, ProcedureParameter> list
+  TempTables: TempTableRule list
   ColumnsFromAllRules: Map<string option, ProcedureColumn> list
 }
 
@@ -172,16 +185,6 @@ type ScriptParameter = {
   Type: string option
   DtoName: string option
   BuildValue: string option
-}
-
-[<CLIMutable>]
-type ScriptTempTableRuleDto = {
-  definition: string
-}
-
-
-type ScriptTempTableRule = {
-  Definition: string
 }
 
 
@@ -208,7 +211,7 @@ type ScriptRuleDto = {
   voptionOut: bool option
   recordIfSingleCol: bool option
   ``params``: Map<string, ScriptParameterDto> option
-  tempTables: ScriptTempTableRuleDto list option
+  tempTables: TempTableRuleDto list option
   columns: Map<string, ScriptColumnDto> option
 }
 
@@ -222,7 +225,7 @@ type ScriptRule = {
   VoptionOut: bool option
   RecordIfSingleCol: bool option
   Parameters: Map<string option, ScriptParameter>
-  TempTables: ScriptTempTableRule list option
+  TempTables: TempTableRule list option
   Columns: Map<string option, ScriptColumn>
 }
 
@@ -234,7 +237,7 @@ type EffectiveScriptRule = {
   VoptionOut: bool
   RecordIfSingleCol: bool
   ParametersFromAllRules: Map<string option, ScriptParameter> list
-  TempTables: ScriptTempTableRule list
+  TempTables: TempTableRule list
   ColumnsFromAllRules: Map<string option, ScriptColumn> list
 }
 
@@ -498,6 +501,19 @@ module TableTypeRule =
     }
 
 
+module TempTableRule =
+
+
+  let fromDto basePath (dto: TempTableRuleDto) =
+    {
+      Definition =
+        if dto.definition.EndsWith ".sql" && File.Exists(Path.Combine(basePath, dto.definition)) then
+          File.ReadAllText(Path.Combine(basePath, dto.definition))
+        else
+          dto.definition
+    }
+
+
 module ProcedureParameter =
 
 
@@ -544,7 +560,7 @@ module ProcedureColumn =
 module ProcedureRule =
 
 
-  let fromDto fullYamlPath (dto: ProcedureRuleDto) : ProcedureRule =
+  let fromDto basePath fullYamlPath (dto: ProcedureRuleDto) : ProcedureRule =
     if dto.skipParamDto.IsSome then
       logYamlWarning fullYamlPath 0 0 "'skipParamDto' is deprecated; use 'paramDto: skip' instead"
     {
@@ -582,6 +598,7 @@ module ProcedureRule =
         |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
         |> Map.ofList
         |> Map.map (fun _ -> ProcedureParameter.fromDto)
+      TempTables = dto.tempTables |> Option.map (List.map (TempTableRule.fromDto basePath))
       Columns =
         dto.columns
         |> Option.defaultValue Map.empty
@@ -600,6 +617,7 @@ module ProcedureRule =
     RecordIfSingleCol = false
     UseReturnValue = false
     ParametersFromAllRules = []
+    TempTables = []
     ColumnsFromAllRules = []
   }
 
@@ -624,6 +642,7 @@ module ProcedureRule =
       RecordIfSingleCol = rule.RecordIfSingleCol |> Option.defaultValue eff.RecordIfSingleCol
       UseReturnValue = rule.UseReturnValue |> Option.defaultValue eff.UseReturnValue
       ParametersFromAllRules = eff.ParametersFromAllRules @ [rule.Parameters]
+      TempTables = rule.TempTables |> Option.defaultValue eff.TempTables
       ColumnsFromAllRules = eff.ColumnsFromAllRules @ [rule.Columns]
     }
 
@@ -762,19 +781,6 @@ module ScriptParameter =
   }
 
 
-module ScriptTempTableRule =
-
-
-  let fromDto basePath (dto: ScriptTempTableRuleDto) =
-    {
-      Definition =
-        if dto.definition.EndsWith ".sql" && File.Exists(Path.Combine(basePath, dto.definition)) then
-          File.ReadAllText(Path.Combine(basePath, dto.definition))
-        else
-          dto.definition
-    }
-
-
 module ScriptColumn =
 
 
@@ -835,7 +841,7 @@ module ScriptRule =
         |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
         |> Map.ofList
         |> Map.map (fun _ -> ScriptParameter.fromDto)
-      TempTables = dto.tempTables |> Option.map (List.map (ScriptTempTableRule.fromDto basePath))
+      TempTables = dto.tempTables |> Option.map (List.map (TempTableRule.fromDto basePath))
       Columns =
         dto.columns
         |> Option.defaultValue Map.empty
@@ -1158,7 +1164,7 @@ module RuleSet =
       Procedures =
         dto.procedures
         |> Option.defaultValue []
-        |> List.map (ProcedureRule.fromDto fullYamlPath)
+        |> List.map (ProcedureRule.fromDto scriptBasePath fullYamlPath)
       Scripts =
         dto.scripts
         |> Option.defaultValue []
