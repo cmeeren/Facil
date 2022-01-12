@@ -290,6 +290,9 @@ type TableColumn = {
   Precision: byte
   Scale: byte
   TypeInfo: SqlTypeInfo
+  /// Used only in Db.fs to distinguish between table DTO columns and table script columns. Code elsewhere does not need
+  /// to take this into account.
+  ShouldSkipInTableDto: bool
 } with
   member this.StringEscapedName = this.Name.Replace("\"", "\\\"")
   member this.PascalCaseName = this.Name |> String.firstUpper

@@ -466,6 +466,7 @@ let getTableTypes (conn: SqlConnection) =
               Precision = reader.["ColumnPrecision"] |> unbox<byte>
               Scale = reader.["ColumnScale"] |> unbox<byte>
               TypeInfo = typeInfo
+              ShouldSkipInTableDto = false  // not relevant/used
             }
           ]
       }
@@ -679,7 +680,7 @@ let getPrimaryKeyColumnNamesByTableName (conn: SqlConnection) =
     raise <| Exception("Error getting primary key info", ex)
 
 
-let getTableDtosIncludingThoseNeededForTableScripts cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesByTable: Map<string * string, string list>) (conn: SqlConnection) =
+let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTypeIdLookup: Map<int, string>) (primaryKeyColumnNamesByTable: Map<string * string, string list>) (conn: SqlConnection) =
   try
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "
@@ -749,18 +750,20 @@ let getTableDtosIncludingThoseNeededForTableScripts cfg (sysTypeIdLookup: Map<in
           |> Option.defaultValue false
 
         let typeInfo =
-          if shouldSkipCol then None
-          else
-            reader.["system_type_id"]
-            |> unbox<byte>
-            |> int
-            |> fun id ->
-                sysTypeIdLookup.TryFind id
-                |> Option.teeNone (fun () -> logWarning $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped.")
-            |> Option.bind (fun typeName ->
-                sqlDbTypeMap.TryFind typeName
-                |> Option.teeNone (fun () -> logWarning $"Unsupported SQL system type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped.")
-            )
+          reader.["system_type_id"]
+          |> unbox<byte>
+          |> int
+          |> fun id ->
+              sysTypeIdLookup.TryFind id
+              |> Option.teeNone (fun () ->
+                  if not shouldSkipCol then
+                    logWarning $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped.")
+          |> Option.bind (fun typeName ->
+              sqlDbTypeMap.TryFind typeName
+              |> Option.teeNone (fun () ->
+                  if not shouldSkipCol then
+                    logWarning $"Unsupported SQL system type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped.")
+          )
 
         match typeInfo with
         | None -> ()
@@ -784,6 +787,7 @@ let getTableDtosIncludingThoseNeededForTableScripts cfg (sysTypeIdLookup: Map<in
                     Precision = reader.["precision"] |> unbox<byte>
                     Scale = reader.["scale"] |> unbox<byte>
                     TypeInfo = typeInfo
+                    ShouldSkipInTableDto = shouldSkipCol
                   }
                 ]
                 PrimaryKeyColumns = []  // Set later
@@ -881,11 +885,23 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
   
   let primaryKeyColumnNamesByTable = getPrimaryKeyColumnNamesByTableName conn
 
-  let allTableDtos = getTableDtosIncludingThoseNeededForTableScripts cfg sysTypeIdLookup primaryKeyColumnNamesByTable conn
+  let allTableDtos = getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg sysTypeIdLookup primaryKeyColumnNamesByTable conn
     
   let tableDtos =
     allTableDtos
     |> List.filter (fun dto -> RuleSet.shouldIncludeTableDto dto.SchemaName dto.Name cfg)
+    |> List.map (fun dto ->
+        { dto with
+            // Remove skipped columns
+            Columns = dto.Columns |> List.filter (fun c -> not c.ShouldSkipInTableDto)
+            // If any skipped columns are PKs, set PrimaryKeyColumns to empty list
+            PrimaryKeyColumns =
+              let pkColNames = dto.PrimaryKeyColumns |> List.map (fun c -> c.Name) |> set
+              let skippedColNames = dto.Columns |> List.filter (fun c -> c.ShouldSkipInTableDto) |> List.map (fun c -> c.Name)
+              if skippedColNames |> List.exists pkColNames.Contains then
+                []
+              else dto.PrimaryKeyColumns
+        })
     |> List.sortBy (fun dto -> dto.SchemaName, dto.Name)
 
   let tempTablesByDefinition =

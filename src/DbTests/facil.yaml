@@ -450,3 +450,9 @@ rulesets:
       - include: dbo\.OptionTableWithoutDto
         scripts:
           - type: getAll
+
+      # This is a test in itself: table scripts should work even if the corresponding table DTO has skipped columns that
+      # the script uses. If this 'test' fails, generation should fail.
+      - include: dbo\.TableWithSkippedPkColumn
+        scripts:
+          - type: getById
