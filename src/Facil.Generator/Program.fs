@@ -38,9 +38,8 @@ module Program =
 
 
       let assemblyHash =
-        use sha = System.Security.Cryptography.SHA256.Create()
         File.ReadAllBytes(Reflection.Assembly.GetExecutingAssembly().Location)
-        |> sha.ComputeHash
+        |> System.Security.Cryptography.SHA256.HashData
         |> BitConverter.ToString
 
 
@@ -90,7 +89,6 @@ module Program =
           )
 
         let hash =
-          use sha = System.Security.Cryptography.SHA256.Create()
           [
             assemblyHash
             yield! yamlFilePath |> File.ReadAllLines
@@ -99,7 +97,7 @@ module Program =
           ]
           |> String.concat ""
           |> Text.Encoding.UTF8.GetBytes
-          |> sha.ComputeHash
+          |> System.Security.Cryptography.SHA256.HashData
           |> BitConverter.ToString
           |> fun s -> s.Replace("-", "").ToLowerInvariant()
 
