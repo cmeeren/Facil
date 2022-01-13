@@ -144,7 +144,7 @@ namespace Facil.Runtime.CSharp
             throw new NotImplementedException();
         }
 
-        public DataTable? GetSchemaTable()
+        public DataTable GetSchemaTable()
         {
             throw new NotImplementedException();
         }
