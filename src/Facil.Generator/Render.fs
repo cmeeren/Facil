@@ -90,7 +90,7 @@ let private renderTableType cfg (t: TableType) =
     yield! indent [
       $"inherit SqlDataRecord (``{t.Name}_meta``)"
       ""
-      $"static member create"
+      "static member create"
       yield! indent [
         "("
         yield! indent [
@@ -118,7 +118,7 @@ let private renderTableType cfg (t: TableType) =
       ]
       if not rule.SkipParamDto then
         ""
-        $"static member inline create (dto: ^a) ="
+        "static member inline create (dto: ^a) ="
         yield! indent [
           $"let x = ``{t.Name}``(internalUseOnlyValue)"
           "x.SetValues("
@@ -435,7 +435,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
         | None ->
             "member this.ExecuteAsync(?cancellationToken) ="
             yield! indent [
-              $"executeNonQueryAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) [] (defaultArg cancellationToken CancellationToken.None)"
+              "executeNonQueryAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) [] (defaultArg cancellationToken CancellationToken.None)"
               if wrapResult then "|> Task.map wrapResultWithOutParams"
             ]
             ""
@@ -443,14 +443,14 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             "member this.Execute() ="
             yield! indent [
-              $"executeNonQuery connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []"
+              "executeNonQuery connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []"
               if wrapResult then "|> wrapResultWithOutParams"
             ]
 
         | Some _ ->
             "member this.ExecuteAsync(?cancellationToken) ="
             yield! indent [
-              $"executeQueryEagerAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
+              "executeQueryEagerAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
               if wrapResult then "|> Task.map wrapResultWithOutParams"
             ]
             ""
@@ -458,7 +458,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             "member this.ExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
-              $"executeQueryEagerAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
+              "executeQueryEagerAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
               if wrapResult then "|> Task.map wrapResultWithOutParams"
             ]
             ""
@@ -466,23 +466,23 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             "member this.Execute() ="
             yield! indent [
-              $"executeQueryEager connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []"
+              "executeQueryEager connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []"
               if wrapResult then "|> wrapResultWithOutParams"
             ]
             ""
             "member this.LazyExecuteAsync(?cancellationToken) ="
             yield! indent [
-              $"executeQueryLazyAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
+              "executeQueryLazyAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
             ]
             ""
             "member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
-              $"executeQueryLazyAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
+              "executeQueryLazyAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)"
             ]
             ""
             "member this.LazyExecute() ="
             yield! indent [
-              $"executeQueryLazy connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []"
+              "executeQueryLazy connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []"
             ]
             ""
             "member this.ExecuteSingleAsync(?cancellationToken) ="

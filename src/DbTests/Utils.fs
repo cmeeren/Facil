@@ -277,7 +277,7 @@ module Gen =
         let precision =
           if n >= 1 && n <= 24 then 7
           elif n >= 25 && n <= 53 then 15
-          else invalidArg (nameof n) $"Must be between 1 and 53"
+          else invalidArg (nameof n) "Must be between 1 and 53"
         let! scale = Gen.int32 (Range.linear 0 precision)
         return! decimal precision scale |> Gen.map float
       }
@@ -290,7 +290,7 @@ module Gen =
       |> Gen.map (Operators.decimal >> fun d -> d / 10000M)
 
     let nchar n =
-      if n < 1 || n > 4000 then invalidArg (nameof n) $"Must be between 1 and 4000"
+      if n < 1 || n > 4000 then invalidArg (nameof n) "Must be between 1 and 4000"
       // Limit to UTC-2 code points to ensure that the storage size is equal to n.
       // Don't include NULL because it seems to mess with test output.
       Gen.choice [
@@ -302,7 +302,7 @@ module Gen =
     let numeric p s = decimal p s
 
     let nvarchar n =
-      if n < 1 || n > 4000 then invalidArg (nameof n) $"Must be between 1 and 4000"
+      if n < 1 || n > 4000 then invalidArg (nameof n) "Must be between 1 and 4000"
       // Limit to UTC-2 code points to ensure that the storage size is equal to n.
       // Don't include NULL because it seems to mess with test output.
       Gen.choice [

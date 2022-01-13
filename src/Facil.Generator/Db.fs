@@ -1011,7 +1011,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                       |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
                       |> List.mapAllExceptLast (sprintf "%s,")
 
-                    $"FROM"
+                    "FROM"
                     $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
                   ]
                   |> String.concat "\n"
@@ -1053,7 +1053,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                       |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
                       |> List.mapAllExceptLast (sprintf "%s,")
 
-                    $"FROM"
+                    "FROM"
                     $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
                     "WHERE"
 
@@ -1106,7 +1106,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                       |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
                       |> List.mapAllExceptLast (sprintf "%s,")
 
-                    $"FROM"
+                    "FROM"
                     $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
                     "WHERE"
                     "  EXISTS ("
@@ -1182,7 +1182,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                       |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
                       |> List.mapAllExceptLast (sprintf "%s,")
 
-                    $"FROM"
+                    "FROM"
                     $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
                     "WHERE"
 
@@ -1241,7 +1241,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                       |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
                       |> List.mapAllExceptLast (sprintf "%s,")
 
-                    $"FROM"
+                    "FROM"
                     $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
                     "WHERE"
                     "  EXISTS ("
