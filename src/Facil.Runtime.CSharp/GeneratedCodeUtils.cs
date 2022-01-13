@@ -448,7 +448,7 @@ namespace Facil.Runtime.CSharp
             {
                 await using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
-                conn.Open();
+                await conn.OpenAsync(ct);
                 await LoadTempTablesAsync(conn, tempTableData, tran, ct);
                 await using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
