@@ -8,6 +8,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Facil.Runtime.CSharp
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class TempTableData
     {
         public TempTableData(string destinationTableName, string definition, IEnumerable<object[]> data, int numFields, Action<SqlBulkCopy> configureBulkCopy)

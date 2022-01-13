@@ -18,6 +18,7 @@ namespace Facil.Runtime.CSharp
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("ReSharper", "UnusedType.Global")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class GeneratedCodeUtils
     {
         private static async Task LoadTempTablesAsync(SqlConnection conn, IEnumerable<TempTableData> tempTableData, SqlTransaction? tran, CancellationToken ct)
@@ -242,6 +243,7 @@ namespace Facil.Runtime.CSharp
                 await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
                 if (!reader.HasRows) yield break;
                 initOrdinals(reader);
+                // ReSharper disable once MethodHasAsyncOverloadWithCancellation
                 while (reader.Read())
                 {
                     yield return getItem(reader);
@@ -258,6 +260,7 @@ namespace Facil.Runtime.CSharp
                 await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
                 if (!reader.HasRows) yield break;
                 initOrdinals(reader);
+                // ReSharper disable once MethodHasAsyncOverloadWithCancellation
                 while (reader.Read())
                 {
                     yield return getItem(reader);
