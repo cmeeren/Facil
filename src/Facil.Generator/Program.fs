@@ -18,7 +18,7 @@ module Program =
     try
 
       let projectDir =
-        if argv.Length = 0 then @"..\..\..\..\DbTests" else argv.[0]
+        if argv.Length = 0 then @"..\..\..\..\DbTests" else argv[0]
         |> Path.GetFullPath
 
       let yamlFile1 = FileInfo(Path.Combine(projectDir, "facil.yaml"))
@@ -78,7 +78,7 @@ module Program =
                 GlobMatchOutput = globOutput
                 RelativePathSegments =
                   let segmentsWithName = globOutput.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  segmentsWithName[0..segmentsWithName.Length-2]
                   |> Array.toList
                 NameWithoutExtension = Path.GetFileNameWithoutExtension globOutput
                 Source = File.ReadAllLines (Path.Combine(cfg.ScriptBasePath, globOutput)) |> String.concat "\n"

@@ -298,12 +298,12 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                         match p.TypeInfo with
                         | Scalar ti -> ti
                         | Table _ -> failwith $"Parsed parameter '{p.Name}' as both table and output, which is impossible"
-                      $"``{p.FSharpParamName}`` = if sqlParams.[{i}].Value = box DBNull.Value then {outOptionNone} else sqlParams.[{i}].Value |> unbox<{typeInfo.FSharpTypeString}> |> {outOptionSome}"
+                      $"``{p.FSharpParamName}`` = if sqlParams[{i}].Value = box DBNull.Value then {outOptionNone} else sqlParams[{i}].Value |> unbox<{typeInfo.FSharpTypeString}> |> {outOptionSome}"
                   )
               ]
               "|}"
             ]
-          if useRetVal then $"ReturnValue = sqlParams.[{parameters.Length}].Value |> unbox<int>"
+          if useRetVal then $"ReturnValue = sqlParams[{parameters.Length}].Value |> unbox<int>"
         ]
         "|}"
       ]
@@ -516,7 +516,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
           yield! indent [
             ""
             "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-            "member __.Fields = fields"
+            "member _.Fields = fields"
             ""
             "static member create"
             yield! indent [
@@ -644,7 +644,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
 
         match resultSet with
         | None ->
-            "member __.ExecuteAsync(?cancellationToken) ="
+            "member _.ExecuteAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeNonQueryAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)"
@@ -653,7 +653,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteAsync" "AsyncExecute"
             ""
-            "member __.Execute() ="
+            "member _.Execute() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeNonQuery connStr conn tran configureConn (configureCmd sqlParams) tempTableData"
@@ -661,7 +661,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ]
 
         | Some _ ->
-            "member __.ExecuteAsync(?cancellationToken) ="
+            "member _.ExecuteAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
@@ -670,7 +670,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteAsync" "AsyncExecute"
             ""
-            "member __.ExecuteAsyncWithSyncRead(?cancellationToken) ="
+            "member _.ExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
@@ -679,32 +679,32 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteAsyncWithSyncRead" "AsyncExecuteWithSyncRead"
             ""
-            "member __.Execute() ="
+            "member _.Execute() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"
               if wrapResult then "|> wrapResultWithOutParams sqlParams"
             ]
             ""
-            "member __.LazyExecuteAsync(?cancellationToken) ="
+            "member _.LazyExecuteAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
             ]
             ""
-            "member __.LazyExecuteAsyncWithSyncRead(?cancellationToken) ="
+            "member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"
             ]
             ""
-            "member __.LazyExecute() ="
+            "member _.LazyExecute() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               "executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"
             ]
             ""
-            "member __.ExecuteSingleAsync(?cancellationToken) ="
+            "member _.ExecuteSingleAsync(?cancellationToken) ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               $"""executeQuerySingleAsync{if rule.VoptionOut then "Voption" else ""} connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)"""
@@ -713,7 +713,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
             ""
             yield! asyncOverTaskFor "ExecuteSingleAsync" "AsyncExecuteSingle"
             ""
-            "member __.ExecuteSingle() ="
+            "member _.ExecuteSingle() ="
             yield! indent [
               "let sqlParams = getSqlParams ()"
               $"""executeQuerySingle{if rule.VoptionOut then "Voption" else ""} connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"""

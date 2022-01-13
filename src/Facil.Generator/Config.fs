@@ -1297,7 +1297,7 @@ module FacilConfig =
         match facilConfig.configs with
         | None | Some [] -> failwithYamlError fullYamlPath 0 0 $"Cannot use variable {str} since no configuration sources has been specified"
         | _ -> ()
-        let varName = m.Groups.[1].Value
+        let varName = m.Groups[1].Value
         match config.GetValue varName with
         | null -> failwithYamlError fullYamlPath 0 0 $"The variable {str} could not be found in the specified configuration sources"
         | str -> str

@@ -22,7 +22,7 @@ let getSysTypeIdLookup (conn: SqlConnection) =
     use reader = cmd.ExecuteReader()
     let lookup = ResizeArray()
     while reader.Read() do
-      lookup.Add(reader.["system_type_id"] |> unbox<byte> |> int, reader.["name"] |> unbox<string>)
+      lookup.Add(reader["system_type_id"] |> unbox<byte> |> int, reader["name"] |> unbox<string>)
     lookup |> Map.ofSeq
   with ex ->
     raise <| Exception("Error getting system type IDs", ex)
@@ -70,7 +70,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
           base.Visit node
           match paramsWithFirstUsageOffset.TryGetValue node.Name with
           | true, offset when offset < node.StartOffset -> ()
-          | _ -> paramsWithFirstUsageOffset.[node.Name] <- node.StartOffset
+          | _ -> paramsWithFirstUsageOffset[node.Name] <- node.StartOffset
     }
 
     let declaredParams = ResizeArray()
@@ -105,7 +105,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '%s{paramName}' that is not used in the script. Ignoring parameter."
 
 
-    use __ = createAndDropTempTables true script.TempTables conn
+    use _ = createAndDropTempTables true script.TempTables conn
     
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "sys.sp_describe_undeclared_parameters"
@@ -116,7 +116,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
     while reader.Read() do
 
       let paramName =
-        reader.["name"]
+        reader["name"]
         |> unbox<string>
         |> fun s ->
             if s.StartsWith facilTempVarPrefix then
@@ -127,7 +127,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
         let userTypeId =
           if reader.IsDBNull "suggested_user_type_id"
           then None
-          else reader.["suggested_user_type_id"] |> unbox<int> |> Some
+          else reader["suggested_user_type_id"] |> unbox<int> |> Some
 
         match userTypeId |> Option.bind tableTypesByUserId.TryFind with
         | Some tt ->
@@ -137,7 +137,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
             | _ -> ()
             Table tt
         | None ->
-            reader.["suggested_system_type_id"]
+            reader["suggested_system_type_id"]
             |> unbox<int>
             |> fun id ->
                 sysTypeIdLookup.TryFind id
@@ -150,19 +150,19 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       parameters.Add(
         { 
           Name = paramName
-          SortKey = paramsWithFirstUsageOffset.[paramName]
+          SortKey = paramsWithFirstUsageOffset[paramName]
           Size =
-            reader.["suggested_max_length"]
+            reader["suggested_max_length"]
             |> unbox<int16>
             |> adjustSizeForDbType (match typeInfo with Scalar ti -> ti.SqlDbType | Table _ -> SqlDbType.Structured)
-          Precision = reader.["suggested_precision"] |> unbox<byte>
-          Scale = reader.["suggested_scale"] |> unbox<byte>
+          Precision = reader["suggested_precision"] |> unbox<byte>
+          Scale = reader["suggested_scale"] |> unbox<byte>
           FSharpDefaultValueString =
             match rule |> EffectiveScriptRule.getParam (paramName.TrimStart '@') with
             | { Nullable = Some true } -> Some "null"
             | _ -> None
           TypeInfo = typeInfo
-          IsOutput = reader.["suggested_is_output"] |> unbox<bool>
+          IsOutput = reader["suggested_is_output"] |> unbox<bool>
           IsCursorRef = false
         }
       )
@@ -192,7 +192,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     | Choice2Of3 script -> script.TempTables, true
     | Choice3Of3 tempTable -> [tempTable], true
 
-  use __ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
+  use _ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
 
   use cmd = conn.CreateCommand()
   cmd.CommandText <- "sys.sp_describe_first_result_set"
@@ -218,7 +218,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     let colName =
       if reader.IsDBNull "name" then None
       else
-        reader.["name"]
+        reader["name"]
         |> unbox<string>
         |> Some
         |> Option.filter (not << String.IsNullOrEmpty)
@@ -242,7 +242,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     if not shouldSkipCol then
 
       let typeInfo =
-        reader.["system_type_id"]
+        reader["system_type_id"]
         |> unbox<int>
         |> fun id ->
             sysTypeIdLookup.TryFind id
@@ -253,8 +253,8 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
 
       cols.Add { 
           OutputColumn.Name = colName
-          SortKey = reader.["column_ordinal"] |> unbox<int>
-          IsNullable = reader.["is_nullable"] |> unbox<bool>
+          SortKey = reader["column_ordinal"] |> unbox<int>
+          IsNullable = reader["is_nullable"] |> unbox<bool>
           TypeInfo = typeInfo
       }
 
@@ -274,7 +274,7 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
     | Choice2Of3 script -> script.TempTables, true
     | Choice3Of3 tempTable -> [tempTable], true
 
-  use __ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
+  use _ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
 
   let getCmd (conn: SqlConnection) =
 
@@ -449,28 +449,28 @@ let getTableTypes (conn: SqlConnection) =
     use reader = cmd.ExecuteReader()
     let tableTypes = ResizeArray()
     while reader.Read() do
-      let colName = reader.["ColumnName"] |> unbox<string>
+      let colName = reader["ColumnName"] |> unbox<string>
       let typeInfo =
-        reader.["ColumnTypeName"]
+        reader["ColumnTypeName"]
         |> unbox<string>
         |> fun typeName ->
             sqlDbTypeMap.TryFind typeName
             |> Option.defaultWith (fun () -> failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}'")
       tableTypes.Add { 
-          UserTypeId = reader.["TableTypeUserTypeId"] |> unbox<int>
-          SchemaName = reader.["TableTypeSchemaName"] |> unbox<string>
-          Name = reader.["TableTypeName"] |> unbox<string>
+          UserTypeId = reader["TableTypeUserTypeId"] |> unbox<int>
+          SchemaName = reader["TableTypeSchemaName"] |> unbox<string>
+          Name = reader["TableTypeName"] |> unbox<string>
           // Merged later
           Columns = [
             {
               Name = colName
-              IsNullable = reader.["ColumnIsNullable"] |> unbox<bool>
-              IsIdentity = reader.["ColumnIsIdentity"] |> unbox<bool>
-              IsComputed = reader.["ColumnIsComputed"] |> unbox<bool>
-              SortKey = reader.["ColumnId"] |> unbox<int>
-              Size = reader.["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
-              Precision = reader.["ColumnPrecision"] |> unbox<byte>
-              Scale = reader.["ColumnScale"] |> unbox<byte>
+              IsNullable = reader["ColumnIsNullable"] |> unbox<bool>
+              IsIdentity = reader["ColumnIsIdentity"] |> unbox<bool>
+              IsComputed = reader["ColumnIsComputed"] |> unbox<bool>
+              SortKey = reader["ColumnId"] |> unbox<int>
+              Size = reader["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
+              Precision = reader["ColumnPrecision"] |> unbox<byte>
+              Scale = reader["ColumnScale"] |> unbox<byte>
               TypeInfo = typeInfo
               ShouldSkipInTableDto = false  // not relevant/used
             }
@@ -511,19 +511,19 @@ let getStoredProceduresWithoutResultSetOrTempTables cfg (tableTypesByUserId: Map
       use reader = cmd.ExecuteReader()
       let sprocs = ResizeArray()
       while reader.Read() do
-        let schemaName = reader.["SchemaName"] |> unbox<string>
-        let name = reader.["name"] |> unbox<string>
+        let schemaName = reader["SchemaName"] |> unbox<string>
+        let name = reader["name"] |> unbox<string>
 
         sprocs.Add(
           { 
-            ObjectId = reader.["object_id"] |> unbox<int>
+            ObjectId = reader["object_id"] |> unbox<int>
             SchemaName = schemaName
             Name = name
             Definition =
               if reader.IsDBNull "Definition" then
                 failwith $"Unable to get definition of procedure {schemaName}.{name}. Ensure the current principal has the VIEW DEFINITION permission on the procedure."
               else
-                reader.["Definition"] |> unbox<string>
+                reader["Definition"] |> unbox<string>
             Parameters = []  // Added later
             TempTables = []  // Added later
             ResultSet = None  // Added later
@@ -557,13 +557,13 @@ let getStoredProceduresWithoutResultSetOrTempTables cfg (tableTypesByUserId: Map
       let parameters = ResizeArray()
       while reader.Read() do
 
-        let paramName = reader.["name"] |> unbox<string>
-        let sprocName = reader.["SprocName"] |> unbox<string>
+        let paramName = reader["name"] |> unbox<string>
+        let sprocName = reader["SprocName"] |> unbox<string>
 
         let typeInfo =
-          match reader.["SystemTypeName"] |> unbox<string> with
+          match reader["SystemTypeName"] |> unbox<string> with
           | "table type" ->
-              let userTypeId = reader.["user_type_id"] |> unbox<int>
+              let userTypeId = reader["user_type_id"] |> unbox<int>
               tableTypesByUserId.TryFind userTypeId
               |> Option.defaultWith (fun () -> failwith $"Unknown user type ID '%i{userTypeId}' for table type parameter '%s{paramName}' in stored procedure '%s{sprocName}'")
               |> Table
@@ -573,20 +573,20 @@ let getStoredProceduresWithoutResultSetOrTempTables cfg (tableTypesByUserId: Map
               |> Scalar
 
         parameters.Add(
-          reader.["object_id"] |> unbox<int>,
+          reader["object_id"] |> unbox<int>,
           { 
-            Name = reader.["name"] |> unbox<string>
-            SortKey = reader.["parameter_id"] |> unbox<int>
+            Name = reader["name"] |> unbox<string>
+            SortKey = reader["parameter_id"] |> unbox<int>
             Size = 
-              reader.["max_length"]
+              reader["max_length"]
               |> unbox<int16>
               |> adjustSizeForDbType (match typeInfo with Scalar ti -> ti.SqlDbType | Table _ -> SqlDbType.Structured)
-            Precision = reader.["precision"] |> unbox<byte>
-            Scale = reader.["scale"] |> unbox<byte>
+            Precision = reader["precision"] |> unbox<byte>
+            Scale = reader["scale"] |> unbox<byte>
             FSharpDefaultValueString = None  // Added later
             TypeInfo = typeInfo
-            IsOutput = reader.["is_output"] |> unbox<bool>
-            IsCursorRef = reader.["is_cursor_ref"] |> unbox<bool>
+            IsOutput = reader["is_output"] |> unbox<bool>
+            IsCursorRef = reader["is_cursor_ref"] |> unbox<bool>
           }
         )
 
@@ -669,9 +669,9 @@ let getPrimaryKeyColumnNamesByTableName (conn: SqlConnection) =
     while reader.Read() do
 
       let rowData =
-        reader.["schema_name"] |> unbox<string>,
-        reader.["table_name"] |> unbox<string>,
-        reader.["column_name"] |> unbox<string>
+        reader["schema_name"] |> unbox<string>,
+        reader["table_name"] |> unbox<string>,
+        reader["column_name"] |> unbox<string>
       data.Add(rowData)
 
     data
@@ -732,9 +732,9 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
     let allColumnsByTableSchemaAndName = Dictionary<string, ResizeArray<string>>()
     while reader.Read() do
 
-      let schemaName = reader.["SchemaName"] |> unbox<string>
-      let tableName = reader.["TableName"] |> unbox<string>
-      let colName = reader.["ColName"] |> unbox<string>
+      let schemaName = reader["SchemaName"] |> unbox<string>
+      let tableName = reader["TableName"] |> unbox<string>
+      let colName = reader["ColName"] |> unbox<string>
 
       if RuleSet.shouldIncludeTableDto schemaName tableName cfg || RuleSet.shouldIncludeTableScripts schemaName tableName cfg then
 
@@ -743,7 +743,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
         | false, _->
             let r = ResizeArray()
             r.Add colName
-            allColumnsByTableSchemaAndName.[key] <- r
+            allColumnsByTableSchemaAndName[key] <- r
         | true, names -> names.Add colName
 
         let shouldSkipCol =
@@ -753,7 +753,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
           |> Option.defaultValue false
 
         let typeInfo =
-          reader.["system_type_id"]
+          reader["system_type_id"]
           |> unbox<byte>
           |> int
           |> fun id ->
@@ -779,22 +779,22 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
                 Columns = [
                   {
                     TableColumn.Name = colName
-                    SortKey = reader.["column_id"] |> unbox<int>
-                    IsNullable = reader.["is_nullable"] |> unbox<bool>
-                    IsIdentity = reader.["is_identity"] |> unbox<bool>
-                    IsComputed = reader.["is_computed"] |> unbox<bool>
+                    SortKey = reader["column_id"] |> unbox<int>
+                    IsNullable = reader["is_nullable"] |> unbox<bool>
+                    IsIdentity = reader["is_identity"] |> unbox<bool>
+                    IsComputed = reader["is_computed"] |> unbox<bool>
                     Size =
-                      reader.["max_length"]
+                      reader["max_length"]
                       |> unbox<int16>
                       |> adjustSizeForDbType typeInfo.SqlDbType
-                    Precision = reader.["precision"] |> unbox<byte>
-                    Scale = reader.["scale"] |> unbox<byte>
+                    Precision = reader["precision"] |> unbox<byte>
+                    Scale = reader["scale"] |> unbox<byte>
                     TypeInfo = typeInfo
                     ShouldSkipInTableDto = shouldSkipCol
                   }
                 ]
                 PrimaryKeyColumns = []  // Set later
-                IsView = reader.["IsView"] |> unbox<bool>
+                IsView = reader["IsView"] |> unbox<bool>
               }
             )
 
@@ -808,7 +808,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
           |> EffectiveTableDtoRule.allColumnNames
 
         let key = $"{schemaName}.{tableName}"
-        for unmatchedColumn in allColumnNamesWithRules - set allColumnsByTableSchemaAndName.[key] do
+        for unmatchedColumn in allColumnNamesWithRules - set allColumnsByTableSchemaAndName[key] do
           logWarning $"Config contains unmatched rule for column '%s{unmatchedColumn}' in table {schemaName}.{tableName}"
 
         let cols = xs |> List.collect (fun x -> x.Columns) |> List.sortBy (fun c -> c.SortKey)
@@ -999,7 +999,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 GlobMatchOutput = rule.Name
                 RelativePathSegments =
                   let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  segmentsWithName[0..segmentsWithName.Length-2]
                   |> Array.toList
                 NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
@@ -1041,7 +1041,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 GlobMatchOutput = rule.Name
                 RelativePathSegments =
                   let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  segmentsWithName[0..segmentsWithName.Length-2]
                   |> Array.toList
                 NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
@@ -1094,7 +1094,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 GlobMatchOutput = rule.Name
                 RelativePathSegments =
                   let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  segmentsWithName[0..segmentsWithName.Length-2]
                   |> Array.toList
                 NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
@@ -1170,7 +1170,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 GlobMatchOutput = rule.Name
                 RelativePathSegments =
                   let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  segmentsWithName[0..segmentsWithName.Length-2]
                   |> Array.toList
                 NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
@@ -1229,7 +1229,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 GlobMatchOutput = rule.Name
                 RelativePathSegments =
                   let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                  segmentsWithName.[0..segmentsWithName.Length-2]
+                  segmentsWithName[0..segmentsWithName.Length-2]
                   |> Array.toList
                 NameWithoutExtension = Path.GetFileName rule.Name
                 Source =
@@ -1297,7 +1297,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   GlobMatchOutput = rule.Name
                   RelativePathSegments =
                     let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                    segmentsWithName.[0..segmentsWithName.Length-2]
+                    segmentsWithName[0..segmentsWithName.Length-2]
                     |> Array.toList
                   NameWithoutExtension = Path.GetFileName rule.Name
                   Source =
@@ -1369,7 +1369,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   GlobMatchOutput = rule.Name
                   RelativePathSegments =
                     let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                    segmentsWithName.[0..segmentsWithName.Length-2]
+                    segmentsWithName[0..segmentsWithName.Length-2]
                     |> Array.toList
                   NameWithoutExtension = Path.GetFileName rule.Name
                   Source =
@@ -1457,7 +1457,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   GlobMatchOutput = rule.Name
                   RelativePathSegments =
                     let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                    segmentsWithName.[0..segmentsWithName.Length-2]
+                    segmentsWithName[0..segmentsWithName.Length-2]
                     |> Array.toList
                   NameWithoutExtension = Path.GetFileName rule.Name
                   Source =
@@ -1558,7 +1558,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   GlobMatchOutput = rule.Name
                   RelativePathSegments =
                     let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
-                    segmentsWithName.[0..segmentsWithName.Length-2]
+                    segmentsWithName[0..segmentsWithName.Length-2]
                     |> Array.toList
                   NameWithoutExtension = Path.GetFileName rule.Name
                   Source =
@@ -1598,7 +1598,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     scriptsWithoutParamsOrResultSetsOrTempTables @ tableScripts
     |> List.map (fun script ->
         let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-        let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition.[tt.Definition])
+        let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition[tt.Definition])
 
         if tempTables |> List.countBy (fun tt -> tt.Name) |> List.exists (fun (_, count) -> count > 1) then
           failwithError $"The rule for script '%s{script.GlobMatchOutput}' contains multiple temp table definitions using the same temp table name. This is not supported."
@@ -1655,7 +1655,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
       getStoredProceduresWithoutResultSetOrTempTables cfg tableTypesByUserId conn
       |> List.map (fun sproc ->
           let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-          let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition.[tt.Definition])
+          let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition[tt.Definition])
 
           if tempTables |> List.countBy (fun tt -> tt.Name) |> List.exists (fun (_, count) -> count > 1) then
             failwithError $"The rule for procedure '%s{sproc.SchemaName}.%s{sproc.Name}' contains multiple temp table definitions using the same temp table name. This is not supported."

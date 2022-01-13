@@ -1031,34 +1031,34 @@ let tests =
               .Execute()
 
           for i in [0; 1] do
-            test <@ bigint = getRes.[i].Bigint @>
-            test <@ binary_42 = getRes.[i].Binary @>
-            test <@ bit = getRes.[i].Bit @>
-            test <@ char_42 = getRes.[i].Char @>
-            test <@ date = getRes.[i].Date @>
-            test <@ datetime = getRes.[i].Datetime @>
-            test <@ datetime2_3 = getRes.[i].Datetime2 @>
-            test <@ datetimeoffset_1 = getRes.[i].Datetimeoffset @>
-            test <@ decimal_10_5 = getRes.[i].Decimal @>
-            test <@ float_42 = getRes.[i].Float @>
-            test <@ image = getRes.[i].Image @>
-            test <@ int = getRes.[i].Int @>
-            test <@ money = getRes.[i].Money @>
-            test <@ nchar_42 = getRes.[i].Nchar @>
-            test <@ ntext = getRes.[i].Ntext @>
-            test <@ numeric_8_3 = getRes.[i].Numeric @>
-            test <@ nvarchar_42 = getRes.[i].Nvarchar @>
-            test <@ real = getRes.[i].Real @>
-            test <@ smalldatetime = getRes.[i].Smalldatetime @>
-            test <@ smallint = getRes.[i].Smallint @>
-            test <@ smallmoney = getRes.[i].Smallmoney @>
-            test <@ text = getRes.[i].Text @>
-            test <@ time_1 = getRes.[i].Time @>
-            test <@ tinyint = getRes.[i].Tinyint @>
-            test <@ uniqueidentifier = getRes.[i].Uniqueidentifier @>
-            test <@ varbinary_42 = getRes.[i].Varbinary @>
-            test <@ varchar_42 = getRes.[i].Varchar @>
-            test <@ xml = getRes.[i].Xml @>
+            test <@ bigint = getRes[i].Bigint @>
+            test <@ binary_42 = getRes[i].Binary @>
+            test <@ bit = getRes[i].Bit @>
+            test <@ char_42 = getRes[i].Char @>
+            test <@ date = getRes[i].Date @>
+            test <@ datetime = getRes[i].Datetime @>
+            test <@ datetime2_3 = getRes[i].Datetime2 @>
+            test <@ datetimeoffset_1 = getRes[i].Datetimeoffset @>
+            test <@ decimal_10_5 = getRes[i].Decimal @>
+            test <@ float_42 = getRes[i].Float @>
+            test <@ image = getRes[i].Image @>
+            test <@ int = getRes[i].Int @>
+            test <@ money = getRes[i].Money @>
+            test <@ nchar_42 = getRes[i].Nchar @>
+            test <@ ntext = getRes[i].Ntext @>
+            test <@ numeric_8_3 = getRes[i].Numeric @>
+            test <@ nvarchar_42 = getRes[i].Nvarchar @>
+            test <@ real = getRes[i].Real @>
+            test <@ smalldatetime = getRes[i].Smalldatetime @>
+            test <@ smallint = getRes[i].Smallint @>
+            test <@ smallmoney = getRes[i].Smallmoney @>
+            test <@ text = getRes[i].Text @>
+            test <@ time_1 = getRes[i].Time @>
+            test <@ tinyint = getRes[i].Tinyint @>
+            test <@ uniqueidentifier = getRes[i].Uniqueidentifier @>
+            test <@ varbinary_42 = getRes[i].Varbinary @>
+            test <@ varchar_42 = getRes[i].Varchar @>
+            test <@ xml = getRes[i].Xml @>
       }
 
 

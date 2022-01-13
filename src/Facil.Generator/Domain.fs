@@ -441,6 +441,6 @@ let getParameterDefaultValues (sproc: StoredProcedure) =
     { new TSqlFragmentVisitor() with
         member _.Visit (node: ProcedureParameter) =
           base.Visit node
-          paramDefaults.[node.VariableName.Value] <- parseDefaultValue sproc.Definition node.Value }
+          paramDefaults[node.VariableName.Value] <- parseDefaultValue sproc.Definition node.Value }
 
   paramDefaults
