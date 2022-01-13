@@ -1071,7 +1071,7 @@ let renderDocument (cfg: RuleSet) hash (everything: Everything) =
       .Assembly
       .GetEntryAssembly()
       .GetCustomAttributes(typeof<Reflection.AssemblyInformationalVersionAttribute>, true)
-      |> Array.map (unbox<Reflection.AssemblyInformationalVersionAttribute>)
+      |> Array.map unbox<Reflection.AssemblyInformationalVersionAttribute>
       |> Array.head
       |> fun x -> x.InformationalVersion
   [
