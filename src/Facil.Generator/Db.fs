@@ -630,7 +630,7 @@ let getStoredProceduresWithoutResultSetOrTempTables cfg (tableTypesByUserId: Map
                           match paramDefaults.TryGetValue param.Name with
                           | false, _ | true, None -> None
                           | true, Some null -> Some "null"
-                          | true, Some x -> sprintf "%A" x |> Some
+                          | true, Some x -> Some $"%A{x}"
                 }
             )
       }

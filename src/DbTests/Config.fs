@@ -12,7 +12,7 @@ let private config =
 let private requireConfigValue path =
   let x = config.GetValue<string> path
   if isNull x then
-    failwithf "Missing required config value '%s'" path
+    failwith $"Missing required config value '%s{path}'"
   else x
 
 let connStr = requireConfigValue "connectionString"
