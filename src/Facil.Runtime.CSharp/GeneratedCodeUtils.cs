@@ -430,7 +430,7 @@ namespace Facil.Runtime.CSharp
             throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
-        public static async Task<int> ExecuteNonQueryAsync<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
+        public static async Task<int> ExecuteNonQueryAsync(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
         {
             if (existingConn is not null)
             {
@@ -455,7 +455,7 @@ namespace Facil.Runtime.CSharp
             throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
-        public static int ExecuteNonQuery<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData)
+        public static int ExecuteNonQuery(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData)
         {
             if (existingConn is not null)
             {
