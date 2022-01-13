@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Facil.Runtime.CSharp
 {
 
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [SuppressMessage("ReSharper", "UnusedType.Global")]
     public static class GeneratedCodeUtils
     {
         private static async Task LoadTempTablesAsync(SqlConnection conn, IEnumerable<TempTableData> tempTableData, SqlTransaction? tran, CancellationToken ct)
@@ -86,6 +88,7 @@ namespace Facil.Runtime.CSharp
                 return list;
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
@@ -127,6 +130,7 @@ namespace Facil.Runtime.CSharp
                 return list;
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
@@ -168,6 +172,7 @@ namespace Facil.Runtime.CSharp
                 return list;
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
@@ -314,6 +319,7 @@ namespace Facil.Runtime.CSharp
                 return FSharpOption<T>.Some(getItem(reader));
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
@@ -344,6 +350,7 @@ namespace Facil.Runtime.CSharp
                 return FSharpValueOption<T>.Some(getItem(reader));
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
@@ -374,6 +381,7 @@ namespace Facil.Runtime.CSharp
                 return FSharpOption<T>.Some(getItem(reader));
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
@@ -404,6 +412,7 @@ namespace Facil.Runtime.CSharp
                 return FSharpValueOption<T>.Some(getItem(reader));
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
@@ -431,6 +440,7 @@ namespace Facil.Runtime.CSharp
                 return await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
@@ -455,6 +465,7 @@ namespace Facil.Runtime.CSharp
                 return cmd.ExecuteNonQuery();
             }
 
+            // ReSharper disable once InvertIf
             if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
