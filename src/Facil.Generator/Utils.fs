@@ -9,7 +9,7 @@ exception FacilException of printMsg: (unit -> unit)
 
 // Format:
 // https://docs.microsoft.com/en-us/cpp/build/formatting-the-output-of-a-custom-build-step-or-build-event?view=msvc-160
-// Potentially also relevent:
+// Potentially also relevant:
 // https://docs.microsoft.com/en-us/visualstudio/msbuild/exec-task?view=vs-2019
 
 let private log warnOrErr msg =
