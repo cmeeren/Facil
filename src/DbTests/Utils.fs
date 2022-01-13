@@ -5,7 +5,6 @@ open System
 open System.Data.SqlTypes
 open System.Threading
 open System.Threading.Tasks
-open System.Reflection
 open FSharp.Control
 open Hedgehog
 
