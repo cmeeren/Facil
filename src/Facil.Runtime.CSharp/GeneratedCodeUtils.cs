@@ -59,15 +59,13 @@ namespace Facil.Runtime.CSharp
         private static void ConfigureCommand(SqlCommand cmd, SqlTransaction? tran, Action<SqlCommand> configureCmd)
         {
             configureCmd(cmd);
-            if (tran != null)
+            if (tran == null) return;
+            if (cmd.Transaction != null)
             {
-                if (cmd.Transaction != null)
-                {
-                    throw new Exception("Transaction must not be set both WithConnection and ConfigureCommand; prefer WithConnection");
-                }
-
-                cmd.Transaction = tran;
+                throw new Exception("Transaction must not be set both WithConnection and ConfigureCommand; prefer WithConnection");
             }
+
+            cmd.Transaction = tran;
         }
 
         public static async Task<List<T>> ExecuteQueryEagerAsync<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
@@ -79,12 +77,11 @@ namespace Facil.Runtime.CSharp
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
                 var list = new List<T>();
-                if (reader.HasRows) {
-                    initOrdinals(reader);
-                    while (await reader.ReadAsync(ct).ConfigureAwait(false))
-                    {
-                        list.Add(getItem(reader));
-                    }
+                if (!reader.HasRows) return list;
+                initOrdinals(reader);
+                while (await reader.ReadAsync(ct).ConfigureAwait(false))
+                {
+                    list.Add(getItem(reader));
                 }
                 return list;
             }
@@ -98,13 +95,11 @@ namespace Facil.Runtime.CSharp
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
                 var list = new List<T>();
-                if (reader.HasRows)
+                if (!reader.HasRows) return list;
+                initOrdinals(reader);
+                while (await reader.ReadAsync(ct).ConfigureAwait(false))
                 {
-                    initOrdinals(reader);
-                    while (await reader.ReadAsync(ct).ConfigureAwait(false))
-                    {
-                        list.Add(getItem(reader));
-                    }
+                    list.Add(getItem(reader));
                 }
                 return list;
             }
@@ -123,13 +118,11 @@ namespace Facil.Runtime.CSharp
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
                 var list = new List<T>();
-                if (reader.HasRows)
+                if (!reader.HasRows) return list;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        list.Add(getItem(reader));
-                    }
+                    list.Add(getItem(reader));
                 }
                 return list;
             }
@@ -143,13 +136,11 @@ namespace Facil.Runtime.CSharp
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
                 var list = new List<T>();
-                if (reader.HasRows)
+                if (!reader.HasRows) return list;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        list.Add(getItem(reader));
-                    }
+                    list.Add(getItem(reader));
                 }
                 return list;
             }
@@ -168,13 +159,11 @@ namespace Facil.Runtime.CSharp
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
                 var list = new List<T>();
-                if (reader.HasRows)
+                if (!reader.HasRows) return list;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        list.Add(getItem(reader));
-                    }
+                    list.Add(getItem(reader));
                 }
                 return list;
             }
@@ -188,13 +177,11 @@ namespace Facil.Runtime.CSharp
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
                 var list = new List<T>();
-                if (reader.HasRows)
+                if (!reader.HasRows) return list;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        list.Add(getItem(reader));
-                    }
+                    list.Add(getItem(reader));
                 }
                 return list;
             }
@@ -212,13 +199,11 @@ namespace Facil.Runtime.CSharp
                 using var cmd = existingConn.CreateCommand();
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
-                if (reader.HasRows)
+                if (!reader.HasRows) yield break;
+                initOrdinals(reader);
+                while (await reader.ReadAsync(ct).ConfigureAwait(false))
                 {
-                    initOrdinals(reader);
-                    while (await reader.ReadAsync(ct).ConfigureAwait(false))
-                    {
-                        yield return getItem(reader);
-                    }
+                    yield return getItem(reader);
                 }
             }
             else if (connStr is not null)
@@ -230,13 +215,11 @@ namespace Facil.Runtime.CSharp
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
-                if (reader.HasRows)
+                if (!reader.HasRows) yield break;
+                initOrdinals(reader);
+                while (await reader.ReadAsync(ct).ConfigureAwait(false))
                 {
-                    initOrdinals(reader);
-                    while (await reader.ReadAsync(ct).ConfigureAwait(false))
-                    {
-                        yield return getItem(reader);
-                    }
+                    yield return getItem(reader);
                 }
             }
             else
@@ -253,13 +236,11 @@ namespace Facil.Runtime.CSharp
                 using var cmd = existingConn.CreateCommand();
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
-                if (reader.HasRows)
+                if (!reader.HasRows) yield break;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        yield return getItem(reader);
-                    }
+                    yield return getItem(reader);
                 }
             }
             else if (connStr is not null)
@@ -271,13 +252,11 @@ namespace Facil.Runtime.CSharp
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
-                if (reader.HasRows)
+                if (!reader.HasRows) yield break;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        yield return getItem(reader);
-                    }
+                    yield return getItem(reader);
                 }
             }
             else
@@ -294,13 +273,11 @@ namespace Facil.Runtime.CSharp
                 using var cmd = existingConn.CreateCommand();
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
-                if (reader.HasRows)
+                if (!reader.HasRows) yield break;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        yield return getItem(reader);
-                    }
+                    yield return getItem(reader);
                 }
             }
             else if (connStr is not null)
@@ -312,13 +289,11 @@ namespace Facil.Runtime.CSharp
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
-                if (reader.HasRows)
+                if (!reader.HasRows) yield break;
+                initOrdinals(reader);
+                while (reader.Read())
                 {
-                    initOrdinals(reader);
-                    while (reader.Read())
-                    {
-                        yield return getItem(reader);
-                    }
+                    yield return getItem(reader);
                 }
             }
             else
@@ -335,12 +310,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = existingConn.CreateCommand();
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
-                if (await reader.ReadAsync(ct).ConfigureAwait(false))
-                {
-                    initOrdinals(reader);
-                    return FSharpOption<T>.Some(getItem(reader));
-                }
-                return FSharpOption<T>.None;
+                if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpOption<T>.None;
+                initOrdinals(reader);
+                return FSharpOption<T>.Some(getItem(reader));
             }
             else if (connStr is not null)
             {
@@ -351,12 +323,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
-                if (await reader.ReadAsync(ct).ConfigureAwait(false))
-                {
-                    initOrdinals(reader);
-                    return FSharpOption<T>.Some(getItem(reader));
-                }
-                return FSharpOption<T>.None;
+                if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpOption<T>.None;
+                initOrdinals(reader);
+                return FSharpOption<T>.Some(getItem(reader));
             }
             else
             {
@@ -372,12 +341,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = existingConn.CreateCommand();
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
-                if (await reader.ReadAsync(ct).ConfigureAwait(false))
-                {
-                    initOrdinals(reader);
-                    return FSharpValueOption<T>.Some(getItem(reader));
-                }
-                return FSharpValueOption<T>.None;
+                if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpValueOption<T>.None;
+                initOrdinals(reader);
+                return FSharpValueOption<T>.Some(getItem(reader));
             }
             else if (connStr is not null)
             {
@@ -388,12 +354,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
-                if (await reader.ReadAsync(ct).ConfigureAwait(false))
-                {
-                    initOrdinals(reader);
-                    return FSharpValueOption<T>.Some(getItem(reader));
-                }
-                return FSharpValueOption<T>.None;
+                if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpValueOption<T>.None;
+                initOrdinals(reader);
+                return FSharpValueOption<T>.Some(getItem(reader));
             }
             else
             {
@@ -409,12 +372,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = existingConn.CreateCommand();
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
-                if (reader.Read())
-                {
-                    initOrdinals(reader);
-                    return FSharpOption<T>.Some(getItem(reader));
-                }
-                return FSharpOption<T>.None;
+                if (!reader.Read()) return FSharpOption<T>.None;
+                initOrdinals(reader);
+                return FSharpOption<T>.Some(getItem(reader));
             }
             else if (connStr is not null)
             {
@@ -425,12 +385,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
-                if (reader.Read())
-                {
-                    initOrdinals(reader);
-                    return FSharpOption<T>.Some(getItem(reader));
-                }
-                return FSharpOption<T>.None;
+                if (!reader.Read()) return FSharpOption<T>.None;
+                initOrdinals(reader);
+                return FSharpOption<T>.Some(getItem(reader));
             }
             else
             {
@@ -446,12 +403,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = existingConn.CreateCommand();
                 ConfigureCommand(cmd, tran, configureCmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
-                if (reader.Read())
-                {
-                    initOrdinals(reader);
-                    return FSharpValueOption<T>.Some(getItem(reader));
-                }
-                return FSharpValueOption<T>.None;
+                if (!reader.Read()) return FSharpValueOption<T>.None;
+                initOrdinals(reader);
+                return FSharpValueOption<T>.Some(getItem(reader));
             }
             else if (connStr is not null)
             {
@@ -462,12 +416,9 @@ namespace Facil.Runtime.CSharp
                 using var cmd = conn.CreateCommand();
                 configureCmd(cmd);
                 using var reader = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
-                if (reader.Read())
-                {
-                    initOrdinals(reader);
-                    return FSharpValueOption<T>.Some(getItem(reader));
-                }
-                return FSharpValueOption<T>.None;
+                if (!reader.Read()) return FSharpValueOption<T>.None;
+                initOrdinals(reader);
+                return FSharpValueOption<T>.Some(getItem(reader));
             }
             else
             {
