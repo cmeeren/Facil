@@ -85,7 +85,8 @@ namespace Facil.Runtime.CSharp
                 }
                 return list;
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -103,10 +104,8 @@ namespace Facil.Runtime.CSharp
                 }
                 return list;
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static async Task<List<T>> ExecuteQueryEagerAsyncWithSyncRead<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
@@ -126,7 +125,8 @@ namespace Facil.Runtime.CSharp
                 }
                 return list;
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -144,10 +144,8 @@ namespace Facil.Runtime.CSharp
                 }
                 return list;
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static List<T> ExecuteQueryEager<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
@@ -167,7 +165,8 @@ namespace Facil.Runtime.CSharp
                 }
                 return list;
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -185,10 +184,8 @@ namespace Facil.Runtime.CSharp
                 }
                 return list;
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static async IAsyncEnumerable<T> ExecuteQueryLazyAsync<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, [EnumeratorCancellation] CancellationToken ct)
@@ -314,7 +311,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpOption<T>.Some(getItem(reader));
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -327,10 +325,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpOption<T>.Some(getItem(reader));
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static async Task<FSharpValueOption<T>> ExecuteQuerySingleAsyncVoption<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
@@ -345,7 +341,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpValueOption<T>.Some(getItem(reader));
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -358,10 +355,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpValueOption<T>.Some(getItem(reader));
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static FSharpOption<T> ExecuteQuerySingle<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
@@ -376,7 +371,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpOption<T>.Some(getItem(reader));
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -389,10 +385,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpOption<T>.Some(getItem(reader));
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static FSharpValueOption<T> ExecuteQuerySingleVoption<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData)
@@ -407,7 +401,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpValueOption<T>.Some(getItem(reader));
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -420,10 +415,8 @@ namespace Facil.Runtime.CSharp
                 initOrdinals(reader);
                 return FSharpValueOption<T>.Some(getItem(reader));
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static async Task<int> ExecuteNonQueryAsync<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData, CancellationToken ct)
@@ -435,7 +428,8 @@ namespace Facil.Runtime.CSharp
                 ConfigureCommand(cmd, tran, configureCmd);
                 return await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 await using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -445,10 +439,8 @@ namespace Facil.Runtime.CSharp
                 configureCmd(cmd);
                 return await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
         public static int ExecuteNonQuery<T>(SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData)
@@ -460,7 +452,8 @@ namespace Facil.Runtime.CSharp
                 ConfigureCommand(cmd, tran, configureCmd);
                 return cmd.ExecuteNonQuery();
             }
-            else if (connStr is not null)
+
+            if (connStr is not null)
             {
                 using var conn = new SqlConnection(connStr);
                 configureNewConn(conn);
@@ -470,10 +463,8 @@ namespace Facil.Runtime.CSharp
                 configureCmd(cmd);
                 return cmd.ExecuteNonQuery();
             }
-            else
-            {
-                throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
-            }
+
+            throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
         }
 
     }
