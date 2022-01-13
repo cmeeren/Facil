@@ -7,25 +7,25 @@ namespace Facil.Runtime.CSharp
 {
     internal class TempTableLoader : IDataReader
     {
-        private readonly int fieldCount;
-        private readonly IEnumerator<object[]> enumerator;
+        private readonly int _fieldCount;
+        private readonly IEnumerator<object[]> _enumerator;
 
         public TempTableLoader(int fieldCount, IEnumerable<object[]> items)
         {
-            this.fieldCount = fieldCount;
-            enumerator = items.GetEnumerator();
+            _fieldCount = fieldCount;
+            _enumerator = items.GetEnumerator();
         }
 
-        public int FieldCount => fieldCount;
+        public int FieldCount => _fieldCount;
 
         public bool Read()
         {
-            return enumerator.MoveNext();
+            return _enumerator.MoveNext();
         }
 
         public object GetValue(int i)
         {
-            return enumerator.Current[i];
+            return _enumerator.Current[i];
         }
 
         public bool NextResult()
