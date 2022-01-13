@@ -119,6 +119,7 @@ namespace Facil.Runtime.CSharp
                 var list = new List<T>();
                 if (!reader.HasRows) return list;
                 initOrdinals(reader);
+                // ReSharper disable once MethodHasAsyncOverloadWithCancellation
                 while (reader.Read())
                 {
                     list.Add(getItem(reader));
@@ -138,6 +139,7 @@ namespace Facil.Runtime.CSharp
                 var list = new List<T>();
                 if (!reader.HasRows) return list;
                 initOrdinals(reader);
+                // ReSharper disable once MethodHasAsyncOverloadWithCancellation
                 while (reader.Read())
                 {
                     list.Add(getItem(reader));
