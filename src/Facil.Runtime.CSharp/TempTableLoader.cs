@@ -13,7 +13,7 @@ namespace Facil.Runtime.CSharp
         public TempTableLoader(int fieldCount, IEnumerable<object[]> items)
         {
             this.fieldCount = fieldCount;
-            this.enumerator = items.GetEnumerator();
+            enumerator = items.GetEnumerator();
         }
 
         public int FieldCount => fieldCount;
