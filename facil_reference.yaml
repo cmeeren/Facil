@@ -20,7 +20,7 @@ configs:
   # 'userSecrets' allow you to use configuration values from user secrets.
   - userSecrets: 80d5e7ec-f577-4360-b60a-f10ea004da1d
 
-  # 'envVars' allow you to use configuration values from environment varibles. Supply the
+  # 'envVars' allow you to use configuration values from environment variables. Supply the
   # prefix that environment variable names must start with. The prefix will be removed
   # from the environment variable names.
   - envVars: ""
