@@ -119,7 +119,7 @@ module Program =
             let existingLines = if File.Exists outFile then File.ReadAllLines(outFile) |> Array.toList else []
 
             let shouldCheckLine (line: string) =
-              not <| line.Trim().StartsWith "//"
+              not <| line.Trim().StartsWith("//", StringComparison.Ordinal)
 
             let linesToCheck = lines |> List.toArray |> Array.collect (fun s -> s.Split Environment.NewLine)
             let existingLinesToCheck = existingLines |> List.toArray

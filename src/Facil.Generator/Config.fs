@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Facil.Config
 
+open System
 open System.IO
 open System.Text.RegularExpressions
 open GlobExpressions
@@ -507,7 +508,7 @@ module TempTableRule =
   let fromDto basePath (dto: TempTableRuleDto) =
     {
       Definition =
-        if dto.definition.EndsWith ".sql" && File.Exists(Path.Combine(basePath, dto.definition)) then
+        if dto.definition.EndsWith(".sql", StringComparison.Ordinal) && File.Exists(Path.Combine(basePath, dto.definition)) then
           File.ReadAllText(Path.Combine(basePath, dto.definition))
         else
           dto.definition

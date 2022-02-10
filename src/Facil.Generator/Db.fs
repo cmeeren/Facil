@@ -119,7 +119,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
         reader["name"]
         |> unbox<string>
         |> fun s ->
-            if s.StartsWith facilTempVarPrefix then
+            if s.StartsWith(facilTempVarPrefix, StringComparison.Ordinal) then
               "@" + s.Substring(facilTempVarPrefix.Length)
             else s
 
@@ -172,7 +172,7 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
   with
   | :? SqlException as ex when ex.Message.Contains "Procedure or function" && ex.Message.Contains "has too many arguments specified" ->
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. If you are using EXEC statements, all parameters passed to the procedure/function you execute may need to be declared in the script or Facil config file.", ex)
-  | :? SqlException as ex when ex.Message.StartsWith "Invalid object name '#" ->
+  | :? SqlException as ex when ex.Message.StartsWith("Invalid object name '#", StringComparison.Ordinal) ->
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. If you are using temp tables, you may need to define them in the script's `tempTables` array in the Facil config file.", ex)
   | :? SqlException as ex when ex.Message.Contains "used more than once in the batch being analyzed" ->
       raise <| Exception($"Error getting parameters for script {script.GlobMatchOutput}. Parameters that are used more than once must be specified in the Facil config file.", ex)
@@ -188,7 +188,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     | Choice1Of3 sproc ->
         // Only use local temp tables for procedures; since we can't rewrite the sproc like we can with scripts,
         // don't touch global temp tables. They must exist at build-time.
-        sproc.TempTables |> List.filter (fun x -> not (x.Name.StartsWith("##"))), false
+        sproc.TempTables |> List.filter (fun x -> not (x.Name.StartsWith("##", StringComparison.Ordinal))), false
     | Choice2Of3 script -> script.TempTables, true
     | Choice3Of3 tempTable -> [tempTable], true
 
@@ -270,7 +270,7 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
     | Choice1Of3 sproc ->
         // Only use local temp tables for procedures; since we can't rewrite the sproc like we can with scripts,
         // don't touch global temp tables. They must exist at build-time.
-        sproc.TempTables |> List.filter (fun x -> not (x.Name.StartsWith("##"))), false
+        sproc.TempTables |> List.filter (fun x -> not (x.Name.StartsWith("##", StringComparison.Ordinal))), false
     | Choice2Of3 script -> script.TempTables, true
     | Choice3Of3 tempTable -> [tempTable], true
 
