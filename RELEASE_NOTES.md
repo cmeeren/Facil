@@ -4,6 +4,7 @@ Release notes
 ### 2.3.1 (2022-03-01)
 
 * Fixed erroneous build-time warning 
+* Updated Microsoft.Data.SqlClient from 4.0.0 to 4.1.0
 
 ### 2.3.0 (2022-01-12)
 

@@ -85,12 +85,12 @@
     <PackageReference Include="Expecto" Version="9.0.4" />
     <PackageReference Include="Facil" Version="*" />
     <PackageReference Include="FSharp.Control.AsyncSeq" Version="3.2.1" />
-    <PackageReference Include="Hedgehog" Version="0.11.1" />
+    <PackageReference Include="Hedgehog" Version="0.12.1" />
     <PackageReference Include="Hedgehog.Experimental" Version="0.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="Unquote" Version="6.1.0" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.12.13" />
   </ItemGroup>
