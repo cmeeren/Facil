@@ -759,12 +759,12 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
           |> fun id ->
               sysTypeIdLookup.TryFind id
               |> Option.teeNone (fun () ->
-                  if not shouldSkipCol then
+                  if RuleSet.shouldIncludeTableDto schemaName tableName cfg && not shouldSkipCol then
                     logWarning $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped.")
           |> Option.bind (fun typeName ->
               sqlDbTypeMap.TryFind typeName
               |> Option.teeNone (fun () ->
-                  if not shouldSkipCol then
+                  if RuleSet.shouldIncludeTableDto schemaName tableName cfg && not shouldSkipCol then
                     logWarning $"Unsupported SQL system type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped.")
           )
 

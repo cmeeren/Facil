@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 2.3.1 (2022-03-01)
+
+* Fixed erroneous build-time warning 
+
 ### 2.3.0 (2022-01-12)
 
 * Now supports temp tables for procedures (in addition to scripts)
