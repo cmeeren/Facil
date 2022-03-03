@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 2.3.2 (2022-03-03)
+
+* Reverted some package changes in the generator to avoid an [upstream bug](https://github.com/dotnet/runtime/issues/65756)
+
 ### 2.3.1 (2022-03-01)
 
 * Fixed erroneous build-time warning 
