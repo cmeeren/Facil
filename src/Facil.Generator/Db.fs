@@ -630,7 +630,11 @@ let getStoredProceduresWithoutResultSetOrTempTables cfg (tableTypesByUserId: Map
                           match paramDefaults.TryGetValue param.Name with
                           | false, _ | true, None -> None
                           | true, Some null -> Some "null"
-                          | true, Some x -> Some $"%A{x}"
+                          | true, Some x ->
+                              // Note: If, in the future, FSharpDefaultValueString is used for anything other than
+                              // comparing against the literal string "null", keep in mind that using %A will render
+                              // strings with quotes, many number types with suffixes (e.g. 1.0M for decimal), etc.
+                              Some $"%A{x}"
                 }
             )
       }
