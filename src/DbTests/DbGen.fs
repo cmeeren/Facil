@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: f1a76c5727492252c1093fc22598e94561ae9bc290c7e6b57bd4f76899b68835
+// Hash: ffc65b593b36944ec9e3ceee33c717dc7cbe4de9f3fbc2729c33d53c2a9c8965
 
 //////////////////////////////////////////
 //
@@ -813,7 +813,7 @@ module Procedures =
         ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
-      let getItem (reader: SqlDataReader) : TableDtos.dbo.TableDtoColumnInheritance =
+      let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableDtoColumnInheritance`` =
         let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
         let ``Col2`` = reader.GetInt32 ``ordinal_Col2``
         {
@@ -1288,7 +1288,7 @@ module Procedures =
         ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
-      let getItem (reader: SqlDataReader) : TableDtos.dbo.OptionTableWithDto =
+      let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``OptionTableWithDto`` =
         let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
         let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
         {
@@ -1600,7 +1600,7 @@ module Procedures =
         ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
         ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-      let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
         let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
         let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
         {
@@ -1691,7 +1691,7 @@ module Procedures =
         ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
         ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-      let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+      let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
         let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
         let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
         {
@@ -2113,7 +2113,7 @@ module Procedures =
         ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
         ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
-      let getItem (reader: SqlDataReader) : TableDtos.dbo.VoptionTableWithDto =
+      let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``VoptionTableWithDto`` =
         let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
         let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
         {
@@ -5885,7 +5885,7 @@ module Procedures =
         ``ordinal_col1`` <- reader.GetOrdinal "col1"
         ``ordinal_otherCol`` <- reader.GetOrdinal "otherCol"
 
-      let getItem (reader: SqlDataReader) : TableDtos.dbo.CamelCaseColNames =
+      let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``CamelCaseColNames`` =
         let ``col1`` = if reader.IsDBNull ``ordinal_col1`` then None else reader.GetString ``ordinal_col1`` |> Some
         let ``otherCol`` = if reader.IsDBNull ``ordinal_otherCol`` then None else reader.GetInt32 ``ordinal_otherCol`` |> Some
         {
@@ -11922,7 +11922,7 @@ FROM
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
       ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.AllTypesNonNull =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``AllTypesNonNull`` =
       let ``key`` = reader.GetInt32 ``ordinal_key``
       let ``bigint`` = reader.GetInt64 ``ordinal_bigint``
       let ``binary`` = reader.GetBytes ``ordinal_binary``
@@ -12156,7 +12156,7 @@ WHERE
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
       ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.AllTypesNonNull =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``AllTypesNonNull`` =
       let ``key`` = reader.GetInt32 ``ordinal_key``
       let ``bigint`` = reader.GetInt64 ``ordinal_bigint``
       let ``binary`` = reader.GetBytes ``ordinal_binary``
@@ -13226,7 +13226,7 @@ FROM
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
       ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.AllTypesNull =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``AllTypesNull`` =
       let ``key1`` = reader.GetInt32 ``ordinal_key1``
       let ``key2`` = reader.GetInt32 ``ordinal_key2``
       let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
@@ -13466,7 +13466,7 @@ WHERE
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
       ``ordinal_xml`` <- reader.GetOrdinal "xml"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.AllTypesNull =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``AllTypesNull`` =
       let ``key1`` = reader.GetInt32 ``ordinal_key1``
       let ``key2`` = reader.GetInt32 ``ordinal_key2``
       let ``bigint`` = if reader.IsDBNull ``ordinal_bigint`` then None else reader.GetInt64 ``ordinal_bigint`` |> Some
@@ -14479,7 +14479,7 @@ SELECT
       ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
       ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableDtoColumnInheritance =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableDtoColumnInheritance`` =
       let ``Col1`` = reader.GetInt32 ``ordinal_Col1``
       let ``Col2`` = reader.GetInt32 ``ordinal_Col2``
       {
@@ -14881,7 +14881,7 @@ EXEC sp_executesql @sql, N''"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -15014,7 +15014,7 @@ WITH RESULT SETS (([TableCol1] NVARCHAR (42) NOT NULL, [TableCol2] INT NULL))"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -15147,7 +15147,7 @@ EXEC sp_executesql @sql, N''"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -15248,7 +15248,7 @@ EXEC sp_executesql @sql, @paramList, @_col1Filter"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -15384,7 +15384,7 @@ EXEC sp_executesql @sql, @paramList, @col1Filter"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -15524,7 +15524,7 @@ EXEC sp_executesql @sql, @paramList, @splitParam"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -15660,7 +15660,7 @@ EXEC sp_executesql @sql, @paramList, @tvp"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -15807,7 +15807,7 @@ FROM
       ``ordinal_varbinary`` <- reader.GetOrdinal "varbinary"
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.LengthTypes =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``LengthTypes`` =
       let ``key`` = reader.GetInt32 ``ordinal_key``
       let ``binary`` = reader.GetBytes ``ordinal_binary``
       let ``char`` = reader.GetString ``ordinal_char``
@@ -15931,7 +15931,7 @@ WHERE
       ``ordinal_varbinary`` <- reader.GetOrdinal "varbinary"
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.LengthTypes =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``LengthTypes`` =
       let ``key`` = reader.GetInt32 ``ordinal_key``
       let ``binary`` = reader.GetBytes ``ordinal_binary``
       let ``char`` = reader.GetString ``ordinal_char``
@@ -16373,7 +16373,7 @@ SELECT * FROM Table1"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -18969,7 +18969,7 @@ FROM
       ``ordinal_varbinary`` <- reader.GetOrdinal "varbinary"
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.MaxLengthTypes =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``MaxLengthTypes`` =
       let ``key`` = reader.GetInt32 ``ordinal_key``
       let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
       let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
@@ -19078,7 +19078,7 @@ WHERE
       ``ordinal_varbinary`` <- reader.GetOrdinal "varbinary"
       ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.MaxLengthTypes =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``MaxLengthTypes`` =
       let ``key`` = reader.GetInt32 ``ordinal_key``
       let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
       let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
@@ -19947,7 +19947,7 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -20093,7 +20093,7 @@ OPTION (RECOMPILE)"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -20228,7 +20228,7 @@ FROM
       ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
       ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.OptionTableWithDto =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``OptionTableWithDto`` =
       let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
       let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
       {
@@ -20584,7 +20584,7 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1 AND TableCol1 = @col1"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -20712,7 +20712,7 @@ SELECT * FROM Table1"""
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -21116,7 +21116,7 @@ WHERE
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -21252,7 +21252,7 @@ WHERE
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -21392,7 +21392,7 @@ WHERE
       ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
       ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
       let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
       let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
       {
@@ -22105,7 +22105,7 @@ WHERE
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
       ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableWithIdentityCol`` =
       let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
       let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
@@ -22523,7 +22523,7 @@ WHERE
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
       ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableWithIdentityCol`` =
       let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
       let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
@@ -22668,7 +22668,7 @@ WHERE
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
       ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableWithIdentityCol`` =
       let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
       let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
@@ -22808,7 +22808,7 @@ WHERE
       ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
       ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-    let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableWithIdentityCol`` =
       let ``Id`` = reader.GetInt32 ``ordinal_Id``
       let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
       let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
@@ -27021,7 +27021,7 @@ SELECT * FROM OptionTableWithDto"""
           ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
           ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
-        let getItem (reader: SqlDataReader) : TableDtos.dbo.OptionTableWithDto =
+        let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``OptionTableWithDto`` =
           let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then None else reader.GetString ``ordinal_Col1`` |> Some
           let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then None else reader.GetInt32 ``ordinal_Col2`` |> Some
           {
@@ -27336,7 +27336,7 @@ SELECT * FROM Table1"""
           ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
           ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
 
-        let getItem (reader: SqlDataReader) : TableDtos.dbo.Table1 =
+        let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
           let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
           let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
           {
@@ -27441,7 +27441,7 @@ WHERE
           ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
           ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
 
-        let getItem (reader: SqlDataReader) : TableDtos.dbo.TableWithIdentityCol =
+        let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableWithIdentityCol`` =
           let ``Id`` = reader.GetInt32 ``ordinal_Id``
           let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
           let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
@@ -27905,7 +27905,7 @@ SELECT * FROM VoptionTableWithDto"""
           ``ordinal_Col1`` <- reader.GetOrdinal "Col1"
           ``ordinal_Col2`` <- reader.GetOrdinal "Col2"
 
-        let getItem (reader: SqlDataReader) : TableDtos.dbo.VoptionTableWithDto =
+        let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``VoptionTableWithDto`` =
           let ``Col1`` = if reader.IsDBNull ``ordinal_Col1`` then ValueNone else reader.GetString ``ordinal_Col1`` |> ValueSome
           let ``Col2`` = if reader.IsDBNull ``ordinal_Col2`` then ValueNone else reader.GetInt32 ``ordinal_Col2`` |> ValueSome
           {

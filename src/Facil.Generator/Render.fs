@@ -203,7 +203,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
     | Auto ->
         match tableDtos |> List.filter (TableDto.canBeUsedBy resultSet rule cfg) with
         | [] -> "", "{|", "|}", (fun c -> c.Name.Value)
-        | [dto] -> $" : TableDtos.{dto.SchemaName}.{dto.Name}", "{", "}", (fun c -> c.PascalCaseName.Value)
+        | [dto] -> $" : TableDtos.``{dto.SchemaName}``.``{dto.Name}``", "{", "}", (fun c -> c.PascalCaseName.Value)
         | dtos ->
             let matchingTableDtoStr = dtos |> List.map (fun dto -> $"{dto.SchemaName}.{dto.Name}") |> String.concat ", "
             logWarning $"Output of {nameForLogs |> String.firstLower} matches more than one table DTO. Falling back to anonymous record. To remove this warning, specify a matching rule that uses a specific table type or anonymous record. The matching table DTOs are: %s{matchingTableDtoStr}"
@@ -213,7 +213,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
     | Custom name ->
         match tableDtos |> List.tryFind (fun dto -> $"{dto.SchemaName}.{dto.Name}" = name) with
         | None -> $" : %s{name}", "{", "}", (fun c -> c.Name.Value)
-        | Some dto when dto |> TableDto.canBeUsedBy resultSet rule cfg -> $" : TableDtos.{dto.SchemaName}.{dto.Name}", "{", "}", (fun c -> c.PascalCaseName.Value)
+        | Some dto when dto |> TableDto.canBeUsedBy resultSet rule cfg -> $" : TableDtos.``{dto.SchemaName}``.``{dto.Name}``", "{", "}", (fun c -> c.PascalCaseName.Value)
         | Some dto -> failwithError $"{nameForLogs} specifies result table DTO {dto.SchemaName}.{dto.Name}, but the result set does not match the DTO."
 
   let nominalTypeDef =

@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased 
+
+* Fix compilation error when a script or procedure returns a table DTO whose name or schema is not a valid F# identifier  
+
 ### 2.4.0 (2022-05-24)
 
 * If you generate multiple files (i.e., have multiple rulesets), when you modify the YAML file, Facil will now only regenerate the files corresponding to the changed rulesets 
