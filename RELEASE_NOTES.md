@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased 
+### 2.5.0 (2022-05-24)
 
 * Column order is now ignored when finding matching table types for table scripts
 * Column order is now ignored when finding matching table DTOs for script output
