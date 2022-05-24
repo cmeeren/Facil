@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.4.0 (2022-05-24)
 
 * If you generate multiple files (i.e., have multiple rulesets), when you modify the YAML file, Facil will now only regenerate the files corresponding to the changed rulesets 
 * You can now use `includeColumns` as syntactic sugar in `tableDto` configurations
