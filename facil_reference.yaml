@@ -342,13 +342,14 @@ rulesets:
             # 'paramName' column rules are ignored.
           - type: getById
 
-            # Syntactic sugar, see below.
+            # 'selectColumns' is a short way of specifying which columns to include. The value shown here is is simply
+            # syntactic sugar for the 'columns' configuration shown below. If you specify both, any 'skip' values under
+            # 'columns' take precedence over what's specified in 'includeColumns'.
             selectColumns:
               - Col1
               - Col2
 
-            # The above desugars into the following. This is merged with (and overridden
-            # by) any explicit column rules.
+            # 'columns' allows you to specify settings for individual columns.
             columns:
               "":
                 skip: true
