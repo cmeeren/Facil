@@ -138,7 +138,7 @@ module Program =
                 | None, None -> false  // Should never happen
 
               if shouldFail then
-                failwithError $"""The generated code has changed and the environment variable %s{envvar_fail_on_changed_output} is set. Failing build.\n\Index of first different line:%i{i}\n\nExisting line:\n%s{defaultArg lOld "<missing line>"}\n\nNew line:\n{defaultArg lNew "<missing line>"}"""
+                failwithError $"""The generated code has changed and the environment variable %s{envvar_fail_on_changed_output} is set. Failing build.\n\nIndex of first different line:%i{i}\n\nExisting line:\n%s{defaultArg lOld "<missing line>"}\n\nNew line:\n{defaultArg lNew "<missing line>"}"""
 
           // Writing the file may fail if the target projects has multiple target
           // frameworks that are built in parallel, such as is the case with Facil's own
