@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.5.1 (2022-05-24)
 
 * Fixed regression introduced in 2.4.0 where Facil would trigger regeneration in different environments even if there were no changes in the config  
 
