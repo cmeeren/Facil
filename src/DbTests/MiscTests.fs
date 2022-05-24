@@ -214,6 +214,16 @@ let tests =
         ignore f
 
 
+      testCase "Compile-time table DTO column order test (should ignore column order when finding matching DTOs)" <| fun () ->
+        let f () =
+          let res =
+            DbGen.Scripts.TableDtoWithDifferentColumnOrder
+              .WithConnection(Config.connStr)
+              .ExecuteSingle()
+          ignore<DbGen.TableDtos.dbo.Table1 option> res
+        ignore f
+
+
       testCase "Table DTO includeColumns and columns overrides work correctly" <| fun () ->
         let fieldNames =
           FSharp.Reflection.FSharpType.GetRecordFields(typeof<DbGen.TableDtos.dbo.TableWithComputedCol>)

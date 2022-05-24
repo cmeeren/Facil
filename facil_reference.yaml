@@ -368,8 +368,8 @@ rulesets:
             # Facil can use a table type in this script if:
             #  - For single-column types/PKs: The table type column data type matches the
             #    PK column data type.
-            #  - For multi-column types/PKs: The table type columns exactly match the
-            #    primary key columns (names, data types, and order).
+            #  - For multi-column types/PKs: The table type columns' name and data types
+            #    match those of the primary key columns (the column order is ignored).
             #
             # If there are more than one matching table type, you must specify the fully
             # qualified name of the table type to use.

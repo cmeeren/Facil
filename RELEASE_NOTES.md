@@ -3,7 +3,9 @@ Release notes
 
 ### Unreleased 
 
-* Fix compilation error when a script or procedure returns a table DTO whose name or schema is not a valid F# identifier  
+* Column order is now ignored when finding matching table types for table scripts
+* Column order is now ignored when finding matching table DTOs for script output
+* Fix compilation error when a script or procedure returns a table DTO whose name or schema is not a valid F# identifier
 
 ### 2.4.0 (2022-05-24)
 

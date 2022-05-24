@@ -413,6 +413,15 @@ rulesets:
               - Id
               - Foo
 
+          # This is a test in itself: filter column order should be ignored when finding matching table types. If this
+          # 'test' fails, generation should fail.
+          - type: getByColumnsBatch
+            name: "{TableName}_ByColumnsBatch_ReversedColumns"
+            tableType: dbo.FilterForTableWithIdentityCol
+            filterColumns:
+              - Foo
+              - Id
+
       - include: dbo\.Table1
         scripts:
           - type: getByColumns

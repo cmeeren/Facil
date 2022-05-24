@@ -64,6 +64,7 @@
     <None Include="SQL\StartsWithCTE.sql" />
     <None Include="SQL\DynamicInsertIntoDesignTimeExecuteTest.sql" />
     <None Include="SQL\DynamicInsertIntoDesignTimeExecuteTest2.sql" />
+    <None Include="SQL\TableDtoWithDifferentColumnOrder.sql" />
     <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />

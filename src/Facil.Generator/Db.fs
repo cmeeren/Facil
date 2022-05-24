@@ -954,11 +954,15 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
               Some [ttCol.Name, tableCol.Name]
             else None
         | ttCols, tableCols when ttCols.Length = tableCols.Length ->
+            let ttColsToCheck = ttCols |> List.map (fun x -> { x with SortKey = 0; IsIdentity = false })
+            let tableColsToCheck = tableCols |> List.map (fun x -> { x with SortKey = 0; IsIdentity = false })
+
+            let hasSameColumnsIgnoringOrder =
+              ttColsToCheck |> List.forall (fun ttCol -> tableColsToCheck |> List.contains ttCol)
+              && tableColsToCheck |> List.forall (fun tableCol -> ttColsToCheck |> List.contains tableCol)
+
             let ttAndTableCols = List.zip ttCols tableCols
-            if ttAndTableCols
-               |> List.forall (fun (ttCol, tableCol) ->
-                    { ttCol with SortKey = 0; IsIdentity = false } = { tableCol with SortKey = 0; IsIdentity = false })
-            then
+            if hasSameColumnsIgnoringOrder then
               ttAndTableCols
               |> List.map (fun (ttCol, tableCol) -> ttCol.Name, tableCol.Name)
               |> Some

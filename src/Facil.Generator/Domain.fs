@@ -397,9 +397,16 @@ module TableDto =
 
   let canBeUsedBy (resultSet: OutputColumn list option) (procOrScriptRule: EffectiveProcedureOrScriptRule) cfg (dto: TableDto) =
     let dtoRule = RuleSet.getEffectiveTableDtoRuleFor dto.SchemaName dto.Name cfg
-    resultSet |> Option.map (List.map (fun c -> { c with SortKey = 0 }))
-      = Some (dto.Columns |> List.map (fun c -> { c with SortKey = 0 } |> TableColumn.toOutputColumn))
-    && procOrScriptRule.VoptionOut = dtoRule.Voption
+    match resultSet with
+    | None -> false
+    | Some resultSet ->
+        let a = resultSet |> List.map (fun c -> { c with SortKey = 0 })
+        let b = (dto.Columns |> List.map (fun c -> { c with SortKey = 0 } |> TableColumn.toOutputColumn))
+
+        // Must contain all columns, but ignore order
+        a |> List.forall (fun a' -> b |> List.contains a')
+        && b |> List.forall (fun b' -> a |> List.contains b')
+        && procOrScriptRule.VoptionOut = dtoRule.Voption
 
 
 open System.IO

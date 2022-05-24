@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: ffc65b593b36944ec9e3ceee33c717dc7cbe4de9f3fbc2729c33d53c2a9c8965
+// Hash: a6320a05fc80a55c65762a4e305449eb8d2f38bf3a05fd06ae683429d09d1b9f
 
 //////////////////////////////////////////
 //
@@ -21506,6 +21506,97 @@ WHERE
       ``Table1_ByTableCol2s_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
 
+  type ``TableDtoWithDifferentColumnOrder`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+    let configureCmd userConfigureCmd (cmd: SqlCommand) =
+      cmd.CommandText <- """-- TableDtoWithDifferentColumnOrder.sql
+SELECT TableCol2, TableCol1 FROM dbo.Table1"""
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_TableCol2`` = 0
+    let mutable ``ordinal_TableCol1`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_TableCol2`` <- reader.GetOrdinal "TableCol2"
+      ``ordinal_TableCol1`` <- reader.GetOrdinal "TableCol1"
+
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``Table1`` =
+      let ``TableCol2`` = if reader.IsDBNull ``ordinal_TableCol2`` then None else reader.GetInt32 ``ordinal_TableCol2`` |> Some
+      let ``TableCol1`` = reader.GetString ``ordinal_TableCol1``
+      {
+        ``TableCol2`` = ``TableCol2``
+        ``TableCol1`` = ``TableCol1``
+      }
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``TableDtoWithDifferentColumnOrder``(null, null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``TableDtoWithDifferentColumnOrder``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection, ?transaction) = ``TableDtoWithDifferentColumnOrder``(null, connection, defaultArg transaction null)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.ExecuteAsync(?cancellationToken) =
+      executeQueryEagerAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryEagerAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member this.Execute() =
+      executeQueryEager connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.LazyExecuteAsync(?cancellationToken) =
+      executeQueryLazyAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      executeQueryLazyAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.LazyExecute() =
+      executeQueryLazy connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+    member this.ExecuteSingleAsync(?cancellationToken) =
+      executeQuerySingleAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member this.ExecuteSingle() =
+      executeQuerySingle connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+
   [<EditorBrowsable(EditorBrowsableState.Never)>]
   type ``TableWithComputedCol_Insert_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
 
@@ -22078,6 +22169,152 @@ WHERE
           SqlParameter("foo", SqlDbType.BigInt, Value = (^a: (member ``Foo``: int64) dto))
         |]
       ``TableWithComputedCol_Update_WithSkipFalse_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """-- TableWithIdentityCol_ByColumnsBatch_ReversedColumns
+SELECT
+  [Id],
+  [Foo],
+  [BAR]
+FROM
+  [dbo].[TableWithIdentityCol]
+WHERE
+  EXISTS (
+    SELECT * FROM @ids ids
+    WHERE
+      ids.[Id] = [TableWithIdentityCol].Foo
+      AND ids.[Foo] = [TableWithIdentityCol].Id
+  )"""
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_Id`` = 0
+    let mutable ``ordinal_Foo`` = 0
+    let mutable ``ordinal_BAR`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_Id`` <- reader.GetOrdinal "Id"
+      ``ordinal_Foo`` <- reader.GetOrdinal "Foo"
+      ``ordinal_BAR`` <- reader.GetOrdinal "BAR"
+
+    let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``TableWithIdentityCol`` =
+      let ``Id`` = reader.GetInt32 ``ordinal_Id``
+      let ``Foo`` = reader.GetInt64 ``ordinal_Foo``
+      let ``BAR`` = if reader.IsDBNull ``ordinal_BAR`` then None else reader.GetDateTimeOffset ``ordinal_BAR`` |> Some
+      {
+        ``Id`` = ``Id``
+        ``Foo`` = ``Foo``
+        ``BAR`` = ``BAR``
+      }
+
+    member _.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member _.Execute() =
+      let sqlParams = getSqlParams ()
+      executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member _.LazyExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecute() =
+      let sqlParams = getSqlParams ()
+      executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member _.ExecuteSingleAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQuerySingleAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteSingle() =
+      let sqlParams = getSqlParams ()
+      executeQuerySingle connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+
+  type ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns``(null, null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val tran = tran
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection, ?transaction) = ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns``(null, connection, defaultArg transaction null)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    member this.WithParameters
+      (
+        ``ids``: seq<TableTypes.``dbo``.``FilterForTableWithIdentityCol``>
+      ) =
+      let getSqlParams () =
+        [|
+          SqlParameter("ids", SqlDbType.Structured, TypeName = "dbo.FilterForTableWithIdentityCol", Value = boxNullIfEmpty ``ids``)
+        |]
+      ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+          SqlParameter("ids", SqlDbType.Structured, TypeName = "dbo.FilterForTableWithIdentityCol", Value = boxNullIfEmpty (^a: (member ``Ids``: #seq<TableTypes.``dbo``.``FilterForTableWithIdentityCol``>) dto))
+        |]
+      ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
