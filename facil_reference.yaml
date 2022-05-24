@@ -419,6 +419,12 @@ rulesets:
         # false.
         voption: true
 
+        # 'includeColumns' is a short way of specifying which columns to include. The value shown here is is simply
+        # syntactic sugar for the 'columns' configuration shown below. If you specify both, any 'skip' values under
+        # 'columns' take precedence over what's specified in 'includeColumns'.
+        includeColumns:
+          - SomeColumn
+
         # 'columns' allows you to specify settings for individual columns.
         columns:
           # The keys are the column names. The special value "" (empty string) specifies

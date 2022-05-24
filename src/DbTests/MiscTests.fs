@@ -214,6 +214,14 @@ let tests =
         ignore f
 
 
+      testCase "Table DTO includeColumns and columns overrides work correctly" <| fun () ->
+        let fieldNames =
+          FSharp.Reflection.FSharpType.GetRecordFields(typeof<DbGen.TableDtos.dbo.TableWithComputedCol>)
+          |> Array.map (fun pi -> pi.Name)
+
+        Expect.sequenceEqual fieldNames ["Id"; "Bar"] ""
+
+
       testCase "Compile-time buildValue test" <| fun () ->
         let f () =
           let res =

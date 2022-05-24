@@ -319,6 +319,16 @@ rulesets:
           Key1:
             skip: true
 
+      - for: TableWithComputedCol
+        includeColumns:
+          - Id
+          - Foo
+        columns:
+          Foo:
+            skip: true
+          Bar:
+            skip: false
+
 
     tableTypes:
       - for: Voption

@@ -74,3 +74,17 @@ module Option =
   let teeNone f (opt: 'a option) =
     if opt.IsNone then f ()
     opt
+
+
+
+module Map =
+
+  /// Merges the two maps, calling the specified function for keys found in both maps to compute the new value for that
+  /// key. The function receives the value from 'a' as the first parameter and from 'b' as the second parameter.
+  let merge f a b =
+    (a, b)
+    ||> Map.fold (fun s k valueB ->
+      match Map.tryFind k s with
+      | Some valueA -> Map.add k (f valueA valueB) s
+      | None -> Map.add k valueB s
+    )

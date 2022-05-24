@@ -50,6 +50,7 @@ type TableDtoRuleDto = {
   ``for``: string option
   except: string option
   voption: bool option
+  includeColumns: string list option
   columns: Map<string, TableDtoColumnDto> option
 }
 
@@ -383,6 +384,14 @@ type FacilConfigDto = {
 }
 
 
+module TableDtoColumnDto =
+
+
+    /// Merges the two DTOs, using values from dto2 to override values in dto1.
+    let merge (dto1: TableDtoColumnDto) (dto2: TableDtoColumnDto) : TableDtoColumnDto =
+      { skip = dto2.skip |> Option.orElse dto1.skip }
+
+
 module TableDtoColumn =
 
 
@@ -422,8 +431,21 @@ module TableDtoRule =
     Except = dto.except
     Voption = dto.voption
     Columns =
-      dto.columns
-      |> Option.defaultValue Map.empty
+      let includeColumns =
+        match dto.includeColumns with
+        | None -> Map.empty
+        | Some includeColumns ->
+            [
+              "", { TableDtoColumnDto.skip = Some true }
+              for colName in includeColumns do
+                colName, { TableDtoColumnDto.skip = Some false }
+            ]
+            |> Map.ofList
+
+      Map.merge
+        TableDtoColumnDto.merge
+        includeColumns
+        (dto.columns |> Option.defaultValue Map.empty)
       |> Map.toList
       |> List.map (fun (k, v) -> if k = "" then None, v else Some k, v)
       |> Map.ofList

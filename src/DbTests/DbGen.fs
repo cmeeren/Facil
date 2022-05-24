@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 82493c0323929f5f0af22e2360bfd7fbf2a2f12ced137efec0e6b93fa4bdbabe
+// Hash: c99af739791fb9f3c2ca956404c4e91ccf9086bc413b1df4cc1d989a00f5bb7e
 
 //////////////////////////////////////////
 //
@@ -182,7 +182,6 @@ module TableDtos =
     type ``TableWithComputedCol`` =
       {
         ``Id``: int
-        ``Foo``: int64
         ``Bar``: int
       }
 
