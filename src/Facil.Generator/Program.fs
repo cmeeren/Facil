@@ -42,8 +42,9 @@ module Program =
         |> System.Security.Cryptography.SHA256.HashData
         |> BitConverter.ToString
 
+      let configsDto, rulesetDtosAndConfigs = FacilConfig.getRuleSets projectDir yamlFilePath
 
-      for cfg, cfgWithoutResolvedVariables in FacilConfig.getRuleSets projectDir yamlFilePath do
+      for rulesetsDto, cfg in rulesetDtosAndConfigs do
 
         let scriptsWithoutParamsOrResultSetsOrTempTables =
           cfg.Scripts
@@ -91,7 +92,8 @@ module Program =
         let hash =
           [
             assemblyHash
-            $"%A{cfgWithoutResolvedVariables}"
+            $"%A{configsDto}"
+            $"%A{rulesetsDto}"
             yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.GlobMatchOutput.Replace("\\", "/"))
             yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.Source)
           ]
