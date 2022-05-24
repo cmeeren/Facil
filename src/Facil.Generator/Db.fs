@@ -948,8 +948,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
         match tt.Columns, tableCols with
         | [ttCol], [tableCol] ->
             if
-              { ttCol with Name = ""; SortKey = 0; IsIdentity = false }
-              = { tableCol with Name = ""; SortKey = 0; IsIdentity = false }
+              { ttCol with Name = ""; SortKey = 0; IsIdentity = false; ShouldSkipInTableDto = false }
+              = { tableCol with Name = ""; SortKey = 0; IsIdentity = false; ShouldSkipInTableDto = false }
             then
               Some [ttCol.Name, tableCol.Name]
             else None
