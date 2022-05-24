@@ -1306,4 +1306,9 @@ module FacilConfig =
     match facilConfig.rulesets with
     | None -> failwithYamlError fullYamlPath 0 0 "The 'rulesets' section is required"
     | Some [] -> failwithYamlError fullYamlPath 0 0 "At least one item must be specified in the 'rulesets' section"
-    | Some rulesets -> rulesets |> List.map (RuleSet.fromDto projectDir resolveVariable fullYamlPath)
+    | Some rulesets ->
+        rulesets
+        |> List.map (fun dto ->
+            RuleSet.fromDto projectDir resolveVariable fullYamlPath dto,
+            RuleSet.fromDto projectDir id fullYamlPath dto
+        )

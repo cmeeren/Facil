@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* If you generate multiple files (i.e., have multiple rulesets), when you modify the YAML file, Facil will now only regenerate the files corresponding to the changed rulesets 
+
 ### 2.3.2 (2022-03-03)
 
 * Reverted some package changes in the generator to avoid an [upstream bug](https://github.com/dotnet/runtime/issues/65756)

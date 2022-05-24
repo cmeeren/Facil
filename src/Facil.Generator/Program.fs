@@ -43,7 +43,7 @@ module Program =
         |> BitConverter.ToString
 
 
-      for cfg in FacilConfig.getRuleSets projectDir yamlFilePath do
+      for cfg, cfgWithoutResolvedVariables in FacilConfig.getRuleSets projectDir yamlFilePath do
 
         let scriptsWithoutParamsOrResultSetsOrTempTables =
           cfg.Scripts
@@ -91,7 +91,7 @@ module Program =
         let hash =
           [
             assemblyHash
-            yield! yamlFilePath |> File.ReadAllLines
+            $"%A{cfgWithoutResolvedVariables}"
             yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.GlobMatchOutput.Replace("\\", "/"))
             yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.Source)
           ]
