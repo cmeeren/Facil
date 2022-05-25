@@ -98,6 +98,7 @@ Notes about this workflow:
 * Build before Pack is needed due to what looks like some timing issues where Pack alone doesn’t (always) pick up the most recent generator/runtime files (this includes using `<GeneratePackageOnBuild>`).
 * `Facil.Package` can’t have a project reference to `Facil.Generator` due to the different target frameworks, but the solution file has a build dependency set up between them, so that building `Facil.Package` will also build `Facil.Generator`. If using command-line utilities (like in the AppVeyor build script), the generator must be built manually before `Facil.Package`.
 * The Pack step will also remove the cached Facil version in the solution’s NuGet package cache (as well as all existing nupkg files in the nupkg output folder), ensuring that when `DbTests` is rebuilt, it restores the most recently built package.
+* This seems to work fine in Visual Studio, but not Rider.
 
 ## Deployment checklist
 
