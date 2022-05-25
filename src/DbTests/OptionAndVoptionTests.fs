@@ -110,6 +110,7 @@ let optionTests =
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
+                |> List.map (fun r -> {| r with Col1 = r.Col1 |})
 
               let expected =
                 [
@@ -260,6 +261,7 @@ let optionTests =
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
+                |> List.map (fun r -> {| r with Col1 = r.Col1 |})
 
               let expected =
                 [
@@ -420,6 +422,7 @@ let voptionTests =
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
+                |> List.map (fun r -> {| r with Col1 = r.Col1 |})
 
               let expected =
                 [
@@ -574,6 +577,7 @@ let voptionTests =
                   .WithConnection(Config.connStr)
                 |> exec
                 |> Seq.toList
+                |> List.map (fun r -> {| r with Col1 = r.Col1 |})
 
               let expected =
                 [

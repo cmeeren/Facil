@@ -65,7 +65,7 @@ Development
 #### Dev dependencies
 
 * A SQL Server (e.g. Developer Edition) instance with full-text search available at `Data Source=.`
-  * If you’d like to use another SQL Server instance, just modify the data source in `DbTests\appsettings.json` and `TestDb\LocalDB.publish.xml`
+  * If you’d like to use another SQL Server instance, just modify the data source in `DbTests.DbGen\appsettings.json` and `TestDb\LocalDB.publish.xml`
 * Publish using `TestDb\LocalDB.publish.xml` (in VS, just double-click it and choose Publish)
 
 #### Solution structure
@@ -73,13 +73,14 @@ Development
 * `Facil.Generator` is the generator console app. The build output is copied as-is into the nupkg as a build tool.
 * `Facil.Runtime` and `Facil.Runtime.CSharp` contain runtime utilities used by the generated code.
 * ` Facil.Package` is the project that pulls together the generator, build tasks and runtime components into a single package, and also specifies all the package dependencies. It does not contain any code itself.
-* `DbTests` is the unit test project. In order to also test the build task, it references Facil using `PackageReference`, which after building `Facil.Package` exists in and (due to the solution’s `nuget.config`) is restored from the `nupkg` directory in the solution root.
-* `TestDb` is the database project that contains the schema used by `DbTests`.
+* `DbTests` is the unit test project.
+* `DbTests.DbGen` is the generation output project referenced by `DbTests`. Generation output is in a separate project because it takes a while to recompile due to the amount of generated code, so having it separated from the tests means the test project can be modified and recompiled more quickly. In order to also test the build task, this project references Facil using `PackageReference`, which after building `Facil.Package` exists in and (due to the solution’s `nuget.config`) is restored from the `nupkg` directory in the solution root.
+* `TestDb` is the database project that contains the schema used by `DbTests.DbGen`.
 
 #### Dev workflow: Quick testing of generator output:
 
 * Set `Facil.Generator` as the startup project
-* Run it when needed and verify the output in the `DbTests` project
+* Run it when needed and verify the output in the `DbTests.DbGen` project
 * Remember to perform the steps below to properly update the test project
 
 #### Dev workflow: Updating test project and running tests
@@ -89,7 +90,7 @@ After making changes in the generator, runtime, or package projects:
 * Set `DbTests` as the startup project
 * Right-click `Facil.Package` and choose Build
 * Right-click `Facil.Package` and choose Pack
-* Right-click `DbTests` and choose Rebuild (not Build)
+* Right-click `DbTests.DbGen` and choose Rebuild (not Build)
 * Run the test project as a normal console app (orders of magnitude faster than using the test explorer, and there seems to be some issues where tests lock up in the Visual Studio Test Explorer)
 
 Notes about this workflow:

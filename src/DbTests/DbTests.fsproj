@@ -13,62 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="SQL\TempTableDefinitions\TempTableAllTypesNull.sql" />
-    <None Include="SQL\TempTableDefinitions\TempTableAllTypesNonNull.sql" />
-    <None Include="SQL\Option\In.sql" />
-    <None Include="SQL\Option\Out.sql" />
-    <None Include="SQL\Option\TableOutWithDto.sql" />
-    <None Include="SQL\Option\TableOutWithoutDto.sql" />
-    <None Include="SQL\Option\TvpInOut.sql" />
-    <None Include="SQL\Voption\In.sql" />
-    <None Include="SQL\Voption\Out.sql" />
-    <None Include="SQL\Voption\TableOutWithDto.sql" />
-    <None Include="SQL\Voption\TableOutWithoutDto.sql" />
-    <None Include="SQL\Voption\TvpInOut.sql" />
-    <None Include="SQL\SubPath\SelectAllFromTable.sql" />
-    <None Include="SQL\DeleteAllFromTableScriptTables.sql" />
-    <None Include="SQL\NormalParams.sql" />
-    <None Include="SQL\ParamsUsedTwice.sql" />
-    <None Include="SQL\OptionRecompileAndFetch.sql" />
-    <None Include="SQL\SkippedUnsupportedColumn.sql" />
-    <None Include="SQL\ParamInheritance.sql" />
-    <None Include="SQL\ColumnInheritance.sql" />
-    <None Include="SQL\SelectAllFromTable.sql" />
-    <None Include="SQL\UserDefinedTableType.sql" />
-    <None Include="SQL\SingleRecordCol.sql" />
-    <None Include="SQL\OverriddenDtoParamName.sql" />
-    <None Include="SQL\DynamicSqlWithDeclaration.sql" />
-    <None Include="SQL\DynamicSqlWithoutDeclaration.sql" />
-    <None Include="SQL\DynamicSqlSensitiveToParamValues.sql" />
-    <None Include="SQL\DynamicSqlSensitiveToParamValuesWithResultSets.sql" />
-    <None Include="SQL\DynamicSqlWithConflictingBranches.sql" />
-    <None Include="SQL\DynamicSqlWithStringSplitParam.sql" />
-    <None Include="SQL\DynamicSqlWithTvp.sql" />
-    <None Include="SQL\TempTableAllTypesNonNull.sql" />
-    <None Include="SQL\TempTableAllTypesNull.sql" />
-    <None Include="SQL\TempTableAllTypesNonNullNominalParams.sql" />
-    <None Include="SQL\TempTableAllTypesNullNominalParams.sql" />
-    <None Include="SQL\TempTableAllTypesNullVoption.sql" />
-    <None Include="SQL\TempTableInlined.sql" />
-    <None Include="SQL\TempTableInlinedDynamic.sql" />
-    <None Include="SQL\TempTableInlinedWithOtherParams.sql" />
-    <None Include="SQL\MultipleTempTables.sql" />
-    <None Include="SQL\TempTableWithLengthTypes.sql" />
-    <None Include="SQL\TempTableWithMaxLengthTypes.sql" />
-    <None Include="SQL\NominalResult.sql" />
-    <None Include="SQL\ManualTableDtoResult.sql" />
-    <None Include="SQL\ManyColumns.sql" />
-    <None Include="SQL\StartsWithCTE.sql" />
-    <None Include="SQL\DynamicInsertIntoDesignTimeExecuteTest.sql" />
-    <None Include="SQL\DynamicInsertIntoDesignTimeExecuteTest2.sql" />
-    <None Include="SQL\TableDtoWithDifferentColumnOrder.sql" />
-    <None Include="facil.yaml" />
     <Compile Include="Config.fs" />
     <Compile Include="Utils.fs" />
-    <Compile Include="DbGen.fs" />
     <Compile Include="PrecisionTests.fs" />
     <Compile Include="ExecuteTests.fs" />
     <Compile Include="OptionAndVoptionTests.fs" />
@@ -84,7 +30,6 @@
 
   <ItemGroup>
     <PackageReference Include="Expecto" Version="9.0.4" />
-    <PackageReference Include="Facil" Version="*" />
     <PackageReference Include="FSharp.Control.AsyncSeq" Version="3.2.1" />
     <PackageReference Include="Hedgehog" Version="0.12.1" />
     <PackageReference Include="Hedgehog.Experimental" Version="0.6.0" />
@@ -95,6 +40,10 @@
     <PackageReference Include="Unquote" Version="6.1.0" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.12.20" />
     <PackageReference Update="FSharp.Core" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbTests.DbGen\DbTests.DbGen.fsproj" />
   </ItemGroup>
 
 </Project>

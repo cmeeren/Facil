@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="SQL\**\*.sql" />
+    <None Include="facil.yaml" />
+    <Compile Include="*.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Include="SQL\**\*.sql" />
+    <UpToDateCheckInput Include="facil.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Facil" Version="*" />
+    <PackageReference Update="FSharp.Core" Version="6.0.4" />
+  </ItemGroup>
+
+</Project>

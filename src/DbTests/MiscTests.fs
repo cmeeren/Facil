@@ -567,10 +567,10 @@ let tests =
           Property.check <| property {
             let! dto = GenX.auto<DbGen.TableDtos.dbo.AllTypesNull>
 
-            let expected = {| Key1 = dto.Key1; Key2 = dto.Key2 |}
             let actual = DbGen.TableDtos.dbo.AllTypesNull.getPrimaryKey dto
 
-            Expect.equal actual expected ""
+            Expect.equal actual.Key1 dto.Key1 "Key1"
+            Expect.equal actual.Key2 dto.Key2 "Key2"
           }
 
         

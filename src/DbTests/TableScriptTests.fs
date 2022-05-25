@@ -1401,7 +1401,7 @@ let tests =
 
           let key = insertRes.Value.Id
           ignore<int64> insertRes.Value.Foo
-          ignore<{| Id: int; Foo: int64 |}> insertRes.Value
+          ignore<{| Id: int; Foo: int64 |}> {| insertRes.Value with Id = insertRes.Value.Id |}
 
           let! bigint = Gen.Sql.bigint
           let! datetimeoffset = Gen.Sql.datetimeoffset 0 |> Gen.option
@@ -1412,7 +1412,7 @@ let tests =
               .WithParameters(key, foo = bigint, bar = datetimeoffset)
               .ExecuteSingle()
 
-          ignore<{| Id: int; Foo: int64 |}> updateRes.Value
+          ignore<{| Id: int; Foo: int64 |}>  {| updateRes.Value with Id = insertRes.Value.Id |}
 
           test <@ updateRes.Value.Foo = bigint @>
 
@@ -1430,6 +1430,7 @@ let tests =
             .WithConnection(Config.connStr)
             .WithParameters(key)
             .ExecuteSingle()
+          |> Option.map (fun x -> {| x with Id = x.Id |})
           |> ignore<{| Id: int; Foo: int64 |} option>
         }
 
@@ -1448,7 +1449,7 @@ let tests =
 
           let key = insertRes.Value.Id
           test <@ key <> tempKey @>
-          ignore<{| Id: int; Foo: int64 |}> insertRes.Value
+          ignore<{| Id: int; Foo: int64|}>  {| insertRes.Value with Id = insertRes.Value.Id |}
           ignore<int64> insertRes.Value.Foo
 
           let! bigint = Gen.Sql.bigint
@@ -1460,7 +1461,7 @@ let tests =
               .WithParameters(key, foo = bigint, bar = datetimeoffset)
               .ExecuteSingle()
 
-          ignore<{| Id: int; Foo: int64 |}> updateRes.Value
+          ignore<{| Id: int; Foo: int64 |}> {| updateRes.Value with Id = updateRes.Value.Id |}
 
           test <@ updateRes.Value.Foo = bigint @>
         }
@@ -1497,7 +1498,7 @@ let tests =
             .WithParameters(insertRes.Value.Id)
             .ExecuteSingle()
 
-        ignore<{| Id: int; Foo: int64 |}> getRes.Value
+        ignore<{| Id: int; Foo: int64 |}> {| getRes.Value with Id = getRes.Value.Id |}
         test <@ getRes.Value.Id = insertRes.Value.Id @>
         test <@ getRes.Value.Foo = insertRes.Value.Foo @>
 

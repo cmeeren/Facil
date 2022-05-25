@@ -1024,7 +1024,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndRetVal) [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1051,7 +1059,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndRetValExtended) [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetValExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetValExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetValExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1078,7 +1094,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_unset_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1109,7 +1133,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended + "_unset_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1140,7 +1172,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_unset_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1173,7 +1213,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended + "_unset_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1206,7 +1254,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_unset_passedSome_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1241,7 +1297,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_unset_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1274,7 +1338,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended + "_unset_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1307,7 +1379,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_unset_passedNone_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1342,7 +1422,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_set_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1373,7 +1461,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended + "_set_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1404,7 +1500,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_set_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1437,7 +1541,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended + "_set_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1470,7 +1582,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_set_passedSome_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1505,7 +1625,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_set_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1538,7 +1666,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended + "_set_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1571,7 +1707,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParams + "_set_passedNone_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1606,7 +1750,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_unset_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1639,7 +1791,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended + "_unset_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1672,7 +1832,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_unset_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1707,7 +1875,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended + "_unset_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1742,7 +1918,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_unset_passedSome_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1779,7 +1963,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_unset_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1814,7 +2006,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended + "_unset_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1849,7 +2049,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_unset_passedNone_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1886,7 +2094,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_set_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1919,7 +2135,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended + "_set_notPassed") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1952,7 +2176,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_set_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -1987,7 +2219,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended + "_set_passedSome") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -2022,7 +2262,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_set_passedSome_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -2059,7 +2307,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_set_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -2094,7 +2350,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended + "_set_passedNone") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
               |> List.map (fun (name, exec) ->
@@ -2129,7 +2393,15 @@ let tests =
       testList (nameof DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal + "_set_passedNone_dto") [
         yield!
           [
-            yield! allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+            yield!
+              allEagerSingleExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
+              // Map to anonymous type in this assembly for compabilitity with the mapping of the seq executables
+              |> List.map (fun (name, exec) ->
+                  name,
+                  fun x ->
+                    let res = exec x
+                    {| res with Result = res.Result |}
+              )
             yield!
               allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
               |> List.map (fun (name, exec) ->

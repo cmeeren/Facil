@@ -18,7 +18,7 @@ module Program =
     try
 
       let projectDir =
-        if argv.Length = 0 then @"..\..\..\..\DbTests" else argv[0]
+        if argv.Length = 0 then @"..\..\..\..\DbTests.DbGen" else argv[0]
         |> Path.GetFullPath
 
       let yamlFile1 = FileInfo(Path.Combine(projectDir, "facil.yaml"))
