@@ -1,6 +1,6 @@
 configs:
   - appSettings: appsettings.json
-  - envVars: ""
+  - envVars: ''
 
 rulesets:
   - connectionString: $(connectionString)
@@ -48,7 +48,7 @@ rulesets:
 
       - for: ProcColumnInh.ritance
         columns:
-          "":
+          '':
             skip: true
           Col1:
             skip: false
@@ -77,14 +77,14 @@ rulesets:
 
       - for: ProcWithTempTable$
         tempTables:
-          - definition: "CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+          - definition: 'CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
 
 
     scripts:
-      - include: "**/*.sql"
-        except: "TempTableDefinitions/**/*.sql"
+      - include: '**/*.sql'
+        except: 'TempTableDefinitions/**/*.sql'
 
-      - for: "**/*WithoutDto.sql"
+      - for: '**/*WithoutDto.sql'
         result: anonymous
 
       - for: ParamsUsedTwice.sql
@@ -100,7 +100,7 @@ rulesets:
 
       - for: ParamInh*ritance.sql
         params:
-          "":
+          '':
             type: INT
             nullable: true
           col2:
@@ -115,7 +115,7 @@ rulesets:
 
       - for: ColumnInh*ritance.sql
         columns:
-          "":
+          '':
             skip: true
           Col1:
             skip: false
@@ -233,20 +233,20 @@ rulesets:
         tempTables:
             # Deliberately uses the same temp table name as at least one other script to
             # ensure temp tables are dropped when parsing
-          - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+          - definition: 'CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
 
       - for: TempTableInlinedDynamic.sql
         tempTables:
-          - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+          - definition: 'CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
 
       - for: TempTableInlinedWithOtherParams.sql
         tempTables:
-          - definition: "CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
+          - definition: 'CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
 
       - for: MultipleTempTables.sql
         tempTables:
-          - definition: "CREATE TABLE #tempTable1 (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)"
-          - definition: "CREATE TABLE #tempTable2 (Col1 INT NOT NULL, Col3 NVARCHAR(42) NOT NULL)"
+          - definition: 'CREATE TABLE #tempTable1 (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
+          - definition: 'CREATE TABLE #tempTable2 (Col1 INT NOT NULL, Col3 NVARCHAR(42) NOT NULL)'
 
       - for: TempTableWithLengthTypes.sql
         tempTables:
@@ -287,20 +287,20 @@ rulesets:
 
 
     tableDtos:
-      - include: .*
-        except: WithoutDto|TableWithSqlVariant
+      - include: '.*'
+        except: 'WithoutDto|TableWithSqlVariant'
 
       - for: Voption
         voption: true
 
-      - for: dbo\.TableWithSkippedUnsupportedColumn
+      - for: 'dbo\.TableWithSkippedUnsupportedColumn'
         columns:
           UnsupportedCol:
             skip: true
 
       - for: TableDtoColumnInh.ritance
         columns:
-          "":
+          '':
             skip: true
           Col1:
             skip: false
@@ -336,7 +336,7 @@ rulesets:
 
 
     tableScripts:
-      - include: dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.LengthTypes|dbo\.MaxLengthTypes
+      - include: 'dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.LengthTypes|dbo\.MaxLengthTypes'
         scripts:
           - type: insert
           - type: update
@@ -344,16 +344,16 @@ rulesets:
           - type: getAll
           - type: getById
 
-      - include: dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.MaxLengthTypes
+      - include: 'dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.MaxLengthTypes'
         scripts:
           - type: merge
 
 
-      - include: dbo\.TableWithIdentityCol
+      - include: 'dbo\.TableWithIdentityCol'
         scripts:
           - type: insert
             columns:
-              "":
+              '':
                 output: true
               BAR:
                 output: false
@@ -361,22 +361,22 @@ rulesets:
 
           - type: merge
             columns:
-              "":
+              '':
                 output: true
               BAR:
                 output: false
                 paramName: bar
 
           - type: merge
-            name: "{TableName}_MergeWithHoldlock"
+            name: '{TableName}_MergeWithHoldlock'
             holdlock: true
 
           - type: insert
-            name: "TableScriptSubdir/TableScriptConfiguredWithScriptRules"
+            name: TableScriptSubdir/TableScriptConfiguredWithScriptRules
 
           - type: update
             columns:
-              "":
+              '':
                 output: true
               BAR:
                 output: false
@@ -384,7 +384,7 @@ rulesets:
 
           - type: delete
             columns:
-              "":
+              '':
                 output: true
 
           - type: getById
@@ -393,13 +393,13 @@ rulesets:
                 skip: true
 
           - type: getById
-            name: "{TableName}_ById_WithSelectColumns"
+            name: '{TableName}_ById_WithSelectColumns'
             selectColumns:
               - Id
               - Foo
 
           - type: getById
-            name: TableScriptSubdir/{SchemaName}_{TableName}_GetById
+            name: 'TableScriptSubdir/{SchemaName}_{TableName}_GetById'
 
           - type: getByIdBatch
 
@@ -416,13 +416,13 @@ rulesets:
           # This is a test in itself: filter column order should be ignored when finding matching table types. If this
           # 'test' fails, generation should fail.
           - type: getByColumnsBatch
-            name: "{TableName}_ByColumnsBatch_ReversedColumns"
+            name: '{TableName}_ByColumnsBatch_ReversedColumns'
             tableType: dbo.FilterForTableWithIdentityCol
             filterColumns:
               - Foo
               - Id
 
-      - include: dbo\.Table1
+      - include: 'dbo\.Table1'
         scripts:
           - type: getByColumns
             filterColumns:
@@ -438,14 +438,14 @@ rulesets:
 
       # This is a test in itself: insert/update/delete/merge scripts for views should be
       # silently ignored. If this 'test' fails, generation should fail.
-      - include: dbo\.View1
+      - include: 'dbo\.View1'
         scripts:
           - type: insert
           - type: update
           - type: delete
           - type: merge
 
-      - include: dbo\.TableWithComputedCol
+      - include: 'dbo\.TableWithComputedCol'
         scripts:
           - type: insert
           - type: insert
@@ -466,16 +466,16 @@ rulesets:
               Bar:
                 skip: false
 
-      - include: dbo\.DesignTimeExecuteTest
+      - include: 'dbo\.DesignTimeExecuteTest'
         scripts:
           - type: getAll
 
-      - include: dbo\.OptionTableWithoutDto
+      - include: 'dbo\.OptionTableWithoutDto'
         scripts:
           - type: getAll
 
       # This is a test in itself: table scripts should work even if the corresponding table DTO has skipped columns that
       # the script uses. If this 'test' fails, generation should fail.
-      - include: dbo\.TableWithSkippedPkColumn
+      - include: 'dbo\.TableWithSkippedPkColumn'
         scripts:
           - type: getById

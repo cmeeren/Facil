@@ -23,7 +23,7 @@ configs:
   # 'envVars' allow you to use configuration values from environment variables. Supply the
   # prefix that environment variable names must start with. The prefix will be removed
   # from the environment variable names.
-  - envVars: ""
+  - envVars: ''
 
 
 # Rulesets allow you to specify what you should generate. Each ruleset may only use a
@@ -69,7 +69,7 @@ rulesets:
       # Note that all regex patterns in the YAML file are case sensitive by default.
       # Prefix them with '(?i)' to make them case insensitive (e.g. '(?i)^dbo\.myProc$').
       - include: .*
-        except: ^dbo\.ProcToExclude$
+        except: '^dbo\.ProcToExclude$'
         voptionOut: true
 
       # 'for' contains a regex that specifies which already included procedures (also from
@@ -78,31 +78,31 @@ rulesets:
       #
       # The rule below applies to all procedures containing 'dbo.User_' except those
       # containing 'dbo.User_Id'.
-      - for: dbo\.User_
-        except: dbo\.User_Id
+      - for: 'dbo\.User_'
+        except: 'dbo\.User_Id'
 
         # 'result' specifies the type of the returned rows. Valid values:
-        #  - "auto" (default): If a single matching table DTO (see later) is found, use
+        #  - 'auto' (default): If a single matching table DTO (see later) is found, use
         #    that. Otherwise, use anonyomus records. Will warn and fall back to anonyomus
         #    records if there are multiple matching table DTOs. Will not match
         #    voption-enabled table DTOs if voptionOut if false, and vice versa.
-        #  - "anonymous": Use anonymous records.
-        #  - "nominal": Generate and use a normal record type (a unique type is defined
+        #  - 'anonymous': Use anonymous records.
+        #  - 'nominal': Generate and use a normal record type (a unique type is defined
         #    for each procedure).
-        #  - A qualified table name, e.g. "dbo.User": If the name matches an included
+        #  - A qualified table name, e.g. 'dbo.User': If the name matches an included
         #    table DTO (see later), use that. Otherwise, treat as a custom record type as
         #    described in the next point.
-        #  - A (sufficiently qualified) user record type, e.g. "MyModule.MyDto". This must
+        #  - A (sufficiently qualified) user record type, e.g. 'MyModule.MyDto'. This must
         #    be a record whose record constructor is accessible by the generated code.
         result: dbo.User
 
         # 'paramDto' specifies the parameter type of the WithParameters overload that
         # accepts a generic DTO type. Valid values:
-        #  - "inline" (default): Uses SRTP to accept any type that has the correct
+        #  - 'inline' (default): Uses SRTP to accept any type that has the correct
         #    members.
-        #  - "nominal": Generate and use a normal record type (a unique type is defined
+        #  - 'nominal': Generate and use a normal record type (a unique type is defined
         #    for each procedure).
-        #  - "skip": Skips the overload. If you have many procedures and generally don't
+        #  - 'skip': Skips the overload. If you have many procedures and generally don't
         #    use these overloads, removing them may improve IDE performance and
         #    compilation times. Default false.
         paramDto: nominal
@@ -134,9 +134,9 @@ rulesets:
 
         # 'params' allows you to specify settings for individual parameters.
         params:
-          # The keys are the names of the parameters without '@'. The special value ""
+          # The keys are the names of the parameters without '@'. The special value ''
           # (empty string) specifies base rules inherited by all parameters in this rule.
-          "": {}
+          '': {}
 
           someParam:
             # Whether the parameter is nullable. Parameters are nullable by default if
@@ -170,7 +170,7 @@ rulesets:
 
             # If using a single line, remember to enclose in quotes (otherwise everything
             # after # will be a YAML comment and not be part of the definition)
-          - definition: "CREATE TABLE #myTempTable(Col1 INT NOT NULL)"
+          - definition: 'CREATE TABLE #myTempTable(Col1 INT NOT NULL)'
 
             # You can also specify a path to a SQL file containing the definition. The
             # path is relative to scriptBasePath (by default the project directory).
@@ -178,9 +178,9 @@ rulesets:
 
         # 'columns' allows you to specify settings for individual output columns.
         columns:
-          # The keys are the column names. The special value "" (empty string) specifies
+          # The keys are the column names. The special value '' (empty string) specifies
           # base rules inherited by all columns in this rule.
-          "":
+          '':
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
@@ -199,8 +199,8 @@ rulesets:
     # The SQL files do not need to be included in the build output; the script contents
     # will be inlined in the generated code.)
     scripts:
-      - include: "**/*.sql"
-        except: "SQL/ScriptToExclude.sql"
+      - include: '**/*.sql'
+        except: SQL/ScriptToExclude.sql
 
         # The following work exactly like they do in stored procedure rules.
         result: anonymous
@@ -228,9 +228,9 @@ rulesets:
         # you to specify, for each problematic parameter (you don't have to specify the
         # ones that work), which SQL type it is and whether it is nullable.
         params:
-          # The keys are the names of the parameters without '@'. The special value ""
+          # The keys are the names of the parameters without '@'. The special value ''
           # (empty string) specifies base rules inherited by all parameters in this rule.
-          "":
+          '':
             # Whether the parameter is nullable. Default false.
             nullable: true
           someParam:
@@ -254,9 +254,9 @@ rulesets:
 
         # 'columns' allows you to specify settings for individual output columns.
         columns:
-          # The keys are the column names. The special value "" (empty string) specifies
+          # The keys are the column names. The special value '' (empty string) specifies
           # base rules inherited by all columns in this rule.
-          "":
+          '':
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
@@ -272,8 +272,8 @@ rulesets:
     # ignored (Facil has enough information to know the type and nullability of all
     # parameters for table scripts).
     tableScripts:
-      - include: .*
-        except: dbo\.SomeTable
+      - include: '.*'
+        except: 'dbo\.SomeTable'
 
         # The scripts to create. For rules where include/for matches more than one table,
         # rules for scripts with the same type and (final) name will be merged, with
@@ -286,14 +286,14 @@ rulesets:
 
             # The name of the script. The values '{SchemaName}' and '{TableName}' will be
             # replaced with the schema and table name, respectively. The default is
-            # '{TableName}_Insert'. You can use path separators to "place" the script in a
+            # '{TableName}_Insert'. You can use path separators to 'place' the script in a
             # subdirectory.
-            name: "subdir/{SchemaName}_{TableName}_Insert"
+            name: 'subdir/{SchemaName}_{TableName}_Insert'
 
             # The following work similarly to column rules in in stored procedure rules.
             columns:
               # Rules inherited by all columns.
-              "": {}
+              '': {}
               MyIdentityColumn:
                 # Don't insert this column. Default true for identity columns, false for
                 # normal columns.
@@ -351,7 +351,7 @@ rulesets:
 
             # 'columns' allows you to specify settings for individual columns.
             columns:
-              "":
+              '':
                 skip: true
               Col1:
                 skip: false
@@ -413,8 +413,8 @@ rulesets:
 
       # 'include', 'for', and 'except' work just like in stored procedure rules, and are
       # matched against the schema-qualified table name.
-      - include: .*
-        except: dbo\.SomeTable
+      - include: '.*'
+        except: 'dbo\.SomeTable'
 
         # Whether to use ValueOption instead of Option for nullable columns. Default
         # false.
@@ -428,9 +428,9 @@ rulesets:
 
         # 'columns' allows you to specify settings for individual columns.
         columns:
-          # The keys are the column names. The special value "" (empty string) specifies
+          # The keys are the column names. The special value '' (empty string) specifies
           # base rules inherited by all columns in this rule.
-          "":
+          '':
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
@@ -446,8 +446,8 @@ rulesets:
       # against the schema-qualified table type name. Note that 'include' is not
       # supported; Facil always generates wrappers for the table types used in included
       # procedure and script parameters.
-      - for: .*
-        except: dbo\.SomeTableType
+      - for: '.*'
+        except: 'dbo\.SomeTableType'
 
         # Whether to use ValueOption instead of Option for nullable columns. Default
         # false.
