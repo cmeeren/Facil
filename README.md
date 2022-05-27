@@ -216,6 +216,18 @@ Yes. There are two environment variables you can set. You can use either of them
 * `FACIL_FAIL_ON_CHANGED_OUTPUT`: Set this to make Facil fail the build if the output has changed. You can use this to
   reject commits that does not include up-to-date generated code.
 
+### Why won't the project recompile if I only change `facil.yaml` or a `.sql` file?
+
+Depending on how the `.sql` and `facil.yaml` file are added to your project in the first place, you may need to add these
+files to the project's up-to-date check. Simply add this in your `.fsproj` file:
+
+```xml
+<ItemGroup>
+  <UpToDateCheckInput Include="**\*.sql" />
+  <UpToDateCheckInput Include="facil.yaml" />
+</ItemGroup>
+```
+
 ### What can I configure?
 
 See [the full YAML config reference for details](https://github.com/cmeeren/Facil/blob/master/facil_reference.yaml).
