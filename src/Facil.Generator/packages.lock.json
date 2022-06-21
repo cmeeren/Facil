@@ -8,6 +8,16 @@
         "resolved": "6.0.5",
         "contentHash": "FwdQVtpj34xt8vKyFUUeNIS+obWlEnSrSW7y1ivRVts/ZsrUsKyOd0bZehgFhWdnB/NBsa9DCWvNFMTO0XDFcg=="
       },
+      "FSharp.SystemTextJson": {
+        "type": "Direct",
+        "requested": "[0.19.13, )",
+        "resolved": "0.19.13",
+        "contentHash": "q6KzrtNR2d8w9UzMyII3w6Kz91i9gomhUPRqSxm9nzezd26uiAowDnv4J+QVhGPDkJ7oGW4bpbbWTYEZ/OF+Kw==",
+        "dependencies": {
+          "FSharp.Core": "4.7.0",
+          "System.Text.Json": "6.0.0"
+        }
+      },
       "Glob": {
         "type": "Direct",
         "requested": "[1.2.0-alpha0032, )",

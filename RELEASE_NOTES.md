@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Fixed false negative config change detections (where regeneration was skipped even if the config was changed)
+
 ### 2.5.2 (2022-05-24)
 
 * Fixed false negative table type compatibility result

@@ -29,6 +29,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="FSharp.SystemTextJson" Version="0.19.13" />
     <PackageReference Include="Glob" Version="1.2.0-alpha0032" />
     <PackageReference Include="Legivel" Version="0.4.6" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />

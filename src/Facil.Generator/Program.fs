@@ -2,6 +2,7 @@
 
 open System
 open System.IO
+open System.Text.Json
 open Microsoft.Data.SqlClient
 open GlobExpressions
 
@@ -11,6 +12,13 @@ module Program =
 
   let envvar_force_regenerate = "FACIL_FORCE_REGENERATE"
   let envvar_fail_on_changed_output = "FACIL_FAIL_ON_CHANGED_OUTPUT"
+
+
+  let serializerOptionsForHash = JsonSerializerOptions()
+  serializerOptionsForHash.Converters.Add(System.Text.Json.Serialization.JsonFSharpConverter())
+
+  let serializeForHash (x: 'a) =
+    JsonSerializer.Serialize<'a>(x, serializerOptionsForHash)
 
 
   [<EntryPoint>]
@@ -92,8 +100,8 @@ module Program =
         let hash =
           [
             assemblyHash
-            $"%A{configsDto}"
-            $"%A{rulesetsDto}"
+            serializeForHash configsDto
+            serializeForHash rulesetsDto
             yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.GlobMatchOutput.Replace("\\", "/"))
             yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.Source)
           ]
