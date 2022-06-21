@@ -4,6 +4,7 @@ Release notes
 ### Unreleased
 
 * Fixed false negative config change detections (where regeneration was skipped even if the config was changed)
+* Now warns when encountering non-existent columns in table scripts
 
 ### 2.5.2 (2022-05-24)
 

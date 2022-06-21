@@ -992,6 +992,16 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             | [(tt, mapping)] -> (tt, mapping)
             | xs -> failwithYamlError fullYamlPath 0 0 $"""Found multiple suitable table types for table script %s{scriptName}. Specify which to use. The matching types are: %s{ xs |> List.map (fun (tt, _) -> tt.SchemaName + "." + tt.Name) |> String.concat ", " }"""
 
+      let warnInvalidColumns scriptType (dto: TableDto) (rule: EffectiveTableScriptTypeRule) =
+        for cols in rule.ColumnsFromAllRules do
+          for colName in Map.keys cols |> Seq.choose id do
+            if not (dto.Columns |> Seq.exists (fun c -> c.Name = colName)) then
+              logYamlWarning fullYamlPath 0 0 $"Effective '%s{scriptType}' table script for table or view %s{dto.SchemaName}.%s{dto.Name} references non-existent column '%s{colName}'"
+
+        for colName in rule.FilterColumns |> Option.defaultValue [] do
+          if not (dto.Columns |> Seq.exists (fun c -> c.Name = colName)) then
+            logYamlWarning fullYamlPath 0 0 $"Effective '%s{scriptType}' table script for table or view %s{dto.SchemaName}.%s{dto.Name} references non-existent column '%s{colName}'"
+
 
       toInclude
       |> List.collect (fun dto ->
@@ -1000,6 +1010,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
             // 'getAll' scripts
             for rule in rule |> TableScriptRule.rulesFor GetAll do
+
+              warnInvalidColumns "getAll" dto rule
 
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
@@ -1031,6 +1043,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
             // 'getById' scripts
             for rule in rule |> TableScriptRule.rulesFor GetById do
+
+              warnInvalidColumns "getById" dto rule
 
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
@@ -1081,6 +1095,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
             // 'getByIdBatch' scripts
             for rule in rule |> TableScriptRule.rulesFor GetByIdBatch do
+
+              warnInvalidColumns "getByIdBatch" dto rule
 
               let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
               let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Skip <> Some true)
@@ -1154,6 +1170,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'getByColumns' scripts
             for rule in rule |> TableScriptRule.rulesFor GetByColumns do
 
+              warnInvalidColumns "getByColumns" dto rule
+
               let filterColNames =
                 rule.FilterColumns
                 |> Option.defaultWith (fun () -> failwithYamlError fullYamlPath 0 0 "Table scripts with type 'getByColumns' must specify 'filterColumns'")
@@ -1210,6 +1228,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
 
             // 'getByColumnsBatch' scripts
             for rule in rule |> TableScriptRule.rulesFor GetByColumnsBatch do
+
+              warnInvalidColumns "getByColumnsBatch" dto rule
 
               let filterColNames =
                 rule.FilterColumns
@@ -1289,6 +1309,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'insert' scripts
             if not dto.IsView then
               for rule in rule |> TableScriptRule.rulesFor Insert do
+
+                warnInvalidColumns "insert" dto rule
                 
                 let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
                 let colsToInsertWithRule =
@@ -1349,6 +1371,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'update' scripts
             if not dto.IsView then
               for rule in rule |> TableScriptRule.rulesFor Update do
+
+                warnInvalidColumns "update" dto rule
                 
                 let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
                 let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
@@ -1419,8 +1443,11 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'merge' scripts
             if not dto.IsView then
               for rule in rule |> TableScriptRule.rulesFor Merge do
-                
+
+                warnInvalidColumns "merge" dto rule
+
                 let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+                if dto.Name = "PiServiceDocument" then ()
                 let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
 
                 let pkColsWithRule =
@@ -1547,6 +1574,8 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             // 'delete' scripts
             if not dto.IsView then
               for rule in rule |> TableScriptRule.rulesFor Delete do
+
+                warnInvalidColumns "delete" dto rule
                 
                 let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
                 let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
