@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Now warns and ignores scripts with multiple columns where at least one is unnamed, instead of throwing NullReferenceException 
+
 ### 2.5.3 (2022-06-21)
 
 * Fixed false negative config change detections (where regeneration was skipped even if the config was changed)

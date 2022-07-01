@@ -1672,6 +1672,16 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
             else false
           )
 
+        let hasUnsupportedResultColumn =
+          match s.ResultSet with
+          | None -> false
+          | Some cols ->
+              match cols |> List.tryFindIndex (fun c -> c.Name.IsNone) with
+              | Some idx when idx > 0 || cols.Length > 1 ->
+                  logWarning $"Column #{idx + 1} of {cols.Length} returned by script '%s{s.GlobMatchOutput}' is missing a name. Columns without names are only supported if they are the only column in the result set. Ignoring script. To remove this warning, fix the result set or make sure this script is not included in any rules."
+                  true
+              | _ -> false
+
         let hasDuplicateColumnNames =
           match s.ResultSet with
           | None -> false
@@ -1682,7 +1692,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   true
               | _ -> false
 
-        not hasUnsupportedParameter && not hasDuplicateColumnNames
+        not hasUnsupportedParameter && not hasUnsupportedResultColumn && not hasDuplicateColumnNames
     )
     |> List.sortBy (fun s -> s.GlobMatchOutput)
   
