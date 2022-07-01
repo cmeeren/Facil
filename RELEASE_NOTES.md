@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.5.4 (2022-07-01)
 
 * Now warns and ignores scripts with multiple columns where at least one is unnamed, instead of throwing NullReferenceException 
 
