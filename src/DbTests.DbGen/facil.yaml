@@ -79,6 +79,12 @@ rulesets:
         tempTables:
           - definition: 'CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
 
+      # This is a test in itself: Temp tables should work in extended stored procedures. If this 'test' fails,
+      # generation should fail.
+      - for: ProcWithTempTableNonIntrospectable$
+        tempTables:
+          - definition: 'CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
+
 
     scripts:
       - include: '**/*.sql'

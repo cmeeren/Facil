@@ -1,6 +1,12 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Fixed rare bug where generation failed for stored procedures that used temp tables and required execution to infer
+  the result set (i.e., where neither `sp_describe_first_result_set` nor `SET FMTONLY ON` could be used)
+  ([#39](https://github.com/cmeeren/Facil/issues/39))
+
 ### 2.5.4 (2022-07-01)
 
 * Now warns and ignores scripts with multiple columns where at least one is unnamed, instead of throwing NullReferenceException 

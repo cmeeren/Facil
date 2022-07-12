@@ -36,9 +36,10 @@ let rewriteLocalTempTablesToGlobalTempTablesWithPrefix (nameOrDefinition: string
   |> fun s -> Regex.Replace(s, "##(?=\w)", $"##{facilGlobalTempTablePrefix}")
 
 
-let createAndDropTempTables rewrite (tempTables: TempTable list) (conn: SqlConnection) =
+let createAndDropTempTables rewrite (tempTables: TempTable list) (conn: SqlConnection) (tran: SqlTransaction option) =
   for tt in tempTables do
     use cmd = conn.CreateCommand()
+    tran |> Option.iter (fun t -> cmd.Transaction <- t)
     cmd.CommandText <- tt.Source |> if rewrite then rewriteLocalTempTablesToGlobalTempTablesWithPrefix else id
     cmd.ExecuteNonQuery () |> ignore
 
@@ -47,6 +48,7 @@ let createAndDropTempTables rewrite (tempTables: TempTable list) (conn: SqlConne
         // Drop all temp tables
         for tt in tempTables do
           use cmd = conn.CreateCommand()
+          tran |> Option.iter (fun t -> cmd.Transaction <- t)
           cmd.CommandText <- $"DROP TABLE {tt.Name |> if rewrite then rewriteLocalTempTablesToGlobalTempTablesWithPrefix else id}"
           cmd.ExecuteNonQuery() |> ignore
   }
@@ -105,8 +107,8 @@ let getScriptParameters (cfg: RuleSet) (sysTypeIdLookup: Map<int, string>) (tabl
       logWarning $"Script '{script.GlobMatchOutput}' has a matching rule with parameter '%s{paramName}' that is not used in the script. Ignoring parameter."
 
 
-    use _ = createAndDropTempTables true script.TempTables conn
-    
+    use _ = createAndDropTempTables true script.TempTables conn None
+
     use cmd = conn.CreateCommand()
     cmd.CommandText <- "sys.sp_describe_undeclared_parameters"
     cmd.CommandType <- CommandType.StoredProcedure
@@ -192,7 +194,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     | Choice2Of3 script -> script.TempTables, true
     | Choice3Of3 tempTable -> [tempTable], true
 
-  use _ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
+  use _ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn None
 
   use cmd = conn.CreateCommand()
   cmd.CommandText <- "sys.sp_describe_first_result_set"
@@ -274,7 +276,7 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
     | Choice2Of3 script -> script.TempTables, true
     | Choice3Of3 tempTable -> [tempTable], true
 
-  use _ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn
+  use _ = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop conn None
 
   let getCmd (conn: SqlConnection) =
 
@@ -319,17 +321,18 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
 
     cmd
 
-  let reader, cmd, tran, connToClose =
+  let reader, cmd, tran, connToClose, tempTables =
     try
       let cmd = getCmd conn
       // SET FMTONLY ON, may fail with dynamic SQL
-      cmd.ExecuteReader(CommandBehavior.SchemaOnly), cmd, null, null
+      cmd.ExecuteReader(CommandBehavior.SchemaOnly), cmd, null, null, null
     with :? SqlException ->
       // Actually execute query - in case it modifies anything, do this with a new connection
       // and in a transaction that is rolled back
       let newConn = new SqlConnection(conn.ConnectionString)
       newConn.Open()
       let tran = newConn.BeginTransaction()
+      let tempTables = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop newConn (Some tran)
       let cmd = getCmd newConn
       cmd.Transaction <- tran
       let reader = cmd.ExecuteReader(CommandBehavior.SingleRow)
@@ -337,6 +340,7 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
 
   use _ = connToClose
   use _ = tran
+  use _ = tempTables
   use _ = cmd
   use _ = reader
 

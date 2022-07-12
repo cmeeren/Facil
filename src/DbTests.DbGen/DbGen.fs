@@ -1,5 +1,5 @@
 ﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: 94a9d8ab54ddcac291c185c3d9244db821fd302cf4360dabf1c25934d856d08b
+// Hash: 10ddcffa1c84af9cadebd015702bf9ba7dd84deacc5d9af8d8f40b8c2206f480
 
 //////////////////////////////////////////
 //
@@ -11818,6 +11818,142 @@ module Procedures =
             (^a: (member ``TempTable``: #seq<``ProcWithTempTable``.``tempTable``>) dto)
           )
         ``ProcWithTempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
+
+
+    module ``ProcWithTempTableNonIntrospectable`` =
+
+
+      type ``tempTable`` (__: InternalUseOnly, fields: obj []) =
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member _.Fields = fields
+
+        static member create
+          (
+            ``Col1``: int,
+            ``Col2``: string option
+          ) : ``tempTable`` =
+          [|
+            ``Col1`` |> box
+            Option.toDbNull ``Col2`` |> box
+          |]
+          |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
+
+        static member inline create (dto: ^a) : ``tempTable`` =
+          [|
+            (^a: (member ``Col1``: int) dto) |> box
+            Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
+          |]
+          |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    type ``ProcWithTempTableNonIntrospectable_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+      let configureCmd sqlParams (cmd: SqlCommand) =
+        cmd.CommandType <- CommandType.StoredProcedure
+        cmd.CommandText <- "dbo.ProcWithTempTableNonIntrospectable"
+        cmd.Parameters.AddRange sqlParams
+        userConfigureCmd cmd
+
+      member _.ExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeNonQueryAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecute() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.Execute() =
+        let sqlParams = getSqlParams ()
+        executeNonQuery connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+    type ``ProcWithTempTableNonIntrospectable`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      new() =
+        failwith "This constructor is for aiding reflection and type constraints only"
+        ``ProcWithTempTableNonIntrospectable``(null, null, null)
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val connStr = connStr
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val conn = conn
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val tran = tran
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val configureConn : SqlConnection -> unit = ignore with get, set
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+      member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+        this.userConfigureCmd <- configureCommand
+        this
+
+      member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+        this.userConfigureBulkCopy <- configureBulkCopy
+        this
+
+      static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+        ``ProcWithTempTableNonIntrospectable``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+      static member WithConnection(connection, ?transaction) = ``ProcWithTempTableNonIntrospectable``(null, connection, defaultArg transaction null)
+
+      member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+        match configureConnection with
+        | None -> ()
+        | Some config -> this.configureConn <- config
+        this
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member this.CreateTempTableData
+        (
+          ``tempTable``: seq<``ProcWithTempTableNonIntrospectable``.``tempTable``>
+        ) =
+        [
+          TempTableData
+            (
+              "#tempTable",
+              """
+              CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
+              """,
+              (``tempTable`` |> Seq.map (fun x -> x.Fields)),
+              2,
+              Action<_> this.userConfigureBulkCopy
+            )
+        ]
+      member this.WithParameters
+        (
+          ``tempTable``: seq<``ProcWithTempTableNonIntrospectable``.``tempTable``>
+        ) =
+        let getSqlParams () =
+          [|
+          |]
+        let tempTableData =
+          this.CreateTempTableData(
+            ``tempTable``
+          )
+        ``ProcWithTempTableNonIntrospectable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
+
+      member inline this.WithParameters(dto: ^a) =
+        let getSqlParams () =
+          [|
+          |]
+        let tempTableData =
+          this.CreateTempTableData(
+            (^a: (member ``TempTable``: #seq<``ProcWithTempTableNonIntrospectable``.``tempTable``>) dto)
+          )
+        ``ProcWithTempTableNonIntrospectable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
 
 
 module Scripts =
