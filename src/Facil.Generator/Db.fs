@@ -333,12 +333,12 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
       let cmd = getCmd newConn
       cmd.Transaction <- tran
       let reader = cmd.ExecuteReader(CommandBehavior.SingleRow)
-      reader, cmd, null, newConn
+      reader, cmd, tran, newConn, tempTables
 
-  use _ = reader
-  use _ = cmd
-  use _ = tran
   use _ = connToClose
+  use _ = tran
+  use _ = cmd
+  use _ = reader
 
   let schemas = reader.GetColumnSchema()
   if schemas.Count = 0 then [], None
