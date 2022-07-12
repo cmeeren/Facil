@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.5.5 (2022-07-12)
 
 * Fixed rare bug where generation failed for stored procedures that used temp tables and required execution to infer
   the result set (i.e., where neither `sp_describe_first_result_set` nor `SET FMTONLY ON` could be used)
