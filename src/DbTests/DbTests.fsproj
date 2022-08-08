@@ -31,8 +31,8 @@
   <ItemGroup>
     <PackageReference Include="Expecto" Version="9.0.4" />
     <PackageReference Include="FSharp.Control.AsyncSeq" Version="3.2.1" />
-    <PackageReference Include="Hedgehog" Version="0.12.1" />
-    <PackageReference Include="Hedgehog.Experimental" Version="0.6.0" />
+    <PackageReference Include="Hedgehog" Version="0.13.0" />
+    <PackageReference Include="Hedgehog.Experimental" Version="0.7.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
