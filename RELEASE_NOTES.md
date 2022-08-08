@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Reverted some package changes in the generator to avoid an [upstream bug](https://github.com/dotnet/runtime/issues/65756)
+
 ### 2.5.6 (2022-08-08)
 
 * Updated Microsoft.Data.SqlClient from 4.1.0 to 5.0.0
