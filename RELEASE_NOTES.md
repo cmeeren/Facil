@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.5.7 (2022-08-08)
 
 * Reverted some package changes in the generator to avoid an [upstream bug](https://github.com/dotnet/runtime/issues/65756)
 
