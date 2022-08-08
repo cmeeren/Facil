@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 2.5.6 (2022-08-08)
+
+* Updated Microsoft.Data.SqlClient from 4.1.0 to 5.0.0
+
 ### 2.5.5 (2022-07-12)
 
 * Fixed rare bug where generation failed for stored procedures that used temp tables and required execution to infer
