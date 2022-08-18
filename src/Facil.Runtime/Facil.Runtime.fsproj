@@ -9,13 +9,6 @@
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <NoWarn>$(NoWarn);NU1701</NoWarn>
-    <OtherFlags>$(OtherFlags) --warnon:1182</OtherFlags>
-  </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="GeneratedCodeUtils.fs" />
   </ItemGroup>

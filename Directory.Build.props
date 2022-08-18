@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <Version>2.5.7</Version>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarnOn>FS1182;$(WarnOn)</WarnOn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CI)' == 'True'">
