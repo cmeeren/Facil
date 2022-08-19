@@ -1,5 +1,7 @@
 <Project>
 
+  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />
+
   <PropertyGroup>
     <Version>2.5.7</Version>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
@@ -7,8 +9,8 @@
     <WarnOn>FS1182;$(WarnOn)</WarnOn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(CI)' == 'True'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>
