@@ -22,12 +22,12 @@
       },
       "Microsoft.Data.SqlClient": {
         "type": "Direct",
-        "requested": "[5.0.0, )",
-        "resolved": "5.0.0",
-        "contentHash": "SSs/sdfcu3gwC04eNxXTZb3s4vA5JhxTx0oQh9lBamWVudSfH4NYs0Uoyndhzu726abnbHuXHUooOvgMfcbKUA==",
+        "requested": "[5.0.1, )",
+        "resolved": "5.0.1",
+        "contentHash": "uu8dfrsx081cSbEevWuZAvqdmANDGJkbLBL2G3j0LAZxX1Oy8RCVAaC4Lcuak6jNicWP6CWvHqBTIEmQNSxQlw==",
         "dependencies": {
           "Azure.Identity": "1.6.0",
-          "Microsoft.Data.SqlClient.SNI.runtime": "5.0.0",
+          "Microsoft.Data.SqlClient.SNI.runtime": "5.0.1",
           "Microsoft.Identity.Client": "4.45.0",
           "Microsoft.IdentityModel.JsonWebTokens": "6.21.0",
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.21.0",
@@ -90,8 +90,8 @@
       },
       "Microsoft.Data.SqlClient.SNI.runtime": {
         "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "1HkESJU1T/D8sJ1jlpEQRgx2SXCNyXzmUuS0hNBDyYGIAi7l8qlbaTptzSOUSXqmsz5MVQfo6+WFAIx8LQaRIQ=="
+        "resolved": "5.0.1",
+        "contentHash": "y0X5MxiNdbITJYoafJ2ruaX6hqO0twpCGR/ipiDOe85JKLU8WL4TuAQfDe5qtt3bND5Je26HnrarLSAMMnVTNg=="
       },
       "Microsoft.Identity.Client": {
         "type": "Transitive",
