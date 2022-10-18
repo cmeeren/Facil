@@ -455,16 +455,16 @@
       "facil.runtime": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "6.0.0",
-          "Facil.Runtime.CSharp": "2.5.7",
-          "Microsoft.Data.SqlClient": "5.0.0"
+          "FSharp.Core": "[6.0.0, )",
+          "Facil.Runtime.CSharp": "[2.5.7, )",
+          "Microsoft.Data.SqlClient": "[5.0.0, )"
         }
       },
       "facil.runtime.csharp": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "6.0.0",
-          "Microsoft.Data.SqlClient": "5.0.0"
+          "FSharp.Core": "[6.0.0, )",
+          "Microsoft.Data.SqlClient": "[5.0.0, )"
         }
       }
     }
