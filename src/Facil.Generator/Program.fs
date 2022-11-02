@@ -122,7 +122,7 @@ module Program =
             with :? ArgumentException ->
               failwithError "Invalid connection string"
           conn.Open()
-          let everything = Db.getEverything cfg yamlFilePath scriptsWithoutParamsOrResultSetsOrTempTables conn
+          let everything = Db.getEverything cfg yamlFilePath scriptsWithoutParamsOrResultSetsOrTempTables cfg.ConnectionString.Value conn
           let lines = Render.renderDocument cfg hash everything
 
           if Environment.GetEnvironmentVariable(envvar_fail_on_changed_output) |> isNull |> not then

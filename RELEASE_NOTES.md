@@ -3,6 +3,7 @@ Release notes
 
 ### Unreleased
 
+* Fixed a build-time error for certain queries when using connection strings with credentials but without `Persist Security Info=true`
 * Updated Microsoft.Data.SqlClient from 5.0.0 to 5.0.1
 
 ### 2.5.7 (2022-08-08)

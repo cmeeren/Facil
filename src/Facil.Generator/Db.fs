@@ -266,7 +266,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
     Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Script, TempTable>) (conn: SqlConnection) =
+let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Script, TempTable>) connStr (conn: SqlConnection) =
   let tempTablesToCreateAndDrop, rewriteTempTableNames =
     match executable with
     | Choice1Of3 sproc ->
@@ -329,7 +329,7 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
     with :? SqlException ->
       // Actually execute query - in case it modifies anything, do this with a new connection
       // and in a transaction that is rolled back
-      let newConn = new SqlConnection(conn.ConnectionString)
+      let newConn = new SqlConnection(connStr)
       newConn.Open()
       let tran = newConn.BeginTransaction()
       let tempTables = createAndDropTempTables rewriteTempTableNames tempTablesToCreateAndDrop newConn (Some tran)
@@ -389,7 +389,7 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
     Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Script, TempTable>) =
+let getColumns connStr conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Script, TempTable>) =
   let executableName =
     match executable with
     | Choice1Of3 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
@@ -404,7 +404,7 @@ let getColumns conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Scr
   let allColNames, cols =
     try
       try getColumnsFromSpDescribeFirstResultSet cfg sysTypeIdLookup executable conn
-      with :? SqlException -> getColumnsFromQuery cfg executable conn
+      with :? SqlException -> getColumnsFromQuery cfg executable connStr conn
     with ex ->
       match facilGeneratedSource with
       | None -> raise <| Exception($"Error getting output columns for %s{executableName}", ex)
@@ -843,7 +843,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
 
 
 
-let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition (conn: SqlConnection) =
+let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition connStr (conn: SqlConnection) =
   try
     let mutable name = null
     let parser = TSql150Parser(true)
@@ -872,7 +872,7 @@ let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition (conn: SqlCo
 
     let tempTable =
       { tempTableWithoutColumns with
-          Columns = getColumns conn cfg sysTypeIdLookup (Choice3Of3 tempTableWithoutColumns) |> Option.defaultValue []
+          Columns = getColumns connStr conn cfg sysTypeIdLookup (Choice3Of3 tempTableWithoutColumns) |> Option.defaultValue []
       }
 
     // Drop table in case other temp tables use the same name
@@ -886,7 +886,7 @@ let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition (conn: SqlCo
 
 
 
-let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsOrTempTables: Script list) (conn: SqlConnection) =
+let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsOrTempTables: Script list) connStr (conn: SqlConnection) =
 
   let sysTypeIdLookup = getSysTypeIdLookup conn
 
@@ -920,7 +920,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     @ (cfg.Procedures |> List.collect (fun p -> p.TempTables |> Option.defaultValue []))
     |> List.map (fun rule -> rule.Definition)
     |> List.distinct
-    |> List.map (fun definition -> definition, getTempTable cfg sysTypeIdLookup definition conn)
+    |> List.map (fun definition -> definition, getTempTable cfg sysTypeIdLookup definition connStr conn)
     |> Map.ofList
 
 
@@ -1658,7 +1658,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
           { script with Parameters = parameters }
     )
     |> List.map (fun script ->
-        let resultSet = getColumns conn cfg sysTypeIdLookup (Choice2Of3 script)
+        let resultSet = getColumns connStr conn cfg sysTypeIdLookup (Choice2Of3 script)
         { script with ResultSet = resultSet }
     )
     |> List.filter (fun s ->
@@ -1719,7 +1719,7 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
           { sproc with TempTables = tempTables }
     )
     |> List.map (fun sproc ->
-        { sproc with ResultSet = getColumns conn cfg sysTypeIdLookup (Choice1Of3 sproc) }
+        { sproc with ResultSet = getColumns connStr conn cfg sysTypeIdLookup (Choice1Of3 sproc) }
     )
     |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
     |> List.filter (fun sp ->
