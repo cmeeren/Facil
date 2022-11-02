@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <Version>2.5.7</Version>
+    <Version>2.5.8</Version>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarnOn>FS1182;$(WarnOn)</WarnOn>
