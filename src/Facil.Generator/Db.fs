@@ -1451,7 +1451,6 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 warnInvalidColumns "merge" dto rule
 
                 let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
-                if dto.Name = "PiServiceDocument" then ()
                 let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
 
                 let pkColsWithRule =
