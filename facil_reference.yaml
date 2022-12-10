@@ -304,6 +304,15 @@ rulesets:
                 # The name of the script parameter.
                 paramName: columnWithSpaces
 
+            # Generates a script to insert a batch of rows efficiently.
+            #
+            # The script is the same as if you had witten a manual insert script using a temp table to load the rows. In
+            # other words, Facil uses SqlBulkCopy to load the rows, and you can configure the created SqlBulkCopy using
+            # ConfigureBulkCopy.
+            #
+            # Supports the same rules as 'insert'. The default name is '{TableName}_InsertBatch'.
+          - type: insertBatch
+
             # Generates a script to update a row by its primary key.
             #
             # Supports the same rules as 'insert'. The default name is
@@ -311,6 +320,15 @@ rulesets:
             # columns are not skipped by default, but this fact is likely irrelevant for
             # most updates).
           - type: update
+
+            # Generates a script to update a batch of rows efficiently.
+            #
+            # The script is the same as if you had witten a manual update script using a temp table to load the rows. In
+            # other words, Facil uses SqlBulkCopy to load the rows, and you can configure the created SqlBulkCopy using
+            # ConfigureBulkCopy.
+            #
+            # Supports the same rules as 'update'. The default name is '{TableName}_UpdateBatch'.
+          - type: updateBatch
 
             # Generates a script that uses MERGE to insert a row or update a row by its
             # primary key.
@@ -321,6 +339,15 @@ rulesets:
 
             # Add WITH (HOLDLOCK) to the merge statement
             holdlock: true
+
+            # Generates a script to merge a batch of rows efficiently.
+            #
+            # The script is the same as if you had witten a manual merge script using a temp table to load the rows. In
+            # other words, Facil uses SqlBulkCopy to load the rows, and you can configure the created SqlBulkCopy using
+            # ConfigureBulkCopy.
+            #
+            # Supports the same rules as 'merge'. The default name is '{TableName}_MergeBatch'.
+          - type: mergeBatch
 
             # Generates a script to delete a row by its primary key.
             #

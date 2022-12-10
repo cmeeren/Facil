@@ -345,14 +345,14 @@ rulesets:
       - include: 'dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.LengthTypes|dbo\.MaxLengthTypes'
         scripts:
           - type: insert
+          - type: insertBatch
           - type: update
+          - type: updateBatch
+          - type: merge
+          - type: mergeBatch
           - type: delete
           - type: getAll
           - type: getById
-
-      - include: 'dbo\.AllTypesNonNull|dbo\.AllTypesNull|dbo\.MaxLengthTypes'
-        scripts:
-          - type: merge
 
 
       - include: 'dbo\.TableWithIdentityCol'
@@ -364,8 +364,24 @@ rulesets:
               BAR:
                 output: false
                 paramName: bar
+                
+          - type: insertBatch
+            columns:
+              '':
+                output: true
+              BAR:
+                output: false
+                paramName: bar
 
           - type: merge
+            columns:
+              '':
+                output: true
+              BAR:
+                output: false
+                paramName: bar
+
+          - type: mergeBatch
             columns:
               '':
                 output: true
@@ -377,10 +393,22 @@ rulesets:
             name: '{TableName}_MergeWithHoldlock'
             holdlock: true
 
+          - type: mergeBatch
+            name: '{TableName}_MergeBatchWithHoldlock'
+            holdlock: true
+
           - type: insert
             name: TableScriptSubdir/TableScriptConfiguredWithScriptRules
 
           - type: update
+            columns:
+              '':
+                output: true
+              BAR:
+                output: false
+                paramName: bar
+
+          - type: updateBatch
             columns:
               '':
                 output: true
@@ -447,27 +475,48 @@ rulesets:
       - include: 'dbo\.View1'
         scripts:
           - type: insert
+          - type: insertBatch
           - type: update
+          - type: updateBatch
           - type: delete
           - type: merge
+          - type: mergeBatch
 
       - include: 'dbo\.TableWithComputedCol'
         scripts:
           - type: insert
+          - type: insertBatch
           - type: insert
             name: TableWithComputedCol_Insert_WithSkipFalse
             columns:
               Bar:
                 skip: false
+          - type: insertBatch
+            name: TableWithComputedCol_InsertBatch_WithSkipFalse
+            columns:
+              Bar:
+                skip: false
           - type: update
+          - type: updateBatch
           - type: update
             name: TableWithComputedCol_Update_WithSkipFalse
             columns:
               Bar:
                 skip: false
+          - type: updateBatch
+            name: TableWithComputedCol_UpdateBatch_WithSkipFalse
+            columns:
+              Bar:
+                skip: false
           - type: merge
+          - type: mergeBatch
           - type: merge
             name: TableWithComputedCol_Merge_WithSkipFalse
+            columns:
+              Bar:
+                skip: false
+          - type: mergeBatch
+            name: TableWithComputedCol_MergeBatch_WithSkipFalse
             columns:
               Bar:
                 skip: false

@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Added batch insert/update/merge table scripts (`insertBatch`, `updateBatch`, and `mergeBatch`)
+
 ### 2.5.8 (2022-11-02)
 
 * Fixed a build-time error for certain queries when using connection strings with credentials but without `Persist Security Info=true`

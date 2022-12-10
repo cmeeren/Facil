@@ -24,6 +24,33 @@ let isSizeRelevantForSqlParameter = function
   | _ -> false
 
 
+let isPrecisionAndScaleRelevantForSqlExpression = function
+  | SqlDbType.Decimal -> true
+  | _ -> false
+
+
+let isSizeRelevantForSqlExpression = function
+  | SqlDbType.Char
+  | SqlDbType.VarChar
+  | SqlDbType.NChar
+  | SqlDbType.NVarChar
+  | SqlDbType.Binary
+  | SqlDbType.VarBinary -> true
+  | _ -> false
+
+
+let isScaleOnlyRelevantForSqlExpression = function
+  | SqlDbType.Time
+  | SqlDbType.DateTime2
+  | SqlDbType.DateTimeOffset -> true
+  | _ -> false
+
+
+let isPrecisionOnlyRelevantForSqlExpression = function
+  | SqlDbType.Float -> true
+  | _ -> false
+
+
 let isPrecisionAndScaleRelevantForSqlMetaData = function
   | SqlDbType.Decimal
   | SqlDbType.Time
@@ -274,6 +301,7 @@ type OutputColumn = {
   SortKey: int
   IsNullable: bool
   TypeInfo: SqlTypeInfo
+  Collation: string option
 } with
   member this.StringEscapedName = this.Name |> Option.map (fun s -> s.Replace("\"", "\\\""))
   member this.PascalCaseName = this.Name |> Option.map String.firstUpper
@@ -290,6 +318,7 @@ type TableColumn = {
   Precision: byte
   Scale: byte
   TypeInfo: SqlTypeInfo
+  Collation: string option
   /// Used only in Db.fs to distinguish between table DTO columns and table script columns. Code elsewhere does not need
   /// to take this into account.
   ShouldSkipInTableDto: bool
@@ -301,6 +330,21 @@ type TableColumn = {
     | SqlDbType.DateTime2 | SqlDbType.DateTimeOffset | SqlDbType.Time -> 0uy
     | _ -> this.Precision
   member this.SizeForSqlMetaData = if this.Size = 0s then -1L else int64 this.Size
+  member this.SqlExpression =
+    let expr =
+      if isSizeRelevantForSqlExpression this.TypeInfo.SqlDbType then
+        let size = if this.Size <= 0s then "MAX" else string this.Size
+        $"{this.TypeInfo.SqlType}({size})"
+      elif isScaleOnlyRelevantForSqlExpression this.TypeInfo.SqlDbType then
+        $"{this.TypeInfo.SqlType}({this.Scale})"
+      elif isPrecisionOnlyRelevantForSqlExpression this.TypeInfo.SqlDbType then
+        $"{this.TypeInfo.SqlType}({this.Precision})"
+      elif isPrecisionAndScaleRelevantForSqlExpression this.TypeInfo.SqlDbType then
+        $"{this.TypeInfo.SqlType}({this.Precision}, {this.Scale})"
+      else
+        this.TypeInfo.SqlType
+
+    expr |> String.toUpper
 
 
 type TableType = {
@@ -390,6 +434,7 @@ module TableColumn =
       SortKey = c.SortKey
       IsNullable = c.IsNullable
       TypeInfo = c.TypeInfo
+      Collation = c.Collation
     }
 
 
@@ -400,8 +445,8 @@ module TableDto =
     match resultSet with
     | None -> false
     | Some resultSet ->
-        let a = resultSet |> List.map (fun c -> { c with SortKey = 0 })
-        let b = (dto.Columns |> List.map (fun c -> { c with SortKey = 0 } |> TableColumn.toOutputColumn))
+        let a = resultSet |> List.map (fun c -> { c with SortKey = 0; Collation = None })
+        let b = (dto.Columns |> List.map (fun c -> { c with SortKey = 0; Collation = None } |> TableColumn.toOutputColumn))
 
         // Must contain all columns, but ignore order
         a |> List.forall (fun a' -> b |> List.contains a')

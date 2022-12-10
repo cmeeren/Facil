@@ -258,6 +258,7 @@ let getColumnsFromSpDescribeFirstResultSet (cfg: RuleSet) (sysTypeIdLookup: Map<
           SortKey = reader["column_ordinal"] |> unbox<int>
           IsNullable = reader["is_nullable"] |> unbox<bool>
           TypeInfo = typeInfo
+          Collation = if reader.IsDBNull "collation_name" then None else reader["collation_name"] |> unbox<string> |> Some
       }
 
   if cols.Count = 0 then
@@ -384,6 +385,7 @@ let getColumnsFromQuery (cfg: RuleSet) (executable: Choice<StoredProcedure, Scri
           SortKey = schema.ColumnOrdinal.Value
           IsNullable = schema.AllowDBNull.Value
           TypeInfo = typeInfo
+          Collation = None
         }
 
     Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
@@ -443,6 +445,7 @@ let getTableTypes (conn: SqlConnection) =
         sys.columns.is_nullable AS ColumnIsNullable,
         sys.columns.is_identity AS ColumnIsIdentity,
         sys.columns.is_computed AS ColumnIsComputed,
+        sys.columns.collation_name AS CollationName,
         TYPE_NAME(sys.columns.system_type_id) AS ColumnTypeName
       FROM
         sys.table_types
@@ -476,6 +479,7 @@ let getTableTypes (conn: SqlConnection) =
               Precision = reader["ColumnPrecision"] |> unbox<byte>
               Scale = reader["ColumnScale"] |> unbox<byte>
               TypeInfo = typeInfo
+              Collation = if reader.IsDBNull "CollationName" then None else reader["CollationName"] |> unbox<string> |> Some
               ShouldSkipInTableDto = false  // not relevant/used
             }
           ]
@@ -707,6 +711,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
         sys.all_columns.scale,
         sys.all_columns.is_identity,
         sys.all_columns.is_computed,
+        sys.all_columns.collation_name,
         IsView = CAST(0 AS BIT)
       FROM
         sys.tables
@@ -728,6 +733,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
         sys.all_columns.scale,
         sys.all_columns.is_identity,
         sys.all_columns.is_computed,
+        sys.all_columns.collation_name,
         IsView = CAST(1 AS BIT)
       FROM
         sys.views
@@ -798,6 +804,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns cfg (sysTy
                     Precision = reader["precision"] |> unbox<byte>
                     Scale = reader["scale"] |> unbox<byte>
                     TypeInfo = typeInfo
+                    Collation = if reader.IsDBNull "collation_name" then None else reader["collation_name"] |> unbox<string> |> Some
                     ShouldSkipInTableDto = shouldSkipCol
                   }
                 ]
@@ -1371,6 +1378,96 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   GeneratedByFacil = true
                 }
 
+            // 'insertBatch' scripts
+            if not dto.IsView then
+              for rule in rule |> TableScriptRule.rulesFor InsertBatch do
+
+                warnInvalidColumns "insertBatch" dto rule
+
+                let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+                let colsToInsertWithRule =
+                  colsWithRule
+                  |> List.filter (fun (col, rule) ->
+                       match rule.Skip with
+                       | None when col.IsIdentity || col.IsComputed -> false
+                       | None -> true
+                       | Some skip -> not skip && not col.IsComputed
+                  )
+                let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+                let tempTableName = "#args"
+
+                {
+                  GlobMatchOutput = rule.Name
+                  RelativePathSegments =
+                    let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                    segmentsWithName[0..segmentsWithName.Length-2]
+                    |> Array.toList
+                  NameWithoutExtension = Path.GetFileName rule.Name
+                  Source =
+                    [
+                      $"INSERT INTO [%s{dto.SchemaName}].[%s{dto.Name}]"
+                      "("
+
+                      yield!
+                        colsToInsertWithRule
+                        |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                      ")"
+
+                      if not colsToOutputWithRule.IsEmpty then
+                        "OUTPUT"
+                        yield!
+                          colsToOutputWithRule
+                          |> List.map (fun (c, _) -> $"  inserted.[%s{c.Name}]")
+                          |> List.mapAllExceptLast (sprintf "%s,")
+
+                      "SELECT"
+
+                      yield!
+                        colsToInsertWithRule
+                        |> List.map (fun (c, rule) -> $"  [%s{getParamNameFromColAndRule c rule}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                      $"FROM {tempTableName}"
+                    ]
+                    |> String.concat "\n"
+                  Parameters = []
+                  ResultSet = None
+                  TempTables = [
+                    {
+                      Name = tempTableName
+                      Source =
+                        [
+                          $"CREATE TABLE {tempTableName} ("
+
+                          yield!
+                            colsToInsertWithRule
+                            |> List.map (fun (c, _) ->
+                                let sqlTypeExpr = c.SqlExpression
+                                let collateExpr = c.Collation |> Option.map (sprintf "COLLATE %s")
+                                let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
+                                [
+                                  $"[{c.Name}]"
+                                  sqlTypeExpr
+                                  yield! Option.toList collateExpr
+                                  nullExpr
+                                ]
+                                |> String.concat " "
+                                |> sprintf "  %s"
+                            )
+                            |> List.mapAllExceptLast (sprintf "%s,")
+
+                          ")"
+                        ]
+                        |> String.concat "\n"
+                      Columns = colsToInsertWithRule |> List.map (fst >> TableColumn.toOutputColumn)
+                    }
+                  ]
+                  GeneratedByFacil = true
+                }
+
 
             // 'update' scripts
             if not dto.IsView then
@@ -1440,6 +1537,120 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                   Parameters = pkColsWithRule @ colsToUpdateWithRule |> List.map parameterFromColAndRule
                   ResultSet = None
                   TempTables = []
+                  GeneratedByFacil = true
+                }
+
+
+            // 'updateBatch' scripts
+            if not dto.IsView then
+              for rule in rule |> TableScriptRule.rulesFor UpdateBatch do
+
+                warnInvalidColumns "updateBatch" dto rule
+
+                let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+                let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+                let pkColsWithRule =
+                  match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
+                  | None | Some [] -> failwithError $"Table or view %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for an 'update' table script"
+                  | Some colNames ->
+                      colNames
+                      |> List.map (fun n ->
+                          colsWithRule
+                          |> List.tryFind (fun (c, _) -> c.Name = n)
+                          |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'")
+                      )
+
+                let colsToUpdateWithRule =
+                  colsWithRule
+                  |> List.filter (fun (c, rule) ->
+                        let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
+                        match rule.Skip with
+                        | None when c.IsComputed -> false
+                        | None -> not isPkCol
+                        | Some skip -> not skip && not isPkCol && not c.IsComputed
+                  )
+
+                let tempTableName = "#args"
+
+                {
+                  GlobMatchOutput = rule.Name
+                  RelativePathSegments =
+                    let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                    segmentsWithName[0..segmentsWithName.Length-2]
+                    |> Array.toList
+                  NameWithoutExtension = Path.GetFileName rule.Name
+                  Source =
+
+                    [
+                      "UPDATE"
+                      $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                      "SET"
+
+                      yield!
+                        colsToUpdateWithRule
+                        |> List.map (fun (c, _) -> $"  [%s{c.Name}] = x.[%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                      if not colsToOutputWithRule.IsEmpty then
+                        "OUTPUT"
+                        yield!
+                          colsToOutputWithRule
+                          |> List.map (fun (c, _) -> $"  inserted.[%s{c.Name}]")
+                          |> List.mapAllExceptLast (sprintf "%s,")
+
+                      "FROM"
+                      $"  [%s{dto.SchemaName}].[%s{dto.Name}]"
+                      "INNER JOIN"
+                      $"  {tempTableName} AS x"
+                      "    ON"
+
+                      yield!
+                        pkColsWithRule
+                        |> List.map (fun (col, _) -> $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]")
+                        |> List.mapAllExceptFirst (sprintf "AND %s")
+                        |> List.map (sprintf "      %s")
+                    ]
+                    |> String.concat "\n"
+                  Parameters = []
+                  ResultSet = None
+                  TempTables = [
+                    let tempTableCols = pkColsWithRule @ colsToUpdateWithRule
+                    {
+                      Name = tempTableName
+                      Source =
+                        [
+                          $"CREATE TABLE {tempTableName} ("
+
+                          yield!
+                            tempTableCols
+                            |> List.map (fun (c, _) ->
+                                let sqlTypeExpr = c.SqlExpression
+                                let collateExpr = c.Collation |> Option.map (sprintf "COLLATE %s")
+                                let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
+                                [
+                                  $"[{c.Name}]"
+                                  sqlTypeExpr
+                                  yield! Option.toList collateExpr
+                                  nullExpr
+                                ]
+                                |> String.concat " "
+                                |> sprintf "  %s"
+                            )
+                            |> List.map (sprintf "%s,")
+
+                          let colList =
+                            pkColsWithRule
+                            |> List.map (fun (c, _) -> c.Name |> sprintf "[%s]")
+                            |> String.concat ", "
+                          $"  PRIMARY KEY ({colList})"
+
+                          ")"
+                        ]
+                        |> String.concat "\n"
+                      Columns = tempTableCols |> List.map (fst >> TableColumn.toOutputColumn)
+                    }
+                  ]
                   GeneratedByFacil = true
                 }
 
@@ -1574,6 +1785,158 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                 }
 
 
+            // 'mergeBatch' scripts
+            if not dto.IsView then
+              for rule in rule |> TableScriptRule.rulesFor MergeBatch do
+
+                warnInvalidColumns "mergeBatch" dto rule
+
+                let colsWithRule = dto.Columns |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+                let colsToOutputWithRule = colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+                let pkColsWithRule =
+                  match primaryKeyColumnNamesByTable.TryFind (dto.SchemaName, dto.Name) with
+                  | None | Some [] -> failwithError $"Table or view %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for a 'merge' table script"
+                  | Some colNames ->
+                      colNames
+                      |> List.map (fun n ->
+                          colsWithRule
+                          |> List.tryFind (fun (c, _) -> c.Name = n)
+                          |> Option.defaultWith (fun () -> failwithError $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'")
+                      )
+
+                let colsToInsertWithRule =
+                  colsWithRule
+                  |> List.filter (fun (col, rule) ->
+                       match rule.Skip with
+                       | None when col.IsIdentity || col.IsComputed -> false
+                       | None -> true
+                       | Some skip -> not skip && not col.IsComputed
+                  )
+
+                let colsToUpdateWithRule =
+                  colsWithRule
+                  |> List.filter (fun (c, rule) ->
+                        let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
+                        match rule.Skip with
+                        | None when c.IsComputed -> false
+                        | None -> not isPkCol
+                        | Some skip -> not skip && not isPkCol && not c.IsComputed
+                  )
+
+                let allColsWithRule =
+                  colsWithRule
+                  |> List.filter (fun (c, _) ->
+                       pkColsWithRule |> List.map fst |> List.contains c
+                       || colsToInsertWithRule |> List.map fst |> List.contains c
+                       || colsToUpdateWithRule |> List.map fst |> List.contains c
+                  )
+
+                let tempTableName = "#args"
+
+                {
+                  GlobMatchOutput = rule.Name
+                  RelativePathSegments =
+                    let segmentsWithName = rule.Name.Split([|'/'; '\\'|], StringSplitOptions.RemoveEmptyEntries)
+                    segmentsWithName[0..segmentsWithName.Length-2]
+                    |> Array.toList
+                  NameWithoutExtension = Path.GetFileName rule.Name
+                  Source =
+                    [
+                      $"""MERGE [%s{dto.SchemaName}].[%s{dto.Name}]{ if rule.Holdlock then " WITH (HOLDLOCK)" else "" }"""
+                      "USING"
+                      $"  {tempTableName}"
+                      "AS x"
+
+                      "ON"
+
+                      yield!
+                        pkColsWithRule
+                        |> List.map (fun (col, _) ->
+                              $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]")
+                        |> List.mapAllExceptFirst (sprintf "AND %s")
+                        |> List.map (sprintf "  %s")
+
+                      ""
+                      "WHEN MATCHED THEN"
+                      "  UPDATE"
+                      "  SET"
+
+                      yield!
+                        colsToUpdateWithRule
+                        |> List.map (fun (c, _) -> $"    [%s{c.Name}] = x.[%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                      ""
+                      "WHEN NOT MATCHED THEN"
+                      "  INSERT"
+                      "  ("
+
+                      yield!
+                        colsToInsertWithRule
+                        |> List.map (fun (c, _) -> $"    [%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                      "  )"
+
+                      "  VALUES"
+                      "  ("
+
+                      yield!
+                        colsToInsertWithRule
+                        |> List.map (fun (c, _) -> $"    x.[%s{c.Name}]")
+                        |> List.mapAllExceptLast (sprintf "%s,")
+
+                      "  )"
+
+
+                      if not colsToOutputWithRule.IsEmpty then
+                        "OUTPUT"
+                        yield!
+                          colsToOutputWithRule
+                          |> List.map (fun (c, _) -> $"  inserted.[%s{c.Name}]")
+                          |> List.mapAllExceptLast (sprintf "%s,")
+
+                      ";"
+
+                    ]
+                    |> String.concat "\n"
+                  Parameters = []
+                  ResultSet = None
+                  TempTables = [
+                    {
+                      Name = tempTableName
+                      Source =
+                        [
+                          $"CREATE TABLE {tempTableName} ("
+
+                          yield!
+                            allColsWithRule
+                            |> List.map (fun (c, _) ->
+                                let sqlTypeExpr = c.SqlExpression
+                                let collateExpr = c.Collation |> Option.map (sprintf "COLLATE %s")
+                                let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
+                                [
+                                  $"[{c.Name}]"
+                                  sqlTypeExpr
+                                  yield! Option.toList collateExpr
+                                  nullExpr
+                                ]
+                                |> String.concat " "
+                                |> sprintf "  %s"
+                            )
+                            |> List.map (sprintf "%s,")
+
+                          ")"
+                        ]
+                        |> String.concat "\n"
+                      Columns = allColsWithRule |> List.map (fst >> TableColumn.toOutputColumn)
+                    }
+                  ]
+                  GeneratedByFacil = true
+                }
+
+
             // 'delete' scripts
             if not dto.IsView then
               for rule in rule |> TableScriptRule.rulesFor Delete do
@@ -1638,7 +2001,11 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
     scriptsWithoutParamsOrResultSetsOrTempTables @ tableScripts
     |> List.map (fun script ->
         let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-        let tempTables = rule.TempTables |> List.map (fun tt -> tempTablesByDefinition[tt.Definition])
+        let tempTables =
+          if script.GeneratedByFacil then
+            script.TempTables
+          else
+            rule.TempTables |> List.map (fun tt -> tempTablesByDefinition[tt.Definition])
 
         if tempTables |> List.countBy (fun tt -> tt.Name) |> List.exists (fun (_, count) -> count > 1) then
           failwithError $"The rule for script '%s{script.GlobMatchOutput}' contains multiple temp table definitions using the same temp table name. This is not supported."

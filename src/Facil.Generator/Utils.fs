@@ -42,6 +42,9 @@ module String =
   let firstLower (s: string) =
     (s |> Seq.head).ToString().ToLowerInvariant() + s.Substring(1)
 
+  let toUpper (s: string) =
+    s.ToUpperInvariant()
+
   let trimStart (trim: char) (s: string) =
     s.TrimStart(trim)
 

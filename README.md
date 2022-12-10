@@ -148,6 +148,7 @@ configuring them:
 * Insert a row (supports output columns)
 * Update a row by its primary key (supports output columns)
 * “Upsert” - use MERGE to insert or update a row by its primary key (supports output columns)
+* Insert/update/upsert a batch of rows efficiently (supports output columns)
 * Delete a row by its primary key (supports output columns)
 * Get all rows
 * Get a row by its primary key
