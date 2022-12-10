@@ -456,7 +456,7 @@
         "type": "Project",
         "dependencies": {
           "FSharp.Core": "[6.0.0, )",
-          "Facil.Runtime.CSharp": "[2.5.7, )",
+          "Facil.Runtime.CSharp": "[2.5.8, )",
           "Microsoft.Data.SqlClient": "[5.0.1, )"
         }
       },
