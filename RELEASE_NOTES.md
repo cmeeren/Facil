@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.6.0 (2022-12-10)
 
 * Added batch insert/update/merge table scripts (`insertBatch`, `updateBatch`, and `mergeBatch`)
 
