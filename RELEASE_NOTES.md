@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.6.1 (2022-12-12)
 
 * Fixed missing primary key in temp table for `mergeBatch` table scripts
 
