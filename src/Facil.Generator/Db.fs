@@ -1927,6 +1927,12 @@ let getEverything (cfg: RuleSet) fullYamlPath (scriptsWithoutParamsOrResultSetsO
                             )
                             |> List.map (sprintf "%s,")
 
+                          let colList =
+                            pkColsWithRule
+                            |> List.map (fun (c, _) -> c.Name |> sprintf "[%s]")
+                            |> String.concat ", "
+                          $"  PRIMARY KEY ({colList})"
+
                           ")"
                         ]
                         |> String.concat "\n"
