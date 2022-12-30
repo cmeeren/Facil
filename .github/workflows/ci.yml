@@ -1,0 +1,65 @@
+name: CI
+
+on: [ push, pull_request ]
+
+env:
+  FACIL_FORCE_REGENERATE: 1
+  FACIL_FAIL_ON_CHANGED_OUTPUT: 1
+
+jobs:
+  ci:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Check code format
+        run: dotnet fantomas --check --recurse .
+
+      - name: Install SQL Server
+        uses: Particular/install-sql-server-action@v1.0.0
+        with:
+          connection-string-env-var: SQL_SERVER_CONNECTION_STRING
+          catalog: FacilTest
+
+      - name: Build DB
+        run: msbuild src\TestDb\TestDb.sqlproj /property:Configuration=Release
+
+      - name: Publish DB
+        run: sqlpackage.exe /Action:Publish /SourceFile:"src\TestDb\bin\Release\TestDb.dacpac" /TargetConnectionString:"$SQL_SERVER_CONNECTION_STRING"
+
+      - name: Restore generator
+        run: dotnet restore src\Facil.Generator --locked-mode
+
+      - name: Build generator
+        run: dotnet build src\Facil.Generator -c Release --no-restore
+
+      - name: Restore package project
+        run: dotnet restore src\Facil.Package --locked-mode
+
+      - name: Build package project
+        run: dotnet build src\Facil.Package -c Release --no-restore
+
+      # Pack in a separate step (fails for some reason with "empty lib\" error if using <GeneratePackageOnBuild>)
+      - name: Pack
+        run: dotnet pack src\Facil.Package -c Release
+
+      # Build tests, which due to nuget.config should restore the locally built package
+      - name: Build tests
+        run: dotnet build src\DbTests -c Release
+
+      - name: Test
+        run: dotnet src\DbTests\bin\Release\net7.0\DbTests.dll --fail-on-focused-tests
+
+      - name: Push
+        if: startsWith(github.ref, 'refs/tags/v/')
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "**/*.nupkg" -s "https://api.nuget.org/v3/index.json" -k "$NUGET_API_KEY" --skip-duplicate
