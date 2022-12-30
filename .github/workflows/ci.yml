@@ -24,10 +24,10 @@ jobs:
         run: dotnet fantomas --check --recurse .
 
       - name: Install SQL Server
-        uses: potatoqualitee/mssqlsuite@v1.7
-        with:
-          install: sqlengine, sqlclient
-          show-log: true
+        run: docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pwd' -p 1433:1433 --name sqlfts0 mssql-server-fts-sqlpackage-linux
+
+      - name: Create default DB
+        run: docker exec -it sqlfts0 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'pwd' -Q 'CREATE DATABASE FacilTest'
 
       - name: Build DB
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
