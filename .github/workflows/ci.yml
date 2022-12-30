@@ -23,6 +23,9 @@ jobs:
       - name: Check code format
         run: dotnet fantomas --check --recurse .
 
+      - name: Install SQL Server - docker pull
+        run: docker pull samuelmarks/mssql-server-fts-sqlpackage-linux
+
       - name: Install SQL Server
         run: docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pwd' -p 1433:1433 --name sqlfts0 mssql-server-fts-sqlpackage-linux
 
