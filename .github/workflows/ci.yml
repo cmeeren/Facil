@@ -26,14 +26,14 @@ jobs:
       - name: Install SQL Server
         uses: potatoqualitee/mssqlsuite@v1.7
         with:
-          install: sqlengine
-          sa-password: pwd
+          install: sqlengine, sqlclient
+          show-log: true
 
       - name: Build DB
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
 
       - name: Publish DB
-        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"Data Source=localhost;Database=FacilTest;User ID=sa;Password=pwd;TrustServerCertificate=True"
+        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"Data Source=localhost;Database=FacilTest;User ID=sa;Password=dbatools.I0;TrustServerCertificate=True"
 
       - name: Restore generator
         run: dotnet restore src/Facil.Generator --locked-mode
