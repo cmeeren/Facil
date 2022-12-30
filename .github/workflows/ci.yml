@@ -23,11 +23,11 @@ jobs:
       - name: Check code format
         run: dotnet fantomas --check --recurse .
 
-      - name: Install SQL Server - docker pull
-        run: docker pull samuelmarks/mssql-server-fts-sqlpackage-linux
+      - name: Install SQL Server
+        run: docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pwd' -e 'MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS' --name sql -p 1433:1433 samuelmarks/mssql-server-fts-sqlpackage-linux
 
-      - name: Install SQL Server - docker run
-        run: docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pwd' -p 1433:1433 --name sqlfts0 samuelmarks/mssql-server-fts-sqlpackage-linux
+      - name: Wait for SQL server to become available
+        run: sleep 10s
 
       - name: Create default DB
         run: docker exec sqlfts0 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'pwd' -Q 'CREATE DATABASE FacilTest'
