@@ -24,17 +24,16 @@ jobs:
         run: dotnet fantomas --check --recurse .
 
       - name: Install SQL Server
-        uses: Particular/install-sql-server-action@v1.0.0
+        uses: potatoqualitee/mssqlsuite@v1.7
         with:
-          connection-string-env-var: SQL_SERVER_CONNECTION_STRING
-          catalog: FacilTest
-          extra-params: "Encrypt=False;"
+          install: sqlengine
+          sa-password: pwd
 
       - name: Build DB
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
 
       - name: Publish DB
-        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"$SQL_SERVER_CONNECTION_STRING"
+        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"localhost;Database=FacilTest;User ID=sa;Password=pwd;Encrypt=False"
 
       - name: Restore generator
         run: dotnet restore src/Facil.Generator --locked-mode
