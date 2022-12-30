@@ -5,8 +5,8 @@
   <PropertyGroup>
     <Name>TestDb</Name>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
-    <ModelCollation>1033, CS</ModelCollation>
-    <DefaultCollation>SQL_Latin1_General_CP1_CS_AS</DefaultCollation>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
   </PropertyGroup>
 
   <ItemGroup>
