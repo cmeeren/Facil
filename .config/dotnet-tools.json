@@ -7,6 +7,12 @@
       "commands": [
         "fantomas"
       ]
+    },
+    "microsoft.sqlpackage": {
+      "version": "161.6374.0",
+      "commands": [
+        "sqlpackage"
+      ]
     }
   }
 }
