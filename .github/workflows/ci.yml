@@ -26,7 +26,7 @@ jobs:
       - name: Install SQL Server - docker pull
         run: docker pull samuelmarks/mssql-server-fts-sqlpackage-linux
 
-      - name: Install SQL Server
+      - name: Install SQL Server - docker run
         run: docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pwd' -p 1433:1433 --name sqlfts0 samuelmarks/mssql-server-fts-sqlpackage-linux
 
       - name: Create default DB
