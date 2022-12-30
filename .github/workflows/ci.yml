@@ -30,7 +30,7 @@ jobs:
         run: docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pwd' -p 1433:1433 --name sqlfts0 samuelmarks/mssql-server-fts-sqlpackage-linux
 
       - name: Create default DB
-        run: docker exec -it sqlfts0 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'pwd' -Q 'CREATE DATABASE FacilTest'
+        run: docker exec sqlfts0 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'pwd' -Q 'CREATE DATABASE FacilTest'
 
       - name: Build DB
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
