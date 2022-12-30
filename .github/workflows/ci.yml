@@ -27,7 +27,7 @@ jobs:
         uses: Particular/install-sql-server-action@v1.0.0
         with:
           connection-string-env-var: SQL_SERVER_CONNECTION_STRING
-          catalog: unused
+          catalog: FacilTest
           extra-params: "Encrypt=False;"
 
       - name: Build DB
