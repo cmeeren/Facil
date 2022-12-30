@@ -28,6 +28,7 @@ jobs:
         with:
           connection-string-env-var: SQL_SERVER_CONNECTION_STRING
           catalog: FacilTest
+          extra-params: "Encrypt=False;"
 
       - name: Build DB
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
