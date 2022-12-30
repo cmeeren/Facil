@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
     <!-- DO NOT update Microsoft.Extensions.Configuration packages until fix is released (in 7.x?) https://github.com/dotnet/runtime/issues/65756 -->
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
     <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="150.4897.1" />
     <PackageReference Update="FSharp.Core" Version="6.0.6" />
