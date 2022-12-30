@@ -33,7 +33,7 @@ jobs:
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
 
       - name: Publish DB
-        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"localhost;Database=FacilTest;User ID=sa;Password=pwd;Encrypt=False"
+        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"Data Source=localhost;Database=FacilTest;User ID=sa;Password=pwd;Encrypt=False"
 
       - name: Restore generator
         run: dotnet restore src/Facil.Generator --locked-mode
