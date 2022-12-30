@@ -14,6 +14,7 @@
 # - https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration
 # - https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.configurationbuilder
 configs:
+
   # 'appSettings' allow you to use configuration values from appsettings.json.
   - appSettings: path/from/project/to/appsettings.json
 
@@ -29,8 +30,9 @@ configs:
 # Rulesets allow you to specify what you should generate. Each ruleset may only use a
 # single DB and generates a single file. You will often only need one ruleset.
 rulesets:
-    # 'connectionString' is the only required property of a ruleset. You may use a
-    # variable here with the syntax $(VariableName).
+
+  # 'connectionString' is the only required property of a ruleset. You may use a
+  # variable here with the syntax $(VariableName).
   - connectionString: $(ConnectionStrings:Db)
 
     # The filename and namespace/module declaration of the generated file. The values
@@ -134,11 +136,13 @@ rulesets:
 
         # 'params' allows you to specify settings for individual parameters.
         params:
+
           # The keys are the names of the parameters without '@'. The special value ''
           # (empty string) specifies base rules inherited by all parameters in this rule.
-          '': {}
+          '': { }
 
           someParam:
+
             # Whether the parameter is nullable. Parameters are nullable by default if
             # they are defined with default value NULL in the procedure. You can override
             # it using this property.
@@ -161,6 +165,7 @@ rulesets:
         # Note that the temp table definitions will be executed during build, so don't do
         # anything dangerous here.
         tempTables:
+
           # You can supply the definition directly as a string.
           - definition: |
               CREATE TABLE #myTempTable(
@@ -178,9 +183,11 @@ rulesets:
 
         # 'columns' allows you to specify settings for individual output columns.
         columns:
+
           # The keys are the column names. The special value '' (empty string) specifies
           # base rules inherited by all columns in this rule.
           '':
+
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
@@ -210,7 +217,7 @@ rulesets:
         voptionOut: true
         recordIfSingleCol: true
         tempTables: ...
-          
+
 
       - for: SQL/MyScript.sql
 
@@ -228,12 +235,15 @@ rulesets:
         # you to specify, for each problematic parameter (you don't have to specify the
         # ones that work), which SQL type it is and whether it is nullable.
         params:
+
           # The keys are the names of the parameters without '@'. The special value ''
           # (empty string) specifies base rules inherited by all parameters in this rule.
           '':
+
             # Whether the parameter is nullable. Default false.
             nullable: true
           someParam:
+
             # The type of parameter. This is required if the parameter is used more than
             # once in the script or if it is a table-valued parameter (see below).
             type: NVARCHAR(50)
@@ -247,6 +257,7 @@ rulesets:
             # NVARCHAR) are supported.
             buildValue: foo
           anotherParam:
+
             # For table-valued parameters, specify the schema-qualified name of a
             # user-defined table type. Note that table-valued parameters can not be
             # nullable.
@@ -254,9 +265,11 @@ rulesets:
 
         # 'columns' allows you to specify settings for individual output columns.
         columns:
+
           # The keys are the column names. The special value '' (empty string) specifies
           # base rules inherited by all columns in this rule.
           '':
+
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
@@ -281,7 +294,7 @@ rulesets:
         # possible to have more than one rule of the same type for any given table.
         scripts:
 
-            # Generates a script to insert a row.
+          # Generates a script to insert a row.
           - type: insert
 
             # The name of the script. The values '{SchemaName}' and '{TableName}' will be
@@ -292,15 +305,18 @@ rulesets:
 
             # The following work similarly to column rules in in stored procedure rules.
             columns:
+
               # Rules inherited by all columns.
-              '': {}
+              '': { }
               MyIdentityColumn:
+
                 # Don't insert this column. Default true for identity columns, false for
                 # normal columns.
                 skip: true
                 # Output this column. You can output as many columns as you want.
                 output: true
               Column With Spaces:
+
                 # The name of the script parameter.
                 paramName: columnWithSpaces
 
@@ -428,7 +444,7 @@ rulesets:
             filterColumns:
               - Col1
               - Col2
-        
+
 
     # Facil can generate DTO record types for tables. These can then (automatically or
     # manually) be used as the return types of procedures and scripts. This can make it
@@ -455,15 +471,17 @@ rulesets:
 
         # 'columns' allows you to specify settings for individual columns.
         columns:
+
           # The keys are the column names. The special value '' (empty string) specifies
           # base rules inherited by all columns in this rule.
           '':
+
             # Whether the column should be ignored. Can be used e.g. to remove columns
             # with unsupported data types.
             skip: true
           SomeColumn:
             skip: false
-        
+
 
     # Facil automatically generates table type constructors for table types used as a
     # parameter in any included stored procedure or script.

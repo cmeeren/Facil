@@ -15,5 +15,6 @@ rulesets:
     namespaceOrModuleDeclaration: module DbGen
 
     procedures:
+
       # Generate wrappers for all stored procedures with the default configuration.
       - include: .*

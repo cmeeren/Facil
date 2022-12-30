@@ -3,8 +3,8 @@ Facil
 
 <img src="https://raw.githubusercontent.com/cmeeren/Facil/master/logo/facil-logo-docs.png" width="300" align="right" />
 
-**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer
-happiness.**
+**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.
+**
 
 Pro-tip: Facil works great with [Fling](https://github.com/cmeeren/Fling)!
 
@@ -62,7 +62,7 @@ let getUser (connStr: string) (UserId userId) : Async<User option> =
         .WithParameters(userId)
         .AsyncExecuteSingle()
   }
-    
+
 
 let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArray<Product>> =
   async {
@@ -219,8 +219,8 @@ Yes. There are two environment variables you can set. You can use either of them
 
 ### Why won't the project recompile if I only change `facil.yaml` or a `.sql` file?
 
-Depending on how the `.sql` and `facil.yaml` file are added to your project in the first place, you may need to add these
-files to the project's up-to-date check. Simply add this in your `.fsproj` file:
+Depending on how the `.sql` and `facil.yaml` file are added to your project in the first place, you may need to add
+these files to the project's up-to-date check. Simply add this in your `.fsproj` file:
 
 ```xml
 <ItemGroup>
@@ -291,8 +291,8 @@ once (and override specific parameters).
 ### How are default and nullable parameter values handled?
 
 All stored procedure parameters that have `null` as the default value are treated as nullable and wrapped in `option`
-(or `voption`). All other default values for stored procedure parameters are ignored; the parameters will be required and
-non-nullable.
+(or `voption`). All other default values for stored procedure parameters are ignored; the parameters will be required
+and non-nullable.
 
 While parameters with default values could conceivably be generated as optional method parameters, this runs the risk of
 forgetting to use them when executing the procedure (I’ve been burned by this a lot), and it also won’t mesh that well
@@ -396,8 +396,9 @@ confusion, and the name prefix/suffix would almost be as verbose as just calling
 If you think that building up a `list` directly in the read loop would be more efficient as it would avoid the “copy”
 cost of `Seq.toList`, then 1) I don’t think that’s correct, because (as mentioned above) an F# `list` would have to be
 built up in reverse by prepending each item, and the `List.rev` at the end would cause at least one “copy” anyway, and
+
 2) in the rare case that your use-case is so sensitive to performance that you are concerned about the performance
-impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
+   impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
 
 Note that since Facil is a general-purpose data access library, I do not know anything about user workloads, databases
 or connections, and I have not benchmarked anything. All of the above is going by intuition (admittedly a dangerous

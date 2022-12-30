@@ -237,8 +237,9 @@ rulesets:
 
       - for: TempTableInlined.sql
         tempTables:
-            # Deliberately uses the same temp table name as at least one other script to
-            # ensure temp tables are dropped when parsing
+
+          # Deliberately uses the same temp table name as at least one other script to
+          # ensure temp tables are dropped when parsing
           - definition: 'CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
 
       - for: TempTableInlinedDynamic.sql
@@ -364,7 +365,7 @@ rulesets:
               BAR:
                 output: false
                 paramName: bar
-                
+
           - type: insertBatch
             columns:
               '':

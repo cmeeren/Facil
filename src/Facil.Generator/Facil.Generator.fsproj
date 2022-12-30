@@ -20,7 +20,7 @@
     <Compile Include="Render.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="FSharp.SystemTextJson" Version="1.0.7" />
     <PackageReference Include="Glob" Version="1.2.0-alpha0032" />
