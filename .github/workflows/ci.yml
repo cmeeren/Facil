@@ -25,7 +25,7 @@ jobs:
 
       - name: Install SQL Server
         run: |
-          docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pwd' -e 'MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS' --name sql -p 1433:1433 samuelmarks/mssql-server-fts-sqlpackage-linux
+          docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=ab420079-8a14-4a37-8ae1-4f71768dd169' -e 'MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS' --name sql -p 1433:1433 samuelmarks/mssql-server-fts-sqlpackage-linux
           sleep 10s
           docker ps -a
           docker logs -t sql
@@ -35,7 +35,7 @@ jobs:
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
 
       - name: Publish DB
-        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"Data Source=localhost;Database=FacilTest;User ID=sa;Password=dbatools.I0;TrustServerCertificate=True"
+        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"Data Source=localhost;Database=FacilTest;User ID=sa;Password=ab420079-8a14-4a37-8ae1-4f71768dd169;TrustServerCertificate=True"
 
       - name: Restore generator
         run: dotnet restore src/Facil.Generator --locked-mode
