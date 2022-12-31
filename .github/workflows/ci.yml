@@ -6,7 +6,7 @@ env:
   FACIL_FORCE_REGENERATE: 1
   FACIL_FAIL_ON_CHANGED_OUTPUT: 1
   SQL_SA_PASSWORD: CXTxgxnkzcTcLMCwKjqi4XbKgwFtw
-  SQL_CONNECTION_STRING: Data Source=localhost;Database=FacilTest;User ID=sa;Password=CXTxgxnkzcTcLMCwKjqi4XbKgwFtw;TrustServerCertificate=True
+  connectionString: Data Source=localhost;Database=FacilTest;User ID=sa;Password=CXTxgxnkzcTcLMCwKjqi4XbKgwFtw;TrustServerCertificate=True
 
 jobs:
   ci:
@@ -36,7 +36,7 @@ jobs:
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
 
       - name: Publish DB
-        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"$SQL_CONNECTION_STRING"
+        run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"$connectionString"
 
       - name: Restore generator
         run: dotnet restore src/Facil.Generator --locked-mode
