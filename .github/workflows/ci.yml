@@ -5,7 +5,6 @@ on: [ push, pull_request ]
 env:
   FACIL_FORCE_REGENERATE: 1
   FACIL_FAIL_ON_CHANGED_OUTPUT: 1
-  SQL_SA_PASSWORD: CXTxgxnkzcTcLMCwKjqi4XbKgwFtw
   connectionString: Data Source=localhost;Database=FacilTest;User ID=sa;Password=CXTxgxnkzcTcLMCwKjqi4XbKgwFtw;TrustServerCertificate=True
 
 jobs:
@@ -27,7 +26,7 @@ jobs:
 
       - name: Install SQL Server
         run: |
-          docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=$SQL_SA_PASSWORD' -e 'MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS' --name sql -p 1433:1433 samuelmarks/mssql-server-fts-sqlpackage-linux
+          docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=CXTxgxnkzcTcLMCwKjqi4XbKgwFtw' -e 'MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS' --name sql -p 1433:1433 samuelmarks/mssql-server-fts-sqlpackage-linux
           sleep 10s
           docker ps -a
           docker logs -t sql
