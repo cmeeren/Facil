@@ -28,19 +28,7 @@ jobs:
       - name: Install SQL Server
         run: |
           docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=$SQL_SA_PASSWORD' -e 'MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS' --name sql -p 1433:1433 samuelmarks/mssql-server-fts-sqlpackage-linux
-
-          for ((i=1; i<=30; i++)); do
-            echo "Attempt $i/30 to connect to SQL Server..."
-            sqlcmd -S localhost -U SA -P 'ab420079-8a14-4a37-8ae1-4f71768dd169' -b -Q "SELECT @@SERVERNAME as ServerName"
-            if [ $? -eq 0 ]; then
-              echo "SQL server is ready"
-              break
-            else
-              echo "SQL Sever is not ready, sleeping for 5s"
-              sleep 5
-            fi
-          done
-
+          sleep 10s
           docker ps -a
           docker logs -t sql
 
