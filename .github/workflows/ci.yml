@@ -31,7 +31,8 @@ jobs:
 
           for ((i=1; i<=30; i++)); do
             echo "Attempt $i/30 to connect to SQL Server..."
-            if [ sqlcmd -S localhost -U SA -P 'ab420079-8a14-4a37-8ae1-4f71768dd169' -b -Q "SELECT @@SERVERNAME as ServerName" ]; then
+            sqlcmd -S localhost -U SA -P 'ab420079-8a14-4a37-8ae1-4f71768dd169' -b -Q "SELECT @@SERVERNAME as ServerName"
+            if [ $? -eq 0 ]; then
               echo "SQL server is ready"
               break
             else
