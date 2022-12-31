@@ -33,17 +33,17 @@
 
   <ItemGroup>
     <Content Include="Facil.targets">
-      <PackagePath>build\net6.0\</PackagePath>
+      <PackagePath>build/net6.0/</PackagePath>
     </Content>
     <Content Include="FacilGenerate.targets">
-      <PackagePath>tools\</PackagePath>
+      <PackagePath>tools/</PackagePath>
     </Content>
     <Content Include="..\Facil.Generator\bin\$(Configuration)\**\*">
-      <PackagePath>tools\</PackagePath>
+      <PackagePath>tools/</PackagePath>
       <Visible>false</Visible>
     </Content>
     <Content Include="bin\$(Configuration)\**\*" Exclude="bin\$(Configuration)\**\Facil.Package.*">
-      <PackagePath>lib\</PackagePath>
+      <PackagePath>lib/</PackagePath>
       <Visible>false</Visible>
     </Content>
     <None Include="facil-logo-128x128.png">
