@@ -29,7 +29,7 @@ jobs:
           sleep 10s
           docker ps -a
           docker logs -t sql
-          docker exec sql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'pwd' -Q 'CREATE DATABASE FacilTest'
+          docker exec sql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'ab420079-8a14-4a37-8ae1-4f71768dd169' -Q 'CREATE DATABASE FacilTest'
 
       - name: Build DB
         run: dotnet build src/TestDb/TestDb.sqlproj -c Release
