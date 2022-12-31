@@ -3,7 +3,7 @@ configs:
   - envVars: ''
 
 rulesets:
-  - connectionString: $(connectionString)
+  - connectionString: $(SQL_CONNECTION_STRING)
     filename: DbGen.fs
     namespaceOrModuleDeclaration: module DbGen
 
