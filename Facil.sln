@@ -17,7 +17,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E848896D-00D5-4D55-9790-0A4F39643B6A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		appveyor.yml = appveyor.yml
 		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
 		facil_reference.yaml = facil_reference.yaml
