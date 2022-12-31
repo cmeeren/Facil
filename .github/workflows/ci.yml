@@ -5,8 +5,8 @@ on: [ push, pull_request ]
 env:
   FACIL_FORCE_REGENERATE: 1
   FACIL_FAIL_ON_CHANGED_OUTPUT: 1
-  SQL_SA_PASSWORD: CXTxgxnkzcTcLMCwK-jqi4XbKgwFtw
-  SQL_CONNECTION_STRING: Data Source=localhost;Database=FacilTest;User ID=sa;Password=CXTxgxnkzcTcLMCwK-jqi4XbKgwFtw;TrustServerCertificate=True
+  SQL_SA_PASSWORD: CXTxgxnkzcTcLMCwKjqi4XbKgwFtw
+  SQL_CONNECTION_STRING: Data Source=localhost;Database=FacilTest;User ID=sa;Password=CXTxgxnkzcTcLMCwKjqi4XbKgwFtw;TrustServerCertificate=True
 
 jobs:
   ci:
