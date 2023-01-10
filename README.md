@@ -3,8 +3,7 @@ Facil
 
 <img src="https://raw.githubusercontent.com/cmeeren/Facil/master/logo/facil-logo-docs.png" width="300" align="right" />
 
-**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.
-**
+**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.**
 
 Pro-tip: Facil works great with [Fling](https://github.com/cmeeren/Fling)!
 
@@ -223,6 +222,7 @@ Depending on how the `.sql` and `facil.yaml` file are added to your project in t
 these files to the project's up-to-date check. Simply add this in your `.fsproj` file:
 
 ```xml
+
 <ItemGroup>
   <UpToDateCheckInput Include="**\*.sql" />
   <UpToDateCheckInput Include="facil.yaml" />
@@ -319,8 +319,7 @@ Yes, Facil supports temp tables in scripts and procedures. In short, configure y
 ```yaml
 scripts:
   - include: "MyScriptUsingTempTables.sql"
-    tempTables:
-      # You can supply the definition directly as a string.
+    tempTables: # You can supply the definition directly as a string.
       - definition: |
           CREATE TABLE #myTempTable1(
             Col1 INT NOT NULL PRIMARY KEY,
