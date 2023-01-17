@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Generator: Updated Microsoft.Extensions.Configuration.Binder from 7.0.1 to 7.0.2
+
 ### 2.6.1 (2022-12-12)
 
 * Fixed missing primary key in temp table for `mergeBatch` table scripts
