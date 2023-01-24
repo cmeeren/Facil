@@ -54,26 +54,19 @@ For example:
 open DbGen.Procedures.dbo
 
 let getUser (connStr: string) (UserId userId) : Async<User option> =
-  async {
-    return!
-      GetUserById
-        .WithConnection(connStr)
-        .WithParameters(userId)
-        .AsyncExecuteSingle()
-  }
+    GetUserById.WithConnection(connStr).WithParameters(userId).AsyncExecuteSingle()
 
-
-let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArray<Product>> =
-  async {
+let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArray<Product>> = async {
     let dtoWithPrimitiveParams = ProductSearchArgs.toDto args
+
     return!
-      GetUserById
-        .WithConnection(connStr)
-        // You can load parameters from any object with the right members
-        // instead of passing each parameter manually
-        .WithParameters(dtoWithPrimitiveParams)
-        .AsyncExecute()
-  }
+        GetUserById
+            .WithConnection(connStr)
+            // You can load parameters from any object with the right members
+            // instead of passing each parameter manually
+            .WithParameters(dtoWithPrimitiveParams)
+            .AsyncExecute()
+}
 ```
 
 ### 5. Profit!
@@ -337,21 +330,12 @@ Then temp tables will work similarly to TVPs:
 
 ```f#
 MyScriptUsingTempTables
-  .WithConnection(connStr)
-  .WithParameters(
-    tempTable1 = [
-      MyScriptUsingTempTables.tempTable1.create(
-        Col1 = 1,
-        Col2 = Some "test"
-      )
-    ],
-    tempTable2 = [
-      MyScriptUsingTempTables.tempTable2.create(
-        Col1 = 1
-      )
-    ],
-    ..
-  )
+    .WithConnection(connStr)
+    .WithParameters(
+        tempTable1 = [ MyScriptUsingTempTables.tempTable1.create (Col1 = 1, Col2 = Some "test") ],
+        tempTable2 = [ MyScriptUsingTempTables.tempTable2.create (Col1 = 1) ],
+        tempTable3 = [ (* ... *) ]
+    )
 ```
 
 Just like with TVPs, you can use matching DTOs in the calls to `create` (instead of explicitly passing column parameters
@@ -362,14 +346,13 @@ temp tables. You can configure the created `SqlBulkCopy` using `ConfigureBulkCop
 
 ```f#
 MyScriptUsingTempTables
-  .WithConnection(connStr)
-  .ConfigureBulkCopy(fun bc ->
-    bc.BatchSize <- 1000
-    bc.BulkCopyTimeout <- 0
-    bc.NotifyAfter <- 2000
-    bc.SqlRowsCopied.Add (fun e -> printfn "%i rows copied so far" e.RowsCopied)
-  )
-  .WithParameters(..)
+    .WithConnection(connStr)
+    .ConfigureBulkCopy(fun bc ->
+        bc.BatchSize <- 1000
+        bc.BulkCopyTimeout <- 0
+        bc.NotifyAfter <- 2000
+        bc.SqlRowsCopied.Add(fun e -> printfn "%i rows copied so far" e.RowsCopied))
+    .WithParameters( (* ... *) )
 ```
 
 The configuration will apply to the loading of all temp tables for the script/procedure; please open an issue if you
