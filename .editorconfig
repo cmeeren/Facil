@@ -17,6 +17,5 @@ self_closing_tag_style = space
 # noinspection EditorConfigKeyCorrectness
 [*.fs]
 indent_size = 4
-fsharp_multiline_block_brackets_on_same_column = true
-fsharp_experimental_stroustrup_style = true
+fsharp_multiline_bracket_style = experimental_stroustrup
 fsharp_keep_max_number_of_blank_lines = 3
