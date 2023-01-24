@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.6.2 (2023-01-24)
 
 * Updated Microsoft.Data.SqlClient from 5.0.1 to 5.1.0
 * Generator: Updated FSharp.SystemTextJson from 1.0.7 to 1.1.23
