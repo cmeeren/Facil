@@ -4,6 +4,7 @@ Release notes
 ### Unreleased
 
 * Updated Microsoft.Data.SqlClient from 5.0.1 to 5.1.0
+* Generator: Updated FSharp.SystemTextJson from 1.0.7 to 1.1.23
 * Generator: Updated Microsoft.Extensions.Configuration.Binder from 7.0.1 to 7.0.2
 
 ### 2.6.1 (2022-12-12)

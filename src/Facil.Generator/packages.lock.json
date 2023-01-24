@@ -22,9 +22,9 @@
       },
       "FSharp.SystemTextJson": {
         "type": "Direct",
-        "requested": "[1.0.7, )",
-        "resolved": "1.0.7",
-        "contentHash": "PXzfKM4I1daKB/nb2LY12POuTtTLCnfHboAgvUv3rgO65vy4zPWmBqbVQS19725yDVaL1rhMluasWz4lCyOjJw==",
+        "requested": "[1.1.23, )",
+        "resolved": "1.1.23",
+        "contentHash": "LixaMQr3AVFleiBwcFRtBPYZ6VSlgi2aMDgXJAaP4dHad1nnpz6siT3kCeWT29P/wwaSMHPBmD18NQ7pGyS+dA==",
         "dependencies": {
           "FSharp.Core": "4.7.0",
           "System.Text.Json": "6.0.0"
