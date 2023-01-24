@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="FSharp.SystemTextJson" Version="1.1.23" />
-    <PackageReference Include="Glob" Version="1.2.0-alpha0037" />
+    <PackageReference Include="Glob" Version="1.2.0-alpha0032" />
     <PackageReference Include="Legivel" Version="0.4.6" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />

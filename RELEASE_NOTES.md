@@ -1,11 +1,16 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Generator: Reverted Glob to 1.2.0-alpha0032 to avoid [upstream bug](https://github.com/kthompson/glob/issues/69)
+
 ### 2.6.2 (2023-01-24)
 
 * Updated Microsoft.Data.SqlClient from 5.0.1 to 5.1.0
 * Generator: Updated FSharp.SystemTextJson from 1.0.7 to 1.1.23
 * Generator: Updated Microsoft.Extensions.Configuration.Binder from 7.0.1 to 7.0.2
+* Generator: Updated Glob from 1.2.0-alpha0032 to 1.2.0-alpha0037
 
 ### 2.6.1 (2022-12-12)
 

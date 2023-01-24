@@ -27,7 +27,7 @@ module Program =
 
             let projectDir =
                 if argv.Length = 0 then
-                    @"..\..\..\..\DbTests.DbGen"
+                    @"C:\Users\cmeer\Source\Repos\Vbit.Api.Watcher\src\DbGen"
                 else
                     argv[0]
                 |> Path.GetFullPath
