@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.6.3 (2023-01-24)
 
 * Generator: Reverted Glob to 1.2.0-alpha0032 to avoid [upstream bug](https://github.com/kthompson/glob/issues/69)
 
