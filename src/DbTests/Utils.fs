@@ -22,7 +22,7 @@ let (|InnerException|) ex = getInnerEx ex
 
 /// Gets the type's static 'getPrimaryKey' method, if it exists.
 let staticGetPrimaryKeyMethod<'a> =
-    typeof<'a>.GetMethod ("getPrimaryKey") |> Option.ofObj
+    typeof<'a>.GetMethod("getPrimaryKey") |> Option.ofObj
 
 
 module Seq =

@@ -40,10 +40,7 @@ let tests =
                         for _ in [ 1..3 ] do
                             do! Async.Sleep 200
 
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithNoResults
+                            DbGen.Procedures.dbo.ProcWithNoResults
                                 .WithConnection(conn)
                                 .WithParameters(foo = 2)
                             |> exec
@@ -62,10 +59,7 @@ let tests =
                         let mutable connDisposed = false
                         let mutable cmdDisposed = false
 
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcSelectFromTable
+                        DbGen.Procedures.dbo.ProcSelectFromTable
                             .WithConnection(
                                 Config.connStr,
                                 fun conn -> conn.Disposed.Add(fun _ -> connDisposed <- true)
@@ -93,10 +87,7 @@ let tests =
                         let mutable connDisposed = false
                         let mutable cmdDisposed = false
 
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithNoResults
+                        DbGen.Procedures.dbo.ProcWithNoResults
                             .WithConnection(
                                 Config.connStr,
                                 fun conn -> conn.Disposed.Add(fun _ -> connDisposed <- true)
@@ -129,10 +120,7 @@ let tests =
                         conn.Disposed.Add(fun _ -> connDisposed <- true)
                         conn.Open()
 
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcSelectFromTable
+                        DbGen.Procedures.dbo.ProcSelectFromTable
                             .WithConnection(conn)
                             .ConfigureCommand(fun cmd -> cmd.Disposed.Add(fun _ -> cmdDisposed <- true))
                         |> exec
@@ -161,10 +149,7 @@ let tests =
                         conn.Disposed.Add(fun _ -> connDisposed <- true)
                         conn.Open()
 
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithNoResults
+                        DbGen.Procedures.dbo.ProcWithNoResults
                             .WithConnection(conn)
                             .ConfigureCommand(fun cmd -> cmd.Disposed.Add(fun _ -> cmdDisposed <- true))
                             .WithParameters(foo = 2)
@@ -188,10 +173,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let preTestCount =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcSelectFromTable
+                            DbGen.Procedures.dbo.ProcSelectFromTable
                                 .WithConnection(Config.connStr)
                                 .Execute()
                             |> Seq.length
@@ -206,10 +188,7 @@ let tests =
                         doTest ()
 
                         let postTestCount =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcSelectFromTable
+                            DbGen.Procedures.dbo.ProcSelectFromTable
                                 .WithConnection(Config.connStr)
                                 .Execute()
                             |> Seq.length

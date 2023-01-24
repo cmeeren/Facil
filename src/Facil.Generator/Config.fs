@@ -1011,29 +1011,28 @@ module TableScriptTypeRule =
             TableType = rule.TableType
             Holdlock = rule.Holdlock |> Option.defaultValue false
             FilterColumns = rule.FilterColumns
-            ColumnsFromAllRules =
-                [
+            ColumnsFromAllRules = [
 
-                    match rule.Type, rule.SelectColumns with
-                    | _, None -> ()
-                    | (Insert | InsertBatch | Update | UpdateBatch | Merge | MergeBatch | Delete), Some _ -> ()
-                    | (GetAll | GetById | GetByIdBatch | GetByColumns | GetByColumnsBatch), Some selectCols ->
+                match rule.Type, rule.SelectColumns with
+                | _, None -> ()
+                | (Insert | InsertBatch | Update | UpdateBatch | Merge | MergeBatch | Delete), Some _ -> ()
+                | (GetAll | GetById | GetByIdBatch | GetByColumns | GetByColumnsBatch), Some selectCols ->
 
-                        let skipCol skip = {
-                            TableScriptColumn.Skip = Some skip
-                            ParamName = None
-                            Output = None
-                        }
+                    let skipCol skip = {
+                        TableScriptColumn.Skip = Some skip
+                        ParamName = None
+                        Output = None
+                    }
 
-                        [
-                            None, skipCol true
-                            for c in selectCols do
-                                Some c, skipCol false
-                        ]
-                        |> Map.ofList
+                    [
+                        None, skipCol true
+                        for c in selectCols do
+                            Some c, skipCol false
+                    ]
+                    |> Map.ofList
 
-                    rule.Columns
-                ]
+                rule.Columns
+            ]
         }
 
 

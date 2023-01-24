@@ -50,10 +50,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypes
+                            DbGen.Procedures.dbo.ProcWithAllTypes
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     bigint = 1L,
@@ -129,10 +126,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     bigint = 1L,
@@ -208,10 +202,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypes
+                            DbGen.Procedures.dbo.ProcWithAllTypes
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -289,10 +280,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -370,10 +358,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     bigint = Some 1L,
@@ -449,10 +434,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesNullExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesNullExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     bigint = Some 1L,
@@ -528,10 +510,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -609,10 +588,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesNullExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesNullExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -690,10 +666,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     bigint = None,
@@ -769,10 +742,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesNullExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesNullExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     bigint = None,
@@ -848,10 +818,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -932,10 +899,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithAllTypesNullExtended
+                                DbGen.Procedures.dbo.ProcWithAllTypesNullExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1013,10 +977,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNonNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     ``params`` = [
@@ -1092,10 +1053,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNonNullExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNullExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     ``params`` = [
@@ -1171,10 +1129,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNonNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -1256,10 +1211,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithAllTypesFromTvpNonNullExtended
+                                DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNullExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1339,10 +1291,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     ``params`` = [
@@ -1418,10 +1367,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNullExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNullExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     ``params`` = [
@@ -1497,10 +1443,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -1584,10 +1527,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithAllTypesFromTvpNullExtended
+                                DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNullExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1671,10 +1611,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     ``params`` = [
@@ -1750,10 +1687,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNullExtended
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNullExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     ``params`` = [
@@ -1832,10 +1766,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithAllTypesFromTvpNull
+                                DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNull
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1917,10 +1848,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithAllTypesFromTvpNullExtended
+                                DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNullExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -2031,10 +1959,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndSimpleDefaultParams
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 1, bar = "test")
                             |> exec
@@ -2051,10 +1976,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndSimpleDefaultParamsExtended
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 1, bar = "test")
                             |> exec
@@ -2074,10 +1996,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleDefaultParams
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = 1; Bar = "test" |})
                                 |> exec
@@ -2097,10 +2016,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleDefaultParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = 1; Bar = "test" |})
                                 |> exec
@@ -2117,10 +2033,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndSimpleNonDefaultParams
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNonDefaultParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 1, bar = "test")
                             |> exec
@@ -2137,10 +2050,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 1, bar = "test")
                             |> exec
@@ -2160,10 +2070,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNonDefaultParams
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNonDefaultParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = 1; Bar = "test" |})
                                 |> exec
@@ -2183,10 +2090,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = 1; Bar = "test" |})
                                 |> exec
@@ -2203,10 +2107,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndSimpleNullParams
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = Some 1, bar = Some "test")
                             |> exec
@@ -2223,10 +2124,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndSimpleNullParamsExtended
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = Some 1, bar = Some "test")
                             |> exec
@@ -2246,10 +2144,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNullParams
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = Some 1; Bar = Some "test" |})
                                 |> exec
@@ -2269,10 +2164,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNullParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = Some 1; Bar = Some "test" |})
                                 |> exec
@@ -2292,10 +2184,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNullParams
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters(foo = None, bar = None)
                                 |> exec
@@ -2315,10 +2204,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNullParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(foo = None, bar = None)
                                 |> exec
@@ -2338,10 +2224,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNullParams
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = None; Bar = None |})
                                 |> exec
@@ -2361,10 +2244,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndSimpleNullParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleNullParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = None; Bar = None |})
                                 |> exec
@@ -2381,10 +2261,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndTvpParams
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     single = [ DbGen.TableTypes.dbo.SingleColNonNull.create (Foo = 1) ],
@@ -2404,10 +2281,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndTvpParamsExtended
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     single = [ DbGen.TableTypes.dbo.SingleColNonNull.create (Foo = 1) ],
@@ -2430,19 +2304,14 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndTvpParams
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNonNull.create {| Foo = 1 |} ]
-                                            Multi =
-                                                [
-                                                    DbGen.TableTypes.dbo.MultiColNonNull.create
-                                                        {| Foo = 1; Bar = "test" |}
-                                                ]
+                                            Multi = [
+                                                DbGen.TableTypes.dbo.MultiColNonNull.create {| Foo = 1; Bar = "test" |}
+                                            ]
                                         |}
                                     )
                                 |> exec
@@ -2462,19 +2331,14 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleColumnsAndTvpParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNonNull.create {| Foo = 1 |} ]
-                                            Multi =
-                                                [
-                                                    DbGen.TableTypes.dbo.MultiColNonNull.create
-                                                        {| Foo = 1; Bar = "test" |}
-                                                ]
+                                            Multi = [
+                                                DbGen.TableTypes.dbo.MultiColNonNull.create {| Foo = 1; Bar = "test" |}
+                                            ]
                                         |}
                                     )
                                 |> exec
@@ -2491,10 +2355,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleNullableColumnsAndTvpParams
+                            DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     single = [ DbGen.TableTypes.dbo.SingleColNull.create (Foo = Some 1) ],
@@ -2516,10 +2377,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleNullableColumnsAndTvpParamsExtended
+                            DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     single = [ DbGen.TableTypes.dbo.SingleColNull.create (Foo = Some 1) ],
@@ -2544,19 +2402,15 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleNullableColumnsAndTvpParams
+                                DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNull.create {| Foo = Some 1 |} ]
-                                            Multi =
-                                                [
-                                                    DbGen.TableTypes.dbo.MultiColNull.create
-                                                        {| Foo = Some 1; Bar = Some "test" |}
-                                                ]
+                                            Multi = [
+                                                DbGen.TableTypes.dbo.MultiColNull.create
+                                                    {| Foo = Some 1; Bar = Some "test" |}
+                                            ]
                                         |}
                                     )
                                 |> exec
@@ -2576,19 +2430,15 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleNullableColumnsAndTvpParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNull.create {| Foo = Some 1 |} ]
-                                            Multi =
-                                                [
-                                                    DbGen.TableTypes.dbo.MultiColNull.create
-                                                        {| Foo = Some 1; Bar = Some "test" |}
-                                                ]
+                                            Multi = [
+                                                DbGen.TableTypes.dbo.MultiColNull.create
+                                                    {| Foo = Some 1; Bar = Some "test" |}
+                                            ]
                                         |}
                                     )
                                 |> exec
@@ -2608,10 +2458,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleNullableColumnsAndTvpParams
+                                DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         single = [ DbGen.TableTypes.dbo.SingleColNull.create (Foo = None) ],
@@ -2634,10 +2481,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleNullableColumnsAndTvpParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         single = [ DbGen.TableTypes.dbo.SingleColNull.create (Foo = None) ],
@@ -2660,19 +2504,14 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleNullableColumnsAndTvpParams
+                                DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNull.create {| Foo = None |} ]
-                                            Multi =
-                                                [
-                                                    DbGen.TableTypes.dbo.MultiColNull.create
-                                                        {| Foo = None; Bar = None |}
-                                                ]
+                                            Multi = [
+                                                DbGen.TableTypes.dbo.MultiColNull.create {| Foo = None; Bar = None |}
+                                            ]
                                         |}
                                     )
                                 |> exec
@@ -2692,19 +2531,14 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithMultipleNullableColumnsAndTvpParamsExtended
+                                DbGen.Procedures.dbo.ProcWithMultipleNullableColumnsAndTvpParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNull.create {| Foo = None |} ]
-                                            Multi =
-                                                [
-                                                    DbGen.TableTypes.dbo.MultiColNull.create
-                                                        {| Foo = None; Bar = None |}
-                                                ]
+                                            Multi = [
+                                                DbGen.TableTypes.dbo.MultiColNull.create {| Foo = None; Bar = None |}
+                                            ]
                                         |}
                                     )
                                 |> exec
@@ -2751,10 +2585,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithNoResults
+                            DbGen.Procedures.dbo.ProcWithNoResults
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 2)
                             |> exec
@@ -2770,10 +2601,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithNoResultsExtended
+                            DbGen.Procedures.dbo.ProcWithNoResultsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 2)
                             |> exec
@@ -2789,10 +2617,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithNoResults
+                            DbGen.Procedures.dbo.ProcWithNoResults
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Foo = 2 |})
                             |> exec
@@ -2808,10 +2633,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithNoResultsExtended
+                            DbGen.Procedures.dbo.ProcWithNoResultsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Foo = 2 |})
                             |> exec
@@ -2883,10 +2705,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNonNullColumn
+                            DbGen.Procedures.dbo.ProcWithSingleNonNullColumn
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 1)
                             |> exec
@@ -2902,10 +2721,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNonNullColumnExtended
+                            DbGen.Procedures.dbo.ProcWithSingleNonNullColumnExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = 1)
                             |> exec
@@ -2921,10 +2737,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNonNullColumn
+                            DbGen.Procedures.dbo.ProcWithSingleNonNullColumn
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Foo = 1 |})
                             |> exec
@@ -2943,10 +2756,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithSingleNonNullColumnExtended
+                                DbGen.Procedures.dbo.ProcWithSingleNonNullColumnExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = 1 |})
                                 |> exec
@@ -2962,10 +2772,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNullColumn
+                            DbGen.Procedures.dbo.ProcWithSingleNullColumn
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = Some 1)
                             |> exec
@@ -2981,10 +2788,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNullColumnExtended
+                            DbGen.Procedures.dbo.ProcWithSingleNullColumnExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = Some 1)
                             |> exec
@@ -3000,10 +2804,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNullColumn
+                            DbGen.Procedures.dbo.ProcWithSingleNullColumn
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Foo = Some 1 |})
                             |> exec
@@ -3019,10 +2820,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNullColumnExtended
+                            DbGen.Procedures.dbo.ProcWithSingleNullColumnExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Foo = Some 1 |})
                             |> exec
@@ -3038,10 +2836,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNullColumn
+                            DbGen.Procedures.dbo.ProcWithSingleNullColumn
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = None)
                             |> exec
@@ -3057,10 +2852,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNullColumnExtended
+                            DbGen.Procedures.dbo.ProcWithSingleNullColumnExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(foo = None)
                             |> exec
@@ -3076,10 +2868,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSingleNullColumn
+                            DbGen.Procedures.dbo.ProcWithSingleNullColumn
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Foo = None |})
                             |> exec
@@ -3098,10 +2887,7 @@ let execTests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithSingleNullColumnExtended
+                                DbGen.Procedures.dbo.ProcWithSingleNullColumnExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters({| Foo = None |})
                                 |> exec
@@ -3117,10 +2903,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSpecialCasing
+                            DbGen.Procedures.dbo.ProcWithSpecialCasing
                                 .WithConnection(Config.connStr)
                                 .WithParameters(PARAM1 = 1, Param2 = 2, param3 = 3)
                             |> exec
@@ -3138,10 +2921,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSpecialCasingExtended
+                            DbGen.Procedures.dbo.ProcWithSpecialCasingExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(PARAM1 = 1, Param2 = 2, param3 = 3)
                             |> exec
@@ -3159,10 +2939,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSpecialCasing
+                            DbGen.Procedures.dbo.ProcWithSpecialCasing
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| PARAM1 = 1; Param2 = 2; Param3 = 3 |})
                             |> exec
@@ -3180,10 +2957,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithSpecialCasingExtended
+                            DbGen.Procedures.dbo.ProcWithSpecialCasingExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| PARAM1 = 1; Param2 = 2; Param3 = 3 |})
                             |> exec
@@ -3211,9 +2985,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .NormalParams
+                            DbGen.Scripts.NormalParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(col1 = "test1")
                             |> exec
@@ -3230,9 +3002,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .NormalParams
+                            DbGen.Scripts.NormalParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Col1 = "test1" |})
                             |> exec
@@ -3249,9 +3019,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .ParamsUsedTwice
+                            DbGen.Scripts.ParamsUsedTwice
                                 .WithConnection(Config.connStr)
                                 .WithParameters(col1 = Some "test1")
                             |> exec
@@ -3268,9 +3036,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .ParamsUsedTwice
+                            DbGen.Scripts.ParamsUsedTwice
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Col1 = Some "test1" |})
                             |> exec
@@ -3287,9 +3053,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .OptionRecompileAndFetch
+                            DbGen.Scripts.OptionRecompileAndFetch
                                 .WithConnection(Config.connStr)
                                 .WithParameters(offset = 0L, limit = 10L)
                             |> exec
@@ -3306,9 +3070,7 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .OptionRecompileAndFetch
+                            DbGen.Scripts.OptionRecompileAndFetch
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Offset = 0L; Limit = 10L |})
                             |> exec
@@ -3337,12 +3099,12 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .UserDefinedTableType
+                            DbGen.Scripts.UserDefinedTableType
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
-                                    tvp = [ DbGen.TableTypes.dbo.MultiColNull.create (Foo = Some 1, Bar = Some "test") ]
+                                    tvp = [
+                                        DbGen.TableTypes.dbo.MultiColNull.create (Foo = Some 1, Bar = Some "test")
+                                    ]
                                 )
                             |> exec
 
@@ -3358,19 +3120,13 @@ let execTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .UserDefinedTableType
+                            DbGen.Scripts.UserDefinedTableType
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        Tvp =
-                                            [
-                                                DbGen.TableTypes.dbo.MultiColNull.create (
-                                                    Foo = Some 1,
-                                                    Bar = Some "test"
-                                                )
-                                            ]
+                                        Tvp = [
+                                            DbGen.TableTypes.dbo.MultiColNull.create (Foo = Some 1, Bar = Some "test")
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -3473,10 +3229,7 @@ let seqExecTests =
                             )
 
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNonNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(``params`` = [ createTvpRow (); createTvpRow (); createTvpRow () ])
                             |> exec
@@ -3555,10 +3308,7 @@ let seqExecTests =
                             )
 
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(``params`` = [ createTvpRow (); createTvpRow (); createTvpRow () ])
                             |> exec
@@ -3637,10 +3387,7 @@ let seqExecTests =
                             )
 
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(``params`` = [ createTvpRow (); createTvpRow (); createTvpRow () ])
                             |> exec
@@ -3756,10 +3503,7 @@ let lazyExecTests =
                             )
 
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithAllTypesFromTvpNonNull
+                            DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(``params`` = [ createTvpRow (); createTvpRow (); createTvpRow () ])
                             |> exec

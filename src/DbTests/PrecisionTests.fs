@@ -49,10 +49,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypes
+                        DbGen.Procedures.dbo.ProcWithAllTypes
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 bigint,
@@ -120,10 +117,7 @@ let tests =
                     test <@ xml = res.Value.xml.Value @>
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesExtended
+                        DbGen.Procedures.dbo.ProcWithAllTypesExtended
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 bigint,
@@ -228,10 +222,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesNull
+                        DbGen.Procedures.dbo.ProcWithAllTypesNull
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 Some bigint,
@@ -299,10 +290,7 @@ let tests =
                     test <@ xml = res.Value.xml.Value @>
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesNullExtended
+                        DbGen.Procedures.dbo.ProcWithAllTypesNullExtended
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 Some bigint,
@@ -407,10 +395,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypes
+                        DbGen.Procedures.dbo.ProcWithAllTypes
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 {|
@@ -480,10 +465,7 @@ let tests =
                     test <@ xml = res.Value.xml.Value @>
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesExtended
+                        DbGen.Procedures.dbo.ProcWithAllTypesExtended
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 {|
@@ -590,10 +572,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesNull
+                        DbGen.Procedures.dbo.ProcWithAllTypesNull
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 {|
@@ -663,10 +642,7 @@ let tests =
                     test <@ xml = res.Value.xml.Value @>
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesNullExtended
+                        DbGen.Procedures.dbo.ProcWithAllTypesNullExtended
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 {|
@@ -771,10 +747,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesFromTvpNonNull
+                        DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNull
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -843,10 +816,7 @@ let tests =
                     test <@ xml = res.Value.xml @>
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesFromTvpNonNullExtended
+                        DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNullExtended
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -950,10 +920,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesFromTvpNull
+                        DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNull
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -1022,10 +989,7 @@ let tests =
                     test <@ xml = res.Value.xml.Value @>
 
                     let res =
-                        DbGen
-                            .Procedures
-                            .dbo
-                            .ProcWithAllTypesFromTvpNullExtended
+                        DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNullExtended
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -1129,9 +1093,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let res =
-                        DbGen
-                            .Scripts
-                            .TempTableAllTypesNonNull
+                        DbGen.Scripts.TempTableAllTypesNonNull
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 allTypesNonNull = [
@@ -1234,9 +1196,7 @@ let tests =
                     let! xml = Gen.Sql.xml |> Gen.option
 
                     let res =
-                        DbGen
-                            .Scripts
-                            .TempTableAllTypesNull
+                        DbGen.Scripts.TempTableAllTypesNull
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 allTypesNull = [

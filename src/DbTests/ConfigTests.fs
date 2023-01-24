@@ -43,10 +43,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let normalParamRes =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOverriddenDtoParamName
+                            DbGen.Procedures.dbo.ProcWithOverriddenDtoParamName
                                 .WithConnection(Config.connStr)
                                 .WithParameters(nameToBeOverridden = 3)
                             |> exec
@@ -54,10 +51,7 @@ let tests =
                         test <@ normalParamRes.Value = Some 3 @>
 
                         let dtoParamRes =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOverriddenDtoParamName
+                            DbGen.Procedures.dbo.ProcWithOverriddenDtoParamName
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| newDtoParamName = 3 |})
                             |> exec
@@ -73,9 +67,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let normalParamRes =
-                            DbGen
-                                .Scripts
-                                .OverriddenDtoParamName
+                            DbGen.Scripts.OverriddenDtoParamName
                                 .WithConnection(Config.connStr)
                                 .WithParameters(nameToBeOverridden = 3)
                             |> exec
@@ -83,9 +75,7 @@ let tests =
                         test <@ normalParamRes.Value = Some 3 @>
 
                         let dtoParamRes =
-                            DbGen
-                                .Scripts
-                                .OverriddenDtoParamName
+                            DbGen.Scripts.OverriddenDtoParamName
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| newDtoParamName = 3 |})
                             |> exec
@@ -97,10 +87,7 @@ let tests =
         testCase "Procedure parameter nullability override"
         <| fun () ->
             let f () =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithNullParamOverrides
+                DbGen.Procedures.dbo.ProcWithNullParamOverrides
                     .WithConnection(Config.connStr)
                     .WithParameters(foo = 1, bar = Some 1)
 

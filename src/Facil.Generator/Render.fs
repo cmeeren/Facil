@@ -1250,8 +1250,7 @@ let secondLineWithHash hash = $"// Hash: %s{hash}"
 
 let renderDocument (cfg: RuleSet) hash (everything: Everything) =
     let version =
-        Reflection
-            .Assembly
+        Reflection.Assembly
             .GetEntryAssembly()
             .GetCustomAttributes(typeof<Reflection.AssemblyInformationalVersionAttribute>, true)
         |> Array.map unbox<Reflection.AssemblyInformationalVersionAttribute>

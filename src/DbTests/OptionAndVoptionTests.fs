@@ -19,10 +19,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcOptionIn
+                            DbGen.Procedures.dbo.ProcOptionIn
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = Some "test")
                             |> exec
@@ -38,10 +35,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcOptionIn
+                            DbGen.Procedures.dbo.ProcOptionIn
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = None)
                             |> exec
@@ -57,10 +51,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcOptionOut
+                            DbGen.Procedures.dbo.ProcOptionOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = Some "test")
                             |> exec
@@ -76,10 +67,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcOptionOut
+                            DbGen.Procedures.dbo.ProcOptionOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = None)
                             |> exec
@@ -133,13 +121,12 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcOptionTvpInOut
+                            DbGen.Procedures.dbo.ProcOptionTvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
-                                    tvp = [ DbGen.TableTypes.dbo.MultiColNull.create (Foo = Some 1, Bar = Some "test") ]
+                                    tvp = [
+                                        DbGen.TableTypes.dbo.MultiColNull.create (Foo = Some 1, Bar = Some "test")
+                                    ]
                                 )
                             |> exec
 
@@ -155,10 +142,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcOptionTvpInOut
+                            DbGen.Procedures.dbo.ProcOptionTvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tvp = [ DbGen.TableTypes.dbo.MultiColNull.create (Foo = None, Bar = None) ]
@@ -177,10 +161,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Option
-                                .In
+                            DbGen.Scripts.Option.In
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = Some "test")
                             |> exec
@@ -196,10 +177,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Option
-                                .In
+                            DbGen.Scripts.Option.In
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = None)
                             |> exec
@@ -215,10 +193,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Option
-                                .Out
+                            DbGen.Scripts.Option.Out
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = Some "test")
                             |> exec
@@ -234,10 +209,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Option
-                                .Out
+                            DbGen.Scripts.Option.Out
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = None)
                             |> exec
@@ -291,13 +263,12 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Option
-                                .TvpInOut
+                            DbGen.Scripts.Option.TvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
-                                    tvp = [ DbGen.TableTypes.dbo.MultiColNull.create (Foo = Some 1, Bar = Some "test") ]
+                                    tvp = [
+                                        DbGen.TableTypes.dbo.MultiColNull.create (Foo = Some 1, Bar = Some "test")
+                                    ]
                                 )
                             |> exec
 
@@ -313,10 +284,7 @@ let optionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Option
-                                .TvpInOut
+                            DbGen.Scripts.Option.TvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tvp = [ DbGen.TableTypes.dbo.MultiColNull.create (Foo = None, Bar = None) ]
@@ -343,10 +311,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcVoptionIn
+                            DbGen.Procedures.dbo.ProcVoptionIn
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = ValueSome "test")
                             |> exec
@@ -362,10 +327,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcVoptionIn
+                            DbGen.Procedures.dbo.ProcVoptionIn
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = ValueNone)
                             |> exec
@@ -381,10 +343,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcVoptionOut
+                            DbGen.Procedures.dbo.ProcVoptionOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = Some "test")
                             |> exec
@@ -401,10 +360,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcVoptionOut
+                            DbGen.Procedures.dbo.ProcVoptionOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = None)
                             |> exec
@@ -468,10 +424,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcVoptionTvpInOut
+                            DbGen.Procedures.dbo.ProcVoptionTvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tvp = [
@@ -496,10 +449,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcVoptionTvpInOut
+                            DbGen.Procedures.dbo.ProcVoptionTvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tvp = [
@@ -524,10 +474,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Voption
-                                .In
+                            DbGen.Scripts.Voption.In
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = ValueSome "test")
                             |> exec
@@ -543,10 +490,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Voption
-                                .In
+                            DbGen.Scripts.Voption.In
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = ValueNone)
                             |> exec
@@ -562,10 +506,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Voption
-                                .Out
+                            DbGen.Scripts.Voption.Out
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = Some "test")
                             |> exec
@@ -582,10 +523,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Voption
-                                .Out
+                            DbGen.Scripts.Voption.Out
                                 .WithConnection(Config.connStr)
                                 .WithParameters(param1 = None)
                             |> exec
@@ -649,10 +587,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Voption
-                                .TvpInOut
+                            DbGen.Scripts.Voption.TvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tvp = [
@@ -677,10 +612,7 @@ let voptionTests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .Voption
-                                .TvpInOut
+                            DbGen.Scripts.Voption.TvpInOut
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tvp = [

@@ -7,9 +7,7 @@ open Swensen.Unquote
 
 
 let clearTableScriptTables () =
-    DbGen
-        .Scripts
-        .DeleteAllFromTableScriptTables
+    DbGen.Scripts.DeleteAllFromTableScriptTables
         .WithConnection(Config.connStr)
         .Execute()
     |> ignore<int>
@@ -33,9 +31,7 @@ let tests =
                     let! key = Gen.Sql.int
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -72,9 +68,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_Insert
+                        DbGen.Scripts.AllTypesNonNull_Insert
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key,
@@ -112,9 +106,7 @@ let tests =
                     test <@ numInsertedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -179,9 +171,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_Update
+                        DbGen.Scripts.AllTypesNonNull_Update
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key,
@@ -219,9 +209,7 @@ let tests =
                     test <@ numUpdatedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -256,9 +244,7 @@ let tests =
                     test <@ xml = getRes.Value.Xml @>
 
                     let numDeletedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_Delete
+                        DbGen.Scripts.AllTypesNonNull_Delete
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .Execute()
@@ -266,9 +252,7 @@ let tests =
                     test <@ numDeletedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -287,9 +271,7 @@ let tests =
                     let! key_B = Gen.Sql.int |> Gen.filter (not << (=) key_A)
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -297,9 +279,7 @@ let tests =
                     test <@ getRes_A = None @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -365,9 +345,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_InsertBatch
+                        DbGen.Scripts.AllTypesNonNull_InsertBatch
                             .WithConnection(Config.connStr)
                             .ConfigureBulkCopy(ignore<SqlBulkCopy>) // Verify that the method exists
                             .WithParameters(
@@ -443,9 +421,7 @@ let tests =
                     test <@ numInsertedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -480,9 +456,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -575,9 +549,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_UpdateBatch
+                        DbGen.Scripts.AllTypesNonNull_UpdateBatch
                             .WithConnection(Config.connStr)
                             .ConfigureBulkCopy(ignore<SqlBulkCopy>) // Verify that the method exists
                             .WithParameters(
@@ -652,9 +624,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -689,9 +659,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -736,9 +704,7 @@ let tests =
                     let! key = Gen.Sql.int
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -775,9 +741,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_Merge
+                        DbGen.Scripts.AllTypesNonNull_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key,
@@ -815,9 +779,7 @@ let tests =
                     test <@ numInsertedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -882,9 +844,7 @@ let tests =
                     let! xml = Gen.Sql.xml
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_Merge
+                        DbGen.Scripts.AllTypesNonNull_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key,
@@ -922,9 +882,7 @@ let tests =
                     test <@ numUpdatedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -970,9 +928,7 @@ let tests =
                     let! key_B = Gen.Sql.int |> Gen.filter (not << (=) key_A)
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -980,9 +936,7 @@ let tests =
                     test <@ getRes_A = None @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -1048,9 +1002,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_MergeBatch
+                        DbGen.Scripts.AllTypesNonNull_MergeBatch
                             .WithConnection(Config.connStr)
                             .ConfigureBulkCopy(ignore<SqlBulkCopy>) // Verify that the method exists
                             .WithParameters(
@@ -1125,9 +1077,7 @@ let tests =
                     test <@ numInsertedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -1162,9 +1112,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -1257,9 +1205,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_MergeBatch
+                        DbGen.Scripts.AllTypesNonNull_MergeBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -1333,9 +1279,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -1370,9 +1314,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNonNull_ById
+                        DbGen.Scripts.AllTypesNonNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -1418,9 +1360,7 @@ let tests =
                     let! key2 = Gen.Sql.int
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .ExecuteSingle()
@@ -1457,9 +1397,7 @@ let tests =
                     let! xml = Gen.Sql.xml |> Gen.option
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_Insert
+                        DbGen.Scripts.AllTypesNull_Insert
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key1,
@@ -1498,9 +1436,7 @@ let tests =
                     test <@ numInsertedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .ExecuteSingle()
@@ -1565,9 +1501,7 @@ let tests =
                     let! xml = Gen.Sql.xml |> Gen.option
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_Update
+                        DbGen.Scripts.AllTypesNull_Update
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key1,
@@ -1606,9 +1540,7 @@ let tests =
                     test <@ numUpdatedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .ExecuteSingle()
@@ -1643,9 +1575,7 @@ let tests =
                     test <@ xml = getRes.Value.Xml @>
 
                     let numDeletedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_Delete
+                        DbGen.Scripts.AllTypesNull_Delete
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .Execute()
@@ -1653,9 +1583,7 @@ let tests =
                     test <@ numDeletedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .ExecuteSingle()
@@ -1674,9 +1602,7 @@ let tests =
                     let! key1_B, key2_B = Gen.Sql.int |> Gen.tuple |> Gen.filter (not << (=) (key1_A, key2_A))
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_A, key2_A)
                             .ExecuteSingle()
@@ -1684,9 +1610,7 @@ let tests =
                     test <@ getRes_A = None @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_B, key2_B)
                             .ExecuteSingle()
@@ -1752,9 +1676,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml |> Gen.option
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_InsertBatch
+                        DbGen.Scripts.AllTypesNull_InsertBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -1831,9 +1753,7 @@ let tests =
                     test <@ numInsertedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_A, key2_A)
                             .ExecuteSingle()
@@ -1868,9 +1788,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_B, key2_B)
                             .ExecuteSingle()
@@ -1963,9 +1881,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml |> Gen.option
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_UpdateBatch
+                        DbGen.Scripts.AllTypesNull_UpdateBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -2041,9 +1957,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_A, key2_A)
                             .ExecuteSingle()
@@ -2078,9 +1992,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_B, key2_B)
                             .ExecuteSingle()
@@ -2126,9 +2038,7 @@ let tests =
                     let! key2 = Gen.Sql.int
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .ExecuteSingle()
@@ -2165,9 +2075,7 @@ let tests =
                     let! xml = Gen.Sql.xml |> Gen.option
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_Merge
+                        DbGen.Scripts.AllTypesNull_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key1,
@@ -2206,9 +2114,7 @@ let tests =
                     test <@ numInsertedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .ExecuteSingle()
@@ -2273,9 +2179,7 @@ let tests =
                     let! xml = Gen.Sql.xml |> Gen.option
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_Merge
+                        DbGen.Scripts.AllTypesNull_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key1,
@@ -2314,9 +2218,7 @@ let tests =
                     test <@ numUpdatedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1, key2)
                             .ExecuteSingle()
@@ -2362,9 +2264,7 @@ let tests =
                     let! key1_B, key2_B = Gen.Sql.int |> Gen.tuple |> Gen.filter (not << (=) (key1_A, key2_A))
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_A, key2_A)
                             .ExecuteSingle()
@@ -2372,9 +2272,7 @@ let tests =
                     test <@ getRes_A = None @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_B, key2_B)
                             .ExecuteSingle()
@@ -2440,9 +2338,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml |> Gen.option
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_MergeBatch
+                        DbGen.Scripts.AllTypesNull_MergeBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -2518,9 +2414,7 @@ let tests =
                     test <@ numInsertedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_A, key2_A)
                             .ExecuteSingle()
@@ -2555,9 +2449,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_B, key2_B)
                             .ExecuteSingle()
@@ -2650,9 +2542,7 @@ let tests =
                     let! xml_B = Gen.Sql.xml |> Gen.option
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_MergeBatch
+                        DbGen.Scripts.AllTypesNull_MergeBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -2728,9 +2618,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_A, key2_A)
                             .ExecuteSingle()
@@ -2765,9 +2653,7 @@ let tests =
                     test <@ xml_A = getRes_A.Value.Xml @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .AllTypesNull_ById
+                        DbGen.Scripts.AllTypesNull_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1_B, key2_B)
                             .ExecuteSingle()
@@ -2847,9 +2733,7 @@ let tests =
 
                     for i in [ 0; 1 ] do
                         let numInsertedRows =
-                            DbGen
-                                .Scripts
-                                .AllTypesNull_Insert
+                            DbGen.Scripts.AllTypesNull_Insert
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     (if i = 0 then key1_1 else key1_2),
@@ -2932,9 +2816,7 @@ let tests =
                     let! key_C = Gen.Sql.int |> Gen.filter (not << (=) key_A) |> Gen.filter (not << (=) key_B)
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -2942,9 +2824,7 @@ let tests =
                     test <@ getRes_A = None @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -2952,9 +2832,7 @@ let tests =
                     test <@ getRes_B = None @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -2969,9 +2847,7 @@ let tests =
                     let! varchar_3_A = Gen.Sql.varchar 3
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_Insert
+                        DbGen.Scripts.LengthTypes_Insert
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key_A,
@@ -3001,9 +2877,7 @@ let tests =
                     let! varchar_3_C = Gen.Sql.varchar 3
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_InsertBatch
+                        DbGen.Scripts.LengthTypes_InsertBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -3033,9 +2907,7 @@ let tests =
                     test <@ numInsertedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3048,9 +2920,7 @@ let tests =
                     test <@ varchar_3_A = getRes_A.Value.Varchar @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -3063,9 +2933,7 @@ let tests =
                     test <@ varchar_3_B = getRes_B.Value.Varchar @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -3085,9 +2953,7 @@ let tests =
                     let! varchar_3_A = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_Update
+                        DbGen.Scripts.LengthTypes_Update
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key_A,
@@ -3117,9 +2983,7 @@ let tests =
                     let! varchar_3_C = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_UpdateBatch
+                        DbGen.Scripts.LengthTypes_UpdateBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -3150,9 +3014,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3165,9 +3027,7 @@ let tests =
                     test <@ varchar_3_A = getRes_A.Value.Varchar @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -3180,9 +3040,7 @@ let tests =
                     test <@ varchar_3_B = getRes_B.Value.Varchar @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -3202,9 +3060,7 @@ let tests =
                     let! varchar_3_A = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_Merge
+                        DbGen.Scripts.LengthTypes_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 key_A,
@@ -3234,9 +3090,7 @@ let tests =
                     let! varchar_3_C = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_MergeBatch
+                        DbGen.Scripts.LengthTypes_MergeBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -3267,9 +3121,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3282,9 +3134,7 @@ let tests =
                     test <@ varchar_3_A = getRes_A.Value.Varchar @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -3297,9 +3147,7 @@ let tests =
                     test <@ varchar_3_B = getRes_B.Value.Varchar @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -3312,9 +3160,7 @@ let tests =
                     test <@ varchar_3_C = getRes_C.Value.Varchar @>
 
                     let numDeletedRows =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_Delete
+                        DbGen.Scripts.LengthTypes_Delete
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .Execute()
@@ -3322,9 +3168,7 @@ let tests =
                     test <@ numDeletedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .LengthTypes_ById
+                        DbGen.Scripts.LengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3344,9 +3188,7 @@ let tests =
                     let! key_C = Gen.Sql.int |> Gen.filter (not << (=) key_A) |> Gen.filter (not << (=) key_B)
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3354,9 +3196,7 @@ let tests =
                     test <@ getRes_A = None @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -3364,9 +3204,7 @@ let tests =
                     test <@ getRes_B = None @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -3378,9 +3216,7 @@ let tests =
                     let! varchar_3_A = Gen.Sql.varchar 3
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_Insert
+                        DbGen.Scripts.MaxLengthTypes_Insert
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A, nvarchar_3_A, varbinary_3_A, varchar_3_A)
                             .Execute()
@@ -3396,9 +3232,7 @@ let tests =
                     let! varchar_3_C = Gen.Sql.varchar 3
 
                     let numInsertedRows =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_InsertBatch
+                        DbGen.Scripts.MaxLengthTypes_InsertBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -3422,9 +3256,7 @@ let tests =
                     test <@ numInsertedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3434,9 +3266,7 @@ let tests =
                     test <@ varchar_3_A = getRes_A.Value.Varchar @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -3446,9 +3276,7 @@ let tests =
                     test <@ varchar_3_B = getRes_B.Value.Varchar @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -3462,9 +3290,7 @@ let tests =
                     let! varchar_3_A = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_Update
+                        DbGen.Scripts.MaxLengthTypes_Update
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A, nvarchar_3_A, varbinary_3_A, varchar_3_A)
                             .Execute()
@@ -3480,9 +3306,7 @@ let tests =
                     let! varchar_3_C = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_UpdateBatch
+                        DbGen.Scripts.MaxLengthTypes_UpdateBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -3506,9 +3330,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3518,9 +3340,7 @@ let tests =
                     test <@ varchar_3_A = getRes_A.Value.Varchar @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -3530,9 +3350,7 @@ let tests =
                     test <@ varchar_3_B = getRes_B.Value.Varchar @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -3546,9 +3364,7 @@ let tests =
                     let! varchar_3_A = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_Merge
+                        DbGen.Scripts.MaxLengthTypes_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A, nvarchar_3_A, varbinary_3_A, varchar_3_A)
                             .Execute()
@@ -3564,9 +3380,7 @@ let tests =
                     let! varchar_3_C = Gen.Sql.varchar 3
 
                     let numUpdatedRows =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_MergeBatch
+                        DbGen.Scripts.MaxLengthTypes_MergeBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -3590,9 +3404,7 @@ let tests =
                     test <@ numUpdatedRows = 2 @>
 
                     let getRes_A =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3602,9 +3414,7 @@ let tests =
                     test <@ varchar_3_A = getRes_A.Value.Varchar @>
 
                     let getRes_B =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_B)
                             .ExecuteSingle()
@@ -3614,9 +3424,7 @@ let tests =
                     test <@ varchar_3_B = getRes_B.Value.Varchar @>
 
                     let getRes_C =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_C)
                             .ExecuteSingle()
@@ -3626,9 +3434,7 @@ let tests =
                     test <@ varchar_3_C = getRes_C.Value.Varchar @>
 
                     let numDeletedRows =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_Delete
+                        DbGen.Scripts.MaxLengthTypes_Delete
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .Execute()
@@ -3636,9 +3442,7 @@ let tests =
                     test <@ numDeletedRows = 1 @>
 
                     let getRes =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key_A)
                             .ExecuteSingle()
@@ -3669,17 +3473,13 @@ let tests =
                     let! varbinary_3_2 = Gen.Sql.varbinary 3
                     let! varchar_3_2 = Gen.Sql.varchar 3
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_Insert
+                    DbGen.Scripts.MaxLengthTypes_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(key1, nvarchar_3_1, varbinary_3_1, varchar_3_1)
                         .Execute()
                     |> ignore<int>
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_Insert
+                    DbGen.Scripts.MaxLengthTypes_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(key2, nvarchar_3_2, varbinary_3_2, varchar_3_2)
                         .Execute()
@@ -3689,26 +3489,20 @@ let tests =
                     let! varbinary_3_1 = Gen.Sql.varbinary 3
                     let! varchar_3_1 = Gen.Sql.varchar 3
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_Update
+                    DbGen.Scripts.MaxLengthTypes_Update
                         .WithConnection(Config.connStr)
                         .WithParameters(key1, nvarchar_3_1, varbinary_3_1, varchar_3_1)
                         .Execute()
                     |> ignore<int>
 
                     let getRes1 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1)
                             .ExecuteSingle()
 
                     let getRes2 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key2)
                             .ExecuteSingle()
@@ -3725,26 +3519,20 @@ let tests =
                     let! varbinary_3_1 = Gen.Sql.varbinary 3
                     let! varchar_3_1 = Gen.Sql.varchar 3
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_Merge
+                    DbGen.Scripts.MaxLengthTypes_Merge
                         .WithConnection(Config.connStr)
                         .WithParameters(key1, nvarchar_3_1, varbinary_3_1, varchar_3_1)
                         .Execute()
                     |> ignore<int>
 
                     let getRes1 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1)
                             .ExecuteSingle()
 
                     let getRes2 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key2)
                             .ExecuteSingle()
@@ -3757,26 +3545,20 @@ let tests =
                     test <@ varbinary_3_2 = getRes2.Value.Varbinary @>
                     test <@ varchar_3_2 = getRes2.Value.Varchar @>
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_Delete
+                    DbGen.Scripts.MaxLengthTypes_Delete
                         .WithConnection(Config.connStr)
                         .WithParameters(key1)
                         .Execute()
                     |> ignore<int>
 
                     let getRes1 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1)
                             .ExecuteSingle()
 
                     let getRes2 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key2)
                             .ExecuteSingle()
@@ -3802,17 +3584,13 @@ let tests =
                     let! varbinary_3_2 = Gen.Sql.varbinary 3
                     let! varchar_3_2 = Gen.Sql.varchar 3
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_Insert
+                    DbGen.Scripts.MaxLengthTypes_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(key1, nvarchar_3_1, varbinary_3_1, varchar_3_1)
                         .Execute()
                     |> ignore<int>
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_Insert
+                    DbGen.Scripts.MaxLengthTypes_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(key2, nvarchar_3_2, varbinary_3_2, varchar_3_2)
                         .Execute()
@@ -3822,9 +3600,7 @@ let tests =
                     let! varbinary_3_1 = Gen.Sql.varbinary 3
                     let! varchar_3_1 = Gen.Sql.varchar 3
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_UpdateBatch
+                    DbGen.Scripts.MaxLengthTypes_UpdateBatch
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -3840,17 +3616,13 @@ let tests =
                     |> ignore<int>
 
                     let getRes1 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1)
                             .ExecuteSingle()
 
                     let getRes2 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key2)
                             .ExecuteSingle()
@@ -3867,9 +3639,7 @@ let tests =
                     let! varbinary_3_1 = Gen.Sql.varbinary 3
                     let! varchar_3_1 = Gen.Sql.varchar 3
 
-                    DbGen
-                        .Scripts
-                        .MaxLengthTypes_MergeBatch
+                    DbGen.Scripts.MaxLengthTypes_MergeBatch
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -3885,17 +3655,13 @@ let tests =
                     |> ignore<int>
 
                     let getRes1 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key1)
                             .ExecuteSingle()
 
                     let getRes2 =
-                        DbGen
-                            .Scripts
-                            .MaxLengthTypes_ById
+                        DbGen.Scripts.MaxLengthTypes_ById
                             .WithConnection(Config.connStr)
                             .WithParameters(key2)
                             .ExecuteSingle()
@@ -3917,9 +3683,7 @@ let tests =
                     clearTableScriptTables ()
 
                     let insertRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_Insert
+                        DbGen.Scripts.TableWithIdentityCol_Insert
                             .WithConnection(Config.connStr)
                             .WithParameters(foo = 0L, bar = None)
                             .ExecuteSingle()
@@ -3936,9 +3700,7 @@ let tests =
                     let! datetimeoffset = Gen.Sql.datetimeoffset 0 |> Gen.option
 
                     let updateRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_Update
+                        DbGen.Scripts.TableWithIdentityCol_Update
                             .WithConnection(Config.connStr)
                             .WithParameters(key, foo = bigint, bar = datetimeoffset)
                             .ExecuteSingle()
@@ -3951,9 +3713,7 @@ let tests =
                     test <@ updateRes.Value.Foo = bigint @>
 
                     let deleteRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_Delete
+                        DbGen.Scripts.TableWithIdentityCol_Delete
                             .WithConnection(Config.connStr)
                             .WithParameters(key)
                             .ExecuteSingle()
@@ -3962,9 +3722,7 @@ let tests =
                     test <@ deleteRes.Value.BAR = datetimeoffset @>
 
                     // Compile-time test; should have expected result set since a column is skipped
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_ById
+                    DbGen.Scripts.TableWithIdentityCol_ById
                         .WithConnection(Config.connStr)
                         .WithParameters(key)
                         .ExecuteSingle()
@@ -3980,9 +3738,7 @@ let tests =
                     clearTableScriptTables ()
 
                     let insertRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_InsertBatch
+                        DbGen.Scripts.TableWithIdentityCol_InsertBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -4003,9 +3759,7 @@ let tests =
                     let! datetimeoffset = Gen.Sql.datetimeoffset 0 |> Gen.option
 
                     let updateRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_UpdateBatch
+                        DbGen.Scripts.TableWithIdentityCol_UpdateBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -4036,9 +3790,7 @@ let tests =
                     let tempKey = -1
 
                     let insertRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_Merge
+                        DbGen.Scripts.TableWithIdentityCol_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(id = tempKey, foo = 0L, bar = None)
                             .ExecuteSingle()
@@ -4057,9 +3809,7 @@ let tests =
                     let! datetimeoffset = Gen.Sql.datetimeoffset 0 |> Gen.option
 
                     let updateRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_Merge
+                        DbGen.Scripts.TableWithIdentityCol_Merge
                             .WithConnection(Config.connStr)
                             .WithParameters(key, foo = bigint, bar = datetimeoffset)
                             .ExecuteSingle()
@@ -4082,9 +3832,7 @@ let tests =
                     let tempKey = -1
 
                     let insertRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_MergeBatch
+                        DbGen.Scripts.TableWithIdentityCol_MergeBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -4111,9 +3859,7 @@ let tests =
                     let! datetimeoffset = Gen.Sql.datetimeoffset 0 |> Gen.option
 
                     let updateRes =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_MergeBatch
+                        DbGen.Scripts.TableWithIdentityCol_MergeBatch
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -4144,9 +3890,7 @@ let tests =
                     let tempKey = -1
 
                     let insertedRows =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_MergeWithHoldlock
+                        DbGen.Scripts.TableWithIdentityCol_MergeWithHoldlock
                             .WithConnection(Config.connStr)
                             .WithParameters(id = tempKey, foo = 0L, bAR = None)
                             .Execute()
@@ -4164,9 +3908,7 @@ let tests =
                     let tempKey = -1
 
                     let insertedRows =
-                        DbGen
-                            .Scripts
-                            .TableWithIdentityCol_MergeBatchWithHoldlock
+                        DbGen.Scripts.TableWithIdentityCol_MergeBatchWithHoldlock
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
@@ -4188,17 +3930,13 @@ let tests =
                 clearTableScriptTables ()
 
                 let insertRes =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_Insert
+                    DbGen.Scripts.TableWithIdentityCol_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(foo = 123L, bar = None)
                         .ExecuteSingle()
 
                 let getRes =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_ById_WithSelectColumns
+                    DbGen.Scripts.TableWithIdentityCol_ById_WithSelectColumns
                         .WithConnection(Config.connStr)
                         .WithParameters(insertRes.Value.Id)
                         .ExecuteSingle()
@@ -4217,17 +3955,13 @@ let tests =
                 clearTableScriptTables ()
 
                 let insertRes1 =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_Insert
+                    DbGen.Scripts.TableWithIdentityCol_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(foo = 0L, bar = None)
                         .ExecuteSingle()
 
                 let insertRes2 =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_Insert
+                    DbGen.Scripts.TableWithIdentityCol_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(foo = 1L, bar = None)
                         .ExecuteSingle()
@@ -4236,9 +3970,7 @@ let tests =
                 let key2 = insertRes2.Value.Id
 
                 let getRes =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_ByIds
+                    DbGen.Scripts.TableWithIdentityCol_ByIds
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -4264,17 +3996,13 @@ let tests =
                 clearTableScriptTables ()
 
                 let insertRes =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_Insert
+                    DbGen.Scripts.TableWithIdentityCol_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(foo = 123L, bar = None)
                         .ExecuteSingle()
 
                 let getRes =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_ByFoo
+                    DbGen.Scripts.TableWithIdentityCol_ByFoo
                         .WithConnection(Config.connStr)
                         .WithParameters(123L)
                         .ExecuteSingle()
@@ -4288,17 +4016,13 @@ let tests =
                 clearTableScriptTables ()
 
                 let insertRes1 =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_Insert
+                    DbGen.Scripts.TableWithIdentityCol_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(foo = 123L, bar = None)
                         .ExecuteSingle()
 
                 let insertRes2 =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_Insert
+                    DbGen.Scripts.TableWithIdentityCol_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(foo = 456L, bar = None)
                         .ExecuteSingle()
@@ -4307,9 +4031,7 @@ let tests =
                 let key2 = insertRes2.Value.Id
 
                 let getRes =
-                    DbGen
-                        .Scripts
-                        .TableWithIdentityCol_ByIdAndFoos
+                    DbGen.Scripts.TableWithIdentityCol_ByIdAndFoos
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -4335,10 +4057,7 @@ let tests =
                 // Compile-time test
                 ignore
                 <| fun () ->
-                    DbGen
-                        .Scripts
-                        .TableScriptSubdir
-                        .dbo_TableWithIdentityCol_GetById
+                    DbGen.Scripts.TableScriptSubdir.dbo_TableWithIdentityCol_GetById
                         .WithConnection(Config.connStr)
                         .WithParameters(1)
                         .Execute()
@@ -4350,10 +4069,7 @@ let tests =
                 // Compile-time test
                 ignore
                 <| fun () ->
-                    DbGen
-                        .Scripts
-                        .TableScriptSubdir
-                        .TableScriptConfiguredWithScriptRules
+                    DbGen.Scripts.TableScriptSubdir.TableScriptConfiguredWithScriptRules
                         .WithConnection(Config.connStr)
                         .WithParameters(123L, ValueNone)
                         .Execute()
@@ -4363,9 +4079,7 @@ let tests =
             <| fun () ->
                 let f () =
                     let res =
-                        DbGen
-                            .Scripts
-                            .Table1_ByTableCol2
+                        DbGen.Scripts.Table1_ByTableCol2
                             .WithConnection(Config.connStr)
                             .WithParameters(1)
                             .ExecuteSingle()
@@ -4379,9 +4093,7 @@ let tests =
             <| fun () ->
                 let f () =
                     let res =
-                        DbGen
-                            .Scripts
-                            .Table1_ByTableCol2s
+                        DbGen.Scripts.Table1_ByTableCol2s
                             .WithConnection(Config.connStr)
                             .WithParameters([ DbGen.TableTypes.dbo.SingleColNonNull.create 1 ])
                             .ExecuteSingle()
@@ -4394,17 +4106,13 @@ let tests =
             testCase "Can have multiple getByColumns with different columns"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .Table1_ByTableCol1
+                    DbGen.Scripts.Table1_ByTableCol1
                         .WithConnection(Config.connStr)
                         .WithParameters("")
                         .ExecuteSingle()
                     |> ignore
 
-                    DbGen
-                        .Scripts
-                        .Table1_ByTableCol2
+                    DbGen.Scripts.Table1_ByTableCol2
                         .WithConnection(Config.connStr)
                         .WithParameters(0)
                         .ExecuteSingle()
@@ -4416,9 +4124,7 @@ let tests =
             testCase "Skips computed columns in insert scripts"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_Insert
+                    DbGen.Scripts.TableWithComputedCol_Insert
                         .WithConnection(Config.connStr)
                         .WithParameters(0, 0L)
                         .Execute()
@@ -4430,9 +4136,7 @@ let tests =
             testCase "Skips computed columns in batch insert scripts"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_InsertBatch
+                    DbGen.Scripts.TableWithComputedCol_InsertBatch
                         .WithConnection(Config.connStr)
                         .WithParameters([ DbGen.Scripts.TableWithComputedCol_InsertBatch.args.create (0, 0L) ])
                         .Execute()
@@ -4444,9 +4148,7 @@ let tests =
             testCase "Skips computed columns in insert scripts even if skip = false"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_Insert_WithSkipFalse
+                    DbGen.Scripts.TableWithComputedCol_Insert_WithSkipFalse
                         .WithConnection(Config.connStr)
                         .WithParameters(0, 0L)
                         .Execute()
@@ -4458,9 +4160,7 @@ let tests =
             testCase "Skips computed columns in batch insert scripts even if skip = false"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_InsertBatch_WithSkipFalse
+                    DbGen.Scripts.TableWithComputedCol_InsertBatch_WithSkipFalse
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -4476,9 +4176,7 @@ let tests =
             testCase "Skips computed columns in update scripts"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_Update
+                    DbGen.Scripts.TableWithComputedCol_Update
                         .WithConnection(Config.connStr)
                         .WithParameters(0, 0L)
                         .Execute()
@@ -4490,9 +4188,7 @@ let tests =
             testCase "Skips computed columns in batch update scripts"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_UpdateBatch
+                    DbGen.Scripts.TableWithComputedCol_UpdateBatch
                         .WithConnection(Config.connStr)
                         .WithParameters([ DbGen.Scripts.TableWithComputedCol_UpdateBatch.args.create (0, 0L) ])
                         .Execute()
@@ -4504,9 +4200,7 @@ let tests =
             testCase "Skips computed columns in update scripts even if skip = false"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_Update_WithSkipFalse
+                    DbGen.Scripts.TableWithComputedCol_Update_WithSkipFalse
                         .WithConnection(Config.connStr)
                         .WithParameters(0, 0L)
                         .Execute()
@@ -4518,9 +4212,7 @@ let tests =
             testCase "Skips computed columns in batch update scripts even if skip = false"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_UpdateBatch_WithSkipFalse
+                    DbGen.Scripts.TableWithComputedCol_UpdateBatch_WithSkipFalse
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -4536,9 +4228,7 @@ let tests =
             testCase "Skips computed columns in merge scripts"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_Merge
+                    DbGen.Scripts.TableWithComputedCol_Merge
                         .WithConnection(Config.connStr)
                         .WithParameters(0, 0L)
                         .Execute()
@@ -4550,9 +4240,7 @@ let tests =
             testCase "Skips computed columns in batch merge scripts"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_MergeBatch
+                    DbGen.Scripts.TableWithComputedCol_MergeBatch
                         .WithConnection(Config.connStr)
                         .WithParameters([ DbGen.Scripts.TableWithComputedCol_MergeBatch.args.create (0, 0L) ])
                         .Execute()
@@ -4564,9 +4252,7 @@ let tests =
             testCase "Skips computed columns in merge scripts even if skip = false"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_Merge_WithSkipFalse
+                    DbGen.Scripts.TableWithComputedCol_Merge_WithSkipFalse
                         .WithConnection(Config.connStr)
                         .WithParameters(0, 0L)
                         .Execute()
@@ -4578,9 +4264,7 @@ let tests =
             testCase "Skips computed columns in batch merge scripts even if skip = false"
             <| fun () ->
                 let f () =
-                    DbGen
-                        .Scripts
-                        .TableWithComputedCol_MergeBatch_WithSkipFalse
+                    DbGen.Scripts.TableWithComputedCol_MergeBatch_WithSkipFalse
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [

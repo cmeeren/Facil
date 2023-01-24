@@ -76,9 +76,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .DynamicSqlWithDeclaration
+                            DbGen.Scripts.DynamicSqlWithDeclaration
                                 .WithConnection(Config.connStr)
                                 .WithParameters(col1Filter = "test2")
                             |> exec
@@ -95,9 +93,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Scripts
-                                .DynamicSqlWithoutDeclaration
+                            DbGen.Scripts.DynamicSqlWithoutDeclaration
                                 .WithConnection(Config.connStr)
                                 .WithParameters(col1Filter = "test2")
                             |> exec
@@ -114,10 +110,7 @@ let tests =
             testCase "Normal parameters that are too long are silently truncated"
             <| fun () ->
                 let res =
-                    DbGen
-                        .Procedures
-                        .dbo
-                        .ProcWithLengthTypes
+                    DbGen.Procedures.dbo.ProcWithLengthTypes
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             binary = [| 1uy; 2uy; 3uy; 4uy |],
@@ -143,10 +136,7 @@ let tests =
             testCase "TVP parameters that are too long are silently truncated"
             <| fun () ->
                 let res =
-                    DbGen
-                        .Procedures
-                        .dbo
-                        .ProcWithLengthTypesFromTvp
+                    DbGen.Procedures.dbo.ProcWithLengthTypesFromTvp
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -176,9 +166,7 @@ let tests =
             testCase "Temp table parameters that are too long raise exceptions"
             <| fun () ->
                 let run () =
-                    DbGen
-                        .Scripts
-                        .TempTableWithLengthTypes
+                    DbGen.Scripts.TempTableWithLengthTypes
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -203,9 +191,7 @@ let tests =
 
         testCase "Compile-time script param inheritance test"
         <| fun () ->
-            DbGen
-                .Scripts
-                .ParamInheritance
+            DbGen.Scripts.ParamInheritance
                 .WithConnection(Config.connStr)
                 .WithParameters(col1 = Some 1, col2 = 1L, col3 = Some true)
             |> ignore
@@ -215,10 +201,7 @@ let tests =
         <| fun () ->
             let f () =
                 let res =
-                    DbGen
-                        .Procedures
-                        .dbo
-                        .ProcColumnInheritance
+                    DbGen.Procedures.dbo.ProcColumnInheritance
                         .WithConnection(Config.connStr)
                         .ExecuteSingle()
 
@@ -254,9 +237,7 @@ let tests =
         <| fun () ->
             let f () =
                 let res =
-                    DbGen
-                        .Scripts
-                        .TableDtoWithDifferentColumnOrder
+                    DbGen.Scripts.TableDtoWithDifferentColumnOrder
                         .WithConnection(Config.connStr)
                         .ExecuteSingle()
 
@@ -278,9 +259,7 @@ let tests =
         <| fun () ->
             let f () =
                 let res =
-                    DbGen
-                        .Scripts
-                        .DynamicSqlSensitiveToParamValues
+                    DbGen.Scripts.DynamicSqlSensitiveToParamValues
                         .WithConnection(Config.connStr)
                         .WithParameters("unused")
                         .ExecuteSingle()
@@ -295,9 +274,7 @@ let tests =
         <| fun () ->
             let f () =
                 let res =
-                    DbGen
-                        .Scripts
-                        .DynamicSqlSensitiveToParamValuesWithResultSets
+                    DbGen.Scripts.DynamicSqlSensitiveToParamValuesWithResultSets
                         .WithConnection(Config.connStr)
                         .WithParameters("unused")
                         .ExecuteSingle()
@@ -311,10 +288,7 @@ let tests =
         testCase "Compile-time dynamic SQL with full-text predicate test"
         <| fun () ->
             let f () =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithDynamicSqlWithFullTextSearch
+                DbGen.Procedures.dbo.ProcWithDynamicSqlWithFullTextSearch
                     .WithConnection(Config.connStr)
                     .WithParameters("unused")
                     .ExecuteSingle()
@@ -336,10 +310,7 @@ let tests =
         <| fun () ->
             let f () =
                 let (result: DbGen.Procedures.dbo.ProcNominalResult_Result option) =
-                    DbGen
-                        .Procedures
-                        .dbo
-                        .ProcNominalResult
+                    DbGen.Procedures.dbo.ProcNominalResult
                         .WithConnection(Config.connStr)
                         .ExecuteSingle()
 
@@ -374,9 +345,7 @@ let tests =
         testCase "Compile-time manual result as DTO test"
         <| fun () ->
             let f () =
-                DbGen
-                    .Scripts
-                    .ManualTableDtoResult
+                DbGen.Scripts.ManualTableDtoResult
                     .WithConnection(Config.connStr)
                     .ExecuteSingle()
                 |> ignore<DbGen.TableDtos.dbo.Table1 option>
@@ -405,10 +374,7 @@ let tests =
             testCase "Normal parameters"
             <| fun () ->
                 let res =
-                    DbGen
-                        .Procedures
-                        .dbo
-                        .ProcWithMaxLengthTypes
+                    DbGen.Procedures.dbo.ProcWithMaxLengthTypes
                         .WithConnection(Config.connStr)
                         .WithParameters(nvarchar = "1234", varbinary = [| 1uy; 2uy; 3uy; 4uy |], varchar = "1234")
                         .ExecuteSingle()
@@ -421,10 +387,7 @@ let tests =
             testCase "TVP parameters"
             <| fun () ->
                 let res =
-                    DbGen
-                        .Procedures
-                        .dbo
-                        .ProcWithMaxLengthTypesFromTvp
+                    DbGen.Procedures.dbo.ProcWithMaxLengthTypesFromTvp
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -445,9 +408,7 @@ let tests =
             testCase "Temp table"
             <| fun () ->
                 let res =
-                    DbGen
-                        .Scripts
-                        .TempTableWithMaxLengthTypes
+                    DbGen.Scripts.TempTableWithMaxLengthTypes
                         .WithConnection(Config.connStr)
                         .WithParameters(
                             [
@@ -475,10 +436,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndTvpParams
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(single = [], multi = [])
                             |> exec
@@ -494,10 +452,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithMultipleColumnsAndTvpParams
+                            DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters({| Single = []; Multi = [] |})
                             |> exec
@@ -507,28 +462,19 @@ let tests =
 
         testAsync "Can run the resulting Async query computation several times when there are parameters" {
             let comp1 =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithMultipleColumnsAndSimpleDefaultParams
+                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
                     .WithConnection(Config.connStr)
                     .WithParameters(foo = 1, bar = "a")
                     .AsyncExecute()
 
             let comp2 =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithMultipleColumnsAndSimpleDefaultParams
+                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
                     .WithConnection(Config.connStr)
                     .WithParameters(foo = 1, bar = "a")
                     .AsyncExecuteWithSyncRead()
 
             let comp3 =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithMultipleColumnsAndSimpleDefaultParams
+                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndSimpleDefaultParams
                     .WithConnection(Config.connStr)
                     .WithParameters(foo = 1, bar = "a")
                     .AsyncExecuteSingle()
@@ -545,10 +491,7 @@ let tests =
 
         testAsync "Can run the resulting Async query computation several times when there are TVP parameters" {
             let comp1 =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithMultipleColumnsAndTvpParams
+                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         single = [ DbGen.TableTypes.dbo.SingleColNonNull.create (Foo = 1) ],
@@ -557,10 +500,7 @@ let tests =
                     .AsyncExecute()
 
             let comp2 =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithMultipleColumnsAndTvpParams
+                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         single = [ DbGen.TableTypes.dbo.SingleColNonNull.create (Foo = 1) ],
@@ -569,10 +509,7 @@ let tests =
                     .AsyncExecuteWithSyncRead()
 
             let comp3 =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithMultipleColumnsAndTvpParams
+                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         single = [ DbGen.TableTypes.dbo.SingleColNonNull.create (Foo = 1) ],
@@ -592,9 +529,7 @@ let tests =
 
         testAsync "Can run the resulting Async query computation several times when there are temp tables" {
             let comp1 =
-                DbGen
-                    .Scripts
-                    .MultipleTempTables
+                DbGen.Scripts.MultipleTempTables
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         tempTable1 = [
@@ -605,9 +540,7 @@ let tests =
                     .AsyncExecute()
 
             let comp2 =
-                DbGen
-                    .Scripts
-                    .MultipleTempTables
+                DbGen.Scripts.MultipleTempTables
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         tempTable1 = [
@@ -618,9 +551,7 @@ let tests =
                     .AsyncExecute()
 
             let comp3 =
-                DbGen
-                    .Scripts
-                    .MultipleTempTables
+                DbGen.Scripts.MultipleTempTables
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         tempTable1 = [
@@ -642,10 +573,7 @@ let tests =
 
         testAsync "Can run the resulting Async non-query computation several times when there are parameters" {
             let comp =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithNoResults
+                DbGen.Procedures.dbo.ProcWithNoResults
                     .WithConnection(Config.connStr)
                     .WithParameters(foo = 1)
                     .AsyncExecute()
@@ -700,9 +628,7 @@ let tests =
             ignore DbGen.Scripts.DynamicInsertIntoDesignTimeExecuteTest2
 
             let! res =
-                DbGen
-                    .Scripts
-                    .DesignTimeExecuteTest_All
+                DbGen.Scripts.DesignTimeExecuteTest_All
                     .WithConnection(Config.connStr)
                     .AsyncExecute()
 
@@ -716,10 +642,7 @@ let tests =
 
 
             let run () =
-                DbGen
-                    .Procedures
-                    .dbo
-                    .ProcWithNoResults
+                DbGen.Procedures.dbo.ProcWithNoResults
                     .WithConnection(conn, tran)
                     .ConfigureCommand(fun cmd -> cmd.Transaction <- tran)
                     .WithParameters(foo = 1)

@@ -16,10 +16,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithRetVal
+                            DbGen.Procedures.dbo.ProcWithRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(baseRetVal = 3)
                             |> exec
@@ -36,10 +33,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithRetValExtended
+                            DbGen.Procedures.dbo.ProcWithRetValExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(baseRetVal = 3)
                             |> exec
@@ -56,10 +50,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false)
                             |> exec
@@ -77,10 +68,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsExtended
+                            DbGen.Procedures.dbo.ProcWithOutParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false)
                             |> exec
@@ -98,10 +86,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = Some "foo")
                             |> exec
@@ -119,10 +104,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsExtended
+                            DbGen.Procedures.dbo.ProcWithOutParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = Some "foo")
                             |> exec
@@ -140,10 +122,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -168,10 +147,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = None)
                             |> exec
@@ -189,10 +165,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsExtended
+                            DbGen.Procedures.dbo.ProcWithOutParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = None)
                             |> exec
@@ -210,10 +183,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -238,10 +208,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true)
                             |> exec
@@ -259,10 +226,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsExtended
+                            DbGen.Procedures.dbo.ProcWithOutParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true)
                             |> exec
@@ -280,10 +244,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = Some "foo")
                             |> exec
@@ -301,10 +262,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsExtended
+                            DbGen.Procedures.dbo.ProcWithOutParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = Some "foo")
                             |> exec
@@ -322,10 +280,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -350,10 +305,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = None)
                             |> exec
@@ -371,10 +323,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsExtended
+                            DbGen.Procedures.dbo.ProcWithOutParamsExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = None)
                             |> exec
@@ -392,10 +341,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParams
+                            DbGen.Procedures.dbo.ProcWithOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -420,10 +366,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false, baseRetVal = 3)
                             |> exec
@@ -445,10 +388,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = false, setOut2 = false, baseRetVal = 3)
                                 |> exec
@@ -467,10 +407,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     setOut1 = false,
@@ -498,10 +435,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -526,10 +460,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -556,10 +487,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     setOut1 = false,
@@ -587,10 +515,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -615,10 +540,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -645,10 +567,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, baseRetVal = 3)
                             |> exec
@@ -670,10 +589,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = true, setOut2 = true, baseRetVal = 3)
                                 |> exec
@@ -692,10 +608,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     setOut1 = true,
@@ -723,10 +636,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -751,10 +661,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -781,10 +688,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = None, baseRetVal = 3)
                             |> exec
@@ -806,10 +710,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -834,10 +735,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -867,10 +765,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = false, setOut2 = false, baseRetVal = 3)
                                 |> exec
@@ -892,10 +787,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -923,10 +815,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -956,10 +845,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -987,10 +873,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1017,10 +900,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithOutParamsAndRetValVoption
+                            DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, baseRetVal = 3)
                             |> exec
@@ -1042,10 +922,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -1073,10 +950,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1106,10 +980,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -1137,10 +1008,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithOutParamsAndRetValVoption
+                                DbGen.Procedures.dbo.ProcWithOutParamsAndRetValVoption
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1186,10 +1054,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndRetVal
+                            DbGen.Procedures.dbo.ProcWithResultsAndRetVal
                                 .WithConnection(Config.connStr)
                                 .WithParameters(baseRetVal = 3)
                             |> exec
@@ -1226,10 +1091,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndRetValExtended
+                            DbGen.Procedures.dbo.ProcWithResultsAndRetValExtended
                                 .WithConnection(Config.connStr)
                                 .WithParameters(baseRetVal = 3)
                             |> exec
@@ -1266,10 +1128,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false)
                             |> exec
@@ -1310,10 +1169,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = false, setOut2 = false)
                                 |> exec
@@ -1351,10 +1207,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = Some "foo")
                             |> exec
@@ -1395,10 +1248,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = Some "foo")
                                 |> exec
@@ -1439,10 +1289,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParams
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1487,10 +1334,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = None)
                             |> exec
@@ -1531,10 +1375,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = false, setOut2 = false, out1 = 42, out2 = None)
                                 |> exec
@@ -1575,10 +1416,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParams
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -1623,10 +1461,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true)
                             |> exec
@@ -1667,10 +1502,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = true, setOut2 = true)
                                 |> exec
@@ -1708,10 +1540,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = Some "foo")
                             |> exec
@@ -1752,10 +1581,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = Some "foo")
                                 |> exec
@@ -1793,10 +1619,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -1841,10 +1664,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = None)
                             |> exec
@@ -1885,10 +1705,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = true, setOut2 = true, out1 = 42, out2 = None)
                                 |> exec
@@ -1926,10 +1743,7 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithResultsAndOutParams
+                            DbGen.Procedures.dbo.ProcWithResultsAndOutParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
@@ -1977,10 +1791,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = false, setOut2 = false, baseRetVal = 3)
                                 |> exec
@@ -2022,10 +1833,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = false, setOut2 = false, baseRetVal = 3)
                                 |> exec
@@ -2067,10 +1875,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -2118,10 +1923,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -2169,10 +1971,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -2222,10 +2021,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -2273,10 +2069,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = false,
@@ -2324,10 +2117,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -2377,10 +2167,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = true, setOut2 = true, baseRetVal = 3)
                                 |> exec
@@ -2422,10 +2209,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(setOut1 = true, setOut2 = true, baseRetVal = 3)
                                 |> exec
@@ -2467,10 +2251,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -2518,10 +2299,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -2569,10 +2347,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|
@@ -2622,10 +2397,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -2673,10 +2445,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetValExtended
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         setOut1 = true,
@@ -2724,10 +2493,7 @@ let tests =
                         testCase name
                         <| fun () ->
                             let res =
-                                DbGen
-                                    .Procedures
-                                    .dbo
-                                    .ProcWithResultsAndOutParamsAndRetVal
+                                DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal
                                     .WithConnection(Config.connStr)
                                     .WithParameters(
                                         {|

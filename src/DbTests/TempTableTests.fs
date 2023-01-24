@@ -50,9 +50,7 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNonNull
+                            DbGen.Scripts.TempTableAllTypesNonNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     allTypesNonNull = [
@@ -138,14 +136,15 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNonNull
+                            DbGen.Scripts.TempTableAllTypesNonNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        AllTypesNonNull =
-                                            [ createTempTableRow (); createTempTableRow (); createTempTableRow () ]
+                                        AllTypesNonNull = [
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -223,9 +222,7 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNull
+                            DbGen.Scripts.TempTableAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     allTypesNull = [
@@ -311,14 +308,15 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNull
+                            DbGen.Scripts.TempTableAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        AllTypesNull =
-                                            [ createTempTableRow (); createTempTableRow (); createTempTableRow () ]
+                                        AllTypesNull = [
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -396,9 +394,7 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNull
+                            DbGen.Scripts.TempTableAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     allTypesNull = [
@@ -484,14 +480,15 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNull
+                            DbGen.Scripts.TempTableAllTypesNull
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        AllTypesNull =
-                                            [ createTempTableRow (); createTempTableRow (); createTempTableRow () ]
+                                        AllTypesNull = [
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -569,9 +566,7 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNullVoption
+                            DbGen.Scripts.TempTableAllTypesNullVoption
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     allTypesNull = [
@@ -657,14 +652,15 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNullVoption
+                            DbGen.Scripts.TempTableAllTypesNullVoption
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        AllTypesNull =
-                                            [ createTempTableRow (); createTempTableRow (); createTempTableRow () ]
+                                        AllTypesNull = [
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -742,9 +738,7 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNullVoption
+                            DbGen.Scripts.TempTableAllTypesNullVoption
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     allTypesNull = [
@@ -830,14 +824,15 @@ let tests =
                             )
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNullVoption
+                            DbGen.Scripts.TempTableAllTypesNullVoption
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        AllTypesNull =
-                                            [ createTempTableRow (); createTempTableRow (); createTempTableRow () ]
+                                        AllTypesNull = [
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                            createTempTableRow ()
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -884,9 +879,7 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableInlined
+                            DbGen.Scripts.TempTableInlined
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tempTableInlined = [
@@ -911,18 +904,15 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableInlined
+                            DbGen.Scripts.TempTableInlined
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        TempTableInlined =
-                                            [
-                                                DbGen.Scripts.TempTableInlined.tempTableInlined.create (
-                                                    {| Col1 = 1; Col2 = Some "test" |}
-                                                )
-                                            ]
+                                        TempTableInlined = [
+                                            DbGen.Scripts.TempTableInlined.tempTableInlined.create (
+                                                {| Col1 = 1; Col2 = Some "test" |}
+                                            )
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -940,9 +930,7 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableInlinedDynamic
+                            DbGen.Scripts.TempTableInlinedDynamic
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tempTableInlined = [
@@ -967,18 +955,15 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableInlinedDynamic
+                            DbGen.Scripts.TempTableInlinedDynamic
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        TempTableInlined =
-                                            [
-                                                DbGen.Scripts.TempTableInlinedDynamic.tempTableInlined.create (
-                                                    {| Col1 = 1; Col2 = Some "test" |}
-                                                )
-                                            ]
+                                        TempTableInlined = [
+                                            DbGen.Scripts.TempTableInlinedDynamic.tempTableInlined.create (
+                                                {| Col1 = 1; Col2 = Some "test" |}
+                                            )
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -996,9 +981,7 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableInlinedWithOtherParams
+                            DbGen.Scripts.TempTableInlinedWithOtherParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tempTableInlined = [
@@ -1024,18 +1007,15 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableInlinedWithOtherParams
+                            DbGen.Scripts.TempTableInlinedWithOtherParams
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        TempTableInlined =
-                                            [
-                                                DbGen.Scripts.TempTableInlinedWithOtherParams.tempTableInlined.create (
-                                                    {| Col1 = 1; Col2 = Some "test" |}
-                                                )
-                                            ]
+                                        TempTableInlined = [
+                                            DbGen.Scripts.TempTableInlinedWithOtherParams.tempTableInlined.create (
+                                                {| Col1 = 1; Col2 = Some "test" |}
+                                            )
+                                        ]
                                         SomeParam = 2
                                     |}
                                 )
@@ -1054,10 +1034,7 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Procedures
-                                .dbo
-                                .ProcWithTempTable
+                            DbGen.Procedures.dbo.ProcWithTempTable
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tempTable = [
@@ -1082,9 +1059,7 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .MultipleTempTables
+                            DbGen.Scripts.MultipleTempTables
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     tempTable1 = [
@@ -1113,24 +1088,20 @@ let tests =
                     <| fun () ->
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .MultipleTempTables
+                            DbGen.Scripts.MultipleTempTables
                                 .WithConnection(Config.connStr)
                                 .WithParameters(
                                     {|
-                                        TempTable1 =
-                                            [
-                                                DbGen.Scripts.MultipleTempTables.tempTable1.create (
-                                                    {| Col1 = 1; Col2 = Some "test" |}
-                                                )
-                                            ]
-                                        TempTable2 =
-                                            [
-                                                DbGen.Scripts.MultipleTempTables.tempTable2.create (
-                                                    {| Col1 = 1; Col3 = "foobar" |}
-                                                )
-                                            ]
+                                        TempTable1 = [
+                                            DbGen.Scripts.MultipleTempTables.tempTable1.create (
+                                                {| Col1 = 1; Col2 = Some "test" |}
+                                            )
+                                        ]
+                                        TempTable2 = [
+                                            DbGen.Scripts.MultipleTempTables.tempTable2.create (
+                                                {| Col1 = 1; Col3 = "foobar" |}
+                                            )
+                                        ]
                                     |}
                                 )
                             |> exec
@@ -1152,9 +1123,7 @@ let tests =
                         let createRow () =
                             DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
 
-                        DbGen
-                            .Scripts
-                            .TempTableInlined
+                        DbGen.Scripts.TempTableInlined
                             .WithConnection(Config.connStr)
                             .ConfigureBulkCopy(fun bc ->
                                 bc.NotifyAfter <- 1
@@ -1211,9 +1180,7 @@ let tests =
                         use tran = conn.BeginTransaction()
 
                         let res =
-                            DbGen
-                                .Scripts
-                                .TempTableAllTypesNonNull
+                            DbGen.Scripts.TempTableAllTypesNonNull
                                 .WithConnection(conn, tran)
                                 .WithParameters(
                                     allTypesNonNull = [

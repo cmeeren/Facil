@@ -593,26 +593,25 @@ let getTableTypes (conn: SqlConnection) =
                     SchemaName = reader["TableTypeSchemaName"] |> unbox<string>
                     Name = reader["TableTypeName"] |> unbox<string>
                     // Merged later
-                    Columns =
-                        [
-                            {
-                                Name = colName
-                                IsNullable = reader["ColumnIsNullable"] |> unbox<bool>
-                                IsIdentity = reader["ColumnIsIdentity"] |> unbox<bool>
-                                IsComputed = reader["ColumnIsComputed"] |> unbox<bool>
-                                SortKey = reader["ColumnId"] |> unbox<int>
-                                Size = reader["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
-                                Precision = reader["ColumnPrecision"] |> unbox<byte>
-                                Scale = reader["ColumnScale"] |> unbox<byte>
-                                TypeInfo = typeInfo
-                                Collation =
-                                    if reader.IsDBNull "CollationName" then
-                                        None
-                                    else
-                                        reader["CollationName"] |> unbox<string> |> Some
-                                ShouldSkipInTableDto = false // not relevant/used
-                            }
-                        ]
+                    Columns = [
+                        {
+                            Name = colName
+                            IsNullable = reader["ColumnIsNullable"] |> unbox<bool>
+                            IsIdentity = reader["ColumnIsIdentity"] |> unbox<bool>
+                            IsComputed = reader["ColumnIsComputed"] |> unbox<bool>
+                            SortKey = reader["ColumnId"] |> unbox<int>
+                            Size = reader["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
+                            Precision = reader["ColumnPrecision"] |> unbox<byte>
+                            Scale = reader["ColumnScale"] |> unbox<byte>
+                            TypeInfo = typeInfo
+                            Collation =
+                                if reader.IsDBNull "CollationName" then
+                                    None
+                                else
+                                    reader["CollationName"] |> unbox<string> |> Some
+                            ShouldSkipInTableDto = false // not relevant/used
+                        }
+                    ]
                 }
 
         tableTypes
@@ -954,29 +953,26 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
                             SchemaName = schemaName
                             Name = tableName
                             // Merged later
-                            Columns =
-                                [
-                                    {
-                                        TableColumn.Name = colName
-                                        SortKey = reader["column_id"] |> unbox<int>
-                                        IsNullable = reader["is_nullable"] |> unbox<bool>
-                                        IsIdentity = reader["is_identity"] |> unbox<bool>
-                                        IsComputed = reader["is_computed"] |> unbox<bool>
-                                        Size =
-                                            reader["max_length"]
-                                            |> unbox<int16>
-                                            |> adjustSizeForDbType typeInfo.SqlDbType
-                                        Precision = reader["precision"] |> unbox<byte>
-                                        Scale = reader["scale"] |> unbox<byte>
-                                        TypeInfo = typeInfo
-                                        Collation =
-                                            if reader.IsDBNull "collation_name" then
-                                                None
-                                            else
-                                                reader["collation_name"] |> unbox<string> |> Some
-                                        ShouldSkipInTableDto = shouldSkipCol
-                                    }
-                                ]
+                            Columns = [
+                                {
+                                    TableColumn.Name = colName
+                                    SortKey = reader["column_id"] |> unbox<int>
+                                    IsNullable = reader["is_nullable"] |> unbox<bool>
+                                    IsIdentity = reader["is_identity"] |> unbox<bool>
+                                    IsComputed = reader["is_computed"] |> unbox<bool>
+                                    Size =
+                                        reader["max_length"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
+                                    Precision = reader["precision"] |> unbox<byte>
+                                    Scale = reader["scale"] |> unbox<byte>
+                                    TypeInfo = typeInfo
+                                    Collation =
+                                        if reader.IsDBNull "collation_name" then
+                                            None
+                                        else
+                                            reader["collation_name"] |> unbox<string> |> Some
+                                    ShouldSkipInTableDto = shouldSkipCol
+                                }
+                            ]
                             PrimaryKeyColumns = [] // Set later
                             IsView = reader["IsView"] |> unbox<bool>
                         }
@@ -1442,20 +1438,19 @@ let getEverything
 
                                 ]
                                 |> String.concat "\n"
-                            Parameters =
-                                [
-                                    {
-                                        Name = "ids"
-                                        SortKey = 0
-                                        Size = 0s
-                                        Precision = 0uy
-                                        Scale = 0uy
-                                        FSharpDefaultValueString = None
-                                        TypeInfo = Table tableType
-                                        IsOutput = false
-                                        IsCursorRef = false
-                                    }
-                                ]
+                            Parameters = [
+                                {
+                                    Name = "ids"
+                                    SortKey = 0
+                                    Size = 0s
+                                    Precision = 0uy
+                                    Scale = 0uy
+                                    FSharpDefaultValueString = None
+                                    TypeInfo = Table tableType
+                                    IsOutput = false
+                                    IsCursorRef = false
+                                }
+                            ]
                             ResultSet = None
                             TempTables = []
                             GeneratedByFacil = true
@@ -1621,20 +1616,19 @@ let getEverything
 
                                 ]
                                 |> String.concat "\n"
-                            Parameters =
-                                [
-                                    {
-                                        Name = "ids"
-                                        SortKey = 0
-                                        Size = 0s
-                                        Precision = 0uy
-                                        Scale = 0uy
-                                        FSharpDefaultValueString = None
-                                        TypeInfo = Table tableType
-                                        IsOutput = false
-                                        IsCursorRef = false
-                                    }
-                                ]
+                            Parameters = [
+                                {
+                                    Name = "ids"
+                                    SortKey = 0
+                                    Size = 0s
+                                    Precision = 0uy
+                                    Scale = 0uy
+                                    FSharpDefaultValueString = None
+                                    TypeInfo = Table tableType
+                                    IsOutput = false
+                                    IsCursorRef = false
+                                }
+                            ]
                             ResultSet = None
                             TempTables = []
                             GeneratedByFacil = true
@@ -1770,41 +1764,39 @@ let getEverything
                                     |> String.concat "\n"
                                 Parameters = []
                                 ResultSet = None
-                                TempTables =
-                                    [
-                                        {
-                                            Name = tempTableName
-                                            Source =
-                                                [
-                                                    $"CREATE TABLE {tempTableName} ("
+                                TempTables = [
+                                    {
+                                        Name = tempTableName
+                                        Source =
+                                            [
+                                                $"CREATE TABLE {tempTableName} ("
 
-                                                    yield!
-                                                        colsToInsertWithRule
-                                                        |> List.map (fun (c, _) ->
-                                                            let sqlTypeExpr = c.SqlExpression
+                                                yield!
+                                                    colsToInsertWithRule
+                                                    |> List.map (fun (c, _) ->
+                                                        let sqlTypeExpr = c.SqlExpression
 
-                                                            let collateExpr =
-                                                                c.Collation |> Option.map (sprintf "COLLATE %s")
+                                                        let collateExpr =
+                                                            c.Collation |> Option.map (sprintf "COLLATE %s")
 
-                                                            let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
+                                                        let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
 
-                                                            [
-                                                                $"[{c.Name}]"
-                                                                sqlTypeExpr
-                                                                yield! Option.toList collateExpr
-                                                                nullExpr
-                                                            ]
-                                                            |> String.concat " "
-                                                            |> sprintf "  %s")
-                                                        |> List.mapAllExceptLast (sprintf "%s,")
+                                                        [
+                                                            $"[{c.Name}]"
+                                                            sqlTypeExpr
+                                                            yield! Option.toList collateExpr
+                                                            nullExpr
+                                                        ]
+                                                        |> String.concat " "
+                                                        |> sprintf "  %s")
+                                                    |> List.mapAllExceptLast (sprintf "%s,")
 
-                                                    ")"
-                                                ]
-                                                |> String.concat "\n"
-                                            Columns =
-                                                colsToInsertWithRule |> List.map (fst >> TableColumn.toOutputColumn)
-                                        }
-                                    ]
+                                                ")"
+                                            ]
+                                            |> String.concat "\n"
+                                        Columns = colsToInsertWithRule |> List.map (fst >> TableColumn.toOutputColumn)
+                                    }
+                                ]
                                 GeneratedByFacil = true
                             }
 
@@ -1977,49 +1969,48 @@ let getEverything
                                     |> String.concat "\n"
                                 Parameters = []
                                 ResultSet = None
-                                TempTables =
-                                    [
-                                        let tempTableCols = pkColsWithRule @ colsToUpdateWithRule
+                                TempTables = [
+                                    let tempTableCols = pkColsWithRule @ colsToUpdateWithRule
 
-                                        {
-                                            Name = tempTableName
-                                            Source =
-                                                [
-                                                    $"CREATE TABLE {tempTableName} ("
+                                    {
+                                        Name = tempTableName
+                                        Source =
+                                            [
+                                                $"CREATE TABLE {tempTableName} ("
 
-                                                    yield!
-                                                        tempTableCols
-                                                        |> List.map (fun (c, _) ->
-                                                            let sqlTypeExpr = c.SqlExpression
+                                                yield!
+                                                    tempTableCols
+                                                    |> List.map (fun (c, _) ->
+                                                        let sqlTypeExpr = c.SqlExpression
 
-                                                            let collateExpr =
-                                                                c.Collation |> Option.map (sprintf "COLLATE %s")
+                                                        let collateExpr =
+                                                            c.Collation |> Option.map (sprintf "COLLATE %s")
 
-                                                            let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
+                                                        let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
 
-                                                            [
-                                                                $"[{c.Name}]"
-                                                                sqlTypeExpr
-                                                                yield! Option.toList collateExpr
-                                                                nullExpr
-                                                            ]
-                                                            |> String.concat " "
-                                                            |> sprintf "  %s")
-                                                        |> List.map (sprintf "%s,")
+                                                        [
+                                                            $"[{c.Name}]"
+                                                            sqlTypeExpr
+                                                            yield! Option.toList collateExpr
+                                                            nullExpr
+                                                        ]
+                                                        |> String.concat " "
+                                                        |> sprintf "  %s")
+                                                    |> List.map (sprintf "%s,")
 
-                                                    let colList =
-                                                        pkColsWithRule
-                                                        |> List.map (fun (c, _) -> c.Name |> sprintf "[%s]")
-                                                        |> String.concat ", "
+                                                let colList =
+                                                    pkColsWithRule
+                                                    |> List.map (fun (c, _) -> c.Name |> sprintf "[%s]")
+                                                    |> String.concat ", "
 
-                                                    $"  PRIMARY KEY ({colList})"
+                                                $"  PRIMARY KEY ({colList})"
 
-                                                    ")"
-                                                ]
-                                                |> String.concat "\n"
-                                            Columns = tempTableCols |> List.map (fst >> TableColumn.toOutputColumn)
-                                        }
-                                    ]
+                                                ")"
+                                            ]
+                                            |> String.concat "\n"
+                                        Columns = tempTableCols |> List.map (fst >> TableColumn.toOutputColumn)
+                                    }
+                                ]
                                 GeneratedByFacil = true
                             }
 
@@ -2289,47 +2280,46 @@ let getEverything
                                     |> String.concat "\n"
                                 Parameters = []
                                 ResultSet = None
-                                TempTables =
-                                    [
-                                        {
-                                            Name = tempTableName
-                                            Source =
-                                                [
-                                                    $"CREATE TABLE {tempTableName} ("
+                                TempTables = [
+                                    {
+                                        Name = tempTableName
+                                        Source =
+                                            [
+                                                $"CREATE TABLE {tempTableName} ("
 
-                                                    yield!
-                                                        allColsWithRule
-                                                        |> List.map (fun (c, _) ->
-                                                            let sqlTypeExpr = c.SqlExpression
+                                                yield!
+                                                    allColsWithRule
+                                                    |> List.map (fun (c, _) ->
+                                                        let sqlTypeExpr = c.SqlExpression
 
-                                                            let collateExpr =
-                                                                c.Collation |> Option.map (sprintf "COLLATE %s")
+                                                        let collateExpr =
+                                                            c.Collation |> Option.map (sprintf "COLLATE %s")
 
-                                                            let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
+                                                        let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
 
-                                                            [
-                                                                $"[{c.Name}]"
-                                                                sqlTypeExpr
-                                                                yield! Option.toList collateExpr
-                                                                nullExpr
-                                                            ]
-                                                            |> String.concat " "
-                                                            |> sprintf "  %s")
-                                                        |> List.map (sprintf "%s,")
+                                                        [
+                                                            $"[{c.Name}]"
+                                                            sqlTypeExpr
+                                                            yield! Option.toList collateExpr
+                                                            nullExpr
+                                                        ]
+                                                        |> String.concat " "
+                                                        |> sprintf "  %s")
+                                                    |> List.map (sprintf "%s,")
 
-                                                    let colList =
-                                                        pkColsWithRule
-                                                        |> List.map (fun (c, _) -> c.Name |> sprintf "[%s]")
-                                                        |> String.concat ", "
+                                                let colList =
+                                                    pkColsWithRule
+                                                    |> List.map (fun (c, _) -> c.Name |> sprintf "[%s]")
+                                                    |> String.concat ", "
 
-                                                    $"  PRIMARY KEY ({colList})"
+                                                $"  PRIMARY KEY ({colList})"
 
-                                                    ")"
-                                                ]
-                                                |> String.concat "\n"
-                                            Columns = allColsWithRule |> List.map (fst >> TableColumn.toOutputColumn)
-                                        }
-                                    ]
+                                                ")"
+                                            ]
+                                            |> String.concat "\n"
+                                        Columns = allColsWithRule |> List.map (fst >> TableColumn.toOutputColumn)
+                                    }
+                                ]
                                 GeneratedByFacil = true
                             }
 
