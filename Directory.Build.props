@@ -4,7 +4,7 @@
     <Version>2.6.3</Version>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarnOn>FS1182;$(WarnOn)</WarnOn>
+    <WarnOn>1182;$(WarnOn)</WarnOn>
   </PropertyGroup>
 
   <ItemGroup>
