@@ -89,7 +89,13 @@ let getScriptParameters
 
         let paramsWithFirstUsageOffset = Dictionary()
         let parser = TSql150Parser(true)
-        let fragment, _ = parser.Parse(new StringReader(script.Source))
+        let fragment, errs = parser.Parse(new StringReader(script.Source))
+
+        if errs.Count > 0 then
+            let e = errs[0]
+
+            failwith
+                $"Parsing script failed with error %i{e.Number} on line %i{e.Line}, colum %i{e.Column}: %s{e.Message}"
 
         fragment.Accept
             { new TSqlFragmentVisitor() with
@@ -103,7 +109,13 @@ let getScriptParameters
 
         let declaredParams = ResizeArray()
         let parser = TSql150Parser(true)
-        let fragment, _ = parser.Parse(new StringReader(script.Source))
+        let fragment, errs = parser.Parse(new StringReader(script.Source))
+
+        if errs.Count > 0 then
+            let e = errs[0]
+
+            failwith
+                $"Parsing script failed with error %i{e.Number} on line %i{e.Line}, colum %i{e.Column}: %s{e.Message}"
 
         fragment.Accept
             { new TSqlFragmentVisitor() with
@@ -1022,7 +1034,13 @@ let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition connStr (con
     try
         let mutable name = null
         let parser = TSql150Parser(true)
-        let fragment, _ = parser.Parse(new StringReader(definition))
+        let fragment, errs = parser.Parse(new StringReader(definition))
+
+        if errs.Count > 0 then
+            let e = errs[0]
+
+            failwith
+                $"Parsing temp table definition failed with error %i{e.Number} on line %i{e.Line}, colum %i{e.Column}: %s{e.Message}"
 
         fragment.Accept
             { new TSqlFragmentVisitor() with

@@ -519,7 +519,13 @@ let parseDefaultValue (definition: string) (expr: ScalarExpression) =
 
 let getParameterDefaultValues (sproc: StoredProcedure) =
     let parser = TSql150Parser(true)
-    let fragment, _ = parser.Parse(new StringReader(sproc.Definition))
+    let fragment, errs = parser.Parse(new StringReader(sproc.Definition))
+
+    if errs.Count > 0 then
+        let e = errs[0]
+
+        failwith
+            $"Parsing stored procedure failed with error %i{e.Number} on line %i{e.Line}, colum %i{e.Column}: %s{e.Message}"
 
     let paramDefaults = Dictionary()
 
