@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.6.4 (2023-02-09)
 
 * Improve some error messages when generation fails due to invalid SQL
 
