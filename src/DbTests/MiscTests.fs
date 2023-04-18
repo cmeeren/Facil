@@ -1,5 +1,6 @@
 ﻿module MiscTests
 
+open System
 open Expecto
 open Hedgehog
 open Microsoft.Data.SqlClient
@@ -253,6 +254,144 @@ let tests =
                 |> Array.map (fun pi -> pi.Name)
 
             Expect.sequenceEqual fieldNames [ "Id"; "Bar" ] ""
+
+
+        testCase "Table DTO mappingCtor test - AllTypesNonNull"
+        <| fun () ->
+            let x = {|
+                ExtraProperty = "foo"
+                Key = 1
+                Bigint = 1L
+                Binary = Array.replicate 42 1uy
+                Bit = true
+                Char = String.replicate 42 "a"
+                Date = DateTime(2000, 1, 1)
+                Datetime = DateTime(2000, 1, 1)
+                Datetime2 = DateTime(2000, 1, 1)
+                Datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)
+                Decimal = 1M
+                Float = 1.
+                Image = [| 1uy |]
+                Int = 1
+                Money = 1M
+                Nchar = String.replicate 42 "a"
+                Ntext = "test"
+                Numeric = 1M
+                Nvarchar = "test"
+                Real = 1.f
+                Smalldatetime = DateTime(2000, 1, 1)
+                Smallint = 1s
+                Smallmoney = 1M
+                Text = "test"
+                Time = TimeSpan.FromSeconds 1.
+                Tinyint = 1uy
+                Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")
+                Varbinary = [| 1uy |]
+                Varchar = "test"
+                Xml = "<tag />"
+            |}
+
+            let dto = DbGen.TableDtos.dbo.AllTypesNonNull.create x
+
+            test <@ dto.Key = x.Key @>
+            test <@ dto.Bigint = x.Bigint @>
+            test <@ dto.Binary = x.Binary @>
+            test <@ dto.Bit = x.Bit @>
+            test <@ dto.Char = x.Char @>
+            test <@ dto.Date = x.Date @>
+            test <@ dto.Datetime = x.Datetime @>
+            test <@ dto.Datetime2 = x.Datetime2 @>
+            test <@ dto.Datetimeoffset = x.Datetimeoffset @>
+            test <@ dto.Decimal = x.Decimal @>
+            test <@ dto.Float = x.Float @>
+            test <@ dto.Image = x.Image @>
+            test <@ dto.Int = x.Int @>
+            test <@ dto.Money = x.Money @>
+            test <@ dto.Nchar = x.Nchar @>
+            test <@ dto.Ntext = x.Ntext @>
+            test <@ dto.Numeric = x.Numeric @>
+            test <@ dto.Nvarchar = x.Nvarchar @>
+            test <@ dto.Real = x.Real @>
+            test <@ dto.Smalldatetime = x.Smalldatetime @>
+            test <@ dto.Smallint = x.Smallint @>
+            test <@ dto.Smallmoney = x.Smallmoney @>
+            test <@ dto.Text = x.Text @>
+            test <@ dto.Time = x.Time @>
+            test <@ dto.Tinyint = x.Tinyint @>
+            test <@ dto.Uniqueidentifier = x.Uniqueidentifier @>
+            test <@ dto.Varbinary = x.Varbinary @>
+            test <@ dto.Varchar = x.Varchar @>
+            test <@ dto.Xml = x.Xml @>
+
+
+        testCase "Table DTO mappingCtor test - AllTypesNull"
+        <| fun () ->
+            let x = {|
+                ExtraProperty = Some "foo"
+                Key1 = 1
+                Key2 = 1
+                Bigint = Some 1L
+                Binary = Array.replicate 42 1uy |> Some
+                Bit = Some true
+                Char = String.replicate 42 "a" |> Some
+                Date = DateTime(2000, 1, 1) |> Some
+                Datetime = DateTime(2000, 1, 1) |> Some
+                Datetime2 = DateTime(2000, 1, 1) |> Some
+                Datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero) |> Some
+                Decimal = Some 1M
+                Float = Some 1.
+                Image = Some [| 1uy |]
+                Int = Some 1
+                Money = Some 1M
+                Nchar = String.replicate 42 "a" |> Some
+                Ntext = Some "test"
+                Numeric = Some 1M
+                Nvarchar = Some "test"
+                Real = Some 1.f
+                Smalldatetime = DateTime(2000, 1, 1) |> Some
+                Smallint = Some 1s
+                Smallmoney = Some 1M
+                Text = Some "test"
+                Time = TimeSpan.FromSeconds 1. |> Some
+                Tinyint = Some 1uy
+                Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") |> Some
+                Varbinary = Some [| 1uy |]
+                Varchar = Some "test"
+                Xml = Some "<tag />"
+            |}
+
+            let dto = DbGen.TableDtos.dbo.AllTypesNull.create x
+
+            test <@ dto.Key1 = x.Key1 @>
+            test <@ dto.Key2 = x.Key2 @>
+            test <@ dto.Bigint = x.Bigint @>
+            test <@ dto.Binary = x.Binary @>
+            test <@ dto.Bit = x.Bit @>
+            test <@ dto.Char = x.Char @>
+            test <@ dto.Date = x.Date @>
+            test <@ dto.Datetime = x.Datetime @>
+            test <@ dto.Datetime2 = x.Datetime2 @>
+            test <@ dto.Datetimeoffset = x.Datetimeoffset @>
+            test <@ dto.Decimal = x.Decimal @>
+            test <@ dto.Float = x.Float @>
+            test <@ dto.Image = x.Image @>
+            test <@ dto.Int = x.Int @>
+            test <@ dto.Money = x.Money @>
+            test <@ dto.Nchar = x.Nchar @>
+            test <@ dto.Ntext = x.Ntext @>
+            test <@ dto.Numeric = x.Numeric @>
+            test <@ dto.Nvarchar = x.Nvarchar @>
+            test <@ dto.Real = x.Real @>
+            test <@ dto.Smalldatetime = x.Smalldatetime @>
+            test <@ dto.Smallint = x.Smallint @>
+            test <@ dto.Smallmoney = x.Smallmoney @>
+            test <@ dto.Text = x.Text @>
+            test <@ dto.Time = x.Time @>
+            test <@ dto.Tinyint = x.Tinyint @>
+            test <@ dto.Uniqueidentifier = x.Uniqueidentifier @>
+            test <@ dto.Varbinary = x.Varbinary @>
+            test <@ dto.Varchar = x.Varchar @>
+            test <@ dto.Xml = x.Xml @>
 
 
         testCase "Compile-time buildValue test"

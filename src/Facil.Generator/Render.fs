@@ -46,6 +46,24 @@ let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
                                 "|}"
                         ]
 
+                if rule.MappingCtor then
+                    ""
+                    $"static member inline create dto : ``%s{dto.Name}`` ="
+
+                    yield!
+                        indent [
+                            "{"
+
+                            yield!
+                                indent [
+                                    for c in dto.Columns do
+                                        $"``%s{c.PascalCaseName}`` = (^a: (member ``%s{c.PascalCaseName}``: _) dto)"
+                                ]
+
+                            "}"
+                        ]
+
+
             ]
     ]
 

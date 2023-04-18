@@ -336,6 +336,9 @@ rulesets:
           Bar:
             skip: false
 
+      - for: AllTypes(Non)?Null
+        mappingCtor: true
+
 
     tableTypes:
       - for: Voption

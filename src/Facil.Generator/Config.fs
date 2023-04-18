@@ -46,6 +46,7 @@ type TableDtoRuleDto = {
     ``for``: string option
     except: string option
     voption: bool option
+    mappingCtor: bool option
     includeColumns: string list option
     columns: Map<string, TableDtoColumnDto> option
 }
@@ -55,12 +56,14 @@ type TableDtoRule = {
     IncludeOrFor: IncludeOrFor
     Except: string option
     Voption: bool option
+    MappingCtor: bool option
     Columns: Map<string option, TableDtoColumn>
 }
 
 
 type EffectiveTableDtoRule = {
     Voption: bool
+    MappingCtor: bool
     ColumnsFromAllRules: Map<string option, TableDtoColumn> list
 }
 
@@ -394,6 +397,7 @@ module TableDtoRule =
 
     let defaultEffectiveRule: EffectiveTableDtoRule = {
         Voption = false
+        MappingCtor = false
         ColumnsFromAllRules = []
     }
 
@@ -409,6 +413,7 @@ module TableDtoRule =
                 failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a tableDto rule"
         Except = dto.except
         Voption = dto.voption
+        MappingCtor = dto.mappingCtor
         Columns =
             let includeColumns =
                 match dto.includeColumns with
@@ -446,6 +451,7 @@ module TableDtoRule =
 
     let merge (eff: EffectiveTableDtoRule) (rule: TableDtoRule) : EffectiveTableDtoRule = {
         Voption = rule.Voption |> Option.defaultValue eff.Voption
+        MappingCtor = rule.MappingCtor |> Option.defaultValue eff.MappingCtor
         ColumnsFromAllRules = eff.ColumnsFromAllRules @ [ rule.Columns ]
     }
 

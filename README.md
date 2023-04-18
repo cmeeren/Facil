@@ -261,6 +261,9 @@ For each procedure/script (or any set of these that matches a specified regex/gl
 For each table DTO, you can configure:
 
 * Whether to use `ValueOption` instead of `Option`
+* Whether to add a constructor that accepts an object whose properties are a superset of the properties of the table
+  DTO. This can be useful if you want to use the table DTO with a script that returns additional columns (for example
+  representing the total number of rows, or an additional value to group by).
 
 For each table type (automatically included by Facil if used in included procedures/scripts), you can configure:
 

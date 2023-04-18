@@ -463,6 +463,11 @@ rulesets:
         # false.
         voption: true
 
+        # Adds a constructor that accepts an object whose properties are a superset of the properties of the table DTO.
+        # This can be useful if you want to use the table DTO with a script that returns additional columns (for example
+        # representing the total number of rows, or an additional value to group by).
+        mappingCtor: true
+
         # 'includeColumns' is a short way of specifying which columns to include. The value shown here is is simply
         # syntactic sugar for the 'columns' configuration shown below. If you specify both, any 'skip' values under
         # 'columns' take precedence over what's specified in 'includeColumns'.

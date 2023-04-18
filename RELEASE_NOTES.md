@@ -1,6 +1,12 @@
 Release notes
 ==============
 
+### 2.7.0 (2023-04-18)
+
+* Added table DTO option `mappingCtor`, which adds a constructor that accepts an object whose properties are a superset
+  of the properties of the table DTO. This can be useful if you want to use the table DTO with a script that returns
+  additional columns (for example representing the total number of rows, or an additional value to group by).
+
 ### 2.6.4 (2023-02-09)
 
 * Improve some error messages when generation fails due to invalid SQL
