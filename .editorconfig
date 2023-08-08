@@ -9,13 +9,15 @@ end_of_line = crlf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# noinspection EditorConfigKeyCorrectness
-[{nuget.config,*.*proj,*.props,*.xml}]
+[*.{config,*proj,props,xml}]
 end_tag_newline = true
 self_closing_tag_style = space
+ij_xml_space_inside_empty_tag = true
 
-# noinspection EditorConfigKeyCorrectness
 [*.fs]
 indent_size = 4
-fsharp_multiline_bracket_style = experimental_stroustrup
 fsharp_keep_max_number_of_blank_lines = 3
+# Reduces indentation, makes editing easier, simplifies diffs
+fsharp_multiline_bracket_style = stroustrup
+# Makes formatting of lambdas consistent with other constructs, and is in line with the stroustrup style above
+fsharp_multi_line_lambda_closing_newline = true
