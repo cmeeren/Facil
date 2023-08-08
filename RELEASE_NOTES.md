@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Updated Microsoft.Data.SqlClient from 5.1.0 to 5.1.1
+* Update generator dependencies
+
 ### 2.7.0 (2023-04-18)
 
 * Added table DTO option `mappingCtor`, which adds a constructor that accepts an object whose properties are a superset
