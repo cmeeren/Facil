@@ -22,7 +22,7 @@ jobs:
         run: dotnet tool restore
 
       - name: Check code format
-        run: dotnet fantomas --check --recurse .
+        run: dotnet fantomas --check .
 
       - name: Install SQL Server
         run: |
