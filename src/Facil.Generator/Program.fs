@@ -101,7 +101,8 @@ module Program =
                                     0
                                     $"The 'include' glob pattern '{pattern}' does not match any files after subtracting the corresponding 'except' pattern '{rule.Except.Value}'"
 
-                            Set.toList finalMatches)
+                            Set.toList finalMatches
+                    )
                     |> List.map (fun globOutput -> {
                         GlobMatchOutput = globOutput
                         RelativePathSegments =

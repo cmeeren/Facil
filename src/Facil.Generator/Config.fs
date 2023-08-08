@@ -487,7 +487,8 @@ module TableTypeRule =
         For =
             dto.``for``
             |> Option.defaultWith (fun () ->
-                failwithYamlError fullYamlPath 0 0 "Either 'include' or 'for' is required in a tableType rule")
+                failwithYamlError fullYamlPath 0 0 "Either 'include' or 'for' is required in a tableType rule"
+            )
         Except = dto.except
         Voption = dto.voption
         SkipParamDto = dto.skipParamDto
@@ -582,18 +583,22 @@ module ProcedureRule =
             Except = dto.except
             Result =
                 dto.result
-                |> Option.map (function
+                |> Option.map (
+                    function
                     | "auto" -> Auto
                     | "anonymous" -> AnonymousRecord
                     | "nominal" -> NominalRecord
-                    | name -> Custom name)
+                    | name -> Custom name
+                )
             ParamDto =
                 dto.paramDto
-                |> Option.map (function
+                |> Option.map (
+                    function
                     | "inline" -> Inline
                     | "nominal" -> Nominal
                     | "skip" -> Skip
-                    | x -> failwithYamlError fullYamlPath 0 0 $"Invalid 'paramDto' value '%s{x}'")
+                    | x -> failwithYamlError fullYamlPath 0 0 $"Invalid 'paramDto' value '%s{x}'"
+                )
             VoptionIn = dto.voptionIn
             VoptionOut = dto.voptionOut
             RecordIfSingleCol = dto.recordIfSingleCol
@@ -819,18 +824,22 @@ module ScriptRule =
             Except = dto.except
             Result =
                 dto.result
-                |> Option.map (function
+                |> Option.map (
+                    function
                     | "auto" -> Auto
                     | "anonymous" -> AnonymousRecord
                     | "nominal" -> NominalRecord
-                    | name -> Custom name)
+                    | name -> Custom name
+                )
             ParamDto =
                 dto.paramDto
-                |> Option.map (function
+                |> Option.map (
+                    function
                     | "inline" -> Inline
                     | "nominal" -> Nominal
                     | "skip" -> Skip
-                    | x -> failwithYamlError fullYamlPath 0 0 $"Invalid 'paramDto' value '%s{x}'")
+                    | x -> failwithYamlError fullYamlPath 0 0 $"Invalid 'paramDto' value '%s{x}'"
+                )
             VoptionIn = dto.voptionIn
             VoptionOut = dto.voptionOut
             RecordIfSingleCol = dto.recordIfSingleCol
@@ -1008,7 +1017,8 @@ module TableScriptTypeRule =
                                 fullYamlPath
                                 0
                                 0
-                                "Table scripts with type 'getByColumns' and 'getByColumnsBatch' must specify 'filterColumns'")
+                                "Table scripts with type 'getByColumns' and 'getByColumnsBatch' must specify 'filterColumns'"
+                        )
 
                     nameTemplate
                         .Replace("{SchemaName}", schemaName)
@@ -1163,7 +1173,8 @@ module TableScriptRule =
 
                     match current.TryFind key with
                     | None -> current.Add(key, defaultRule)
-                    | Some effRule -> current.Add(key, TableScriptTypeRule.merge effRule rule))
+                    | Some effRule -> current.Add(key, TableScriptTypeRule.merge effRule rule)
+                )
         }
 
 
@@ -1187,7 +1198,8 @@ module RuleSet =
                             fullYamlPath
                             0
                             0
-                            "All array items in the 'rulesets' section must have a 'connectionString' property")
+                            "All array items in the 'rulesets' section must have a 'connectionString' property"
+                    )
                     |> resolveVariable
             Filename = dto.filename |> Option.defaultValue "DbGen.fs"
             NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module DbGen"
@@ -1226,7 +1238,8 @@ module RuleSet =
             | Include pattern, None -> Regex.IsMatch(qualifiedName, pattern)
             | Include incPattern, Some exPattern ->
                 Regex.IsMatch(qualifiedName, incPattern)
-                && not <| Regex.IsMatch(qualifiedName, exPattern))
+                && not <| Regex.IsMatch(qualifiedName, exPattern)
+        )
 
 
     let shouldIncludeTableDto schemaName tableName (cfg: RuleSet) =
@@ -1239,7 +1252,8 @@ module RuleSet =
             | Include pattern, None -> Regex.IsMatch(qualifiedName, pattern)
             | Include incPattern, Some exPattern ->
                 Regex.IsMatch(qualifiedName, incPattern)
-                && not <| Regex.IsMatch(qualifiedName, exPattern))
+                && not <| Regex.IsMatch(qualifiedName, exPattern)
+        )
 
 
     let shouldIncludeTableScripts schemaName tableName (cfg: RuleSet) =
@@ -1252,7 +1266,8 @@ module RuleSet =
             | Include pattern, None -> Regex.IsMatch(qualifiedName, pattern)
             | Include incPattern, Some exPattern ->
                 Regex.IsMatch(qualifiedName, incPattern)
-                && not <| Regex.IsMatch(qualifiedName, exPattern))
+                && not <| Regex.IsMatch(qualifiedName, exPattern)
+        )
 
 
     let getEffectiveProcedureRuleFor schemaName procName (cfg: RuleSet) =
@@ -1306,9 +1321,11 @@ module FacilConfig =
                 res.Data
             | results ->
                 results
-                |> List.choose (function
+                |> List.choose (
+                    function
                     | Error err -> Some err
-                    | _ -> None)
+                    | _ -> None
+                )
                 |> List.collect (fun ei -> [
                     yield! ei.Error |> List.map (fun x -> x, logYamlError)
                     yield! ei.Warn |> List.map (fun x -> x, logYamlWarning)
@@ -1332,7 +1349,8 @@ module FacilConfig =
                         fullYamlPath
                         0
                         0
-                        "Each array item in the 'configs' section of the YAML may only contain one property (either 'appSettings', 'userSecrets', or 'envVars')")
+                        "Each array item in the 'configs' section of the YAML may only contain one property (either 'appSettings', 'userSecrets', or 'envVars')"
+            )
         )
 
         let config = configBuilder.Build()

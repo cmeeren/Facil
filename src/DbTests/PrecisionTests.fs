@@ -751,37 +751,36 @@ let tests =
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
-                                    DbGen.TableTypes.dbo.AllTypesNonNull.create
-                                        {|
-                                            bigint = bigint
-                                            binary = binary_42
-                                            bit = bit
-                                            char = char_42
-                                            date = date
-                                            datetime = datetime
-                                            datetime2 = datetime2_3
-                                            datetimeoffset = datetimeoffset_1
-                                            decimal = decimal_10_5
-                                            float = float_42
-                                            image = image
-                                            int = int
-                                            money = money
-                                            nchar = nchar_42
-                                            ntext = ntext
-                                            numeric = numeric_8_3
-                                            nvarchar = nvarchar_42
-                                            real = real
-                                            smalldatetime = smalldatetime
-                                            smallint = smallint
-                                            smallmoney = smallmoney
-                                            text = text
-                                            time = time_1
-                                            tinyint = tinyint
-                                            uniqueidentifier = uniqueidentifier
-                                            varbinary = varbinary_42
-                                            varchar = varchar_42
-                                            xml = xml
-                                        |}
+                                    DbGen.TableTypes.dbo.AllTypesNonNull.create {|
+                                        bigint = bigint
+                                        binary = binary_42
+                                        bit = bit
+                                        char = char_42
+                                        date = date
+                                        datetime = datetime
+                                        datetime2 = datetime2_3
+                                        datetimeoffset = datetimeoffset_1
+                                        decimal = decimal_10_5
+                                        float = float_42
+                                        image = image
+                                        int = int
+                                        money = money
+                                        nchar = nchar_42
+                                        ntext = ntext
+                                        numeric = numeric_8_3
+                                        nvarchar = nvarchar_42
+                                        real = real
+                                        smalldatetime = smalldatetime
+                                        smallint = smallint
+                                        smallmoney = smallmoney
+                                        text = text
+                                        time = time_1
+                                        tinyint = tinyint
+                                        uniqueidentifier = uniqueidentifier
+                                        varbinary = varbinary_42
+                                        varchar = varchar_42
+                                        xml = xml
+                                    |}
                                 ]
                             )
                             .ExecuteSingle()
@@ -820,37 +819,36 @@ let tests =
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
-                                    DbGen.TableTypes.dbo.AllTypesNonNull.create
-                                        {|
-                                            bigint = bigint
-                                            binary = binary_42
-                                            bit = bit
-                                            char = char_42
-                                            date = date
-                                            datetime = datetime
-                                            datetime2 = datetime2_3
-                                            datetimeoffset = datetimeoffset_1
-                                            decimal = decimal_10_5
-                                            float = float_42
-                                            image = image
-                                            int = int
-                                            money = money
-                                            nchar = nchar_42
-                                            ntext = ntext
-                                            numeric = numeric_8_3
-                                            nvarchar = nvarchar_42
-                                            real = real
-                                            smalldatetime = smalldatetime
-                                            smallint = smallint
-                                            smallmoney = smallmoney
-                                            text = text
-                                            time = time_1
-                                            tinyint = tinyint
-                                            uniqueidentifier = uniqueidentifier
-                                            varbinary = varbinary_42
-                                            varchar = varchar_42
-                                            xml = xml
-                                        |}
+                                    DbGen.TableTypes.dbo.AllTypesNonNull.create {|
+                                        bigint = bigint
+                                        binary = binary_42
+                                        bit = bit
+                                        char = char_42
+                                        date = date
+                                        datetime = datetime
+                                        datetime2 = datetime2_3
+                                        datetimeoffset = datetimeoffset_1
+                                        decimal = decimal_10_5
+                                        float = float_42
+                                        image = image
+                                        int = int
+                                        money = money
+                                        nchar = nchar_42
+                                        ntext = ntext
+                                        numeric = numeric_8_3
+                                        nvarchar = nvarchar_42
+                                        real = real
+                                        smalldatetime = smalldatetime
+                                        smallint = smallint
+                                        smallmoney = smallmoney
+                                        text = text
+                                        time = time_1
+                                        tinyint = tinyint
+                                        uniqueidentifier = uniqueidentifier
+                                        varbinary = varbinary_42
+                                        varchar = varchar_42
+                                        xml = xml
+                                    |}
                                 ]
                             )
                             .ExecuteSingle()
@@ -924,37 +922,36 @@ let tests =
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
-                                    DbGen.TableTypes.dbo.AllTypesNull.create
-                                        {|
-                                            bigint = Some bigint
-                                            binary = Some binary_42
-                                            bit = Some bit
-                                            char = Some char_42
-                                            date = Some date
-                                            datetime = Some datetime
-                                            datetime2 = Some datetime2_3
-                                            datetimeoffset = Some datetimeoffset_1
-                                            decimal = Some decimal_10_5
-                                            float = Some float_42
-                                            image = Some image
-                                            int = Some int
-                                            money = Some money
-                                            nchar = Some nchar_42
-                                            ntext = Some ntext
-                                            numeric = Some numeric_8_3
-                                            nvarchar = Some nvarchar_42
-                                            real = Some real
-                                            smalldatetime = Some smalldatetime
-                                            smallint = Some smallint
-                                            smallmoney = Some smallmoney
-                                            text = Some text
-                                            time = Some time_1
-                                            tinyint = Some tinyint
-                                            uniqueidentifier = Some uniqueidentifier
-                                            varbinary = Some varbinary_42
-                                            varchar = Some varchar_42
-                                            xml = Some xml
-                                        |}
+                                    DbGen.TableTypes.dbo.AllTypesNull.create {|
+                                        bigint = Some bigint
+                                        binary = Some binary_42
+                                        bit = Some bit
+                                        char = Some char_42
+                                        date = Some date
+                                        datetime = Some datetime
+                                        datetime2 = Some datetime2_3
+                                        datetimeoffset = Some datetimeoffset_1
+                                        decimal = Some decimal_10_5
+                                        float = Some float_42
+                                        image = Some image
+                                        int = Some int
+                                        money = Some money
+                                        nchar = Some nchar_42
+                                        ntext = Some ntext
+                                        numeric = Some numeric_8_3
+                                        nvarchar = Some nvarchar_42
+                                        real = Some real
+                                        smalldatetime = Some smalldatetime
+                                        smallint = Some smallint
+                                        smallmoney = Some smallmoney
+                                        text = Some text
+                                        time = Some time_1
+                                        tinyint = Some tinyint
+                                        uniqueidentifier = Some uniqueidentifier
+                                        varbinary = Some varbinary_42
+                                        varchar = Some varchar_42
+                                        xml = Some xml
+                                    |}
                                 ]
                             )
                             .ExecuteSingle()
@@ -993,37 +990,36 @@ let tests =
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
-                                    DbGen.TableTypes.dbo.AllTypesNull.create
-                                        {|
-                                            bigint = Some bigint
-                                            binary = Some binary_42
-                                            bit = Some bit
-                                            char = Some char_42
-                                            date = Some date
-                                            datetime = Some datetime
-                                            datetime2 = Some datetime2_3
-                                            datetimeoffset = Some datetimeoffset_1
-                                            decimal = Some decimal_10_5
-                                            float = Some float_42
-                                            image = Some image
-                                            int = Some int
-                                            money = Some money
-                                            nchar = Some nchar_42
-                                            ntext = Some ntext
-                                            numeric = Some numeric_8_3
-                                            nvarchar = Some nvarchar_42
-                                            real = Some real
-                                            smalldatetime = Some smalldatetime
-                                            smallint = Some smallint
-                                            smallmoney = Some smallmoney
-                                            text = Some text
-                                            time = Some time_1
-                                            tinyint = Some tinyint
-                                            uniqueidentifier = Some uniqueidentifier
-                                            varbinary = Some varbinary_42
-                                            varchar = Some varchar_42
-                                            xml = Some xml
-                                        |}
+                                    DbGen.TableTypes.dbo.AllTypesNull.create {|
+                                        bigint = Some bigint
+                                        binary = Some binary_42
+                                        bit = Some bit
+                                        char = Some char_42
+                                        date = Some date
+                                        datetime = Some datetime
+                                        datetime2 = Some datetime2_3
+                                        datetimeoffset = Some datetimeoffset_1
+                                        decimal = Some decimal_10_5
+                                        float = Some float_42
+                                        image = Some image
+                                        int = Some int
+                                        money = Some money
+                                        nchar = Some nchar_42
+                                        ntext = Some ntext
+                                        numeric = Some numeric_8_3
+                                        nvarchar = Some nvarchar_42
+                                        real = Some real
+                                        smalldatetime = Some smalldatetime
+                                        smallint = Some smallint
+                                        smallmoney = Some smallmoney
+                                        text = Some text
+                                        time = Some time_1
+                                        tinyint = Some tinyint
+                                        uniqueidentifier = Some uniqueidentifier
+                                        varbinary = Some varbinary_42
+                                        varchar = Some varchar_42
+                                        xml = Some xml
+                                    |}
                                 ]
                             )
                             .ExecuteSingle()

@@ -24,7 +24,8 @@ let execTests =
                             DbGen.Procedures.dbo.ProcSelectFromTable.WithConnection(Config.connStr) |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -39,7 +40,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -115,7 +117,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier.Value = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                         test <@ res.Value.varbinary.Value = [| 1uy |] @>
                         test <@ res.Value.varchar.Value = "test" @>
-                        test <@ res.Value.xml.Value = "<tag />" @>)
+                        test <@ res.Value.xml.Value = "<tag />" @>
+                )
         ]
 
 
@@ -191,7 +194,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier.Value = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                         test <@ res.Value.varbinary.Value = [| 1uy |] @>
                         test <@ res.Value.varchar.Value = "test" @>
-                        test <@ res.Value.xml.Value = "<tag />" @>)
+                        test <@ res.Value.xml.Value = "<tag />" @>
+                )
         ]
 
 
@@ -269,7 +273,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier.Value = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                         test <@ res.Value.varbinary.Value = [| 1uy |] @>
                         test <@ res.Value.varchar.Value = "test" @>
-                        test <@ res.Value.xml.Value = "<tag />" @>)
+                        test <@ res.Value.xml.Value = "<tag />" @>
+                )
         ]
 
 
@@ -347,7 +352,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier.Value = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                         test <@ res.Value.varbinary.Value = [| 1uy |] @>
                         test <@ res.Value.varchar.Value = "test" @>
-                        test <@ res.Value.xml.Value = "<tag />" @>)
+                        test <@ res.Value.xml.Value = "<tag />" @>
+                )
         ]
 
 
@@ -423,7 +429,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                         test <@ res.Value.varbinary = Some [| 1uy |] @>
                         test <@ res.Value.varchar = Some "test" @>
-                        test <@ res.Value.xml = Some "<tag />" @>)
+                        test <@ res.Value.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -499,7 +506,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                         test <@ res.Value.varbinary = Some [| 1uy |] @>
                         test <@ res.Value.varchar = Some "test" @>
-                        test <@ res.Value.xml = Some "<tag />" @>)
+                        test <@ res.Value.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -577,7 +585,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                         test <@ res.Value.varbinary = Some [| 1uy |] @>
                         test <@ res.Value.varchar = Some "test" @>
-                        test <@ res.Value.xml = Some "<tag />" @>)
+                        test <@ res.Value.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -655,7 +664,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                         test <@ res.Value.varbinary = Some [| 1uy |] @>
                         test <@ res.Value.varchar = Some "test" @>
-                        test <@ res.Value.xml = Some "<tag />" @>)
+                        test <@ res.Value.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -731,7 +741,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = None @>
                         test <@ res.Value.varbinary = None @>
                         test <@ res.Value.varchar = None @>
-                        test <@ res.Value.xml = None @>)
+                        test <@ res.Value.xml = None @>
+                )
         ]
 
 
@@ -807,7 +818,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = None @>
                         test <@ res.Value.varbinary = None @>
                         test <@ res.Value.varchar = None @>
-                        test <@ res.Value.xml = None @>)
+                        test <@ res.Value.xml = None @>
+                )
         ]
 
 
@@ -885,7 +897,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = None @>
                         test <@ res.Value.varbinary = None @>
                         test <@ res.Value.varchar = None @>
-                        test <@ res.Value.xml = None @>)
+                        test <@ res.Value.xml = None @>
+                )
         ]
 
 
@@ -966,7 +979,8 @@ let execTests =
                             test <@ res.Value.uniqueidentifier = None @>
                             test <@ res.Value.varbinary = None @>
                             test <@ res.Value.varchar = None @>
-                            test <@ res.Value.xml = None @>)
+                            test <@ res.Value.xml = None @>
+                    )
             ]
 
 
@@ -1042,7 +1056,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                         test <@ res.Value.varbinary = [| 1uy |] @>
                         test <@ res.Value.varchar = "test" @>
-                        test <@ res.Value.xml = "<tag />" @>)
+                        test <@ res.Value.xml = "<tag />" @>
+                )
         ]
 
 
@@ -1118,7 +1133,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                         test <@ res.Value.varbinary = [| 1uy |] @>
                         test <@ res.Value.varchar = "test" @>
-                        test <@ res.Value.xml = "<tag />" @>)
+                        test <@ res.Value.xml = "<tag />" @>
+                )
         ]
 
 
@@ -1197,7 +1213,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                         test <@ res.Value.varbinary = [| 1uy |] @>
                         test <@ res.Value.varchar = "test" @>
-                        test <@ res.Value.xml = "<tag />" @>)
+                        test <@ res.Value.xml = "<tag />" @>
+                )
         ]
 
 
@@ -1280,7 +1297,8 @@ let execTests =
                             test <@ res.Value.uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                             test <@ res.Value.varbinary = [| 1uy |] @>
                             test <@ res.Value.varchar = "test" @>
-                            test <@ res.Value.xml = "<tag />" @>)
+                            test <@ res.Value.xml = "<tag />" @>
+                    )
             ]
 
 
@@ -1356,7 +1374,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                         test <@ res.Value.varbinary = Some [| 1uy |] @>
                         test <@ res.Value.varchar = Some "test" @>
-                        test <@ res.Value.xml = Some "<tag />" @>)
+                        test <@ res.Value.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -1432,7 +1451,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                         test <@ res.Value.varbinary = Some [| 1uy |] @>
                         test <@ res.Value.varchar = Some "test" @>
-                        test <@ res.Value.xml = Some "<tag />" @>)
+                        test <@ res.Value.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -1513,7 +1533,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                         test <@ res.Value.varbinary = Some [| 1uy |] @>
                         test <@ res.Value.varchar = Some "test" @>
-                        test <@ res.Value.xml = Some "<tag />" @>)
+                        test <@ res.Value.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -1600,7 +1621,8 @@ let execTests =
                             test <@ res.Value.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                             test <@ res.Value.varbinary = Some [| 1uy |] @>
                             test <@ res.Value.varchar = Some "test" @>
-                            test <@ res.Value.xml = Some "<tag />" @>)
+                            test <@ res.Value.xml = Some "<tag />" @>
+                    )
             ]
 
 
@@ -1676,7 +1698,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = None @>
                         test <@ res.Value.varbinary = None @>
                         test <@ res.Value.varchar = None @>
-                        test <@ res.Value.xml = None @>)
+                        test <@ res.Value.xml = None @>
+                )
         ]
 
 
@@ -1752,7 +1775,8 @@ let execTests =
                         test <@ res.Value.uniqueidentifier = None @>
                         test <@ res.Value.varbinary = None @>
                         test <@ res.Value.varchar = None @>
-                        test <@ res.Value.xml = None @>)
+                        test <@ res.Value.xml = None @>
+                )
         ]
 
 
@@ -1834,7 +1858,8 @@ let execTests =
                             test <@ res.Value.uniqueidentifier = None @>
                             test <@ res.Value.varbinary = None @>
                             test <@ res.Value.varchar = None @>
-                            test <@ res.Value.xml = None @>)
+                            test <@ res.Value.xml = None @>
+                    )
             ]
 
 
@@ -1916,7 +1941,8 @@ let execTests =
                             test <@ res.Value.uniqueidentifier = None @>
                             test <@ res.Value.varbinary = None @>
                             test <@ res.Value.varchar = None @>
-                            test <@ res.Value.xml = None @>)
+                            test <@ res.Value.xml = None @>
+                    )
             ]
 
 
@@ -1931,7 +1957,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = 1 @>
-                        test <@ res.Value.Bar = "test" @>)
+                        test <@ res.Value.Bar = "test" @>
+                )
         ]
 
 
@@ -1948,7 +1975,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = 1 @>
-                        test <@ res.Value.Bar = "test" @>)
+                        test <@ res.Value.Bar = "test" @>
+                )
         ]
 
 
@@ -1965,7 +1993,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo.Value = 1 @>
-                        test <@ res.Value.Bar.Value = "test" @>)
+                        test <@ res.Value.Bar.Value = "test" @>
+                )
         ]
 
 
@@ -1982,7 +2011,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo.Value = 1 @>
-                        test <@ res.Value.Bar.Value = "test" @>)
+                        test <@ res.Value.Bar.Value = "test" @>
+                )
         ]
 
 
@@ -2002,7 +2032,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo.Value = 1 @>
-                            test <@ res.Value.Bar.Value = "test" @>)
+                            test <@ res.Value.Bar.Value = "test" @>
+                    )
             ]
 
 
@@ -2022,7 +2053,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo.Value = 1 @>
-                            test <@ res.Value.Bar.Value = "test" @>)
+                            test <@ res.Value.Bar.Value = "test" @>
+                    )
             ]
 
 
@@ -2039,7 +2071,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo.Value = 1 @>
-                        test <@ res.Value.Bar.Value = "test" @>)
+                        test <@ res.Value.Bar.Value = "test" @>
+                )
         ]
 
 
@@ -2056,7 +2089,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo.Value = 1 @>
-                        test <@ res.Value.Bar.Value = "test" @>)
+                        test <@ res.Value.Bar.Value = "test" @>
+                )
         ]
 
 
@@ -2076,7 +2110,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo.Value = 1 @>
-                            test <@ res.Value.Bar.Value = "test" @>)
+                            test <@ res.Value.Bar.Value = "test" @>
+                    )
             ]
 
 
@@ -2096,7 +2131,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo.Value = 1 @>
-                            test <@ res.Value.Bar.Value = "test" @>)
+                            test <@ res.Value.Bar.Value = "test" @>
+                    )
             ]
 
 
@@ -2113,7 +2149,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -2130,7 +2167,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -2150,7 +2188,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = Some 1 @>
-                            test <@ res.Value.Bar = Some "test" @>)
+                            test <@ res.Value.Bar = Some "test" @>
+                    )
             ]
 
 
@@ -2170,7 +2209,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = Some 1 @>
-                            test <@ res.Value.Bar = Some "test" @>)
+                            test <@ res.Value.Bar = Some "test" @>
+                    )
             ]
 
 
@@ -2190,7 +2230,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2210,7 +2251,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2230,7 +2272,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2250,7 +2293,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2270,7 +2314,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = 1 @>
-                        test <@ res.Value.Bar = "test" @>)
+                        test <@ res.Value.Bar = "test" @>
+                )
         ]
 
 
@@ -2290,7 +2335,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = 1 @>
-                        test <@ res.Value.Bar = "test" @>)
+                        test <@ res.Value.Bar = "test" @>
+                )
         ]
 
 
@@ -2317,7 +2363,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = 1 @>
-                            test <@ res.Value.Bar = "test" @>)
+                            test <@ res.Value.Bar = "test" @>
+                    )
             ]
 
 
@@ -2344,7 +2391,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = 1 @>
-                            test <@ res.Value.Bar = "test" @>)
+                            test <@ res.Value.Bar = "test" @>
+                    )
             ]
 
 
@@ -2366,7 +2414,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -2388,7 +2437,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -2408,15 +2458,18 @@ let execTests =
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNull.create {| Foo = Some 1 |} ]
                                             Multi = [
-                                                DbGen.TableTypes.dbo.MultiColNull.create
-                                                    {| Foo = Some 1; Bar = Some "test" |}
+                                                DbGen.TableTypes.dbo.MultiColNull.create {|
+                                                    Foo = Some 1
+                                                    Bar = Some "test"
+                                                |}
                                             ]
                                         |}
                                     )
                                 |> exec
 
                             test <@ res.Value.Foo = Some 1 @>
-                            test <@ res.Value.Bar = Some "test" @>)
+                            test <@ res.Value.Bar = Some "test" @>
+                    )
             ]
 
 
@@ -2436,15 +2489,18 @@ let execTests =
                                         {|
                                             Single = [ DbGen.TableTypes.dbo.SingleColNull.create {| Foo = Some 1 |} ]
                                             Multi = [
-                                                DbGen.TableTypes.dbo.MultiColNull.create
-                                                    {| Foo = Some 1; Bar = Some "test" |}
+                                                DbGen.TableTypes.dbo.MultiColNull.create {|
+                                                    Foo = Some 1
+                                                    Bar = Some "test"
+                                                |}
                                             ]
                                         |}
                                     )
                                 |> exec
 
                             test <@ res.Value.Foo = Some 1 @>
-                            test <@ res.Value.Bar = Some "test" @>)
+                            test <@ res.Value.Bar = Some "test" @>
+                    )
             ]
 
 
@@ -2467,7 +2523,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2490,7 +2547,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2517,7 +2575,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2544,7 +2603,8 @@ let execTests =
                                 |> exec
 
                             test <@ res.Value.Foo = None @>
-                            test <@ res.Value.Bar = None @>)
+                            test <@ res.Value.Bar = None @>
+                    )
             ]
 
 
@@ -2559,7 +2619,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.``This is the first column`` = "foo" @>
-                        test <@ res.Value.``!"#%&/()=?`` = 2 @>)
+                        test <@ res.Value.``!"#%&/()=?`` = 2 @>
+                )
         ]
 
 
@@ -2574,7 +2635,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.``This is the first column`` = "foo" @>
-                        test <@ res.Value.``!"#%&/()=?`` = 2 @>)
+                        test <@ res.Value.``!"#%&/()=?`` = 2 @>
+                )
         ]
 
 
@@ -2590,7 +2652,8 @@ let execTests =
                                 .WithParameters(foo = 2)
                             |> exec
 
-                        test <@ res = -1 @>)
+                        test <@ res = -1 @>
+                )
         ]
 
 
@@ -2606,7 +2669,8 @@ let execTests =
                                 .WithParameters(foo = 2)
                             |> exec
 
-                        test <@ res = -1 @>)
+                        test <@ res = -1 @>
+                )
         ]
 
 
@@ -2622,7 +2686,8 @@ let execTests =
                                 .WithParameters({| Foo = 2 |})
                             |> exec
 
-                        test <@ res = -1 @>)
+                        test <@ res = -1 @>
+                )
         ]
 
 
@@ -2638,7 +2703,8 @@ let execTests =
                                 .WithParameters({| Foo = 2 |})
                             |> exec
 
-                        test <@ res = -1 @>)
+                        test <@ res = -1 @>
+                )
         ]
 
 
@@ -2652,7 +2718,8 @@ let execTests =
                             DbGen.Procedures.dbo.ProcWithSingleColumnAndNoParams.WithConnection(Config.connStr)
                             |> exec
 
-                        test <@ res.Value = 1 @>)
+                        test <@ res.Value = 1 @>
+                )
         ]
 
 
@@ -2666,7 +2733,8 @@ let execTests =
                             DbGen.Procedures.dbo.ProcWithSingleColumnAndNoParamsExtended.WithConnection(Config.connStr)
                             |> exec
 
-                        test <@ res.Value = 1 @>)
+                        test <@ res.Value = 1 @>
+                )
         ]
 
 
@@ -2680,7 +2748,8 @@ let execTests =
                             DbGen.Procedures.dbo.ProcWithSingleNamelessColumn.WithConnection(Config.connStr)
                             |> exec
 
-                        test <@ res.Value = 123 @>)
+                        test <@ res.Value = 123 @>
+                )
         ]
 
 
@@ -2694,7 +2763,8 @@ let execTests =
                             DbGen.Procedures.dbo.ProcWithSingleNamelessColumnExtended.WithConnection(Config.connStr)
                             |> exec
 
-                        test <@ res.Value = 123 @>)
+                        test <@ res.Value = 123 @>
+                )
         ]
 
 
@@ -2710,7 +2780,8 @@ let execTests =
                                 .WithParameters(foo = 1)
                             |> exec
 
-                        test <@ res.Value.Value = 1 @>)
+                        test <@ res.Value.Value = 1 @>
+                )
         ]
 
 
@@ -2726,7 +2797,8 @@ let execTests =
                                 .WithParameters(foo = 1)
                             |> exec
 
-                        test <@ res.Value.Value = 1 @>)
+                        test <@ res.Value.Value = 1 @>
+                )
         ]
 
 
@@ -2742,7 +2814,8 @@ let execTests =
                                 .WithParameters({| Foo = 1 |})
                             |> exec
 
-                        test <@ res.Value.Value = 1 @>)
+                        test <@ res.Value.Value = 1 @>
+                )
         ]
 
 
@@ -2761,7 +2834,8 @@ let execTests =
                                     .WithParameters({| Foo = 1 |})
                                 |> exec
 
-                            test <@ res.Value.Value = 1 @>)
+                            test <@ res.Value.Value = 1 @>
+                    )
             ]
 
 
@@ -2777,7 +2851,8 @@ let execTests =
                                 .WithParameters(foo = Some 1)
                             |> exec
 
-                        test <@ res.Value = Some 1 @>)
+                        test <@ res.Value = Some 1 @>
+                )
         ]
 
 
@@ -2793,7 +2868,8 @@ let execTests =
                                 .WithParameters(foo = Some 1)
                             |> exec
 
-                        test <@ res.Value = Some 1 @>)
+                        test <@ res.Value = Some 1 @>
+                )
         ]
 
 
@@ -2809,7 +2885,8 @@ let execTests =
                                 .WithParameters({| Foo = Some 1 |})
                             |> exec
 
-                        test <@ res.Value = Some 1 @>)
+                        test <@ res.Value = Some 1 @>
+                )
         ]
 
 
@@ -2825,7 +2902,8 @@ let execTests =
                                 .WithParameters({| Foo = Some 1 |})
                             |> exec
 
-                        test <@ res.Value = Some 1 @>)
+                        test <@ res.Value = Some 1 @>
+                )
         ]
 
 
@@ -2841,7 +2919,8 @@ let execTests =
                                 .WithParameters(foo = None)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -2857,7 +2936,8 @@ let execTests =
                                 .WithParameters(foo = None)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -2873,7 +2953,8 @@ let execTests =
                                 .WithParameters({| Foo = None |})
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -2892,7 +2973,8 @@ let execTests =
                                     .WithParameters({| Foo = None |})
                                 |> exec
 
-                            test <@ res.Value = None @>)
+                            test <@ res.Value = None @>
+                    )
             ]
 
 
@@ -2910,7 +2992,8 @@ let execTests =
 
                         test <@ res.Value.COL1.Value = 1 @>
                         test <@ res.Value.Col2.Value = 2 @>
-                        test <@ res.Value.col3.Value = 3 @>)
+                        test <@ res.Value.col3.Value = 3 @>
+                )
         ]
 
 
@@ -2928,7 +3011,8 @@ let execTests =
 
                         test <@ res.Value.COL1.Value = 1 @>
                         test <@ res.Value.Col2.Value = 2 @>
-                        test <@ res.Value.col3.Value = 3 @>)
+                        test <@ res.Value.col3.Value = 3 @>
+                )
         ]
 
 
@@ -2946,7 +3030,8 @@ let execTests =
 
                         test <@ res.Value.COL1.Value = 1 @>
                         test <@ res.Value.Col2.Value = 2 @>
-                        test <@ res.Value.col3.Value = 3 @>)
+                        test <@ res.Value.col3.Value = 3 @>
+                )
         ]
 
 
@@ -2964,7 +3049,8 @@ let execTests =
 
                         test <@ res.Value.COL1.Value = 1 @>
                         test <@ res.Value.Col2.Value = 2 @>
-                        test <@ res.Value.col3.Value = 3 @>)
+                        test <@ res.Value.col3.Value = 3 @>
+                )
         ]
 
         testList (nameof DbGen.Scripts.ManyColumns) [
@@ -2975,7 +3061,8 @@ let execTests =
                     <| fun () ->
                         let res = DbGen.Scripts.ManyColumns.WithConnection(Config.connStr) |> exec
                         test <@ res.Value.Column1 = None @>
-                        test <@ res.Value.Column600 = None @>)
+                        test <@ res.Value.Column600 = None @>
+                )
         ]
 
         testList (nameof DbGen.Scripts.NormalParams) [
@@ -2991,7 +3078,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -3008,7 +3096,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -3025,7 +3114,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -3042,7 +3132,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -3059,7 +3150,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -3076,7 +3168,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -3088,7 +3181,8 @@ let execTests =
                     <| fun () ->
                         let res = DbGen.Scripts.SelectAllFromTable.WithConnection(Config.connStr) |> exec
                         test <@ res.Value.TableCol1 = "test1" @>
-                        test <@ res.Value.TableCol2 = Some 1 @>)
+                        test <@ res.Value.TableCol2 = Some 1 @>
+                )
         ]
 
 
@@ -3109,7 +3203,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -3132,7 +3227,8 @@ let execTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -3150,7 +3246,8 @@ let execTests =
                                 DbGen.Scripts.SubPath.SelectAllFromTable.WithConnection(Config.connStr) |> exec
 
                             test <@ res.Value.TableCol1 = "test1" @>
-                            test <@ res.Value.TableCol2 = Some 1 @>)
+                            test <@ res.Value.TableCol2 = Some 1 @>
+                    )
             ]
 
 
@@ -3185,7 +3282,8 @@ let seqExecTests =
                             }
                         ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -3264,7 +3362,8 @@ let seqExecTests =
                             test <@ row.uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                             test <@ row.varbinary = [| 1uy |] @>
                             test <@ row.varchar = "test" @>
-                            test <@ row.xml = "<tag />" @>)
+                            test <@ row.xml = "<tag />" @>
+                )
         ]
 
 
@@ -3343,7 +3442,8 @@ let seqExecTests =
                             test <@ row.uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                             test <@ row.varbinary = Some [| 1uy |] @>
                             test <@ row.varchar = Some "test" @>
-                            test <@ row.xml = Some "<tag />" @>)
+                            test <@ row.xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -3422,7 +3522,8 @@ let seqExecTests =
                             test <@ row.uniqueidentifier = None @>
                             test <@ row.varbinary = None @>
                             test <@ row.varchar = None @>
-                            test <@ row.xml = None @>)
+                            test <@ row.xml = None @>
+                )
         ]
 
 
@@ -3459,7 +3560,8 @@ let lazyExecTests =
                         for row, expected in Seq.zip res expected do
                             do! Async.Sleep 500
                             test <@ row = expected @>
-                    })
+                    }
+                )
         ]
 
 

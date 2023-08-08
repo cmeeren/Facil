@@ -23,7 +23,8 @@ let tests =
                             let res = DbGen.Procedures.dbo.ProcSelectFromTable.WithConnection(conn) |> exec
                             test <@ res.Value.TableCol1 = "test1" @>
                             test <@ res.Value.TableCol2 = Some 1 @>
-                    })
+                    }
+                )
 
         ]
 
@@ -45,7 +46,8 @@ let tests =
                                 .WithParameters(foo = 2)
                             |> exec
                             |> ignore
-                    })
+                    }
+                )
 
         ]
 
@@ -74,7 +76,8 @@ let tests =
                         let cmdDisposed = cmdDisposed
                         test <@ connDisposed = true @>
                         test <@ cmdDisposed = true @>
-                    })
+                    }
+                )
         ]
 
 
@@ -103,7 +106,8 @@ let tests =
                         let cmdDisposed = cmdDisposed
                         test <@ connDisposed = true @>
                         test <@ cmdDisposed = true @>
-                    })
+                    }
+                )
         ]
 
 
@@ -132,7 +136,8 @@ let tests =
                         let cmdDisposed = cmdDisposed
                         test <@ connDisposed = false @>
                         test <@ cmdDisposed = true @>
-                    })
+                    }
+                )
         ]
 
 
@@ -162,7 +167,8 @@ let tests =
                         let cmdDisposed = cmdDisposed
                         test <@ connDisposed = false @>
                         test <@ cmdDisposed = true @>
-                    })
+                    }
+                )
         ]
 
 
@@ -193,7 +199,8 @@ let tests =
                                 .Execute()
                             |> Seq.length
 
-                        test <@ preTestCount = postTestCount @>)
+                        test <@ preTestCount = postTestCount @>
+                )
         ]
 
     ]

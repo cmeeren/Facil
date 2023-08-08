@@ -130,7 +130,8 @@ let private renderTableType cfg (t: TableType) =
                                 yield!
                                     t.Columns
                                     |> List.map (fun c ->
-                                        $"""``{c.Name}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}""")
+                                        $"""``{c.Name}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}"""
+                                    )
                                     |> List.mapAllExceptLast (fun s -> s + ",")
                             ]
                         ") ="
@@ -141,7 +142,8 @@ let private renderTableType cfg (t: TableType) =
                                 yield!
                                     t.Columns
                                     |> List.map (fun c ->
-                                        $"""{if c.IsNullable then $"{optionModule}.toDbNull " else ""}``{c.Name}``""")
+                                        $"""{if c.IsNullable then $"{optionModule}.toDbNull " else ""}``{c.Name}``"""
+                                    )
                                     |> List.mapAllExceptLast (fun s -> s + ",")
                             ]
                         ")"
@@ -161,7 +163,8 @@ let private renderTableType cfg (t: TableType) =
                                     yield!
                                         t.Columns
                                         |> List.map (fun c ->
-                                            $"""{if c.IsNullable then $"{optionModule}.toDbNull " else ""}(^a: (member ``{c.Name}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}) dto)""")
+                                            $"""{if c.IsNullable then $"{optionModule}.toDbNull " else ""}(^a: (member ``{c.Name}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}) dto)"""
+                                        )
                                         |> List.mapAllExceptLast (fun s -> s + ",")
                                 ]
                             ")"
@@ -356,7 +359,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                             failwith
                                                                 $"Parsed parameter '{p.Name}' as both table and output, which is impossible"
 
-                                                    $"``{p.FSharpParamName}`` = if sqlParams[{i}].Value = box DBNull.Value then {outOptionNone} else sqlParams[{i}].Value |> unbox<{typeInfo.FSharpTypeString}> |> {outOptionSome}")
+                                                    $"``{p.FSharpParamName}`` = if sqlParams[{i}].Value = box DBNull.Value then {outOptionNone} else sqlParams[{i}].Value |> unbox<{typeInfo.FSharpTypeString}> |> {outOptionSome}"
+                                                )
                                         ]
                                     "|}"
                                 ]
@@ -639,7 +643,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                 yield!
                                                     tt.Columns
                                                     |> List.map (fun c ->
-                                                        $"""``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}""")
+                                                        $"""``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}"""
+                                                    )
                                                     |> List.mapAllExceptLast (fun s -> s + ",")
                                             ]
                                         $") : ``{tt.FSharpName}`` ="
@@ -649,7 +654,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                 yield!
                                                     tt.Columns
                                                     |> List.map (fun c ->
-                                                        $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}``{c.Name.Value}`` |> box""")
+                                                        $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}``{c.Name.Value}`` |> box"""
+                                                    )
                                             ]
                                         "|]"
                                         $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
@@ -666,7 +672,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                     yield!
                                                         tt.Columns
                                                         |> List.map (fun c ->
-                                                            $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}(^a: (member ``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}) dto) |> box""")
+                                                            $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}(^a: (member ``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}) dto) |> box"""
+                                                        )
                                                 ]
                                             "|]"
                                             $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
@@ -964,7 +971,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                         yield!
                                             tempTables
                                             |> List.map (fun tt ->
-                                                $"``{tt.FSharpName}``: seq<``{className}``.``{tt.FSharpName}``>")
+                                                $"``{tt.FSharpName}``: seq<``{className}``.``{tt.FSharpName}``>"
+                                            )
                                             |> List.mapAllExceptLast (fun s -> s + ",")
                                     ]
                                 ") ="
@@ -1009,7 +1017,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                     let tempTableParams =
                                         tempTables
                                         |> List.map (fun tt ->
-                                            $"``{tt.FSharpName |> String.firstLower}``: seq<``{className}``.``{tt.FSharpName}``>")
+                                            $"``{tt.FSharpName |> String.firstLower}``: seq<``{className}``.``{tt.FSharpName}``>"
+                                        )
 
                                     let normalParams =
                                         parameters
@@ -1022,7 +1031,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                                                                                                    else
                                                                                                                                        ""}"""
                                             | Table tt ->
-                                                $"``{p.FSharpParamName}``: seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>")
+                                                $"``{p.FSharpParamName}``: seq<TableTypes.``{tt.SchemaName}``.``{tt.Name}``>"
+                                        )
 
                                     yield! tempTableParams @ normalParams |> List.mapAllExceptLast (fun s -> s + ",")
                                 ]
@@ -1226,7 +1236,8 @@ let private renderScripts (cfg: RuleSet) tableDtos (scripts: Script list) =
             |> List.choose (fun (s, segments) ->
                 match segments with
                 | [] -> Some s
-                | _ -> None)
+                | _ -> None
+            )
             |> List.sortBy (fun s -> s.NameWithoutExtension.ToLowerInvariant())
 
         [
@@ -1238,7 +1249,8 @@ let private renderScripts (cfg: RuleSet) tableDtos (scripts: Script list) =
                 |> List.choose (fun (s, segments) ->
                     match segments with
                     | [] -> None
-                    | hd :: tl -> Some(hd, (s, tl)))
+                    | hd :: tl -> Some(hd, (s, tl))
+                )
                 |> List.groupBy fst
                 |> List.map (fun (hd, xs) -> hd, xs |> List.map snd)
                 |> List.collect (fun (hd, remaining) -> [

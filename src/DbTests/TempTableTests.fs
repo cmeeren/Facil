@@ -91,7 +91,8 @@ let tests =
                             test <@ row.Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                             test <@ row.Varbinary = [| 1uy |] @>
                             test <@ row.Varchar = "test" @>
-                            test <@ row.Xml = "<tag />" @>)
+                            test <@ row.Xml = "<tag />" @>
+                )
         ]
 
 
@@ -179,7 +180,8 @@ let tests =
                             test <@ row.Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145") @>
                             test <@ row.Varbinary = [| 1uy |] @>
                             test <@ row.Varchar = "test" @>
-                            test <@ row.Xml = "<tag />" @>)
+                            test <@ row.Xml = "<tag />" @>
+                )
         ]
 
 
@@ -263,7 +265,8 @@ let tests =
                             test <@ row.Uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                             test <@ row.Varbinary = Some [| 1uy |] @>
                             test <@ row.Varchar = Some "test" @>
-                            test <@ row.Xml = Some "<tag />" @>)
+                            test <@ row.Xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -351,7 +354,8 @@ let tests =
                             test <@ row.Uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                             test <@ row.Varbinary = Some [| 1uy |] @>
                             test <@ row.Varchar = Some "test" @>
-                            test <@ row.Xml = Some "<tag />" @>)
+                            test <@ row.Xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -435,7 +439,8 @@ let tests =
                             test <@ row.Uniqueidentifier = None @>
                             test <@ row.Varbinary = None @>
                             test <@ row.Varchar = None @>
-                            test <@ row.Xml = None @>)
+                            test <@ row.Xml = None @>
+                )
         ]
 
 
@@ -523,7 +528,8 @@ let tests =
                             test <@ row.Uniqueidentifier = None @>
                             test <@ row.Varbinary = None @>
                             test <@ row.Varchar = None @>
-                            test <@ row.Xml = None @>)
+                            test <@ row.Xml = None @>
+                )
         ]
 
 
@@ -607,7 +613,8 @@ let tests =
                             test <@ row.Uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                             test <@ row.Varbinary = Some [| 1uy |] @>
                             test <@ row.Varchar = Some "test" @>
-                            test <@ row.Xml = Some "<tag />" @>)
+                            test <@ row.Xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -695,7 +702,8 @@ let tests =
                             test <@ row.Uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")) @>
                             test <@ row.Varbinary = Some [| 1uy |] @>
                             test <@ row.Varchar = Some "test" @>
-                            test <@ row.Xml = Some "<tag />" @>)
+                            test <@ row.Xml = Some "<tag />" @>
+                )
         ]
 
 
@@ -779,7 +787,8 @@ let tests =
                             test <@ row.Uniqueidentifier = None @>
                             test <@ row.Varbinary = None @>
                             test <@ row.Varchar = None @>
-                            test <@ row.Xml = None @>)
+                            test <@ row.Xml = None @>
+                )
         ]
 
 
@@ -867,7 +876,8 @@ let tests =
                             test <@ row.Uniqueidentifier = None @>
                             test <@ row.Varbinary = None @>
                             test <@ row.Varchar = None @>
-                            test <@ row.Xml = None @>)
+                            test <@ row.Xml = None @>
+                )
         ]
 
 
@@ -892,7 +902,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.Col1 = 1 @>
-                        test <@ res.Value.Col2 = Some "test" @>)
+                        test <@ res.Value.Col2 = Some "test" @>
+                )
         ]
 
 
@@ -918,7 +929,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.Col1 = 1 @>
-                        test <@ res.Value.Col2 = Some "test" @>)
+                        test <@ res.Value.Col2 = Some "test" @>
+                )
         ]
 
 
@@ -943,7 +955,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.Col1 = 1 @>
-                        test <@ res.Value.Col2 = Some "test" @>)
+                        test <@ res.Value.Col2 = Some "test" @>
+                )
         ]
 
 
@@ -969,7 +982,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.Col1 = 1 @>
-                        test <@ res.Value.Col2 = Some "test" @>)
+                        test <@ res.Value.Col2 = Some "test" @>
+                )
         ]
 
 
@@ -995,7 +1009,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.Col1 = 1 @>
-                        test <@ res.Value.Col2 = Some "test" @>)
+                        test <@ res.Value.Col2 = Some "test" @>
+                )
         ]
 
 
@@ -1022,7 +1037,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.Col1 = 1 @>
-                        test <@ res.Value.Col2 = Some "test" @>)
+                        test <@ res.Value.Col2 = Some "test" @>
+                )
         ]
 
 
@@ -1047,7 +1063,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.Col1 = 1 @>
-                        test <@ res.Value.Col2 = Some "test" @>)
+                        test <@ res.Value.Col2 = Some "test" @>
+                )
         ]
 
 
@@ -1076,7 +1093,8 @@ let tests =
 
                         test <@ res.Value.Col1 = 1 @>
                         test <@ res.Value.Col2 = Some "test" @>
-                        test <@ res.Value.Col3 = "foobar" @>)
+                        test <@ res.Value.Col3 = "foobar" @>
+                )
         ]
 
 
@@ -1108,7 +1126,8 @@ let tests =
 
                         test <@ res.Value.Col1 = 1 @>
                         test <@ res.Value.Col2 = Some "test" @>
-                        test <@ res.Value.Col3 = "foobar" @>)
+                        test <@ res.Value.Col3 = "foobar" @>
+                )
         ]
 
 
@@ -1127,14 +1146,16 @@ let tests =
                             .WithConnection(Config.connStr)
                             .ConfigureBulkCopy(fun bc ->
                                 bc.NotifyAfter <- 1
-                                bc.SqlRowsCopied.Add(fun _ -> rowsCopied <- rowsCopied + 1))
+                                bc.SqlRowsCopied.Add(fun _ -> rowsCopied <- rowsCopied + 1)
+                            )
                             .WithParameters(tempTableInlined = [ createRow (); createRow (); createRow () ])
                         |> exec
                         |> ignore
 
                         let rowsCopied = rowsCopied
                         test <@ rowsCopied = 3 @>
-                    })
+                    }
+                )
         ]
 
         testList "Can use transactions" [
@@ -1223,7 +1244,8 @@ let tests =
                             test <@ row.Varchar = "test" @>
                             test <@ row.Xml = "<tag />" @>
 
-                        tran.Commit())
+                        tran.Commit()
+                )
         ]
 
 

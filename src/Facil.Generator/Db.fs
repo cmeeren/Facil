@@ -133,7 +133,8 @@ let getScriptParameters
                 match rule |> EffectiveScriptRule.getParam paramName with
                 | { Type = Some typeDef } ->
                     $"DECLARE @%s{paramName} %s{typeDef} = %s{facilTempVarPrefix}%s{paramName};\n%s{source}"
-                | _ -> source)
+                | _ -> source
+            )
             |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
 
 
@@ -188,11 +189,13 @@ let getScriptParameters
                     |> fun id ->
                         sysTypeIdLookup.TryFind id
                         |> Option.defaultWith (fun () ->
-                            failwith $"Unsupported SQL system type ID '%i{id}' for parameter '%s{paramName}'")
+                            failwith $"Unsupported SQL system type ID '%i{id}' for parameter '%s{paramName}'"
+                        )
                     |> fun typeName ->
                         sqlDbTypeMap.TryFind typeName
                         |> Option.defaultWith (fun () ->
-                            failwith $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}'")
+                            failwith $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}'"
+                        )
                     |> Scalar
 
             parameters.Add(
@@ -286,7 +289,8 @@ let getColumnsFromSpDescribeFirstResultSet
             ||> List.fold (fun source (paramName, p) ->
                 match p.Type with
                 | None -> source
-                | Some typeDef -> $"DECLARE @{paramName} {typeDef}\n{source}")
+                | Some typeDef -> $"DECLARE @{paramName} {typeDef}\n{source}"
+            )
             |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
 
         cmd.Parameters.AddWithValue("@tsql", sourceToUse) |> ignore
@@ -337,25 +341,26 @@ let getColumnsFromSpDescribeFirstResultSet
                     sysTypeIdLookup.TryFind id
                     |> Option.defaultWith (fun () ->
                         failwith
-                            $"""Unsupported SQL system type ID '%i{id}' for column '%s{defaultArg colName "<unnamed column>"}'""")
+                            $"""Unsupported SQL system type ID '%i{id}' for column '%s{defaultArg colName "<unnamed column>"}'"""
+                    )
                 |> fun typeName ->
                     sqlDbTypeMap.TryFind typeName
                     |> Option.defaultWith (fun () ->
                         failwith
-                            $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
+                            $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'"""
+                    )
 
-            cols.Add
-                {
-                    OutputColumn.Name = colName
-                    SortKey = reader["column_ordinal"] |> unbox<int>
-                    IsNullable = reader["is_nullable"] |> unbox<bool>
-                    TypeInfo = typeInfo
-                    Collation =
-                        if reader.IsDBNull "collation_name" then
-                            None
-                        else
-                            reader["collation_name"] |> unbox<string> |> Some
-                }
+            cols.Add {
+                OutputColumn.Name = colName
+                SortKey = reader["column_ordinal"] |> unbox<int>
+                IsNullable = reader["is_nullable"] |> unbox<bool>
+                TypeInfo = typeInfo
+                Collation =
+                    if reader.IsDBNull "collation_name" then
+                        None
+                    else
+                        reader["collation_name"] |> unbox<string> |> Some
+            }
 
     if cols.Count = 0 then
         Seq.toList allColNames, None
@@ -500,16 +505,16 @@ let getColumnsFromQuery
                         sqlDbTypeMap.TryFind typeName
                         |> Option.defaultWith (fun () ->
                             failwith
-                                $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'""")
+                                $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'"""
+                        )
 
-                cols.Add
-                    {
-                        OutputColumn.Name = colName
-                        SortKey = schema.ColumnOrdinal.Value
-                        IsNullable = schema.AllowDBNull.Value
-                        TypeInfo = typeInfo
-                        Collation = None
-                    }
+                cols.Add {
+                    OutputColumn.Name = colName
+                    SortKey = schema.ColumnOrdinal.Value
+                    IsNullable = schema.AllowDBNull.Value
+                    TypeInfo = typeInfo
+                    Collation = None
+                }
 
         Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
@@ -597,42 +602,42 @@ let getTableTypes (conn: SqlConnection) =
                 |> fun typeName ->
                     sqlDbTypeMap.TryFind typeName
                     |> Option.defaultWith (fun () ->
-                        failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}'")
+                        failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}'"
+                    )
 
-            tableTypes.Add
-                {
-                    UserTypeId = reader["TableTypeUserTypeId"] |> unbox<int>
-                    SchemaName = reader["TableTypeSchemaName"] |> unbox<string>
-                    Name = reader["TableTypeName"] |> unbox<string>
-                    // Merged later
-                    Columns = [
-                        {
-                            Name = colName
-                            IsNullable = reader["ColumnIsNullable"] |> unbox<bool>
-                            IsIdentity = reader["ColumnIsIdentity"] |> unbox<bool>
-                            IsComputed = reader["ColumnIsComputed"] |> unbox<bool>
-                            SortKey = reader["ColumnId"] |> unbox<int>
-                            Size = reader["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
-                            Precision = reader["ColumnPrecision"] |> unbox<byte>
-                            Scale = reader["ColumnScale"] |> unbox<byte>
-                            TypeInfo = typeInfo
-                            Collation =
-                                if reader.IsDBNull "CollationName" then
-                                    None
-                                else
-                                    reader["CollationName"] |> unbox<string> |> Some
-                            ShouldSkipInTableDto = false // not relevant/used
-                        }
-                    ]
-                }
+            tableTypes.Add {
+                UserTypeId = reader["TableTypeUserTypeId"] |> unbox<int>
+                SchemaName = reader["TableTypeSchemaName"] |> unbox<string>
+                Name = reader["TableTypeName"] |> unbox<string>
+                // Merged later
+                Columns = [
+                    {
+                        Name = colName
+                        IsNullable = reader["ColumnIsNullable"] |> unbox<bool>
+                        IsIdentity = reader["ColumnIsIdentity"] |> unbox<bool>
+                        IsComputed = reader["ColumnIsComputed"] |> unbox<bool>
+                        SortKey = reader["ColumnId"] |> unbox<int>
+                        Size = reader["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
+                        Precision = reader["ColumnPrecision"] |> unbox<byte>
+                        Scale = reader["ColumnScale"] |> unbox<byte>
+                        TypeInfo = typeInfo
+                        Collation =
+                            if reader.IsDBNull "CollationName" then
+                                None
+                            else
+                                reader["CollationName"] |> unbox<string> |> Some
+                        ShouldSkipInTableDto = false // not relevant/used
+                    }
+                ]
+            }
 
         tableTypes
         |> Seq.toList
         |> List.groupBy (fun t -> t.UserTypeId)
-        |> List.map (fun (_, ts) ->
-            { ts.Head with
+        |> List.map (fun (_, ts) -> {
+            ts.Head with
                 Columns = ts |> List.collect (fun t -> t.Columns) |> List.sortBy (fun c -> c.SortKey)
-            })
+        })
     with ex ->
         raise <| Exception("Error getting table types", ex)
 
@@ -726,13 +731,15 @@ let getStoredProceduresWithoutResultSetOrTempTables
                         tableTypesByUserId.TryFind userTypeId
                         |> Option.defaultWith (fun () ->
                             failwith
-                                $"Unknown user type ID '%i{userTypeId}' for table type parameter '%s{paramName}' in stored procedure '%s{sprocName}'")
+                                $"Unknown user type ID '%i{userTypeId}' for table type parameter '%s{paramName}' in stored procedure '%s{sprocName}'"
+                        )
                         |> Table
                     | typeName ->
                         sqlDbTypeMap.TryFind typeName
                         |> Option.defaultWith (fun () ->
                             failwith
-                                $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}' in stored procedure '%s{sprocName}'")
+                                $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}' in stored procedure '%s{sprocName}'"
+                        )
                         |> Scalar
 
                 parameters.Add(
@@ -773,36 +780,38 @@ let getStoredProceduresWithoutResultSetOrTempTables
     sprocsWithoutParamsOrResultSet
     |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
     // Add parameters
-    |> List.map (fun sproc ->
-        { sproc with
+    |> List.map (fun sproc -> {
+        sproc with
             Parameters = sprocParamsByObjectId.TryFind sproc.ObjectId |> Option.defaultValue []
-        })
+    })
     // Add parameter default values
     |> List.map (fun sproc ->
         let paramDefaults = getParameterDefaultValues sproc
         let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
 
-        { sproc with
-            Parameters =
-                sproc.Parameters
-                |> List.map (fun param ->
-                    { param with
-                        FSharpDefaultValueString =
-                            match rule |> EffectiveProcedureRule.getParam (param.Name.TrimStart '@') with
-                            | { Nullable = Some true } -> Some "null"
-                            | { Nullable = Some false } -> None
-                            | { Nullable = None } ->
-                                match paramDefaults.TryGetValue param.Name with
-                                | false, _
-                                | true, None -> None
-                                | true, Some null -> Some "null"
-                                | true, Some x ->
-                                    // Note: If, in the future, FSharpDefaultValueString is used for anything other than
-                                    // comparing against the literal string "null", keep in mind that using %A will render
-                                    // strings with quotes, many number types with suffixes (e.g. 1.0M for decimal), etc.
-                                    Some $"%A{x}"
+        {
+            sproc with
+                Parameters =
+                    sproc.Parameters
+                    |> List.map (fun param -> {
+                        param with
+                            FSharpDefaultValueString =
+                                match rule |> EffectiveProcedureRule.getParam (param.Name.TrimStart '@') with
+                                | { Nullable = Some true } -> Some "null"
+                                | { Nullable = Some false } -> None
+                                | { Nullable = None } ->
+                                    match paramDefaults.TryGetValue param.Name with
+                                    | false, _
+                                    | true, None -> None
+                                    | true, Some null -> Some "null"
+                                    | true, Some x ->
+                                        // Note: If, in the future, FSharpDefaultValueString is used for anything other than
+                                        // comparing against the literal string "null", keep in mind that using %A will render
+                                        // strings with quotes, many number types with suffixes (e.g. 1.0M for decimal), etc.
+                                        Some $"%A{x}"
                     })
-        })
+        }
+    )
 
 
 let getPrimaryKeyColumnNamesByTableName (conn: SqlConnection) =
@@ -949,13 +958,16 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
                         |> Option.teeNone (fun () ->
                             if RuleSet.shouldIncludeTableDto schemaName tableName cfg && not shouldSkipCol then
                                 logWarning
-                                    $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped.")
+                                    $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped."
+                        )
                     |> Option.bind (fun typeName ->
                         sqlDbTypeMap.TryFind typeName
                         |> Option.teeNone (fun () ->
                             if RuleSet.shouldIncludeTableDto schemaName tableName cfg && not shouldSkipCol then
                                 logWarning
-                                    $"Unsupported SQL system type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped."))
+                                    $"Unsupported SQL system type '%s{typeName}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped."
+                        )
+                    )
 
                 match typeInfo with
                 | None -> ()
@@ -1024,7 +1036,8 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
                         else
                             []
                 IsView = isView
-            })
+            }
+        )
     with ex ->
         raise <| Exception("Error getting table DTOs", ex)
 
@@ -1066,12 +1079,12 @@ let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition connStr (con
         cmd.CommandText <- definition
         cmd.ExecuteNonQuery() |> ignore
 
-        let tempTable =
-            { tempTableWithoutColumns with
+        let tempTable = {
+            tempTableWithoutColumns with
                 Columns =
                     getColumns connStr conn cfg sysTypeIdLookup (Choice3Of3 tempTableWithoutColumns)
                     |> Option.defaultValue []
-            }
+        }
 
         // Drop table in case other temp tables use the same name
         use cmd = conn.CreateCommand()
@@ -1112,8 +1125,8 @@ let getEverything
     let tableDtos =
         allTableDtos
         |> List.filter (fun dto -> RuleSet.shouldIncludeTableDto dto.SchemaName dto.Name cfg)
-        |> List.map (fun dto ->
-            { dto with
+        |> List.map (fun dto -> {
+            dto with
                 // Remove skipped columns
                 Columns = dto.Columns |> List.filter (fun c -> not c.ShouldSkipInTableDto)
                 // If any skipped columns are PKs, set PrimaryKeyColumns to empty list
@@ -1129,7 +1142,7 @@ let getEverything
                         []
                     else
                         dto.PrimaryKeyColumns
-            })
+        })
         |> List.sortBy (fun dto -> dto.SchemaName, dto.Name)
 
     let tempTablesByDefinition =
@@ -1170,16 +1183,18 @@ let getEverything
                 match tt.Columns, tableCols with
                 | [ ttCol ], [ tableCol ] ->
                     if
-                        { ttCol with
-                            Name = ""
-                            SortKey = 0
-                            IsIdentity = false
-                            ShouldSkipInTableDto = false
-                        } = { tableCol with
+                        {
+                            ttCol with
                                 Name = ""
                                 SortKey = 0
                                 IsIdentity = false
                                 ShouldSkipInTableDto = false
+                        } = {
+                                tableCol with
+                                    Name = ""
+                                    SortKey = 0
+                                    IsIdentity = false
+                                    ShouldSkipInTableDto = false
                             }
                     then
                         Some [ ttCol.Name, tableCol.Name ]
@@ -1188,19 +1203,19 @@ let getEverything
                 | ttCols, tableCols when ttCols.Length = tableCols.Length ->
                     let ttColsToCheck =
                         ttCols
-                        |> List.map (fun x ->
-                            { x with
+                        |> List.map (fun x -> {
+                            x with
                                 SortKey = 0
                                 IsIdentity = false
-                            })
+                        })
 
                     let tableColsToCheck =
                         tableCols
-                        |> List.map (fun x ->
-                            { x with
+                        |> List.map (fun x -> {
+                            x with
                                 SortKey = 0
                                 IsIdentity = false
-                            })
+                        })
 
                     let hasSameColumnsIgnoringOrder =
                         ttColsToCheck
@@ -1233,7 +1248,8 @@ let getEverything
                                 fullYamlPath
                                 0
                                 0
-                                $"Unable to find table type %s{ttName} specified in rule for table script %s{scriptName}")
+                                $"Unable to find table type %s{ttName} specified in rule for table script %s{scriptName}"
+                        )
 
                     let mapping =
                         getTableTypeColMappingIfCanUse tableType cols
@@ -1242,7 +1258,8 @@ let getEverything
                                 fullYamlPath
                                 0
                                 0
-                                $"The specified table type %s{ttName} can not be used in table script %s{scriptName}")
+                                $"The specified table type %s{ttName} can not be used in table script %s{scriptName}"
+                        )
 
                     tableType, mapping
                 | None ->
@@ -1250,7 +1267,8 @@ let getEverything
                         allTableTypes
                         |> List.choose (fun tt ->
                             getTableTypeColMappingIfCanUse tt cols
-                            |> Option.map (fun mapping -> tt, mapping))
+                            |> Option.map (fun mapping -> tt, mapping)
+                        )
 
                     match matching with
                     | [] -> failwithError $"Unable to find a suitable table type for table script %s{scriptName}"
@@ -1354,7 +1372,9 @@ let getEverything
                                     |> List.tryFind (fun (c, _) -> c.Name = n)
                                     |> Option.defaultWith (fun () ->
                                         failwithError
-                                            $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                            $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                    )
+                                )
 
                         {
                             GlobMatchOutput = rule.Name
@@ -1380,7 +1400,8 @@ let getEverything
                                     yield!
                                         pkColsWithRule
                                         |> List.map (fun (col, rule) ->
-                                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}"
+                                        )
                                         |> List.mapAllExceptFirst (sprintf "AND %s")
                                         |> List.map (sprintf "  %s")
                                 ]
@@ -1416,7 +1437,9 @@ let getEverything
                                     |> List.tryFind (fun (c, _) -> c.Name = n)
                                     |> Option.defaultWith (fun () ->
                                         failwithError
-                                            $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                            $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                    )
+                                )
 
                         let tableType, columnMapping =
                             getTableTypeAndColumnMappingForBatchScript rule (pkColsWithRule |> List.map fst) rule.Name
@@ -1448,7 +1471,8 @@ let getEverything
                                     yield!
                                         columnMapping
                                         |> List.map (fun (ttColName, tableColName) ->
-                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}")
+                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}"
+                                        )
                                         |> List.mapAllExceptFirst (sprintf "AND %s")
                                         |> List.map (sprintf "      %s")
 
@@ -1486,7 +1510,8 @@ let getEverything
                                     fullYamlPath
                                     0
                                     0
-                                    "Table scripts with type 'getByColumns' must specify 'filterColumns'")
+                                    "Table scripts with type 'getByColumns' must specify 'filterColumns'"
+                            )
 
                         if filterColNames.IsEmpty then
                             failwithYamlError
@@ -1512,7 +1537,9 @@ let getEverything
                                         fullYamlPath
                                         0
                                         0
-                                        $"Unable to find the specified filter column '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                        $"Unable to find the specified filter column '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                )
+                            )
                             // Treat all filter columns as non-nullable
                             |> List.map (fun (c, r) -> { c with IsNullable = false }, r)
 
@@ -1540,7 +1567,8 @@ let getEverything
                                     yield!
                                         filterColsWithRule
                                         |> List.map (fun (col, rule) ->
-                                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                                            $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}"
+                                        )
                                         |> List.mapAllExceptFirst (sprintf "AND %s")
                                         |> List.map (sprintf "  %s")
                                 ]
@@ -1563,7 +1591,8 @@ let getEverything
                                     fullYamlPath
                                     0
                                     0
-                                    "Table scripts with type 'getByColumnsBatch' must specify 'filterColumns'")
+                                    "Table scripts with type 'getByColumnsBatch' must specify 'filterColumns'"
+                            )
 
                         if filterColNames.IsEmpty then
                             failwithYamlError
@@ -1589,7 +1618,9 @@ let getEverything
                                         fullYamlPath
                                         0
                                         0
-                                        $"Unable to find the specified filter column '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                        $"Unable to find the specified filter column '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                )
+                            )
                             // Treat all filter columns as non-nullable
                             |> List.map (fun (c, r) -> { c with IsNullable = false }, r)
 
@@ -1626,7 +1657,8 @@ let getEverything
                                     yield!
                                         columnMapping
                                         |> List.map (fun (ttColName, tableColName) ->
-                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}")
+                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}"
+                                        )
                                         |> List.mapAllExceptFirst (sprintf "AND %s")
                                         |> List.map (sprintf "      %s")
 
@@ -1668,7 +1700,8 @@ let getEverything
                                     match rule.Skip with
                                     | None when col.IsIdentity || col.IsComputed -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed)
+                                    | Some skip -> not skip && not col.IsComputed
+                                )
 
                             let colsToOutputWithRule =
                                 colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
@@ -1735,7 +1768,8 @@ let getEverything
                                     match rule.Skip with
                                     | None when col.IsIdentity || col.IsComputed -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed)
+                                    | Some skip -> not skip && not col.IsComputed
+                                )
 
                             let colsToOutputWithRule =
                                 colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
@@ -1806,7 +1840,8 @@ let getEverything
                                                             nullExpr
                                                         ]
                                                         |> String.concat " "
-                                                        |> sprintf "  %s")
+                                                        |> sprintf "  %s"
+                                                    )
                                                     |> List.mapAllExceptLast (sprintf "%s,")
 
                                                 ")"
@@ -1845,7 +1880,9 @@ let getEverything
                                         |> List.tryFind (fun (c, _) -> c.Name = n)
                                         |> Option.defaultWith (fun () ->
                                             failwithError
-                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                        )
+                                    )
 
                             let colsToUpdateWithRule =
                                 colsWithRule
@@ -1855,7 +1892,8 @@ let getEverything
                                     match rule.Skip with
                                     | None when c.IsComputed -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed)
+                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                )
 
                             {
                                 GlobMatchOutput = rule.Name
@@ -1875,7 +1913,8 @@ let getEverything
                                         yield!
                                             colsToUpdateWithRule
                                             |> List.map (fun (c, rule) ->
-                                                $"  [%s{c.Name}] = @%s{getParamNameFromColAndRule c rule}")
+                                                $"  [%s{c.Name}] = @%s{getParamNameFromColAndRule c rule}"
+                                            )
                                             |> List.mapAllExceptLast (sprintf "%s,")
 
                                         if not colsToOutputWithRule.IsEmpty then
@@ -1891,7 +1930,8 @@ let getEverything
                                         yield!
                                             pkColsWithRule
                                             |> List.map (fun (col, rule) ->
-                                                $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                                                $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}"
+                                            )
                                             |> List.mapAllExceptFirst (sprintf "AND %s")
                                             |> List.map (sprintf "  %s")
                                     ]
@@ -1929,7 +1969,9 @@ let getEverything
                                         |> List.tryFind (fun (c, _) -> c.Name = n)
                                         |> Option.defaultWith (fun () ->
                                             failwithError
-                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                        )
+                                    )
 
                             let colsToUpdateWithRule =
                                 colsWithRule
@@ -1939,7 +1981,8 @@ let getEverything
                                     match rule.Skip with
                                     | None when c.IsComputed -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed)
+                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                )
 
                             let tempTableName = "#args"
 
@@ -1980,7 +2023,8 @@ let getEverything
                                         yield!
                                             pkColsWithRule
                                             |> List.map (fun (col, _) ->
-                                                $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]")
+                                                $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]"
+                                            )
                                             |> List.mapAllExceptFirst (sprintf "AND %s")
                                             |> List.map (sprintf "      %s")
                                     ]
@@ -2013,7 +2057,8 @@ let getEverything
                                                             nullExpr
                                                         ]
                                                         |> String.concat " "
-                                                        |> sprintf "  %s")
+                                                        |> sprintf "  %s"
+                                                    )
                                                     |> List.map (sprintf "%s,")
 
                                                 let colList =
@@ -2059,7 +2104,9 @@ let getEverything
                                         |> List.tryFind (fun (c, _) -> c.Name = n)
                                         |> Option.defaultWith (fun () ->
                                             failwithError
-                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                        )
+                                    )
 
                             let colsToInsertWithRule =
                                 colsWithRule
@@ -2067,7 +2114,8 @@ let getEverything
                                     match rule.Skip with
                                     | None when col.IsIdentity || col.IsComputed -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed)
+                                    | Some skip -> not skip && not col.IsComputed
+                                )
 
                             let colsToUpdateWithRule =
                                 colsWithRule
@@ -2077,14 +2125,16 @@ let getEverything
                                     match rule.Skip with
                                     | None when c.IsComputed -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed)
+                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                )
 
                             let allColsWithRule =
                                 colsWithRule
                                 |> List.filter (fun (c, _) ->
                                     pkColsWithRule |> List.map fst |> List.contains c
                                     || colsToInsertWithRule |> List.map fst |> List.contains c
-                                    || colsToUpdateWithRule |> List.map fst |> List.contains c)
+                                    || colsToUpdateWithRule |> List.map fst |> List.contains c
+                                )
 
                             {
                                 GlobMatchOutput = rule.Name
@@ -2105,7 +2155,8 @@ let getEverything
                                         yield!
                                             allColsWithRule
                                             |> List.map (fun (c, rule) ->
-                                                $"    [%s{c.Name}] = @%s{getParamNameFromColAndRule c rule}")
+                                                $"    [%s{c.Name}] = @%s{getParamNameFromColAndRule c rule}"
+                                            )
                                             |> List.mapAllExceptLast (sprintf "%s,")
 
                                         ")"
@@ -2116,7 +2167,8 @@ let getEverything
                                         yield!
                                             pkColsWithRule
                                             |> List.map (fun (col, _) ->
-                                                $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]")
+                                                $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]"
+                                            )
                                             |> List.mapAllExceptFirst (sprintf "AND %s")
                                             |> List.map (sprintf "  %s")
 
@@ -2198,7 +2250,9 @@ let getEverything
                                         |> List.tryFind (fun (c, _) -> c.Name = n)
                                         |> Option.defaultWith (fun () ->
                                             failwithError
-                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                        )
+                                    )
 
                             let colsToInsertWithRule =
                                 colsWithRule
@@ -2206,7 +2260,8 @@ let getEverything
                                     match rule.Skip with
                                     | None when col.IsIdentity || col.IsComputed -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed)
+                                    | Some skip -> not skip && not col.IsComputed
+                                )
 
                             let colsToUpdateWithRule =
                                 colsWithRule
@@ -2216,14 +2271,16 @@ let getEverything
                                     match rule.Skip with
                                     | None when c.IsComputed -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed)
+                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                )
 
                             let allColsWithRule =
                                 colsWithRule
                                 |> List.filter (fun (c, _) ->
                                     pkColsWithRule |> List.map fst |> List.contains c
                                     || colsToInsertWithRule |> List.map fst |> List.contains c
-                                    || colsToUpdateWithRule |> List.map fst |> List.contains c)
+                                    || colsToUpdateWithRule |> List.map fst |> List.contains c
+                                )
 
                             let tempTableName = "#args"
 
@@ -2247,7 +2304,8 @@ let getEverything
                                         yield!
                                             pkColsWithRule
                                             |> List.map (fun (col, _) ->
-                                                $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]")
+                                                $"[%s{dto.Name}].[%s{col.Name}] = x.[%s{col.Name}]"
+                                            )
                                             |> List.mapAllExceptFirst (sprintf "AND %s")
                                             |> List.map (sprintf "  %s")
 
@@ -2322,7 +2380,8 @@ let getEverything
                                                             nullExpr
                                                         ]
                                                         |> String.concat " "
-                                                        |> sprintf "  %s")
+                                                        |> sprintf "  %s"
+                                                    )
                                                     |> List.map (sprintf "%s,")
 
                                                 let colList =
@@ -2368,7 +2427,9 @@ let getEverything
                                         |> List.tryFind (fun (c, _) -> c.Name = n)
                                         |> Option.defaultWith (fun () ->
                                             failwithError
-                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"))
+                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                        )
+                                    )
 
                             {
                                 GlobMatchOutput = rule.Name
@@ -2396,7 +2457,8 @@ let getEverything
                                         yield!
                                             pkColsWithRule
                                             |> List.map (fun (col, rule) ->
-                                                $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}")
+                                                $"[%s{col.Name}] = @%s{getParamNameFromColAndRule col rule}"
+                                            )
                                             |> List.mapAllExceptFirst (sprintf "AND %s")
                                             |> List.map (sprintf "  %s")
                                     ]
@@ -2408,7 +2470,8 @@ let getEverything
                             }
 
 
-                ])
+                ]
+            )
 
 
     let scripts =
@@ -2442,7 +2505,8 @@ let getEverything
                 failwithError
                     $"Script '%s{script.GlobMatchOutput}' has a temp table with the same name as a parameter. This is not supported."
 
-            { script with TempTables = tempTables })
+            { script with TempTables = tempTables }
+        )
         |> List.map (fun script ->
             if script.GeneratedByFacil then
                 script
@@ -2450,10 +2514,12 @@ let getEverything
                 let parameters =
                     getScriptParameters cfg sysTypeIdLookup tableTypesByUserId script conn
 
-                { script with Parameters = parameters })
+                { script with Parameters = parameters }
+        )
         |> List.map (fun script ->
             let resultSet = getColumns connStr conn cfg sysTypeIdLookup (Choice2Of3 script)
-            { script with ResultSet = resultSet })
+            { script with ResultSet = resultSet }
+        )
         |> List.filter (fun s ->
 
             let hasUnsupportedParameter =
@@ -2472,7 +2538,8 @@ let getEverything
                         true
 
                     else
-                        false)
+                        false
+                )
 
             let hasUnsupportedResultColumn =
                 match s.ResultSet with
@@ -2505,7 +2572,8 @@ let getEverything
 
             not hasUnsupportedParameter
             && not hasUnsupportedResultColumn
-            && not hasDuplicateColumnNames)
+            && not hasDuplicateColumnNames
+        )
         |> List.sortBy (fun s -> s.GlobMatchOutput)
 
     let sprocs =
@@ -2539,11 +2607,12 @@ let getEverything
                     failwithError
                         $"Procedure '%s{sproc.SchemaName}.%s{sproc.Name}' has a temp table with the same name as a parameter. This is not supported."
 
-                { sproc with TempTables = tempTables })
-        |> List.map (fun sproc ->
-            { sproc with
+                { sproc with TempTables = tempTables }
+            )
+        |> List.map (fun sproc -> {
+            sproc with
                 ResultSet = getColumns connStr conn cfg sysTypeIdLookup (Choice1Of3 sproc)
-            })
+        })
         |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
         |> List.filter (fun sp ->
 
@@ -2556,7 +2625,8 @@ let getEverything
 
                         true
                     else
-                        false)
+                        false
+                )
 
             let hasUnsupportedResultColumn =
                 match sp.ResultSet with
@@ -2589,7 +2659,8 @@ let getEverything
 
             not hasUnsupportedParameter
             && not hasUnsupportedResultColumn
-            && not hasDuplicateColumnNames)
+            && not hasDuplicateColumnNames
+        )
         |> List.sortBy (fun sp -> sp.SchemaName, sp.Name)
 
     let usedTableTypes =
@@ -2600,7 +2671,8 @@ let getEverything
         |> List.choose (fun p ->
             match p.TypeInfo with
             | Table tt -> Some(tt.SchemaName, tt.Name)
-            | _ -> None)
+            | _ -> None
+        )
         |> set
 
     let tableTypes =
@@ -2692,7 +2764,8 @@ let getEverything
                 sprocs
                 |> List.exists (fun sp ->
                     rule |> ProcedureRule.matches sp.SchemaName sp.Name
-                    && sp.Parameters |> List.exists (fun p -> p.FSharpParamName = paramName))
+                    && sp.Parameters |> List.exists (fun p -> p.FSharpParamName = paramName)
+                )
 
             if not hasMatchingProcedureAndParam then
                 let includeForExceptExpr =
@@ -2715,7 +2788,8 @@ let getEverything
                 scripts
                 |> List.exists (fun s ->
                     rule |> ScriptRule.matches s.GlobMatchOutput
-                    && s.Parameters |> List.exists (fun p -> p.FSharpParamName = paramName))
+                    && s.Parameters |> List.exists (fun p -> p.FSharpParamName = paramName)
+                )
 
             if not hasMatchingScriptAndParam then
                 let includeForExceptExpr =

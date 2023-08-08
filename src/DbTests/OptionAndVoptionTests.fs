@@ -24,7 +24,8 @@ let optionTests =
                                 .WithParameters(param1 = Some "test")
                             |> exec
 
-                        test <@ res.Value = Some "test" @>)
+                        test <@ res.Value = Some "test" @>
+                )
         ]
 
 
@@ -40,7 +41,8 @@ let optionTests =
                                 .WithParameters(param1 = None)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -56,7 +58,8 @@ let optionTests =
                                 .WithParameters(param1 = Some "test")
                             |> exec
 
-                        test <@ res.Value = Some "test" @>)
+                        test <@ res.Value = Some "test" @>
+                )
         ]
 
 
@@ -72,7 +75,8 @@ let optionTests =
                                 .WithParameters(param1 = None)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -92,7 +96,8 @@ let optionTests =
                             { Col1 = None; Col2 = None }
                         ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -110,7 +115,8 @@ let optionTests =
 
                         let expected = [ {| Col1 = Some "test1"; Col2 = Some 1 |}; {| Col1 = None; Col2 = None |} ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -131,7 +137,8 @@ let optionTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -150,7 +157,8 @@ let optionTests =
                             |> exec
 
                         test <@ res.Value.Foo = None @>
-                        test <@ res.Value.Bar = None @>)
+                        test <@ res.Value.Bar = None @>
+                )
         ]
 
 
@@ -166,7 +174,8 @@ let optionTests =
                                 .WithParameters(param1 = Some "test")
                             |> exec
 
-                        test <@ res.Value = Some "test" @>)
+                        test <@ res.Value = Some "test" @>
+                )
         ]
 
 
@@ -182,7 +191,8 @@ let optionTests =
                                 .WithParameters(param1 = None)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -198,7 +208,8 @@ let optionTests =
                                 .WithParameters(param1 = Some "test")
                             |> exec
 
-                        test <@ res.Value = Some "test" @>)
+                        test <@ res.Value = Some "test" @>
+                )
         ]
 
 
@@ -214,7 +225,8 @@ let optionTests =
                                 .WithParameters(param1 = None)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -234,7 +246,8 @@ let optionTests =
                             { Col1 = None; Col2 = None }
                         ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -252,7 +265,8 @@ let optionTests =
 
                         let expected = [ {| Col1 = Some "test1"; Col2 = Some 1 |}; {| Col1 = None; Col2 = None |} ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -273,7 +287,8 @@ let optionTests =
                             |> exec
 
                         test <@ res.Value.Foo = Some 1 @>
-                        test <@ res.Value.Bar = Some "test" @>)
+                        test <@ res.Value.Bar = Some "test" @>
+                )
         ]
 
 
@@ -292,7 +307,8 @@ let optionTests =
                             |> exec
 
                         test <@ res.Value.Foo = None @>
-                        test <@ res.Value.Bar = None @>)
+                        test <@ res.Value.Bar = None @>
+                )
         ]
 
     ]
@@ -316,7 +332,8 @@ let voptionTests =
                                 .WithParameters(param1 = ValueSome "test")
                             |> exec
 
-                        test <@ res.Value = Some "test" @>)
+                        test <@ res.Value = Some "test" @>
+                )
         ]
 
 
@@ -332,7 +349,8 @@ let voptionTests =
                                 .WithParameters(param1 = ValueNone)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -349,7 +367,8 @@ let voptionTests =
                             |> exec
 
                         let res = res.Value
-                        test <@ res = ValueSome "test" @>)
+                        test <@ res = ValueSome "test" @>
+                )
         ]
 
 
@@ -366,7 +385,8 @@ let voptionTests =
                             |> exec
 
                         let res = res.Value
-                        test <@ res = ValueNone @>)
+                        test <@ res = ValueNone @>
+                )
         ]
 
 
@@ -389,7 +409,8 @@ let voptionTests =
                             { Col1 = ValueNone; Col2 = ValueNone }
                         ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -413,7 +434,8 @@ let voptionTests =
                             {| Col1 = ValueNone; Col2 = ValueNone |}
                         ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -438,7 +460,8 @@ let voptionTests =
 
                         let res = res.Value
                         test <@ res.Foo = ValueSome 1 @>
-                        test <@ res.Bar = ValueSome "test" @>)
+                        test <@ res.Bar = ValueSome "test" @>
+                )
         ]
 
 
@@ -463,7 +486,8 @@ let voptionTests =
 
                         let res = res.Value
                         test <@ res.Foo = ValueNone @>
-                        test <@ res.Bar = ValueNone @>)
+                        test <@ res.Bar = ValueNone @>
+                )
         ]
 
 
@@ -479,7 +503,8 @@ let voptionTests =
                                 .WithParameters(param1 = ValueSome "test")
                             |> exec
 
-                        test <@ res.Value = Some "test" @>)
+                        test <@ res.Value = Some "test" @>
+                )
         ]
 
 
@@ -495,7 +520,8 @@ let voptionTests =
                                 .WithParameters(param1 = ValueNone)
                             |> exec
 
-                        test <@ res.Value = None @>)
+                        test <@ res.Value = None @>
+                )
         ]
 
 
@@ -512,7 +538,8 @@ let voptionTests =
                             |> exec
 
                         let res = res.Value
-                        test <@ res = ValueSome "test" @>)
+                        test <@ res = ValueSome "test" @>
+                )
         ]
 
 
@@ -529,7 +556,8 @@ let voptionTests =
                             |> exec
 
                         let res = res.Value
-                        test <@ res = ValueNone @>)
+                        test <@ res = ValueNone @>
+                )
         ]
 
 
@@ -552,7 +580,8 @@ let voptionTests =
                             { Col1 = ValueNone; Col2 = ValueNone }
                         ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -576,7 +605,8 @@ let voptionTests =
                             {| Col1 = ValueNone; Col2 = ValueNone |}
                         ]
 
-                        test <@ res = expected @>)
+                        test <@ res = expected @>
+                )
         ]
 
 
@@ -601,7 +631,8 @@ let voptionTests =
 
                         let res = res.Value
                         test <@ res.Foo = ValueSome 1 @>
-                        test <@ res.Bar = ValueSome "test" @>)
+                        test <@ res.Bar = ValueSome "test" @>
+                )
         ]
 
 
@@ -626,7 +657,8 @@ let voptionTests =
 
                         let res = res.Value
                         test <@ res.Foo = ValueNone @>
-                        test <@ res.Bar = ValueNone @>)
+                        test <@ res.Bar = ValueNone @>
+                )
         ]
 
     ]

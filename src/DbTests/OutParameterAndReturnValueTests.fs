@@ -22,7 +22,8 @@ let tests =
                             |> exec
 
                         test <@ res.Result = -1 @>
-                        test <@ res.ReturnValue = 4 @>)
+                        test <@ res.ReturnValue = 4 @>
+                )
         ]
 
 
@@ -39,7 +40,8 @@ let tests =
                             |> exec
 
                         test <@ res.Result = -1 @>
-                        test <@ res.ReturnValue = 4 @>)
+                        test <@ res.ReturnValue = 4 @>
+                )
         ]
 
 
@@ -57,7 +59,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = None @>
-                        test <@ res.Out.out2 = None @>)
+                        test <@ res.Out.out2 = None @>
+                )
         ]
 
 
@@ -75,7 +78,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = None @>
-                        test <@ res.Out.out2 = None @>)
+                        test <@ res.Out.out2 = None @>
+                )
         ]
 
 
@@ -93,7 +97,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
-                        test <@ res.Out.out2 = Some "foo" @>)
+                        test <@ res.Out.out2 = Some "foo" @>
+                )
         ]
 
 
@@ -111,7 +116,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
-                        test <@ res.Out.out2 = Some "foo" @>)
+                        test <@ res.Out.out2 = Some "foo" @>
+                )
         ]
 
 
@@ -136,7 +142,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
-                        test <@ res.Out.out2 = Some "foo" @>)
+                        test <@ res.Out.out2 = Some "foo" @>
+                )
         ]
 
 
@@ -154,7 +161,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
-                        test <@ res.Out.out2 = None @>)
+                        test <@ res.Out.out2 = None @>
+                )
         ]
 
 
@@ -172,7 +180,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
-                        test <@ res.Out.out2 = None @>)
+                        test <@ res.Out.out2 = None @>
+                )
         ]
 
 
@@ -197,7 +206,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = None @>
-                        test <@ res.Out.out2 = None @>)
+                        test <@ res.Out.out2 = None @>
+                )
         ]
 
 
@@ -215,7 +225,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -233,7 +244,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -251,7 +263,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -269,7 +282,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -294,7 +308,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -312,7 +327,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -330,7 +346,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -355,7 +372,8 @@ let tests =
 
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -374,7 +392,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = None @>
                         test <@ res.Out.out2 = None @>
-                        test <@ res.ReturnValue = 3 @>)
+                        test <@ res.ReturnValue = 3 @>
+                )
         ]
 
 
@@ -396,7 +415,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = None @>
                             test <@ res.Out.out2 = None @>
-                            test <@ res.ReturnValue = 3 @>)
+                            test <@ res.ReturnValue = 3 @>
+                    )
             ]
 
 
@@ -421,7 +441,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
                         test <@ res.Out.out2 = Some "foo" @>
-                        test <@ res.ReturnValue = 45 @>)
+                        test <@ res.ReturnValue = 45 @>
+                )
         ]
 
 
@@ -449,7 +470,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = Some 42 @>
                             test <@ res.Out.out2 = Some "foo" @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -476,7 +498,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
                         test <@ res.Out.out2 = Some "foo" @>
-                        test <@ res.ReturnValue = 45 @>)
+                        test <@ res.ReturnValue = 45 @>
+                )
         ]
 
 
@@ -501,7 +524,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 42 @>
                         test <@ res.Out.out2 = None @>
-                        test <@ res.ReturnValue = 45 @>)
+                        test <@ res.ReturnValue = 45 @>
+                )
         ]
 
 
@@ -529,7 +553,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = Some 42 @>
                             test <@ res.Out.out2 = None @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -556,7 +581,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = None @>
                         test <@ res.Out.out2 = None @>
-                        test <@ res.ReturnValue = 3 @>)
+                        test <@ res.ReturnValue = 3 @>
+                )
         ]
 
 
@@ -575,7 +601,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
                         test <@ res.Out.out2 = Some "test" @>
-                        test <@ res.ReturnValue = 126 @>)
+                        test <@ res.ReturnValue = 126 @>
+                )
         ]
 
 
@@ -597,7 +624,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -622,7 +650,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
                         test <@ res.Out.out2 = Some "test" @>
-                        test <@ res.ReturnValue = 126 @>)
+                        test <@ res.ReturnValue = 126 @>
+                )
         ]
 
 
@@ -650,7 +679,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -677,7 +707,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
                         test <@ res.Out.out2 = Some "test" @>
-                        test <@ res.ReturnValue = 126 @>)
+                        test <@ res.ReturnValue = 126 @>
+                )
         ]
 
 
@@ -696,7 +727,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
                         test <@ res.Out.out2 = Some "test" @>
-                        test <@ res.ReturnValue = 126 @>)
+                        test <@ res.ReturnValue = 126 @>
+                )
         ]
 
 
@@ -724,7 +756,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -751,7 +784,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = Some 123 @>
                         test <@ res.Out.out2 = Some "test" @>
-                        test <@ res.ReturnValue = 126 @>)
+                        test <@ res.ReturnValue = 126 @>
+                )
         ]
 
 
@@ -773,7 +807,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueNone @>
                             test <@ res.Out.out2 = ValueNone @>
-                            test <@ res.ReturnValue = 3 @>)
+                            test <@ res.ReturnValue = 3 @>
+                    )
             ]
 
 
@@ -801,7 +836,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueSome 42 @>
                             test <@ res.Out.out2 = ValueSome "foo" @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -831,7 +867,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueSome 42 @>
                             test <@ res.Out.out2 = ValueSome "foo" @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -859,7 +896,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueSome 42 @>
                             test <@ res.Out.out2 = ValueNone @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -889,7 +927,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueNone @>
                             test <@ res.Out.out2 = ValueNone @>
-                            test <@ res.ReturnValue = 3 @>)
+                            test <@ res.ReturnValue = 3 @>
+                    )
             ]
 
 
@@ -908,7 +947,8 @@ let tests =
                         test <@ res.Result = -1 @>
                         test <@ res.Out.out1 = ValueSome 123 @>
                         test <@ res.Out.out2 = ValueSome "test" @>
-                        test <@ res.ReturnValue = 126 @>)
+                        test <@ res.ReturnValue = 126 @>
+                )
         ]
 
 
@@ -936,7 +976,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueSome 123 @>
                             test <@ res.Out.out2 = ValueSome "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -966,7 +1007,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueSome 123 @>
                             test <@ res.Out.out2 = ValueSome "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -994,7 +1036,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueSome 123 @>
                             test <@ res.Out.out2 = ValueSome "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -1024,7 +1067,8 @@ let tests =
                             test <@ res.Result = -1 @>
                             test <@ res.Out.out1 = ValueSome 123 @>
                             test <@ res.Out.out2 = ValueSome "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -1038,7 +1082,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetVal_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1046,9 +1091,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1061,7 +1108,8 @@ let tests =
 
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
-                        test <@ res.ReturnValue = 4 @>)
+                        test <@ res.ReturnValue = 4 @>
+                )
         ]
 
 
@@ -1075,7 +1123,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndRetValExtended_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1083,9 +1132,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1098,7 +1149,8 @@ let tests =
 
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
-                        test <@ res.ReturnValue = 4 @>)
+                        test <@ res.ReturnValue = 4 @>
+                )
         ]
 
 
@@ -1112,7 +1164,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1120,9 +1173,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1136,7 +1191,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = None @>
-                        test <@ res.Out.out2 = None @>)
+                        test <@ res.Out.out2 = None @>
+                )
         ]
 
 
@@ -1153,7 +1209,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1161,9 +1218,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1177,7 +1236,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = None @>
-                            test <@ res.Out.out2 = None @>)
+                            test <@ res.Out.out2 = None @>
+                    )
             ]
 
 
@@ -1191,7 +1251,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1199,9 +1260,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1215,7 +1278,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = Some 42 @>
-                        test <@ res.Out.out2 = Some "foo" @>)
+                        test <@ res.Out.out2 = Some "foo" @>
+                )
         ]
 
 
@@ -1232,7 +1296,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1240,9 +1305,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1256,7 +1323,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
-                            test <@ res.Out.out2 = Some "foo" @>)
+                            test <@ res.Out.out2 = Some "foo" @>
+                    )
             ]
 
 
@@ -1273,7 +1341,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1281,9 +1350,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1304,7 +1375,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
-                            test <@ res.Out.out2 = Some "foo" @>)
+                            test <@ res.Out.out2 = Some "foo" @>
+                    )
             ]
 
 
@@ -1318,7 +1390,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1326,9 +1399,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1342,7 +1417,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = Some 42 @>
-                        test <@ res.Out.out2 = None @>)
+                        test <@ res.Out.out2 = None @>
+                )
         ]
 
 
@@ -1359,7 +1435,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1367,9 +1444,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1383,7 +1462,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
-                            test <@ res.Out.out2 = None @>)
+                            test <@ res.Out.out2 = None @>
+                    )
             ]
 
 
@@ -1400,7 +1480,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1408,9 +1489,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1431,7 +1514,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = None @>
-                            test <@ res.Out.out2 = None @>)
+                            test <@ res.Out.out2 = None @>
+                    )
             ]
 
 
@@ -1445,7 +1529,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1453,9 +1538,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1469,7 +1556,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -1486,7 +1574,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1494,9 +1583,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1510,7 +1601,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
-                            test <@ res.Out.out2 = Some "test" @>)
+                            test <@ res.Out.out2 = Some "test" @>
+                    )
             ]
 
 
@@ -1524,7 +1616,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1532,9 +1625,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1548,7 +1643,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -1565,7 +1661,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1573,9 +1670,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1589,7 +1688,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
-                            test <@ res.Out.out2 = Some "test" @>)
+                            test <@ res.Out.out2 = Some "test" @>
+                    )
             ]
 
 
@@ -1603,7 +1703,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1611,9 +1712,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1634,7 +1737,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -1648,7 +1752,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1656,9 +1761,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1672,7 +1779,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -1689,7 +1797,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1697,9 +1806,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1713,7 +1824,8 @@ let tests =
                             test <@ res.Result.Value.Foo = 1 @>
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
-                            test <@ res.Out.out2 = Some "test" @>)
+                            test <@ res.Out.out2 = Some "test" @>
+                    )
             ]
 
 
@@ -1727,7 +1839,8 @@ let tests =
                             name,
                             fun x ->
                                 let res = exec x
-                                {| res with Result = res.Result |})
+                                {| res with Result = res.Result |}
+                        )
                     yield!
                         allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParams_Executable, _>
                         |> List.map (fun (name, exec) ->
@@ -1735,9 +1848,11 @@ let tests =
                             fun x ->
                                 let res = exec x
 
-                                {| res with
-                                    Result = res.Result |> Seq.tryHead
-                                |})
+                                {|
+                                    res with
+                                        Result = res.Result |> Seq.tryHead
+                                |}
+                        )
                 ]
                 |> List.map (fun (name, exec) ->
                     testCase name
@@ -1758,7 +1873,8 @@ let tests =
                         test <@ res.Result.Value.Foo = 1 @>
                         test <@ res.Result.Value.Bar = 2 @>
                         test <@ res.Out.out1 = Some 123 @>
-                        test <@ res.Out.out2 = Some "test" @>)
+                        test <@ res.Out.out2 = Some "test" @>
+                )
         ]
 
 
@@ -1775,7 +1891,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1783,9 +1900,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1800,7 +1919,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = None @>
                             test <@ res.Out.out2 = None @>
-                            test <@ res.ReturnValue = 3 @>)
+                            test <@ res.ReturnValue = 3 @>
+                    )
             ]
 
 
@@ -1817,7 +1937,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1825,9 +1946,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1842,7 +1965,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = None @>
                             test <@ res.Out.out2 = None @>
-                            test <@ res.ReturnValue = 3 @>)
+                            test <@ res.ReturnValue = 3 @>
+                    )
             ]
 
 
@@ -1859,7 +1983,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1867,9 +1992,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1890,7 +2017,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
                             test <@ res.Out.out2 = Some "foo" @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -1907,7 +2035,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1915,9 +2044,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1938,7 +2069,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
                             test <@ res.Out.out2 = Some "foo" @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -1955,7 +2087,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -1963,9 +2096,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -1988,7 +2123,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
                             test <@ res.Out.out2 = Some "foo" @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -2005,7 +2141,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2013,9 +2150,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2036,7 +2175,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
                             test <@ res.Out.out2 = None @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -2053,7 +2193,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2061,9 +2202,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2084,7 +2227,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 42 @>
                             test <@ res.Out.out2 = None @>
-                            test <@ res.ReturnValue = 45 @>)
+                            test <@ res.ReturnValue = 45 @>
+                    )
             ]
 
 
@@ -2101,7 +2245,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2109,9 +2254,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2134,7 +2281,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = None @>
                             test <@ res.Out.out2 = None @>
-                            test <@ res.ReturnValue = 3 @>)
+                            test <@ res.ReturnValue = 3 @>
+                    )
             ]
 
 
@@ -2151,7 +2299,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2159,9 +2308,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2176,7 +2327,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -2193,7 +2345,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2201,9 +2354,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2218,7 +2373,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -2235,7 +2391,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2243,9 +2400,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2266,7 +2425,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -2283,7 +2443,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2291,9 +2452,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2314,7 +2477,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -2331,7 +2495,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2339,9 +2504,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2364,7 +2531,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -2381,7 +2549,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2389,9 +2558,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2412,7 +2583,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -2429,7 +2601,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetValExtended_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2437,9 +2610,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2460,7 +2635,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 
@@ -2477,7 +2653,8 @@ let tests =
                                 name,
                                 fun x ->
                                     let res = exec x
-                                    {| res with Result = res.Result |})
+                                    {| res with Result = res.Result |}
+                            )
                         yield!
                             allEagerSeqExecuteMethods<DbGen.Procedures.dbo.ProcWithResultsAndOutParamsAndRetVal_Executable, _>
                             |> List.map (fun (name, exec) ->
@@ -2485,9 +2662,11 @@ let tests =
                                 fun x ->
                                     let res = exec x
 
-                                    {| res with
-                                        Result = res.Result |> Seq.tryHead
-                                    |})
+                                    {|
+                                        res with
+                                            Result = res.Result |> Seq.tryHead
+                                    |}
+                            )
                     ]
                     |> List.map (fun (name, exec) ->
                         testCase name
@@ -2510,7 +2689,8 @@ let tests =
                             test <@ res.Result.Value.Bar = 2 @>
                             test <@ res.Out.out1 = Some 123 @>
                             test <@ res.Out.out2 = Some "test" @>
-                            test <@ res.ReturnValue = 126 @>)
+                            test <@ res.ReturnValue = 126 @>
+                    )
             ]
 
 

@@ -92,4 +92,5 @@ module Map =
         ||> Map.fold (fun s k valueB ->
             match Map.tryFind k s with
             | Some valueA -> Map.add k (f valueA valueB) s
-            | None -> Map.add k valueB s)
+            | None -> Map.add k valueB s
+        )

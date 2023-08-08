@@ -289,32 +289,33 @@ module Gen =
             |> Gen.dateTime
             |> Gen.map (fun dt -> dt.Date)
 
-        let datetime = gen {
-            let! ticks =
-                Range.linearFrom
-                    (DateTime(2000, 1, 1)).Ticks
-                    SqlDateTime.MinValue.Value.Ticks
-                    SqlDateTime.MaxValue.Value.Ticks
-                |> Gen.integral
+        let datetime =
+            gen {
+                let! ticks =
+                    Range.linearFrom
+                        (DateTime(2000, 1, 1)).Ticks
+                        SqlDateTime.MinValue.Value.Ticks
+                        SqlDateTime.MaxValue.Value.Ticks
+                    |> Gen.integral
 
-            let ms = ticks / TimeSpan.TicksPerMillisecond
+                let ms = ticks / TimeSpan.TicksPerMillisecond
 
-            let msAdjusted =
-                match ms % 10L with
-                | 0L -> ms
-                | 1L -> ms - 1L
-                | 2L -> ms + 1L
-                | 3L -> ms
-                | 4L -> ms - 1L
-                | 5L -> ms - 2L // Ambiguous, we could round both ways
-                | 6L -> ms + 1L
-                | 7L -> ms
-                | 8L -> ms - 1L
-                | 9L -> ms + 1L
-                | _ -> failwith "Impossible modulo"
+                let msAdjusted =
+                    match ms % 10L with
+                    | 0L -> ms
+                    | 1L -> ms - 1L
+                    | 2L -> ms + 1L
+                    | 3L -> ms
+                    | 4L -> ms - 1L
+                    | 5L -> ms - 2L // Ambiguous, we could round both ways
+                    | 6L -> ms + 1L
+                    | 7L -> ms
+                    | 8L -> ms - 1L
+                    | 9L -> ms + 1L
+                    | _ -> failwith "Impossible modulo"
 
-            return DateTime(msAdjusted * TimeSpan.TicksPerMillisecond)
-        }
+                return DateTime(msAdjusted * TimeSpan.TicksPerMillisecond)
+            }
 
 
         let datetime2 (n: int) =
@@ -328,65 +329,68 @@ module Gen =
             |> Gen.integral
             |> Gen.map (adjustTickPrecision >> DateTime)
 
-        let datetimeoffset n = gen {
-            if n < 0 || n > 7 then
-                invalidArg (nameof n) "Must be between 0 and 7"
+        let datetimeoffset n =
+            gen {
+                if n < 0 || n > 7 then
+                    invalidArg (nameof n) "Must be between 0 and 7"
 
-            let tickPrecision = TimeSpan.TicksPerSecond / int64 (10. ** float n)
-            let adjustTickPrecision ticks = (ticks / tickPrecision) * tickPrecision
+                let tickPrecision = TimeSpan.TicksPerSecond / int64 (10. ** float n)
+                let adjustTickPrecision ticks = (ticks / tickPrecision) * tickPrecision
 
-            let! ticks =
-                Range.linearFrom
-                    (DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)).Ticks
-                    DateTimeOffset.MinValue.Ticks
-                    DateTimeOffset.MaxValue.Ticks
-                |> Gen.integral
-                |> Gen.map adjustTickPrecision
+                let! ticks =
+                    Range.linearFrom
+                        (DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)).Ticks
+                        DateTimeOffset.MinValue.Ticks
+                        DateTimeOffset.MaxValue.Ticks
+                    |> Gen.integral
+                    |> Gen.map adjustTickPrecision
 
-            // Ensure there is no overflow near the edges when adding the offset
-            let minOffsetMinutes =
-                max (-14L * 60L) ((DateTimeOffset.MaxValue.Ticks - ticks) / TimeSpan.TicksPerMinute * -1L)
+                // Ensure there is no overflow near the edges when adding the offset
+                let minOffsetMinutes =
+                    max (-14L * 60L) ((DateTimeOffset.MaxValue.Ticks - ticks) / TimeSpan.TicksPerMinute * -1L)
 
-            let maxOffsetMinutes =
-                min (14L * 60L) ((ticks - DateTimeOffset.MinValue.Ticks) / TimeSpan.TicksPerMinute)
+                let maxOffsetMinutes =
+                    min (14L * 60L) ((ticks - DateTimeOffset.MinValue.Ticks) / TimeSpan.TicksPerMinute)
 
-            let! offsetMinutes = Gen.int32 (Range.exponentialFrom 0 (int minOffsetMinutes) (int maxOffsetMinutes))
-            return DateTimeOffset(ticks, TimeSpan.FromMinutes(float offsetMinutes))
-        }
+                let! offsetMinutes = Gen.int32 (Range.exponentialFrom 0 (int minOffsetMinutes) (int maxOffsetMinutes))
+                return DateTimeOffset(ticks, TimeSpan.FromMinutes(float offsetMinutes))
+            }
 
-        let decimal (p: int) (s: int) = gen {
-            if p < 1 || p > int SqlDecimal.MaxPrecision then
-                invalidArg (nameof p) $"Must be between 1 and %i{SqlDecimal.MaxPrecision}"
+        let decimal (p: int) (s: int) =
+            gen {
+                if p < 1 || p > int SqlDecimal.MaxPrecision then
+                    invalidArg (nameof p) $"Must be between 1 and %i{SqlDecimal.MaxPrecision}"
 
-            if s < 0 || s > int SqlDecimal.MaxScale || s > p then
-                invalidArg (nameof s) $"Must be between 0 and %i{SqlDecimal.MaxScale} and no larger than {nameof p}"
+                if s < 0 || s > int SqlDecimal.MaxScale || s > p then
+                    invalidArg (nameof s) $"Must be between 0 and %i{SqlDecimal.MaxScale} and no larger than {nameof p}"
 
-            // For simplicity, generate left/right sides as int64 and parse the result as a
-            // decimal. This means that very high/low decimal values won't be generated, since
-            // int64 can't represent 10^38 - 1. This is probably fine.
-            let maxLeft = int64 (10. ** float (p - s)) - 1L
-            let maxRight = int64 (10. ** float s) - 1L
-            let! left = Gen.int64 (Range.exponential 0L maxLeft)
-            let! right = Gen.int64 (Range.exponential 0L maxRight)
-            let! negative = Gen.bool
+                // For simplicity, generate left/right sides as int64 and parse the result as a
+                // decimal. This means that very high/low decimal values won't be generated, since
+                // int64 can't represent 10^38 - 1. This is probably fine.
+                let maxLeft = int64 (10. ** float (p - s)) - 1L
+                let maxRight = int64 (10. ** float s) - 1L
+                let! left = Gen.int64 (Range.exponential 0L maxLeft)
+                let! right = Gen.int64 (Range.exponential 0L maxRight)
+                let! negative = Gen.bool
 
-            let decimalString =
-                (if negative then "-" else "")
-                + string<int64> left
-                + (if s = 0 then "" else "." + string<int64> right)
+                let decimalString =
+                    (if negative then "-" else "")
+                    + string<int64> left
+                    + (if s = 0 then "" else "." + string<int64> right)
 
-            return Decimal.Parse(decimalString, Globalization.CultureInfo.InvariantCulture)
-        }
+                return Decimal.Parse(decimalString, Globalization.CultureInfo.InvariantCulture)
+            }
 
-        let float n = gen {
-            let precision =
-                if n >= 1 && n <= 24 then 7
-                elif n >= 25 && n <= 53 then 15
-                else invalidArg (nameof n) "Must be between 1 and 53"
+        let float n =
+            gen {
+                let precision =
+                    if n >= 1 && n <= 24 then 7
+                    elif n >= 25 && n <= 53 then 15
+                    else invalidArg (nameof n) "Must be between 1 and 53"
 
-            let! scale = Gen.int32 (Range.linear 0 precision)
-            return! decimal precision scale |> Gen.map float
-        }
+                let! scale = Gen.int32 (Range.linear 0 precision)
+                return! decimal precision scale |> Gen.map float
+            }
 
         let int = Gen.int32 (Range.exponentialBounded ())
 

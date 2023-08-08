@@ -66,7 +66,8 @@ let tests =
                             changeColumnOrder ()
                             test ()
                         finally
-                            revertColumnOrder ())
+                            revertColumnOrder ()
+                )
         ]
 
 
@@ -83,7 +84,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test2" @>
-                        test <@ res.Value.TableCol2 = Some 2 @>)
+                        test <@ res.Value.TableCol2 = Some 2 @>
+                )
         ]
 
 
@@ -100,7 +102,8 @@ let tests =
                             |> exec
 
                         test <@ res.Value.TableCol1 = "test2" @>
-                        test <@ res.Value.TableCol2 = Some 2 @>)
+                        test <@ res.Value.TableCol2 = Some 2 @>
+                )
         ]
 
         testList "Truncation behavior" [
@@ -580,7 +583,8 @@ let tests =
                                 .WithParameters(single = [], multi = [])
                             |> exec
 
-                        test <@ res.IsNone @>)
+                        test <@ res.IsNone @>
+                )
         ]
 
 
@@ -596,7 +600,8 @@ let tests =
                                 .WithParameters({| Single = []; Multi = [] |})
                             |> exec
 
-                        test <@ res.IsNone @>)
+                        test <@ res.IsNone @>
+                )
         ]
 
         testAsync "Can run the resulting Async query computation several times when there are parameters" {

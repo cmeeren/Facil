@@ -303,15 +303,14 @@ let sqlDbTypeMap =
     |> Map.ofList
 
 
-type OutputColumn =
-    {
-        Name: string option
-        /// A value that can be used for ordering columns.
-        SortKey: int
-        IsNullable: bool
-        TypeInfo: SqlTypeInfo
-        Collation: string option
-    }
+type OutputColumn = {
+    Name: string option
+    /// A value that can be used for ordering columns.
+    SortKey: int
+    IsNullable: bool
+    TypeInfo: SqlTypeInfo
+    Collation: string option
+} with
 
     member this.StringEscapedName =
         this.Name |> Option.map (fun s -> s.Replace("\"", "\\\""))
@@ -319,23 +318,22 @@ type OutputColumn =
     member this.PascalCaseName = this.Name |> Option.map String.firstUpper
 
 
-type TableColumn =
-    {
-        Name: string
-        /// A value that can be used for ordering columns.
-        SortKey: int
-        IsNullable: bool
-        IsIdentity: bool
-        IsComputed: bool
-        Size: int16
-        Precision: byte
-        Scale: byte
-        TypeInfo: SqlTypeInfo
-        Collation: string option
-        /// Used only in Db.fs to distinguish between table DTO columns and table script columns. Code elsewhere does not need
-        /// to take this into account.
-        ShouldSkipInTableDto: bool
-    }
+type TableColumn = {
+    Name: string
+    /// A value that can be used for ordering columns.
+    SortKey: int
+    IsNullable: bool
+    IsIdentity: bool
+    IsComputed: bool
+    Size: int16
+    Precision: byte
+    Scale: byte
+    TypeInfo: SqlTypeInfo
+    Collation: string option
+    /// Used only in Db.fs to distinguish between table DTO columns and table script columns. Code elsewhere does not need
+    /// to take this into account.
+    ShouldSkipInTableDto: bool
+} with
 
     member this.StringEscapedName = this.Name.Replace("\"", "\\\"")
     member this.PascalCaseName = this.Name |> String.firstUpper
@@ -380,29 +378,27 @@ type ParameterTypeInfo =
 
 
 /// A parameter for a stored procedure, script, or similar.
-type Parameter =
-    {
-        Name: string
-        /// A value that can be used for ordering parameters.
-        SortKey: int
-        Size: int16
-        Precision: byte
-        Scale: byte
-        FSharpDefaultValueString: string option
-        TypeInfo: ParameterTypeInfo
-        IsOutput: bool
-        IsCursorRef: bool
-    }
+type Parameter = {
+    Name: string
+    /// A value that can be used for ordering parameters.
+    SortKey: int
+    Size: int16
+    Precision: byte
+    Scale: byte
+    FSharpDefaultValueString: string option
+    TypeInfo: ParameterTypeInfo
+    IsOutput: bool
+    IsCursorRef: bool
+} with
 
     member this.FSharpParamName = this.Name |> String.trimStart '@'
 
 
-type TempTable =
-    {
-        Name: string
-        Source: string
-        Columns: OutputColumn list
-    }
+type TempTable = {
+    Name: string
+    Source: string
+    Columns: OutputColumn list
+} with
 
     member this.FSharpName = this.Name.TrimStart '#'
 

@@ -18,7 +18,8 @@ let tests =
                             DbGen.Procedures.dbo.ProcWithSingleRecordCol.WithConnection(Config.connStr)
                             |> exec
 
-                        test <@ res.Value.Test = 1 @>)
+                        test <@ res.Value.Test = 1 @>
+                )
         ]
 
 
@@ -29,7 +30,8 @@ let tests =
                     testCase name
                     <| fun () ->
                         let res = DbGen.Scripts.SingleRecordCol.WithConnection(Config.connStr) |> exec
-                        test <@ res.Value.Test = 1 @>)
+                        test <@ res.Value.Test = 1 @>
+                )
         ]
 
 
@@ -56,7 +58,8 @@ let tests =
                                 .WithParameters({| newDtoParamName = 3 |})
                             |> exec
 
-                        test <@ dtoParamRes.Value = Some 3 @>)
+                        test <@ dtoParamRes.Value = Some 3 @>
+                )
         ]
 
 
@@ -80,7 +83,8 @@ let tests =
                                 .WithParameters({| newDtoParamName = 3 |})
                             |> exec
 
-                        test <@ dtoParamRes.Value = Some 3 @>)
+                        test <@ dtoParamRes.Value = Some 3 @>
+                )
         ]
 
 
