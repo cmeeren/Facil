@@ -22,9 +22,9 @@
       },
       "Microsoft.Data.SqlClient": {
         "type": "Direct",
-        "requested": "[5.1.0, )",
-        "resolved": "5.1.0",
-        "contentHash": "wA+a+7niwImfbAsPo6cDiQaqbpDzVGRDuZtQpSBiO3JPOTPQkR8xNYKH+c16Nz9RE2AyjtyvQdGokOrhxORBKQ==",
+        "requested": "[5.1.1, )",
+        "resolved": "5.1.1",
+        "contentHash": "MW5E9HFvCaV069o8b6YpuRDPBux8s96qDnOJ+4N9QNUCs7c5W3KxwQ+ftpAjbMUlImL+c9WR+l+f5hzjkqhu2g==",
         "dependencies": {
           "Azure.Identity": "1.7.0",
           "Microsoft.Data.SqlClient.SNI.runtime": "5.1.0",
