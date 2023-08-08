@@ -38,13 +38,13 @@ jobs:
         run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"$connectionString"
 
       - name: Restore generator
-        run: dotnet restore src/Facil.Generator --locked-mode
+        run: dotnet restore src/Facil.Generator
 
       - name: Build generator
         run: dotnet build src/Facil.Generator -c Release --no-restore
 
       - name: Restore package project
-        run: dotnet restore src/Facil.Package --locked-mode
+        run: dotnet restore src/Facil.Package
 
       - name: Build package project
         run: dotnet build src/Facil.Package -c Release --no-restore
