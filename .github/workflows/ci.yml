@@ -37,17 +37,11 @@ jobs:
       - name: Publish DB
         run: dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"$connectionString"
 
-      - name: Restore generator
-        run: dotnet restore src/Facil.Generator
-
       - name: Build generator
-        run: dotnet build src/Facil.Generator -c Release --no-restore
-
-      - name: Restore package project
-        run: dotnet restore src/Facil.Package
+        run: dotnet build src/Facil.Generator -c Release
 
       - name: Build package project
-        run: dotnet build src/Facil.Package -c Release --no-restore
+        run: dotnet build src/Facil.Package -c Release
 
       # Pack in a separate step (fails for some reason with "empty lib/" error if using <GeneratePackageOnBuild>)
       - name: Pack
