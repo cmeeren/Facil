@@ -29,9 +29,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
     <PackageReference Include="Unquote" Version="6.1.0" />
-    <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.14.1" />
+    <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.14.2" />
     <PackageReference Update="FSharp.Core" Version="7.0.400" />
   </ItemGroup>
 
