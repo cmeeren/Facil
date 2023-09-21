@@ -98,7 +98,7 @@ let private renderTableType cfg (t: TableType) =
     [
         ""
         ""
-        $"let private ``{t.Name}_meta`` = "
+        $"let private ``{t.Name}_meta`` ="
         yield!
             indent [
                 "[|"
