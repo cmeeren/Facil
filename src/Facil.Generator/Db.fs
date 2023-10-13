@@ -543,7 +543,7 @@ let getColumns connStr conn cfg sysTypeIdLookup (executable: Choice<StoredProced
             | Some source ->
                 raise
                 <| Exception(
-                    $"Error getting output columns for Facil-generated table script %s{executableName}. Script source:\n\n%s{source}\n",
+                    $"Error getting output columns for Facil-generated %s{executableName}. Script source:\n\n%s{source}\n",
                     ex
                 )
 
