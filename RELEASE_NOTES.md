@@ -10,7 +10,7 @@ Release notes
 ### 2.7.1 (2023-08-08)
 
 * Updated Microsoft.Data.SqlClient from 5.1.0 to 5.1.1
-* Update generator dependencies
+* Updated generator dependencies
 
 ### 2.7.0 (2023-04-18)
 
