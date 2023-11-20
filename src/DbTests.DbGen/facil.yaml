@@ -460,6 +460,17 @@ rulesets:
               - Foo
               - Id
 
+      # These are tests in themselves: Should be able to generate insert/update/merge scripts for temporal tables
+      # (checks GENERATE ALWAYS columns)
+      - include: '^dbo\.Temporal$'
+        scripts:
+          - type: insert
+          - type: insertBatch
+          - type: update
+          - type: updateBatch
+          - type: merge
+          - type: mergeBatch
+
       - include: 'dbo\.Table1'
         scripts:
           - type: getByColumns

@@ -582,6 +582,7 @@ let getTableTypes (conn: SqlConnection) =
         sys.columns.is_identity AS ColumnIsIdentity,
         sys.columns.is_computed AS ColumnIsComputed,
         sys.columns.collation_name AS CollationName,
+        sys.columns.generated_always_type AS GeneratedAlwaysType,
         TYPE_NAME(sys.columns.system_type_id) AS ColumnTypeName
       FROM
         sys.table_types
@@ -616,6 +617,7 @@ let getTableTypes (conn: SqlConnection) =
                         IsNullable = reader["ColumnIsNullable"] |> unbox<bool>
                         IsIdentity = reader["ColumnIsIdentity"] |> unbox<bool>
                         IsComputed = reader["ColumnIsComputed"] |> unbox<bool>
+                        IsGeneratedAlways = reader["GeneratedAlwaysType"] |> unbox<byte> |> (<>) 0uy
                         SortKey = reader["ColumnId"] |> unbox<int>
                         Size = reader["ColumnSize"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
                         Precision = reader["ColumnPrecision"] |> unbox<byte>
@@ -889,6 +891,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
         sys.all_columns.is_identity,
         sys.all_columns.is_computed,
         sys.all_columns.collation_name,
+        sys.all_columns.generated_always_type,
         IsView = CAST(0 AS BIT)
       FROM
         sys.tables
@@ -911,6 +914,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
         sys.all_columns.is_identity,
         sys.all_columns.is_computed,
         sys.all_columns.collation_name,
+        sys.all_columns.generated_always_type,
         IsView = CAST(1 AS BIT)
       FROM
         sys.views
@@ -984,6 +988,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
                                     IsNullable = reader["is_nullable"] |> unbox<bool>
                                     IsIdentity = reader["is_identity"] |> unbox<bool>
                                     IsComputed = reader["is_computed"] |> unbox<bool>
+                                    IsGeneratedAlways = reader["generated_always_type"] |> unbox<byte> |> (<>) 0uy
                                     Size =
                                         reader["max_length"] |> unbox<int16> |> adjustSizeForDbType typeInfo.SqlDbType
                                     Precision = reader["precision"] |> unbox<byte>
@@ -1698,9 +1703,9 @@ let getEverything
                                 colsWithRule
                                 |> List.filter (fun (col, rule) ->
                                     match rule.Skip with
-                                    | None when col.IsIdentity || col.IsComputed -> false
+                                    | None when col.IsIdentity || col.IsComputed || col.IsGeneratedAlways -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed
+                                    | Some skip -> not skip && not col.IsComputed && not col.IsGeneratedAlways
                                 )
 
                             let colsToOutputWithRule =
@@ -1766,9 +1771,9 @@ let getEverything
                                 colsWithRule
                                 |> List.filter (fun (col, rule) ->
                                     match rule.Skip with
-                                    | None when col.IsIdentity || col.IsComputed -> false
+                                    | None when col.IsIdentity || col.IsComputed || col.IsGeneratedAlways -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed
+                                    | Some skip -> not skip && not col.IsComputed && not col.IsGeneratedAlways
                                 )
 
                             let colsToOutputWithRule =
@@ -1890,9 +1895,10 @@ let getEverything
                                     let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
 
                                     match rule.Skip with
-                                    | None when c.IsComputed -> false
+                                    | None when c.IsComputed || c.IsGeneratedAlways -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                    | Some skip ->
+                                        not skip && not isPkCol && not c.IsComputed && not c.IsGeneratedAlways
                                 )
 
                             {
@@ -1979,9 +1985,10 @@ let getEverything
                                     let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
 
                                     match rule.Skip with
-                                    | None when c.IsComputed -> false
+                                    | None when c.IsComputed || c.IsGeneratedAlways -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                    | Some skip ->
+                                        not skip && not isPkCol && not c.IsComputed && not c.IsGeneratedAlways
                                 )
 
                             let tempTableName = "#args"
@@ -2112,9 +2119,9 @@ let getEverything
                                 colsWithRule
                                 |> List.filter (fun (col, rule) ->
                                     match rule.Skip with
-                                    | None when col.IsIdentity || col.IsComputed -> false
+                                    | None when col.IsIdentity || col.IsComputed || col.IsGeneratedAlways -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed
+                                    | Some skip -> not skip && not col.IsComputed && not col.IsGeneratedAlways
                                 )
 
                             let colsToUpdateWithRule =
@@ -2123,9 +2130,10 @@ let getEverything
                                     let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
 
                                     match rule.Skip with
-                                    | None when c.IsComputed -> false
+                                    | None when c.IsComputed || c.IsGeneratedAlways -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                    | Some skip ->
+                                        not skip && not isPkCol && not c.IsComputed && not c.IsGeneratedAlways
                                 )
 
                             let allColsWithRule =
@@ -2258,9 +2266,9 @@ let getEverything
                                 colsWithRule
                                 |> List.filter (fun (col, rule) ->
                                     match rule.Skip with
-                                    | None when col.IsIdentity || col.IsComputed -> false
+                                    | None when col.IsIdentity || col.IsComputed || col.IsGeneratedAlways -> false
                                     | None -> true
-                                    | Some skip -> not skip && not col.IsComputed
+                                    | Some skip -> not skip && not col.IsComputed && not col.IsGeneratedAlways
                                 )
 
                             let colsToUpdateWithRule =
@@ -2269,9 +2277,10 @@ let getEverything
                                     let isPkCol = pkColsWithRule |> List.exists (fun (pkc, _) -> c.Name = pkc.Name)
 
                                     match rule.Skip with
-                                    | None when c.IsComputed -> false
+                                    | None when c.IsComputed || c.IsGeneratedAlways -> false
                                     | None -> not isPkCol
-                                    | Some skip -> not skip && not isPkCol && not c.IsComputed
+                                    | Some skip ->
+                                        not skip && not isPkCol && not c.IsComputed && not c.IsGeneratedAlways
                                 )
 
                             let allColsWithRule =

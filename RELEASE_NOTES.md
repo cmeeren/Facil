@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### vNext
+
+* Now automatically ignores `GENERATE ALWAYS` columns in insert/update/merge table scripts (e.g. in temporal tables)
+
 ### 2.7.1 (2023-08-08)
 
 * Updated Microsoft.Data.SqlClient from 5.1.0 to 5.1.1

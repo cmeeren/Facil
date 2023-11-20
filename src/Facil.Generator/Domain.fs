@@ -325,6 +325,7 @@ type TableColumn = {
     IsNullable: bool
     IsIdentity: bool
     IsComputed: bool
+    IsGeneratedAlways: bool
     Size: int16
     Precision: byte
     Scale: byte
