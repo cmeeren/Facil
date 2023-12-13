@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### 2.7.3 (2023-12-13)
+
+* Fixed source table column casing in `insertBatch` scripts
+
 ### 2.7.2 (2023-11-20)
 
 * Now automatically ignores `GENERATE ALWAYS` columns in insert/update/merge table scripts (e.g. in temporal tables)
