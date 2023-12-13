@@ -1813,7 +1813,7 @@ let getEverything
 
                                         yield!
                                             colsToInsertWithRule
-                                            |> List.map (fun (c, rule) -> $"  [%s{getParamNameFromColAndRule c rule}]")
+                                            |> List.map (fun (c, _) -> $"  [%s{c.Name}]")
                                             |> List.mapAllExceptLast (sprintf "%s,")
 
                                         $"FROM {tempTableName}"
