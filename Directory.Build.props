@@ -4,11 +4,12 @@
     <Version>2.7.3</Version>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>NU1903;$(WarningsNotAsErrors)</WarningsNotAsErrors>
     <WarnOn>1182;3390;$(WarnOn)</WarnOn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
