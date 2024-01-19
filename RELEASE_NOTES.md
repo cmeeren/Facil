@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.7.4 (2024-01-19)
 
 * Updated Microsoft.Data.SqlClient from 5.1.2 to 5.1.4
 * Updated generator dependency Microsoft.Extensions.Configuration.Binder from 8.0.0 to 8.0.1
