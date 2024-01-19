@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		facil_reference.yaml = facil_reference.yaml
 		README.md = README.md
 		RELEASE_NOTES.md = RELEASE_NOTES.md
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TestDb", "src\TestDb\TestDb.sqlproj", "{CE4F177F-6835-498A-B29E-0D86E329F2CF}"
