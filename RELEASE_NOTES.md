@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Updated generator dependency Microsoft.Extensions.Configuration.Binder from 8.0.0 to 8.0.1
+
 ### 2.7.3 (2023-12-13)
 
 * Fixed source table column casing in `insertBatch` scripts
