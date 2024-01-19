@@ -103,6 +103,8 @@ Development
 
 #### Dev workflow: Updating test project and running tests
 
+**Note: The steps below work in Visual Studio, but seemingly not in Rider.**
+
 After making changes in the generator, runtime, or package projects:
 
 * Set `DbTests` as the startup project
