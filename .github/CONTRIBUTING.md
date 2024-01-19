@@ -118,8 +118,8 @@ Notes about this workflow:
   most recent generator/runtime files (this includes using `<GeneratePackageOnBuild>`).
 * `Facil.Package` can’t have a project reference to `Facil.Generator` due to the different target frameworks, but the
   solution file has a build dependency set up between them, so that building `Facil.Package` will also
-  build `Facil.Generator`. If using command-line utilities (like in the AppVeyor build script), the generator must be
-  built manually before `Facil.Package`.
+  build `Facil.Generator`. If using command-line utilities (like in the GitHub Actions build script), the generator must
+  be built manually before `Facil.Package`.
 * The Pack step will also remove the cached Facil version in the solution’s NuGet package cache (as well as all existing
   nupkg files in the nupkg output folder), ensuring that when `DbTests` is rebuilt, it restores the most recently built
   package.
@@ -133,6 +133,6 @@ For maintainers.
 * Update the changelog
 * Update the version in `Directory.Build.props`
 * Regenerate the test project (see steps above)
-* Commit and tag the commit in the format `v/x.y.z` (this is what triggers deployment from AppVeyor)
-* Push the changes and the tag to the repo. If the AppVeyor build succeeds, the package is automatically published to
-  NuGet.
+* Commit and tag the commit in the format `v/x.y.z` (this is what triggers deployment from GitHub Actions)
+* Push the changes and the tag to the repo. If the GitHub Actions build succeeds, the package is automatically published
+  to NuGet.
