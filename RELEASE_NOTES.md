@@ -6,7 +6,6 @@ Release notes
 * Added `Execute` methods for getting a `SqlDataReader`. While less type safe, this makes it possible to use Facil
   scripts to fetch data for legacy code that loads domain objects using `SqlDataReader` (or from related types, such
   as `DataTable`).
-* Updated Microsoft.Data.SqlClient from 5.1.4 to 5.2.0
 
 ### 2.7.4 (2024-01-19)
 
