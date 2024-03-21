@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.8.0 (2024-03-21)
 
 * Added `Execute` methods for getting a `SqlDataReader`. While less type safe, this makes it possible to use Facil
   scripts to fetch data for legacy code that loads domain objects using `SqlDataReader` (or from related types, such
