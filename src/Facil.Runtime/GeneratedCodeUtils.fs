@@ -9,6 +9,23 @@ open Microsoft.Data.SqlClient.Server
 open type Facil.Runtime.CSharp.GeneratedCodeUtils
 
 
+type FacilReaderDisposer
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    (conn: SqlConnection, cmd: SqlCommand, reader: SqlDataReader) =
+    let disposeIfNotNull (d: IDisposable) =
+        if not (isNull d) then
+            d.Dispose()
+
+    /// Gets the wrapped SqlDataReader. Do not dispose this directly; instead, dispose the FacilReaderDisposer object.
+    member _.Reader = reader
+
+    interface IDisposable with
+        member this.Dispose() =
+            disposeIfNotNull reader
+            disposeIfNotNull cmd
+            disposeIfNotNull conn
+
+
 [<EditorBrowsable(EditorBrowsableState.Never)>]
 module GeneratedCodeUtils =
 
@@ -235,6 +252,76 @@ module GeneratedCodeUtils =
             Func<_, _> getItem,
             tempTableData
         )
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    let inline executeReaderAsync
+        connStr
+        conn
+        tran
+        configureConn
+        configureCmd
+        tempTableData
+        ct
+        : Task<FacilReaderDisposer> =
+        task {
+            let! struct (conn, cmd, reader) =
+                ExecuteReaderAsync(
+                    conn,
+                    tran,
+                    connStr,
+                    Action<_> configureConn,
+                    Action<_> configureCmd,
+                    tempTableData,
+                    false,
+                    ct
+                )
+
+            return new FacilReaderDisposer(conn, cmd, reader)
+        }
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    let inline executeReaderSingleAsync
+        connStr
+        conn
+        tran
+        configureConn
+        configureCmd
+        tempTableData
+        ct
+        : Task<FacilReaderDisposer> =
+        task {
+            let! struct (conn, cmd, reader) =
+                ExecuteReaderAsync(
+                    conn,
+                    tran,
+                    connStr,
+                    Action<_> configureConn,
+                    Action<_> configureCmd,
+                    tempTableData,
+                    true,
+                    ct
+                )
+
+            return new FacilReaderDisposer(conn, cmd, reader)
+        }
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    let inline executeReader connStr conn tran configureConn configureCmd tempTableData : FacilReaderDisposer =
+        let struct (conn, cmd, reader) =
+            ExecuteReader(conn, tran, connStr, Action<_> configureConn, Action<_> configureCmd, tempTableData, false)
+
+        new FacilReaderDisposer(conn, cmd, reader)
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    let inline executeReaderSingle connStr conn tran configureConn configureCmd tempTableData : FacilReaderDisposer =
+        let struct (conn, cmd, reader) =
+            ExecuteReader(conn, tran, connStr, Action<_> configureConn, Action<_> configureCmd, tempTableData, true)
+
+        new FacilReaderDisposer(conn, cmd, reader)
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeNonQueryAsync connStr conn tran configureConn configureCmd tempTableData ct =

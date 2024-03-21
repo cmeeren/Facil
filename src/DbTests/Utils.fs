@@ -7,6 +7,7 @@ open System.Threading
 open System.Threading.Tasks
 open FSharp.Control
 open Hedgehog
+open Facil.Runtime
 
 
 
@@ -90,6 +91,34 @@ let inline allExecuteMethodsAsSingle< ^a, 'b
         |> AsyncSeq.ofAsyncEnum
         |> AsyncSeq.toBlockingSeq
         |> Seq.tryHead
+]
+
+
+let inline allMultiReaderExecuteMethods< ^a
+    when ^a: (member ExecuteReader: unit -> FacilReaderDisposer)
+    and ^a: (member AsyncExecuteReader: unit -> Async<FacilReaderDisposer>)
+    and ^a: (member ExecuteReaderAsync: CancellationToken option -> Task<FacilReaderDisposer>)> = [
+    "ExecuteReader", (fun x -> (^a: (member ExecuteReader: unit -> _) x))
+    "AsyncExecuteReader", (fun x -> (^a: (member AsyncExecuteReader: unit -> _) x) |> Async.RunSynchronously)
+    "ExecuteReaderAsync",
+    fun x ->
+        (^a: (member ExecuteReaderAsync: _ -> _) (x, None))
+        |> Async.AwaitTask
+        |> Async.RunSynchronously
+]
+
+
+let inline allSingleReaderExecuteMethods< ^a
+    when ^a: (member ExecuteReaderSingle: unit -> FacilReaderDisposer)
+    and ^a: (member AsyncExecuteReaderSingle: unit -> Async<FacilReaderDisposer>)
+    and ^a: (member ExecuteReaderSingleAsync: CancellationToken option -> Task<FacilReaderDisposer>)> = [
+    "ExecuteReader", (fun x -> (^a: (member ExecuteReaderSingle: unit -> _) x))
+    "AsyncExecuteReader", (fun x -> (^a: (member AsyncExecuteReaderSingle: unit -> _) x) |> Async.RunSynchronously)
+    "ExecuteReaderAsync",
+    fun x ->
+        (^a: (member ExecuteReaderSingleAsync: _ -> _) (x, None))
+        |> Async.AwaitTask
+        |> Async.RunSynchronously
 ]
 
 

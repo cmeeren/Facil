@@ -611,6 +611,48 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                 if wrapResult then
                                     "|> wrapResultWithOutParams"
                             ]
+
+                        ""
+                        "/// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReaderAsync(?cancellationToken) ="
+
+                        yield!
+                            indent [
+                                "executeReaderAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) [] (defaultArg cancellationToken CancellationToken.None)"
+                            ]
+
+                        ""
+                        "/// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        yield! asyncOverTaskFor "ExecuteReaderAsync" "AsyncExecuteReader"
+                        ""
+                        "/// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReader() ="
+
+                        yield!
+                            indent [
+                                "executeReader connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []"
+                            ]
+
+                        ""
+                        "/// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReaderSingleAsync(?cancellationToken) ="
+
+                        yield!
+                            indent [
+                                """executeReaderSingleAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) [] (defaultArg cancellationToken CancellationToken.None)"""
+                            ]
+
+                        ""
+                        "/// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        yield! asyncOverTaskFor "ExecuteReaderSingleAsync" "AsyncExecuteReaderSingle"
+                        ""
+                        "/// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReaderSingle() ="
+
+                        yield!
+                            indent [
+                                """executeReaderSingle connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []"""
+                            ]
                 ]
         ]
 
@@ -891,6 +933,52 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                 $"""executeQuerySingle{if rule.VoptionOut then "Voption" else ""} connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData"""
                                 if wrapResult then
                                     "|> wrapResultWithOutParams sqlParams"
+                            ]
+
+                        ""
+                        "/// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReaderAsync(?cancellationToken) ="
+
+                        yield!
+                            indent [
+                                "let sqlParams = getSqlParams ()"
+                                "executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)"
+                            ]
+
+                        ""
+                        "/// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        yield! asyncOverTaskFor "ExecuteReaderAsync" "AsyncExecuteReader"
+                        ""
+                        "/// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReader() ="
+
+                        yield!
+                            indent [
+                                "let sqlParams = getSqlParams ()"
+                                "executeReader connStr conn tran configureConn (configureCmd sqlParams) []"
+                            ]
+
+                        ""
+                        "/// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReaderSingleAsync(?cancellationToken) ="
+
+                        yield!
+                            indent [
+                                "let sqlParams = getSqlParams ()"
+                                """executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)"""
+                            ]
+
+                        ""
+                        "/// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query."
+                        yield! asyncOverTaskFor "ExecuteReaderSingleAsync" "AsyncExecuteReaderSingle"
+                        ""
+                        "/// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query."
+                        "member this.ExecuteReaderSingle() ="
+
+                        yield!
+                            indent [
+                                "let sqlParams = getSqlParams ()"
+                                """executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []"""
                             ]
                 ]
 

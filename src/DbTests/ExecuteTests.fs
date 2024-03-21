@@ -3652,3 +3652,53 @@ let lazyExecTests =
         ]
 
     ]
+
+
+[<Tests>]
+let readerSingleExecTests =
+    testList "Single rows SqlDataReader execute tests" [
+
+        testList (nameof DbGen.Procedures.dbo.ProcSelectFromTable) [
+            yield!
+                allSingleReaderExecuteMethods<DbGen.Procedures.dbo.ProcSelectFromTable>
+                |> List.map (fun (name, exec) ->
+                    testCase name
+                    <| fun () ->
+                        use d =
+                            DbGen.Procedures.dbo.ProcSelectFromTable.WithConnection(Config.connStr) |> exec
+
+                        test <@ d.Reader.Read() = true @>
+                        test <@ d.Reader["TableCol1"] = "test1" @>
+                        test <@ d.Reader["TableCol2"] = 1 @>
+
+                        test <@ d.Reader.Read() = false @>
+                )
+        ]
+    ]
+
+
+[<Tests>]
+let readerSeqExecTests =
+    testList "Multiple rows SqlDataReader execute tests" [
+
+        testList (nameof DbGen.Procedures.dbo.ProcSelectFromTable) [
+            yield!
+                allMultiReaderExecuteMethods<DbGen.Procedures.dbo.ProcSelectFromTable>
+                |> List.map (fun (name, exec) ->
+                    testCase name
+                    <| fun () ->
+                        use d =
+                            DbGen.Procedures.dbo.ProcSelectFromTable.WithConnection(Config.connStr) |> exec
+
+                        test <@ d.Reader.Read() = true @>
+                        test <@ d.Reader["TableCol1"] = "test1" @>
+                        test <@ d.Reader["TableCol2"] = 1 @>
+
+                        test <@ d.Reader.Read() = true @>
+                        test <@ d.Reader["TableCol1"] = "test2" @>
+                        test <@ d.Reader["TableCol2"] = 2 @>
+
+                        test <@ d.Reader.Read() = false @>
+                )
+        ]
+    ]

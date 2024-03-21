@@ -428,6 +428,118 @@ namespace Facil.Runtime.CSharp
       throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
     }
 
+    public static async Task<(SqlConnection?, SqlCommand, SqlDataReader)> ExecuteReaderAsync(
+      SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn,
+      Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData, bool singleRow, CancellationToken ct)
+    {
+      var commandBehavior =
+        singleRow ? CommandBehavior.SingleResult | CommandBehavior.SingleRow : CommandBehavior.SingleResult;
+
+      if (existingConn is not null)
+      {
+        await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
+        var cmd = existingConn.CreateCommand();
+        try
+        {
+          ConfigureCommand(cmd, tran, configureCmd);
+          var reader = await cmd.ExecuteReaderAsync(commandBehavior, ct).ConfigureAwait(false);
+          return (null, cmd, reader);
+        }
+        catch (Exception)
+        {
+          await cmd.DisposeAsync();
+          throw;
+        }
+      }
+
+      // ReSharper disable once InvertIf
+      if (connStr is not null)
+      {
+        var conn = new SqlConnection(connStr);
+        try
+        {
+          configureNewConn(conn);
+          await conn.OpenAsync(ct).ConfigureAwait(false);
+          await LoadTempTablesAsync(conn, tempTableData, tran, ct);
+          var cmd = conn.CreateCommand();
+          try
+          {
+            configureCmd(cmd);
+            var reader = await cmd.ExecuteReaderAsync(commandBehavior, ct).ConfigureAwait(false);
+            return (conn, cmd, reader);
+          }
+          catch (Exception)
+          {
+            await cmd.DisposeAsync();
+            throw;
+          }
+        }
+        catch (Exception)
+        {
+          await conn.DisposeAsync();
+          throw;
+        }
+      }
+
+      throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
+    }
+
+    public static (SqlConnection?, SqlCommand, SqlDataReader) ExecuteReader(
+      SqlConnection? existingConn, SqlTransaction? tran, string? connStr, Action<SqlConnection> configureNewConn,
+      Action<SqlCommand> configureCmd, IEnumerable<TempTableData> tempTableData, bool singleRow)
+    {
+      var commandBehavior =
+        singleRow ? CommandBehavior.SingleResult | CommandBehavior.SingleRow : CommandBehavior.SingleResult;
+
+      if (existingConn is not null)
+      {
+        LoadTempTables(existingConn, tempTableData, tran);
+        var cmd = existingConn.CreateCommand();
+        try
+        {
+          ConfigureCommand(cmd, tran, configureCmd);
+          var reader = cmd.ExecuteReader(commandBehavior);
+          return (null, cmd, reader);
+        }
+        catch (Exception)
+        {
+          cmd.Dispose();
+          throw;
+        }
+      }
+
+      // ReSharper disable once InvertIf
+      if (connStr is not null)
+      {
+        var conn = new SqlConnection(connStr);
+        try
+        {
+          configureNewConn(conn);
+          conn.Open();
+          LoadTempTables(conn, tempTableData, tran);
+          var cmd = conn.CreateCommand();
+          try
+          {
+            configureCmd(cmd);
+            var reader = cmd.ExecuteReader(commandBehavior);
+            return (null, cmd, reader);
+          }
+          catch (Exception)
+          {
+            cmd.Dispose();
+            throw;
+          }
+        }
+        catch (Exception)
+        {
+          conn.Dispose();
+          throw;
+        }
+      }
+
+      throw new Exception($"{nameof(existingConn)} and {nameof(connStr)} may not both be null");
+    }
+
     public static async Task<int> ExecuteNonQueryAsync(SqlConnection? existingConn, SqlTransaction? tran,
       string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd,
       IEnumerable<TempTableData> tempTableData, CancellationToken ct)
