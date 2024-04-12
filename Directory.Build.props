@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <Version>2.8.0</Version>
+    <Version>2.9.0</Version>
     <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>NU1903;$(WarningsNotAsErrors)</WarningsNotAsErrors>

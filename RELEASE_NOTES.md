@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.9.0 (2024-04-12)
 
 * Cancellations now throw `OperationCanceledException` instead of `SqlException`. This is a workaround
   for [dotnet/SqlClient#26](https://github.com/dotnet/SqlClient/issues/26). Strictly speaking it is a breaking change,
