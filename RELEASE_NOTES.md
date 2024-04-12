@@ -1,6 +1,14 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Cancellations now throw `OperationCanceledException` instead of `SqlException`. This is a workaround
+  for [dotnet/SqlClient#26](https://github.com/dotnet/SqlClient/issues/26). Strictly speaking it is a breaking change,
+  but only if you rely on cancellations specifically throwing `SqlException` and not `OperationCanceledException`. This
+  seems far-fetched enough that I am bumping only the minor version for this change. The above does not apply to the
+  `LazyExecute*` methods returning `IAsyncEnumerable<_>`.
+
 ### 2.8.0 (2024-03-21)
 
 * Added `Execute` methods for getting a `SqlDataReader`. While less type safe, this makes it possible to use Facil

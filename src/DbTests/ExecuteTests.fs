@@ -1,7 +1,10 @@
 module ExecuteTests
 
 open System
+open System.Threading
+open System.Threading.Tasks
 open Expecto
+open Facil.Runtime
 open Swensen.Unquote
 
 
@@ -3701,4 +3704,81 @@ let readerSeqExecTests =
                         test <@ d.Reader.Read() = false @>
                 )
         ]
+    ]
+
+
+
+[<Tests>]
+let cancellationTests =
+    testSequenced
+    <| testList "Cancellation tests" [
+
+
+        testCaseAsync "Can cancel non-queries"
+        <| async {
+            use cts = new CancellationTokenSource()
+            cts.CancelAfter(1000)
+
+            let sut = DbGen.Scripts.LongRunningNonQuery.WithConnection(Config.connStr)
+
+            let mutable isAsyncCanceled = false
+
+            async {
+                use! __ = Async.OnCancel(fun () -> isAsyncCanceled <- true)
+                return! sut.AsyncExecute()
+            }
+            |> Async.Ignore<int>
+            |> fun comp -> Async.Start(comp, cts.Token)
+
+            let task = sut.ExecuteAsync(cts.Token)
+
+            do! Async.Sleep 1500
+
+            let isAsyncCanceled' = isAsyncCanceled
+            test <@ isAsyncCanceled' @>
+            test <@ task.IsCanceled @>
+        }
+
+
+        testCaseAsync "Can cancel queries"
+        <| async {
+            use cts = new CancellationTokenSource()
+            cts.CancelAfter(1000)
+
+            let sut = DbGen.Scripts.LongRunningQuery.WithConnection(Config.connStr)
+
+            let comps = [
+                sut.AsyncExecute() |> Async.Ignore<ResizeArray<int>>
+                sut.AsyncExecuteWithSyncRead() |> Async.Ignore<ResizeArray<int>>
+                sut.AsyncExecuteSingle() |> Async.Ignore<int option>
+                sut.AsyncExecuteReader() |> Async.Ignore<FacilReaderDisposer>
+                sut.AsyncExecuteReaderSingle() |> Async.Ignore<FacilReaderDisposer>
+            ]
+
+            let asyncCancellations = Array.zeroCreate comps.Length
+
+            comps
+            |> List.iteri (fun i comp ->
+                async {
+                    use! __ = Async.OnCancel(fun () -> asyncCancellations[i] <- true)
+                    return! comp
+                }
+                |> fun comp -> Async.Start(comp, cts.Token)
+            )
+
+            let tasks = [
+                sut.ExecuteAsync(cts.Token) :> Task
+                sut.ExecuteAsyncWithSyncRead(cts.Token)
+                sut.ExecuteSingleAsync(cts.Token)
+                sut.ExecuteReaderAsync(cts.Token)
+                sut.ExecuteReaderSingleAsync(cts.Token)
+            ]
+
+            do! Async.Sleep 1500
+
+            test <@ tasks |> List.map _.IsCanceled |> List.forall id @>
+            test <@ asyncCancellations |> Array.forall id @>
+        }
+
+
     ]

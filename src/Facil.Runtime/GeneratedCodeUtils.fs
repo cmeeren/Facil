@@ -2,6 +2,7 @@
 
 open System
 open System.ComponentModel
+open System.Threading
 open System.Threading.Tasks
 open Microsoft.Data.SqlClient
 open Microsoft.Data.SqlClient.Server
@@ -31,6 +32,17 @@ module GeneratedCodeUtils =
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
+    let inline handleSqlExceptionCancellation (ct: CancellationToken) (t: Task<'a>) : Task<'a> =
+        backgroundTask {
+            try
+                return! t
+            with :? SqlException as ex when
+                ct.IsCancellationRequested && ex.Number = 0 && ex.State = 0uy && ex.Class = 11uy ->
+                return raise (OperationCanceledException(null, ex, ct))
+        }
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQueryEagerAsync
         connStr
         conn
@@ -53,6 +65,7 @@ module GeneratedCodeUtils =
             tempTableData,
             ct
         )
+        |> handleSqlExceptionCancellation ct
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQueryEagerAsyncWithSyncRead
@@ -77,6 +90,7 @@ module GeneratedCodeUtils =
             tempTableData,
             ct
         )
+        |> handleSqlExceptionCancellation ct
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQueryEager
@@ -184,6 +198,7 @@ module GeneratedCodeUtils =
             tempTableData,
             ct
         )
+        |> handleSqlExceptionCancellation ct
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQuerySingleAsyncVoption
@@ -208,6 +223,7 @@ module GeneratedCodeUtils =
             tempTableData,
             ct
         )
+        |> handleSqlExceptionCancellation ct
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQuerySingle
@@ -279,6 +295,7 @@ module GeneratedCodeUtils =
 
             return new FacilReaderDisposer(conn, cmd, reader)
         }
+        |> handleSqlExceptionCancellation ct
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -306,6 +323,7 @@ module GeneratedCodeUtils =
 
             return new FacilReaderDisposer(conn, cmd, reader)
         }
+        |> handleSqlExceptionCancellation ct
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -326,6 +344,7 @@ module GeneratedCodeUtils =
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeNonQueryAsync connStr conn tran configureConn configureCmd tempTableData ct =
         ExecuteNonQueryAsync(conn, tran, connStr, Action<_> configureConn, Action<_> configureCmd, tempTableData, ct)
+        |> handleSqlExceptionCancellation ct
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeNonQuery connStr conn tran configureConn configureCmd tempTableData =
