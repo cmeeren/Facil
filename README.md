@@ -364,6 +364,10 @@ need separate configuration per temp table.
 Note that if a **procedure** uses a **global** temp table (a temp table that starts with two `##` instead of one `#`),
 that temp table needs to exist at build-time. (This limitation does not apply to scripts.)
 
+Note also that if you plan to use the same temp table name in another command with the same connection, you need to drop
+it. The easiest way to do this is to use `DROP TABLE #myTempTable` as the first line in the temp table definition. (This
+is automatically done for Facil-generated `tableScripts` that use temp tables).
+
 ### Why do the `Execute` methods return `ResizeArray` and not an F# `list`?
 
 The rows have to be read from the DB one at a time without knowing how many rows there are. As far as I know,

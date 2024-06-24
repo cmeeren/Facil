@@ -75,9 +75,13 @@ rulesets:
       - for: NominalParams$
         paramDto: nominal
 
+      # This is also a test in itself: We should be able to drop temp tables in the definition.
+      # If this 'test' fails, generation should fail.
       - for: ProcWithTempTable$
         tempTables:
-          - definition: 'CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
+          - definition: |-
+              DROP TABLE IF EXISTS #tempTable
+              CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
 
       # This is a test in itself: Temp tables should work in extended stored procedures. If this 'test' fails,
       # generation should fail.

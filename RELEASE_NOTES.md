@@ -1,6 +1,12 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Temp tables in Facil-generated `tableScripts` are now dropped if they exist before they are created. This allows using
+  the same temp table name in multiple commands in the same connection.
+* Updated the readme with a note about having to do temp table dropping manually for your own scripts.
+
 ### 2.9.0 (2024-04-12)
 
 * Cancellations now throw `OperationCanceledException` instead of `SqlException`. This is a workaround

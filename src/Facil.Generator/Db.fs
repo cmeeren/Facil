@@ -1826,6 +1826,7 @@ let getEverything
                                         Name = tempTableName
                                         Source =
                                             [
+                                                $"DROP TABLE IF EXISTS {tempTableName}"
                                                 $"CREATE TABLE {tempTableName} ("
 
                                                 yield!
@@ -2045,6 +2046,7 @@ let getEverything
                                         Name = tempTableName
                                         Source =
                                             [
+                                                $"DROP TABLE IF EXISTS {tempTableName}"
                                                 $"CREATE TABLE {tempTableName} ("
 
                                                 yield!
@@ -2370,6 +2372,7 @@ let getEverything
                                         Name = tempTableName
                                         Source =
                                             [
+                                                $"DROP TABLE IF EXISTS {tempTableName}"
                                                 $"CREATE TABLE {tempTableName} ("
 
                                                 yield!
