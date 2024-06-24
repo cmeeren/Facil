@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.9.1 (2024-06-24)
 
 * Temp tables in Facil-generated `tableScripts` are now dropped if they exist before they are created. This allows using
   the same temp table name in multiple commands in the same connection.
