@@ -3,6 +3,7 @@ Release notes
 
 ### Unreleased
 
+* Updated generator dependency Microsoft.Extensions.Configuration.Binder from 8.0.1 to 8.0.2
 * Updated generator dependency FSharp.Core from 8.0.200 to 8.0.301
 
 ### 2.9.1 (2024-06-24)
