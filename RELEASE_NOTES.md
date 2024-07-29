@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Updated generator dependency FSharp.Core from 8.0.200 to 8.0.301
+
 ### 2.9.1 (2024-06-24)
 
 * Temp tables in Facil-generated `tableScripts` are now dropped if they exist before they are created. This allows using
