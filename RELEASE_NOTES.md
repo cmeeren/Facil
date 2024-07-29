@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.10.0 (2024-07-29)
 
 * Now targets .NET Standard 2.0 (generator still requires .NET 6+ installed at build-time)
 * Updated Microsoft.Data.SqlClient from 5.1.4 to 5.2.1
