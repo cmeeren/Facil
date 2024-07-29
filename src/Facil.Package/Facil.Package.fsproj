@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Facil</PackageId>
     <PackageOutputPath>..\..\nupkg</PackageOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Content Include="Facil.targets">
-      <PackagePath>build/net6.0/</PackagePath>
+      <PackagePath>build/netstandard2.0/</PackagePath>
     </Content>
     <Content Include="FacilGenerate.targets">
       <PackagePath>tools/</PackagePath>

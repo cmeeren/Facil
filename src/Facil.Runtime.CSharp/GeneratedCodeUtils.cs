@@ -24,7 +24,7 @@ namespace Facil.Runtime.CSharp
     {
       foreach (var data in tempTableData)
       {
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         if (tran != null) cmd.Transaction = tran;
         // Note: If there is ever a need for letting users configure the command,
         // do not use the configureCmd parameter passed to methods on this class,
@@ -33,7 +33,7 @@ namespace Facil.Runtime.CSharp
         await cmd.ExecuteNonQueryAsync(ct);
 
         using var bulkCopy = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, tran)
-          {DestinationTableName = data.DestinationTableName};
+          { DestinationTableName = data.DestinationTableName };
         data.ConfigureBulkCopy(bulkCopy);
         var reader = new TempTableLoader(data.NumFields, data.Data);
         await bulkCopy.WriteToServerAsync(reader, ct);
@@ -54,7 +54,7 @@ namespace Facil.Runtime.CSharp
         cmd.ExecuteNonQuery();
 
         using var bulkCopy = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, tran)
-          {DestinationTableName = data.DestinationTableName};
+          { DestinationTableName = data.DestinationTableName };
         data.ConfigureBulkCopy(bulkCopy);
         var reader = new TempTableLoader(data.NumFields, data.Data);
         bulkCopy.WriteToServer(reader);
@@ -80,9 +80,9 @@ namespace Facil.Runtime.CSharp
       if (existingConn is not null)
       {
         await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
-        await using var cmd = existingConn.CreateCommand();
+        using var cmd = existingConn.CreateCommand();
         ConfigureCommand(cmd, tran, configureCmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         var list = new List<T>();
         if (!reader.HasRows) return list;
         initOrdinals(reader);
@@ -93,13 +93,13 @@ namespace Facil.Runtime.CSharp
       // ReSharper disable once InvertIf
       if (connStr is not null)
       {
-        await using var conn = new SqlConnection(connStr);
+        using var conn = new SqlConnection(connStr);
         configureNewConn(conn);
         await conn.OpenAsync(ct).ConfigureAwait(false);
         await LoadTempTablesAsync(conn, tempTableData, tran, ct);
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         configureCmd(cmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         var list = new List<T>();
         if (!reader.HasRows) return list;
         initOrdinals(reader);
@@ -118,9 +118,9 @@ namespace Facil.Runtime.CSharp
       if (existingConn is not null)
       {
         await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
-        await using var cmd = existingConn.CreateCommand();
+        using var cmd = existingConn.CreateCommand();
         ConfigureCommand(cmd, tran, configureCmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         var list = new List<T>();
         if (!reader.HasRows) return list;
         initOrdinals(reader);
@@ -132,13 +132,13 @@ namespace Facil.Runtime.CSharp
       // ReSharper disable once InvertIf
       if (connStr is not null)
       {
-        await using var conn = new SqlConnection(connStr);
+        using var conn = new SqlConnection(connStr);
         configureNewConn(conn);
         await conn.OpenAsync(ct).ConfigureAwait(false);
         await LoadTempTablesAsync(conn, tempTableData, tran, ct);
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         configureCmd(cmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         var list = new List<T>();
         if (!reader.HasRows) return list;
         initOrdinals(reader);
@@ -195,22 +195,22 @@ namespace Facil.Runtime.CSharp
       if (existingConn is not null)
       {
         await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
-        await using var cmd = existingConn.CreateCommand();
+        using var cmd = existingConn.CreateCommand();
         ConfigureCommand(cmd, tran, configureCmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         if (!reader.HasRows) yield break;
         initOrdinals(reader);
         while (await reader.ReadAsync(ct).ConfigureAwait(false)) yield return getItem(reader);
       }
       else if (connStr is not null)
       {
-        await using var conn = new SqlConnection(connStr);
+        using var conn = new SqlConnection(connStr);
         configureNewConn(conn);
         await conn.OpenAsync(ct).ConfigureAwait(false);
         await LoadTempTablesAsync(conn, tempTableData, tran, ct);
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         configureCmd(cmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         if (!reader.HasRows) yield break;
         initOrdinals(reader);
         while (await reader.ReadAsync(ct).ConfigureAwait(false)) yield return getItem(reader);
@@ -229,9 +229,9 @@ namespace Facil.Runtime.CSharp
       if (existingConn is not null)
       {
         await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
-        await using var cmd = existingConn.CreateCommand();
+        using var cmd = existingConn.CreateCommand();
         ConfigureCommand(cmd, tran, configureCmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         if (!reader.HasRows) yield break;
         initOrdinals(reader);
         // ReSharper disable once MethodHasAsyncOverloadWithCancellation
@@ -239,13 +239,13 @@ namespace Facil.Runtime.CSharp
       }
       else if (connStr is not null)
       {
-        await using var conn = new SqlConnection(connStr);
+        using var conn = new SqlConnection(connStr);
         configureNewConn(conn);
         await conn.OpenAsync(ct).ConfigureAwait(false);
         await LoadTempTablesAsync(conn, tempTableData, tran, ct);
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         configureCmd(cmd);
-        await using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
+        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleResult, ct).ConfigureAwait(false);
         if (!reader.HasRows) yield break;
         initOrdinals(reader);
         // ReSharper disable once MethodHasAsyncOverloadWithCancellation
@@ -298,9 +298,9 @@ namespace Facil.Runtime.CSharp
       if (existingConn is not null)
       {
         await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
-        await using var cmd = existingConn.CreateCommand();
+        using var cmd = existingConn.CreateCommand();
         ConfigureCommand(cmd, tran, configureCmd);
-        await using var reader = await cmd
+        using var reader = await cmd
           .ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
         if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpOption<T>.None;
         initOrdinals(reader);
@@ -310,13 +310,13 @@ namespace Facil.Runtime.CSharp
       // ReSharper disable once InvertIf
       if (connStr is not null)
       {
-        await using var conn = new SqlConnection(connStr);
+        using var conn = new SqlConnection(connStr);
         configureNewConn(conn);
         await conn.OpenAsync(ct).ConfigureAwait(false);
         await LoadTempTablesAsync(conn, tempTableData, tran, ct);
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         configureCmd(cmd);
-        await using var reader = await cmd
+        using var reader = await cmd
           .ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
         if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpOption<T>.None;
         initOrdinals(reader);
@@ -334,9 +334,9 @@ namespace Facil.Runtime.CSharp
       if (existingConn is not null)
       {
         await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
-        await using var cmd = existingConn.CreateCommand();
+        using var cmd = existingConn.CreateCommand();
         ConfigureCommand(cmd, tran, configureCmd);
-        await using var reader = await cmd
+        using var reader = await cmd
           .ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
         if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpValueOption<T>.None;
         initOrdinals(reader);
@@ -346,13 +346,13 @@ namespace Facil.Runtime.CSharp
       // ReSharper disable once InvertIf
       if (connStr is not null)
       {
-        await using var conn = new SqlConnection(connStr);
+        using var conn = new SqlConnection(connStr);
         configureNewConn(conn);
         await conn.OpenAsync(ct).ConfigureAwait(false);
         await LoadTempTablesAsync(conn, tempTableData, tran, ct);
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         configureCmd(cmd);
-        await using var reader = await cmd
+        using var reader = await cmd
           .ExecuteReaderAsync(CommandBehavior.SingleResult | CommandBehavior.SingleRow, ct).ConfigureAwait(false);
         if (!await reader.ReadAsync(ct).ConfigureAwait(false)) return FSharpValueOption<T>.None;
         initOrdinals(reader);
@@ -447,7 +447,7 @@ namespace Facil.Runtime.CSharp
         }
         catch (Exception)
         {
-          await cmd.DisposeAsync();
+          cmd.Dispose();
           throw;
         }
       }
@@ -470,13 +470,13 @@ namespace Facil.Runtime.CSharp
           }
           catch (Exception)
           {
-            await cmd.DisposeAsync();
+            cmd.Dispose();
             throw;
           }
         }
         catch (Exception)
         {
-          await conn.DisposeAsync();
+          conn.Dispose();
           throw;
         }
       }
@@ -547,7 +547,7 @@ namespace Facil.Runtime.CSharp
       if (existingConn is not null)
       {
         await LoadTempTablesAsync(existingConn, tempTableData, tran, ct);
-        await using var cmd = existingConn.CreateCommand();
+        using var cmd = existingConn.CreateCommand();
         ConfigureCommand(cmd, tran, configureCmd);
         return await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
       }
@@ -555,11 +555,11 @@ namespace Facil.Runtime.CSharp
       // ReSharper disable once InvertIf
       if (connStr is not null)
       {
-        await using var conn = new SqlConnection(connStr);
+        using var conn = new SqlConnection(connStr);
         configureNewConn(conn);
         await conn.OpenAsync(ct);
         await LoadTempTablesAsync(conn, tempTableData, tran, ct);
-        await using var cmd = conn.CreateCommand();
+        using var cmd = conn.CreateCommand();
         configureCmd(cmd);
         return await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
       }

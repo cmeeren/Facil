@@ -3,6 +3,7 @@ Release notes
 
 ### Unreleased
 
+* Now targets .NET Standard 2.0 (generator still requires .NET 6+ installed at build-time)
 * Updated Microsoft.Data.SqlClient from 5.1.4 to 5.2.1
 * Updated FSharp.SystemTextJson from 1.2.42 to 1.3.13
 * Updated generator dependency Microsoft.Extensions.Configuration.Binder from 8.0.1 to 8.0.2

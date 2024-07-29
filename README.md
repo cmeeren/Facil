@@ -3,7 +3,8 @@ Facil
 
 <img src="https://raw.githubusercontent.com/cmeeren/Facil/master/logo/facil-logo-docs.png" width="300" align="right" />
 
-**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.**
+**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.
+**
 
 Pro-tip: Facil works great with [Fling](https://github.com/cmeeren/Fling)!
 
@@ -96,7 +97,7 @@ ask? [See the FAQ.](#why-not-a-type-provider))
 * Can also [generate simple per-table CRUD scripts](#can-facil-generate-sql-scripts)
 * Good API ergonomics – succinct and discoverable fluent-style syntax, no boilerplate
 * Supports SQL Server 2012 and up
-* Built for the future, compatible with .NET 6.0 and later
+* Targets .NET Standard 2.0
 * Thoroughly tested
 * Built for speed – inner async read loops written in C# using its native `async`/`await`; allows you to read directly
   to your chosen DTO records to minimize allocations for heavy queries
