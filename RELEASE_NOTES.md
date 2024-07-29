@@ -3,6 +3,7 @@ Release notes
 
 ### Unreleased
 
+* Updated Microsoft.Data.SqlClient from 5.1.4 to 5.2.1
 * Updated generator dependency Microsoft.Extensions.Configuration.Binder from 8.0.1 to 8.0.2
 * Updated generator dependency Microsoft.SqlServer.TransactSql.ScriptDom from 161.9109.0 to 161.9123.0
 * Updated generator dependency FSharp.Core from 8.0.200 to 8.0.301
