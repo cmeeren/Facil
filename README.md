@@ -3,8 +3,7 @@ Facil
 
 <img src="https://raw.githubusercontent.com/cmeeren/Facil/master/logo/facil-logo-docs.png" width="300" align="right" />
 
-**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.
-**
+**Facil generates F# data access source code from SQL queries and stored procedures. Optimized for developer happiness.**
 
 Pro-tip: Facil works great with [Fling](https://github.com/cmeeren/Fling)!
 
