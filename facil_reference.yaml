@@ -303,7 +303,7 @@ rulesets:
             # subdirectory.
             name: 'subdir/{SchemaName}_{TableName}_Insert'
 
-            # The following work similarly to column rules in in stored procedure rules.
+            # 'columns' allows you to specify settings for individual output columns.
             columns:
 
               # Rules inherited by all columns.
