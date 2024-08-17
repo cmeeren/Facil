@@ -194,6 +194,9 @@ rulesets:
           SomeColumn:
             skip: false
 
+            # Override Facil's inferred nullability.
+            nullable: false
+
 
     # Rules for which SQL script files are included. These work just like stored procedure
     # rules, except that 'include', 'for', and 'except' are glob patterns, not regex
@@ -275,6 +278,9 @@ rulesets:
             skip: true
           SomeColumn:
             skip: false
+
+            # Override Facil's inferred nullability.
+            nullable: false
 
 
     # Facil can generate simple boilerplate per-table CRUD scripts.
@@ -486,6 +492,9 @@ rulesets:
             skip: true
           SomeColumn:
             skip: false
+
+            # Override Facil's inferred nullability.
+            nullable: false
 
 
     # Facil automatically generates table type constructors for table types used as a

@@ -34,10 +34,16 @@ type ConfigSourceDto = {
 
 
 [<CLIMutable>]
-type TableDtoColumnDto = { skip: bool option }
+type TableDtoColumnDto = {
+    skip: bool option
+    nullable: bool option
+}
 
 
-type TableDtoColumn = { Skip: bool option }
+type TableDtoColumn = {
+    Skip: bool option
+    Nullable: bool option
+}
 
 
 [<CLIMutable>]
@@ -109,10 +115,16 @@ type ProcedureParameter = {
 
 
 [<CLIMutable>]
-type ProcedureColumnDto = { skip: bool option }
+type ProcedureColumnDto = {
+    skip: bool option
+    nullable: bool option
+}
 
 
-type ProcedureColumn = { Skip: bool option }
+type ProcedureColumn = {
+    Skip: bool option
+    Nullable: bool option
+}
 
 
 [<CLIMutable>]
@@ -179,10 +191,16 @@ type ScriptParameter = {
 
 
 [<CLIMutable>]
-type ScriptColumnDto = { skip: bool option }
+type ScriptColumnDto = {
+    skip: bool option
+    nullable: bool option
+}
 
 
-type ScriptColumn = { Skip: bool option }
+type ScriptColumn = {
+    Skip: bool option
+    Nullable: bool option
+}
 
 
 [<CLIMutable>]
@@ -375,20 +393,25 @@ module TableDtoColumnDto =
     /// Merges the two DTOs, using values from dto2 to override values in dto1.
     let merge (dto1: TableDtoColumnDto) (dto2: TableDtoColumnDto) : TableDtoColumnDto = {
         skip = dto2.skip |> Option.orElse dto1.skip
+        nullable = dto2.nullable |> Option.orElse dto1.nullable
     }
 
 
 module TableDtoColumn =
 
 
-    let empty: TableDtoColumn = { Skip = None }
+    let empty: TableDtoColumn = { Skip = None; Nullable = None }
 
 
-    let fromDto (dto: TableDtoColumnDto) : TableDtoColumn = { Skip = dto.skip }
+    let fromDto (dto: TableDtoColumnDto) : TableDtoColumn = {
+        Skip = dto.skip
+        Nullable = dto.nullable
+    }
 
 
     let merge (c1: TableDtoColumn) (c2: TableDtoColumn) : TableDtoColumn = {
         Skip = c2.Skip |> Option.orElse c1.Skip
+        Nullable = c2.Nullable |> Option.orElse c1.Nullable
     }
 
 
@@ -420,9 +443,17 @@ module TableDtoRule =
                 | None -> Map.empty
                 | Some includeColumns ->
                     [
-                        "", { TableDtoColumnDto.skip = Some true }
+                        "",
+                        {
+                            TableDtoColumnDto.skip = Some true
+                            nullable = None
+                        }
                         for colName in includeColumns do
-                            colName, { TableDtoColumnDto.skip = Some false }
+                            colName,
+                            {
+                                TableDtoColumnDto.skip = Some false
+                                nullable = None
+                            }
                     ]
                     |> Map.ofList
 
@@ -553,14 +584,18 @@ module ProcedureParameter =
 module ProcedureColumn =
 
 
-    let empty: ProcedureColumn = { Skip = None }
+    let empty: ProcedureColumn = { Skip = None; Nullable = None }
 
 
-    let fromDto (dto: ProcedureColumnDto) : ProcedureColumn = { Skip = dto.skip }
+    let fromDto (dto: ProcedureColumnDto) : ProcedureColumn = {
+        Skip = dto.skip
+        Nullable = dto.nullable
+    }
 
 
     let merge (c1: ProcedureColumn) (c2: ProcedureColumn) : ProcedureColumn = {
         Skip = c2.Skip |> Option.orElse c1.Skip
+        Nullable = c2.Nullable |> Option.orElse c1.Nullable
     }
 
 
@@ -794,14 +829,18 @@ module ScriptParameter =
 module ScriptColumn =
 
 
-    let empty: ScriptColumn = { Skip = None }
+    let empty: ScriptColumn = { Skip = None; Nullable = None }
 
 
-    let fromDto (dto: ScriptColumnDto) : ScriptColumn = { Skip = dto.skip }
+    let fromDto (dto: ScriptColumnDto) : ScriptColumn = {
+        Skip = dto.skip
+        Nullable = dto.nullable
+    }
 
 
     let merge (c1: ScriptColumn) (c2: ScriptColumn) : ScriptColumn = {
         Skip = c2.Skip |> Option.orElse c1.Skip
+        Nullable = c2.Nullable |> Option.orElse c1.Nullable
     }
 
 

@@ -250,6 +250,18 @@ let tests =
             ignore f
 
 
+        testCase "Compile-time table DTO nullability override test"
+        <| fun () ->
+            let f () =
+                let (x: DbGen.TableDtos.dbo.TableWithNullabilityOverride) = Unchecked.defaultof<_>
+                x.NotNull1 |> ignore<int option>
+                x.NotNull2 |> ignore<int>
+                x.Null1 |> ignore<int>
+                x.Null2 |> ignore<int option>
+
+            ignore f
+
+
         testCase "Table DTO includeColumns and columns overrides work correctly"
         <| fun () ->
             let fieldNames =
@@ -799,5 +811,31 @@ let tests =
 
             Expect.throwsC run cont ""
         }
+
+
+        testCase "Proc column nullability"
+        <| fun () ->
+            let res =
+                DbGen.Procedures.dbo.ProcWithNullabilityOverride
+                    .WithConnection(Config.connStr)
+                    .ExecuteSingle()
+
+            test <@ res.Value.NotNull1 = 1 @>
+            test <@ res.Value.NotNull2 = Some 2 @>
+            test <@ res.Value.Null1 = Some 3 @>
+            test <@ res.Value.Null2 = 4 @>
+
+
+        testCase "Script column nullability"
+        <| fun () ->
+            let res =
+                DbGen.Scripts.ScriptWithNullabilityOverride
+                    .WithConnection(Config.connStr)
+                    .ExecuteSingle()
+
+            test <@ res.Value.NotNull1 = 1 @>
+            test <@ res.Value.NotNull2 = Some 2 @>
+            test <@ res.Value.Null1 = Some 3 @>
+            test <@ res.Value.Null2 = 4 @>
 
     ]

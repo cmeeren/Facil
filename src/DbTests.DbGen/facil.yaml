@@ -89,6 +89,13 @@ rulesets:
         tempTables:
           - definition: 'CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
 
+      - for: ProcWithNullabilityOverride
+        columns:
+          NotNull2:
+            nullable: true
+          Null2:
+            nullable: false
+
 
     scripts:
       - include: '**/*.sql'
@@ -296,6 +303,13 @@ rulesets:
           tvp:
             type: dbo.SingleColNull
 
+      - for: ScriptWithNullabilityOverride.sql
+        columns:
+          NotNull2:
+            nullable: true
+          Null2:
+            nullable: false
+
 
     tableDtos:
       - include: '.*'
@@ -342,6 +356,13 @@ rulesets:
 
       - for: AllTypes(Non)?Null
         mappingCtor: true
+
+      - for: TableWithNullabilityOverride
+        columns:
+          NotNull1:
+            nullable: true
+          Null1:
+            nullable: false
 
 
     tableTypes:

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Post-Deployment Script Template							
 --------------------------------------------------------------------------------------
  This file contains SQL statements that will be appended to the build script.		
@@ -58,3 +58,12 @@ INSERT INTO VoptionTableWithoutDto
 VALUES
   ('test1', 1),
   (NULL, NULL)
+
+
+
+DELETE FROM TableWithNullabilityOverride
+
+INSERT INTO TableWithNullabilityOverride
+  (NotNull1, NotNull2, Null1, Null2)
+VALUES
+  (1, 2, 3, 4)

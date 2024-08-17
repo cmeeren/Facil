@@ -317,20 +317,22 @@ let getColumnsFromSpDescribeFirstResultSet
 
         colName |> Option.iter allColNames.Add
 
-        let shouldSkipCol =
+        let shouldSkipCol, nullableOverride =
             match colName, executable with
             | Some name, Choice1Of3 sproc ->
-                RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-                |> EffectiveProcedureRule.getColumn name
-                |> fun c -> c.Skip
-                |> Option.defaultValue false
+                let rule =
+                    RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+                    |> EffectiveProcedureRule.getColumn name
+
+                rule.Skip |> Option.defaultValue false, rule.Nullable
             | Some name, Choice2Of3 script ->
-                RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-                |> EffectiveScriptRule.getColumn name
-                |> fun c -> c.Skip
-                |> Option.defaultValue false
+                let rule =
+                    RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+                    |> EffectiveScriptRule.getColumn name
+
+                rule.Skip |> Option.defaultValue false, rule.Nullable
             | None, _
-            | _, Choice3Of3 _ -> false
+            | _, Choice3Of3 _ -> false, None
 
         if not shouldSkipCol then
 
@@ -353,7 +355,7 @@ let getColumnsFromSpDescribeFirstResultSet
             cols.Add {
                 OutputColumn.Name = colName
                 SortKey = reader["column_ordinal"] |> unbox<int>
-                IsNullable = reader["is_nullable"] |> unbox<bool>
+                IsNullable = nullableOverride |> Option.defaultValue (reader["is_nullable"] |> unbox<bool>)
                 TypeInfo = typeInfo
                 Collation =
                     if reader.IsDBNull "collation_name" then
@@ -482,20 +484,22 @@ let getColumnsFromQuery
 
             colName |> Option.iter allColNames.Add
 
-            let shouldSkipCol =
+            let shouldSkipCol, nullableOverride =
                 match colName, executable with
                 | Some name, Choice1Of3 sproc ->
-                    RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
-                    |> EffectiveProcedureRule.getColumn name
-                    |> fun c -> c.Skip
-                    |> Option.defaultValue false
+                    let rule =
+                        RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
+                        |> EffectiveProcedureRule.getColumn name
+
+                    rule.Skip |> Option.defaultValue false, rule.Nullable
                 | Some name, Choice2Of3 script ->
-                    RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
-                    |> EffectiveScriptRule.getColumn name
-                    |> fun c -> c.Skip
-                    |> Option.defaultValue false
+                    let rule =
+                        RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
+                        |> EffectiveScriptRule.getColumn name
+
+                    rule.Skip |> Option.defaultValue false, rule.Nullable
                 | None, _
-                | _, Choice3Of3 _ -> false
+                | _, Choice3Of3 _ -> false, None
 
             if not shouldSkipCol then
 
@@ -511,7 +515,7 @@ let getColumnsFromQuery
                 cols.Add {
                     OutputColumn.Name = colName
                     SortKey = schema.ColumnOrdinal.Value
-                    IsNullable = schema.AllowDBNull.Value
+                    IsNullable = nullableOverride |> Option.defaultValue schema.AllowDBNull.Value
                     TypeInfo = typeInfo
                     Collation = None
                 }
@@ -947,11 +951,11 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
                     allColumnsByTableSchemaAndName[key] <- r
                 | true, names -> names.Add colName
 
-                let shouldSkipCol =
+                let tableDtoColRule =
                     RuleSet.getEffectiveTableDtoRuleFor schemaName tableName cfg
                     |> EffectiveTableDtoRule.getColumn colName
-                    |> fun c -> c.Skip
-                    |> Option.defaultValue false
+
+                let shouldSkipCol = tableDtoColRule.Skip |> Option.defaultValue false
 
                 let typeInfo =
                     reader["system_type_id"]
@@ -985,7 +989,9 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
                                 {
                                     TableColumn.Name = colName
                                     SortKey = reader["column_id"] |> unbox<int>
-                                    IsNullable = reader["is_nullable"] |> unbox<bool>
+                                    IsNullable =
+                                        tableDtoColRule.Nullable
+                                        |> Option.defaultValue (reader["is_nullable"] |> unbox<bool>)
                                     IsIdentity = reader["is_identity"] |> unbox<bool>
                                     IsComputed = reader["is_computed"] |> unbox<bool>
                                     IsGeneratedAlways = reader["generated_always_type"] |> unbox<byte> |> (<>) 0uy
