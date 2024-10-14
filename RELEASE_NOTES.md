@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Updated generator dependency Microsoft.SqlServer.TransactSql.ScriptDom from 161.9123.0 to 161.9142.1
+
 ### 2.11.0 (2024-08-18)
 
 * Now supports overriding column nullability for table DTOs, scripts, and procedures. This can be useful to circumvent
