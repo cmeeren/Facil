@@ -6,8 +6,8 @@ Release notes
 * Now supports overriding column nullability for table DTOs, scripts, and procedures. This can be useful to circumvent
   certain limitations of SQL Server's type inference for scripts and procedures. For example, if a computed column is
   defined as `COALESCE(NullCol, NonNullCol)`, then the column in the table DTO may be correctly inferred to be non-null,
-  while in scripts and procedures it may be nullable. To use this feature, use the new YAML `nullable` key in
-  the `columns` object of scripts, procedures, or table DTOs.
+  while in scripts and procedures it may be nullable. To use this feature, use the new YAML `nullable` key in the
+  `columns` object of scripts, procedures, or table DTOs.
 
 ### 2.10.0 (2024-07-29)
 
@@ -35,8 +35,8 @@ Release notes
 ### 2.8.0 (2024-03-21)
 
 * Added `Execute` methods for getting a `SqlDataReader`. While less type safe, this makes it possible to use Facil
-  scripts to fetch data for legacy code that loads domain objects using `SqlDataReader` (or from related types, such
-  as `DataTable`).
+  scripts to fetch data for legacy code that loads domain objects using `SqlDataReader` (or from related types, such as
+  `DataTable`).
 
 ### 2.7.4 (2024-01-19)
 
@@ -89,8 +89,8 @@ Release notes
 
 ### 2.5.8 (2022-11-02)
 
-* Fixed a build-time error for certain queries when using connection strings with credentials but
-  without `Persist Security Info=true`
+* Fixed a build-time error for certain queries when using connection strings with credentials but without
+  `Persist Security Info=true`
 * Updated Microsoft.Data.SqlClient from 5.0.0 to 5.0.1
 
 ### 2.5.7 (2022-08-08)
