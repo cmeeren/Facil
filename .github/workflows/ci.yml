@@ -17,6 +17,9 @@ jobs:
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
+        with:
+          global-json-file: './global.json'
+          dotnet-version: '6' # Needed by DB project
 
       - name: Restore tools
         run: dotnet tool restore
