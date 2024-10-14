@@ -4,6 +4,7 @@ Release notes
 ### Unreleased
 
 * Updated generator dependency Microsoft.SqlServer.TransactSql.ScriptDom from 161.9123.0 to 161.9142.1
+* Updated generator dependency FSharp.Core from 8.0.301 to 8.0.401
 
 ### 2.11.0 (2024-08-18)
 
