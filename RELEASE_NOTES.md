@@ -1,8 +1,10 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.12.0 (2024-10-16)
 
+* Can now generate `merge` table scripts for tables with only primary key columns (will then simply insert if the row
+  does not exist)
 * Updated Microsoft.Data.SqlClient from 5.2.1 to 5.2.2
 * Updated generator dependency Microsoft.SqlServer.TransactSql.ScriptDom from 161.9123.0 to 161.9142.1
 * Updated generator dependency FSharp.Core from 8.0.301 to 8.0.401

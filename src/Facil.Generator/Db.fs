@@ -2188,15 +2188,16 @@ let getEverything
                                             |> List.mapAllExceptFirst (sprintf "AND %s")
                                             |> List.map (sprintf "  %s")
 
-                                        ""
-                                        "WHEN MATCHED THEN"
-                                        "  UPDATE"
-                                        "  SET"
+                                        if not colsToUpdateWithRule.IsEmpty then
+                                            ""
+                                            "WHEN MATCHED THEN"
+                                            "  UPDATE"
+                                            "  SET"
 
-                                        yield!
-                                            colsToUpdateWithRule
-                                            |> List.map (fun (c, _) -> $"    [%s{c.Name}] = x.[%s{c.Name}]")
-                                            |> List.mapAllExceptLast (sprintf "%s,")
+                                            yield!
+                                                colsToUpdateWithRule
+                                                |> List.map (fun (c, _) -> $"    [%s{c.Name}] = x.[%s{c.Name}]")
+                                                |> List.mapAllExceptLast (sprintf "%s,")
 
                                         ""
                                         "WHEN NOT MATCHED THEN"
