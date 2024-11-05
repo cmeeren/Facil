@@ -2489,6 +2489,112 @@ let getEverything
                             }
 
 
+                    // 'deleteBatch' scripts
+                    if not dto.IsView then
+                        for rule in rule |> TableScriptRule.rulesFor DeleteBatch do
+
+                            warnInvalidColumns "deleteBatch" dto rule
+
+                            let colsWithRule =
+                                dto.Columns
+                                |> List.map (fun col -> col, EffectiveTableScriptTypeRule.getColumn col.Name rule)
+
+                            let colsToOutputWithRule =
+                                colsWithRule |> List.filter (fun (_, rule) -> rule.Output = Some true)
+
+                            let pkColsWithRule =
+                                match primaryKeyColumnNamesByTable.TryFind(dto.SchemaName, dto.Name) with
+                                | None
+                                | Some [] ->
+                                    failwithError
+                                        $"Table or view %s{dto.SchemaName}.%s{dto.Name} has no primary keys and can not be used for a 'delete' table script"
+                                | Some colNames ->
+                                    colNames
+                                    |> List.map (fun n ->
+                                        colsWithRule
+                                        |> List.tryFind (fun (c, _) -> c.Name = n)
+                                        |> Option.defaultWith (fun () ->
+                                            failwithError
+                                                $"Unable to find primary key '%s{n}' in table or view '%s{dto.SchemaName}.%s{dto.Name}'"
+                                        )
+                                    )
+
+                            let tempTableName = "#args"
+
+                            {
+                                GlobMatchOutput = rule.Name
+                                RelativePathSegments =
+                                    let segmentsWithName =
+                                        rule.Name.Split([| '/'; '\\' |], StringSplitOptions.RemoveEmptyEntries)
+
+                                    segmentsWithName[0 .. segmentsWithName.Length - 2] |> Array.toList
+                                NameWithoutExtension = Path.GetFileName rule.Name
+                                Source =
+
+                                    [
+                                        $"DELETE [%s{dto.Name}]"
+
+                                        if not colsToOutputWithRule.IsEmpty then
+                                            "OUTPUT"
+
+                                            yield!
+                                                colsToOutputWithRule
+                                                |> List.map (fun (c, _) -> $"  deleted.[%s{c.Name}]")
+                                                |> List.mapAllExceptLast (sprintf "%s,")
+
+                                        $"FROM [%s{dto.SchemaName}].[%s{dto.Name}]"
+                                        $"INNER JOIN [%s{tempTableName}]"
+                                        "  ON"
+                                        yield!
+                                            pkColsWithRule
+                                            |> List.map (fun (c, _) ->
+                                                $"[%s{tempTableName}].[%s{c.Name}] = [%s{dto.Name}].[%s{c.Name}]"
+                                            )
+                                            |> List.mapAllExceptFirst (sprintf "AND %s")
+                                            |> List.map (sprintf "    %s")
+                                    ]
+                                    |> String.concat "\n"
+                                Parameters = []
+                                ResultSet = None
+                                TempTables = [
+                                    {
+                                        Name = tempTableName
+                                        Source =
+                                            [
+                                                $"DROP TABLE IF EXISTS {tempTableName}"
+                                                $"CREATE TABLE {tempTableName} ("
+
+                                                yield!
+                                                    pkColsWithRule
+                                                    |> List.map (fun (c, _) ->
+                                                        let sqlTypeExpr = c.SqlExpression
+
+                                                        let collateExpr =
+                                                            c.Collation |> Option.map (sprintf "COLLATE %s")
+
+                                                        let nullExpr = if c.IsNullable then "NULL" else "NOT NULL"
+
+                                                        [
+                                                            $"[{c.Name}]"
+                                                            sqlTypeExpr
+                                                            yield! Option.toList collateExpr
+                                                            nullExpr
+                                                        ]
+                                                        |> String.concat " "
+                                                        |> sprintf "  %s"
+                                                    )
+                                                    |> List.map (sprintf "%s,")
+
+                                                ")"
+                                            ]
+                                            |> String.concat "\n"
+                                        Columns = pkColsWithRule |> List.map (fst >> TableColumn.toOutputColumn)
+                                    }
+                                ]
+                                GeneratedByFacil = true
+                            }
+
+
                 ]
             )
 

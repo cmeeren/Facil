@@ -380,6 +380,7 @@ rulesets:
           - type: merge
           - type: mergeBatch
           - type: delete
+          - type: deleteBatch
           - type: getAll
           - type: getById
 
@@ -446,6 +447,11 @@ rulesets:
                 paramName: bar
 
           - type: delete
+            columns:
+              '':
+                output: true
+
+          - type: deleteBatch
             columns:
               '':
                 output: true
@@ -519,6 +525,7 @@ rulesets:
           - type: update
           - type: updateBatch
           - type: delete
+          - type: deleteBatch
           - type: merge
           - type: mergeBatch
 

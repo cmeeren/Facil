@@ -22,7 +22,7 @@ let tests =
         testList "Basic execute + can roundtrip values without losing precision" [
 
 
-            testCase "Non-null INSERT/UPDATE"
+            testCase "Non-null INSERT/UPDATE/DELETE"
             <| fun () ->
                 Property.check
                 <| property {
@@ -261,7 +261,7 @@ let tests =
                 }
 
 
-            testCase "Non-null INSERT/UPDATE batch"
+            testCase "Non-null INSERT/UPDATE/DELETE batch"
             <| fun () ->
                 Property.check
                 <| property {
@@ -692,6 +692,33 @@ let tests =
                     test <@ varbinary_42_B = getRes_B.Value.Varbinary @>
                     test <@ varchar_42_B = getRes_B.Value.Varchar @>
                     test <@ xml_B = getRes_B.Value.Xml @>
+
+                    let numDeletedRows =
+                        DbGen.Scripts.AllTypesNonNull_DeleteBatch
+                            .WithConnection(Config.connStr)
+                            .WithParameters(
+                                [ key_A; key_B ]
+                                |> List.map DbGen.Scripts.AllTypesNonNull_DeleteBatch.args.create
+                            )
+                            .Execute()
+
+                    test <@ numDeletedRows = 2 @>
+
+                    let getRes_A =
+                        DbGen.Scripts.AllTypesNonNull_ById
+                            .WithConnection(Config.connStr)
+                            .WithParameters(key_A)
+                            .ExecuteSingle()
+
+                    test <@ getRes_A = None @>
+
+                    let getRes_B =
+                        DbGen.Scripts.AllTypesNonNull_ById
+                            .WithConnection(Config.connStr)
+                            .WithParameters(key_B)
+                            .ExecuteSingle()
+
+                    test <@ getRes_B = None @>
                 }
 
 
@@ -1350,7 +1377,7 @@ let tests =
                 }
 
 
-            testCase "Null INSERT/UPDATE"
+            testCase "Null INSERT/UPDATE/DELETE"
             <| fun () ->
                 Property.check
                 <| property {
@@ -1592,7 +1619,7 @@ let tests =
                 }
 
 
-            testCase "Null INSERT/UPDATE batch"
+            testCase "Null INSERT/UPDATE/DELETE batch"
             <| fun () ->
                 Property.check
                 <| property {
@@ -2025,6 +2052,33 @@ let tests =
                     test <@ varbinary_42_B = getRes_B.Value.Varbinary @>
                     test <@ varchar_42_B = getRes_B.Value.Varchar @>
                     test <@ xml_B = getRes_B.Value.Xml @>
+
+                    let numDeletedRows =
+                        DbGen.Scripts.AllTypesNull_DeleteBatch
+                            .WithConnection(Config.connStr)
+                            .WithParameters(
+                                [ (key1_A, key2_A); (key1_B, key2_B) ]
+                                |> List.map DbGen.Scripts.AllTypesNull_DeleteBatch.args.create
+                            )
+                            .Execute()
+
+                    test <@ numDeletedRows = 2 @>
+
+                    let getRes_A =
+                        DbGen.Scripts.AllTypesNull_ById
+                            .WithConnection(Config.connStr)
+                            .WithParameters(key1_A, key2_A)
+                            .ExecuteSingle()
+
+                    test <@ getRes_A = None @>
+
+                    let getRes_B =
+                        DbGen.Scripts.AllTypesNull_ById
+                            .WithConnection(Config.connStr)
+                            .WithParameters(key1_B, key2_B)
+                            .ExecuteSingle()
+
+                    test <@ getRes_B = None @>
                 }
 
 
@@ -3731,7 +3785,7 @@ let tests =
                 }
 
 
-            testCase "Identity, output columns and other column config with batch INSERT/UPDATE"
+            testCase "Identity, output columns and other column config with batch INSERT/UPDATE/DELETE"
             <| fun () ->
                 Property.check
                 <| property {
@@ -3778,6 +3832,15 @@ let tests =
                     |}
 
                     test <@ updateRes.Value.Foo = bigint @>
+
+                    let deleteRes =
+                        DbGen.Scripts.TableWithIdentityCol_DeleteBatch
+                            .WithConnection(Config.connStr)
+                            .WithParameters([ DbGen.Scripts.TableWithIdentityCol_DeleteBatch.args.create key ])
+                            .ExecuteSingle()
+
+                    test <@ deleteRes.Value.Foo = bigint @>
+                    test <@ deleteRes.Value.BAR = datetimeoffset @>
                 }
 
 

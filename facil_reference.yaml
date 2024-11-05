@@ -377,6 +377,12 @@ rulesets:
             # '{TableName}_Delete'. Column skip rules are irrelevant and ignored.
           - type: delete
 
+            # Generates a script to delete a batch of row efficiently.
+            #
+            # Supports the same rules as 'insert'. The default name is
+            # '{TableName}_DeleteBatch'. Column skip rules are irrelevant and ignored.
+          - type: deleteBatch
+
             # Generates a script to get all rows from a table.
             #
             # Supports the same rules as 'insert'. The default name is '{TableName}_All'.

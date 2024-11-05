@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Added table script `deleteBatch`
+
 ### 2.12.0 (2024-10-16)
 
 * Can now generate `merge` table scripts for tables with only primary key columns (will then simply insert if the row

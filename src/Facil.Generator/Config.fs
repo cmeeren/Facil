@@ -281,6 +281,7 @@ type TableScriptType =
     | Merge
     | MergeBatch
     | Delete
+    | DeleteBatch
     | GetAll
     | GetById
     | GetByIdBatch
@@ -1025,6 +1026,7 @@ module TableScriptTypeRule =
                     | Merge -> "{TableName}_Merge"
                     | MergeBatch -> "{TableName}_MergeBatch"
                     | Delete -> "{TableName}_Delete"
+                    | DeleteBatch -> "{TableName}_DeleteBatch"
                     | GetAll -> "{TableName}_All"
                     | GetById -> "{TableName}_ById"
                     | GetByIdBatch -> "{TableName}_ByIds"
@@ -1041,6 +1043,7 @@ module TableScriptTypeRule =
                 | Merge
                 | MergeBatch
                 | Delete
+                | DeleteBatch
                 | GetAll
                 | GetById
                 | GetByIdBatch ->
@@ -1070,7 +1073,8 @@ module TableScriptTypeRule =
 
                 match rule.Type, rule.SelectColumns with
                 | _, None -> ()
-                | (Insert | InsertBatch | Update | UpdateBatch | Merge | MergeBatch | Delete), Some _ -> ()
+                | (Insert | InsertBatch | Update | UpdateBatch | Merge | MergeBatch | Delete | DeleteBatch), Some _ ->
+                    ()
                 | (GetAll | GetById | GetByIdBatch | GetByColumns | GetByColumnsBatch), Some selectCols ->
 
                     let skipCol skip = {
@@ -1101,6 +1105,7 @@ module TableScriptTypeRule =
             | "merge" -> Merge
             | "mergeBatch" -> MergeBatch
             | "delete" -> Delete
+            | "deleteBatch" -> DeleteBatch
             | "getAll" -> GetAll
             | "getById" -> GetById
             | "getByIdBatch" -> GetByIdBatch
