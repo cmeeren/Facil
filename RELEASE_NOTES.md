@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.13.0 (2024-11-05)
 
 * Added table script `deleteBatch`
 
