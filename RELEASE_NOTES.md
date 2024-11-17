@@ -4,6 +4,7 @@ Release notes
 ### Unreleased
 
 * Updated generator dependency FSharp.Core from 8.0.401 to 9.0.100
+* Updated generator dependency Glob from 1.2.0-alpha0032 to 1.2.0-alpha0037
 
 ### 2.13.0 (2024-11-05)
 
