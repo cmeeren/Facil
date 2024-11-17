@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.14.0 (2024-11-17)
 
 * Disabled F# 9 nullability warning (FS3261) in generated code
 * Updated generator dependency FSharp.Core from 8.0.401 to 9.0.100
