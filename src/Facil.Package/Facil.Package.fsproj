@@ -37,7 +37,7 @@
     <Content Include="FacilGenerate.targets">
       <PackagePath>tools/</PackagePath>
     </Content>
-    <Content Include="..\Facil.Generator\bin\$(Configuration)\**\*">
+    <Content Include="..\Facil.Generator\bin\$(Configuration)\**\*" Exclude="**\*.nupkg">
       <PackagePath>tools/</PackagePath>
       <Visible>false</Visible>
     </Content>
