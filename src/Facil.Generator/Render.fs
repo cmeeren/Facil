@@ -1390,6 +1390,7 @@ let renderDocument (cfg: RuleSet) hash (everything: Everything) =
         cfg.NamespaceOrModuleDeclaration
         ""
         "#nowarn \"49\""
+        "#nowarn \"3261\""
         ""
         "open System"
         "open System.ComponentModel"
