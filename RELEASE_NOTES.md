@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Updated generator dependency FSharp.Core from 8.0.401 to 9.0.100
+
 ### 2.13.0 (2024-11-05)
 
 * Added table script `deleteBatch`
