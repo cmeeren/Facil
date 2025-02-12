@@ -55,7 +55,7 @@ jobs:
         run: dotnet build src/DbTests -c Release
 
       - name: Test
-        run: dotnet src/DbTests/bin/Release/net7.0/DbTests.dll --fail-on-focused-tests
+        run: dotnet src/DbTests/bin/Release/net9.0/DbTests.dll --fail-on-focused-tests
 
       - name: Push
         if: startsWith(github.ref, 'refs/tags/v/')
