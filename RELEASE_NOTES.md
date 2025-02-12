@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Added `GeneratedCodeAttribute` to generated code
+
 ### 2.14.1 (2024-11-17)
 
 * Reverted generator dependency Glob from 1.2.0-alpha0037 to 1.2.0-alpha0032 due to issues

@@ -1387,6 +1387,7 @@ let renderDocument (cfg: RuleSet) hash (everything: Everything) =
         "//"
         "//////////////////////////////////////////"
         ""
+        $"[<System.CodeDom.Compiler.GeneratedCode(\"Facil\", \"{version}\")>]"
         cfg.NamespaceOrModuleDeclaration
         ""
         "#nowarn \"49\""
