@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.15.0 (2025-02-12)
 
 * Added `GeneratedCodeAttribute` to generated code
 * Fixed a warning message typo where variable names would have double `@@`
