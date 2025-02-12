@@ -173,7 +173,10 @@ module Program =
 
                         let shouldCheckLine (line: string) =
                             not <| line.Trim().StartsWith("//", StringComparison.Ordinal)
-                            && not <| line.Trim().StartsWith("[<System.CodeDom.Compiler.GeneratedCode(", StringComparison.Ordinal)
+                            && not
+                               <| line
+                                   .Trim()
+                                   .StartsWith("[<System.CodeDom.Compiler.GeneratedCode(", StringComparison.Ordinal)
 
                         let linesToCheck =
                             lines |> List.toArray |> Array.collect (fun s -> s.Split Environment.NewLine)
