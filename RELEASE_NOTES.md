@@ -4,6 +4,7 @@ Release notes
 ### Unreleased
 
 * Added `GeneratedCodeAttribute` to generated code
+* Fixed a warning message typo where variable names would have double `@@`
 
 ### 2.14.1 (2024-11-17)
 

@@ -179,7 +179,7 @@ let getScriptParameters
                     match rule |> EffectiveScriptRule.getParam (paramName.TrimStart '@') with
                     | { Nullable = Some true } ->
                         logWarning
-                            $"The effective rule for script '{script.GlobMatchOutput}' and parameter '@{paramName}' specifies that the parameter is both nullable and a user-defined table type, but table-valued parameters cannot be nullable. Treating the parameter as non-nullable. To remove this warning, ensure that the parameter does not specify or inherit 'nullable: true'"
+                            $"The effective rule for script '{script.GlobMatchOutput}' and parameter '{paramName}' specifies that the parameter is both nullable and a user-defined table type, but table-valued parameters cannot be nullable. Treating the parameter as non-nullable. To remove this warning, ensure that the parameter does not specify or inherit 'nullable: true'"
                     | _ -> ()
 
                     Table tt
