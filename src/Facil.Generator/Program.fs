@@ -139,7 +139,6 @@ module Program =
                 let outFile = Path.Combine(projectDir, cfg.Filename)
 
                 let regenerate () =
-                    Console.WriteLine($"Facil : Regenerating {outFile}")
                     let sw = Diagnostics.Stopwatch.StartNew()
 
                     use conn =
@@ -223,18 +222,33 @@ module Program =
                     Console.WriteLine($"Facil : Completed regeneration of {outFile} in %.3f{sw.Elapsed.TotalSeconds}s")
 
                 if Environment.GetEnvironmentVariable(envvar_force_regenerate) |> isNull |> not then
-                    Console.WriteLine($"Facil : Found environment variable {envvar_force_regenerate}")
+                    Console.WriteLine(
+                        $"Facil : Found environment variable {envvar_force_regenerate}, regenerating {outFile}"
+                    )
+
                     regenerate ()
                 elif File.Exists(outFile) then
                     let lines = File.ReadAllLines(outFile)
-                    let firstLineOk = lines |> Array.tryItem 0 = Some Render.firstLine
-                    let hashOk = lines |> Array.tryItem 1 = Some(Render.secondLineWithHash hash)
+                    let firstLine = lines |> Array.tryItem 0 |> Option.defaultValue "<missing line>"
+                    let secondLine = lines |> Array.tryItem 1 |> Option.defaultValue "<missing line>"
 
-                    if firstLineOk && hashOk then
-                        Console.WriteLine($"Facil : Skipping regeneration of up-to-date file {outFile}")
-                    else
+                    let firstLineOk = firstLine = Render.firstLine
+                    let secondLineWithHashOk = secondLine = Render.secondLineWithHash hash
+
+                    match firstLineOk, secondLineWithHashOk with
+                    | true, true -> Console.WriteLine($"Facil : Skipping regeneration of up-to-date file %s{outFile}")
+                    | false, _ ->
+                        Console.WriteLine($"Facil : First line changed; regenerating %s{outFile}")
+                        Console.WriteLine($"Facil :   Existing: %s{firstLine}")
+                        Console.WriteLine($"Facil :   Expected: %s{Render.firstLine}")
+                        regenerate ()
+                    | true, false ->
+                        Console.WriteLine($"Facil : Hash or second line changed; regenerating %s{outFile}")
+                        Console.WriteLine($"Facil :   Existing: %s{secondLine}")
+                        Console.WriteLine($"Facil :   Expected: %s{Render.secondLineWithHash hash}")
                         regenerate ()
                 else
+                    Console.WriteLine($"Facil : File not found; regenerating %s{outFile}")
                     regenerate ()
 
             0
