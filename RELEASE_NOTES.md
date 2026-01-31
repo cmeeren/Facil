@@ -1,6 +1,13 @@
 Release notes
 ==============
 
+### Unreleased
+
+* The reason for regeneration is now written to the console.
+* Added the environment variable `FACIL_FAIL_ON_REGENERATE` to fail builds when regeneration is triggered. This is
+  likely more useful than `FACIL_FAIL_ON_CHANGED_OUTPUT` on CI, since it fails _before_ regeneration and therefore does
+  not require connection strings to be present.
+
 ### 2.15.0 (2025-02-12)
 
 * Added `GeneratedCodeAttribute` to generated code
