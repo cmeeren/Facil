@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.15.1 (2026-01-31)
 
 * The reason for regeneration is now written to the console.
 * Added the environment variable `FACIL_FAIL_ON_REGENERATE` to fail builds when regeneration is triggered. This is
