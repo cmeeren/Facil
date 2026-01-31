@@ -12,6 +12,7 @@ module Program =
 
     let envvar_force_regenerate = "FACIL_FORCE_REGENERATE"
     let envvar_fail_on_changed_output = "FACIL_FAIL_ON_CHANGED_OUTPUT"
+    let envvar_fail_on_regenerate = "FACIL_FAIL_ON_REGENERATE"
 
 
     let serializerOptionsForHash = JsonSerializerOptions()
@@ -139,6 +140,10 @@ module Program =
                 let outFile = Path.Combine(projectDir, cfg.Filename)
 
                 let regenerate () =
+                    if Environment.GetEnvironmentVariable(envvar_fail_on_regenerate) |> isNull |> not then
+                        failwithError
+                            $"Regeneration was triggered and the environment variable %s{envvar_fail_on_regenerate} is set. Failing build."
+
                     let sw = Diagnostics.Stopwatch.StartNew()
 
                     use conn =

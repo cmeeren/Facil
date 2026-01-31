@@ -201,14 +201,20 @@ Notably, this means that Facil **will not pick up changes to your database**. Th
 that Facil connects to during build, just open the generated file and delete the first line and Facil will re-generate
 it on the next build.
 
-### Can I force Facil to run during CI build and fail if the generated file is not up to date?
+### Can I force Facil to run during CI build and/or fail if the generated file is not up to date?
 
-Yes. There are two environment variables you can set. You can use either of them on their own, or together:
+Yes. There are three environment variables you can set. You can use any of them on their own, or together:
 
 * `FACIL_FORCE_REGENERATE`: Set this to force Facil to always regenerate during build. Alone, this variable will
-  effectively make Facil mimick a type provider without caching/offline capabilities.
-* `FACIL_FAIL_ON_CHANGED_OUTPUT`: Set this to make Facil fail the build if the output has changed. You can use this to
-  reject commits that does not include up-to-date generated code.
+  effectively make Facil mimic a type provider without caching/offline capabilities. As always during regeneration, any
+  configured connection strings must be available in the specified configuration sources.
+* `FACIL_FAIL_ON_REGENERATE`: Set this to make Facil fail the build if regeneration is triggered (i.e., if an output
+  file is missing or its two first lines are not up-to-date). You can use this to reject commits that does not include
+  up-to-date generated code.
+* `FACIL_FAIL_ON_CHANGED_OUTPUT`: Set this to make Facil fail the build if the output has changed. Unlike
+  `FACIL_FAIL_ON_REGENERATE`, this is checked after regeneration has taken place, and compares the entire output, not
+  just the first two lines. As always during regeneration, any configured connection strings must be available in the
+  specified configuration sources; this means it is likely not that useful on CI.
 
 ### Why won't the project recompile if I only change `facil.yaml` or a `.sql` file?
 
@@ -386,8 +392,9 @@ confusion, and the name prefix/suffix would almost be as verbose as just calling
 If you think that building up a `list` directly in the read loop would be more efficient as it would avoid the “copy”
 cost of `Seq.toList`, then 1) I don’t think that’s correct, because (as mentioned above) an F# `list` would have to be
 built up in reverse by prepending each item, and the `List.rev` at the end would cause at least one “copy” anyway, and
+
 2) in the rare case that your use-case is so sensitive to performance that you are concerned about the performance
-impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
+   impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
 
 Note that since Facil is a general-purpose data access library, I do not know anything about user workloads, databases
 or connections, and I have not benchmarked anything. All of the above is going by intuition (admittedly a dangerous
