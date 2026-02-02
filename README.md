@@ -188,8 +188,7 @@ forced generation on CI and also optionally failing the build if the generated c
 
 Facil will regenerate (hitting your DB) before the compilation step of your build if any of the following are true:
 
-* There are changes to the two first lines of the generated file(s) (this is the simplest way to manually force a
-  rebuild)
+* There are changes to the header of the generated file(s) (this is the simplest way to manually force a rebuild)
 * There are changes in included SQL scripts
 * There are changes in the config file
 * There are changes to Facil itself (i.e., when updating Facil)
@@ -209,12 +208,12 @@ Yes. There are three environment variables you can set. You can use any of them 
   effectively make Facil mimic a type provider without caching/offline capabilities. As always during regeneration, any
   configured connection strings must be available in the specified configuration sources.
 * `FACIL_FAIL_ON_REGENERATE`: Set this to make Facil fail the build if regeneration is triggered (i.e., if an output
-  file is missing or its two first lines are not up-to-date). You can use this to reject commits that does not include
-  up-to-date generated code.
+  file is missing or its header is not up-to-date). You can use this to reject commits that does not include up-to-date
+  generated code.
 * `FACIL_FAIL_ON_CHANGED_OUTPUT`: Set this to make Facil fail the build if the output has changed. Unlike
   `FACIL_FAIL_ON_REGENERATE`, this is checked after regeneration has taken place, and compares the entire output, not
-  just the first two lines. As always during regeneration, any configured connection strings must be available in the
-  specified configuration sources; this means it is likely not that useful on CI.
+  just the header. As always during regeneration, any configured connection strings must be available in the specified
+  configuration sources; this means it is likely not that useful on CI.
 
 ### Why won't the project recompile if I only change `facil.yaml` or a `.sql` file?
 
