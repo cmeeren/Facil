@@ -3,9 +3,12 @@ Release notes
 
 ### 2.15.2 (2026-02-02)
 
-* To aid CI debugging, Facil now writes a manifest header to the generated files and outputs this when the build fails
-  due to `FACIL_FAIL_ON_REGENERATE` being set
-* Generation no longer warns when `except` glob patterns do not match any files
+* Facil now writes a manifest header instead of just a single hash to the generated files. This manifest header is the
+  source of truth for detecting changes that will trigger regeneration. This change also seems to have made the
+  detection more resilient against insignificant environmental differences. To aid CI debugging (which was the initial
+  motivation behind this change), the expected and actual manifest headers are output when the build fails due to
+  `FACIL_FAIL_ON_REGENERATE` being set.
+* Generation no longer warns when `except` glob patterns do not match any files.
 
 ### 2.15.1 (2026-01-31)
 
