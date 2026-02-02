@@ -7,6 +7,17 @@ open Microsoft.Data.SqlClient
 open GlobExpressions
 
 
+module private Md5 =
+
+    let hashBytes (bytes: byte[]) =
+        System.Security.Cryptography.MD5.HashData bytes
+        |> Convert.ToHexString
+        |> _.ToLowerInvariant()
+
+    let hashString (value: string) =
+        value |> Text.Encoding.UTF8.GetBytes |> hashBytes
+
+
 module Program =
 
 
@@ -55,11 +66,12 @@ module Program =
 
             let assemblyHash =
                 File.ReadAllBytes(Reflection.Assembly.GetExecutingAssembly().Location)
-                |> System.Security.Cryptography.SHA256.HashData
-                |> BitConverter.ToString
+                |> Md5.hashBytes
 
             let configsDto, rulesetDtosAndConfigs =
                 FacilConfig.getRuleSets projectDir yamlFilePath
+
+            let configsHash = serializeForHash configsDto |> Md5.hashString
 
             for rulesetsDto, cfg in rulesetDtosAndConfigs do
 
@@ -111,21 +123,25 @@ module Program =
                         GeneratedByFacil = false
                     })
 
-                let hash =
-                    [
+                let rulesetsHash = serializeForHash rulesetsDto |> Md5.hashString
+
+                let scriptsForManifest =
+                    scriptsWithoutParamsOrResultSetsOrTempTables
+                    |> List.map (fun s ->
+                        let path = s.GlobMatchOutput.Replace("\\", "/")
+                        let hash = Md5.hashString s.Source
+                        path, hash
+                    )
+                    |> List.sortBy (fun (path, _) -> path.ToUpperInvariant(), path)
+
+                let headerLines =
+                    Render.renderManifestHeader
+                        (Render.getFacilVersion ())
                         assemblyHash
-                        serializeForHash configsDto
-                        serializeForHash rulesetsDto
-                        yield!
-                            scriptsWithoutParamsOrResultSetsOrTempTables
-                            |> List.map (fun s -> s.GlobMatchOutput.Replace("\\", "/"))
-                        yield! scriptsWithoutParamsOrResultSetsOrTempTables |> List.map (fun s -> s.Source)
-                    ]
-                    |> String.concat ""
-                    |> Text.Encoding.UTF8.GetBytes
-                    |> System.Security.Cryptography.SHA256.HashData
-                    |> BitConverter.ToString
-                    |> fun s -> s.Replace("-", "").ToLowerInvariant()
+                        (Path.GetFileName yamlFilePath)
+                        configsHash
+                        rulesetsHash
+                        scriptsForManifest
 
                 let outFile = Path.Combine(projectDir, cfg.Filename)
 
@@ -152,7 +168,7 @@ module Program =
                             cfg.ConnectionString.Value
                             conn
 
-                    let lines = Render.renderDocument cfg hash everything
+                    let lines = Render.renderDocument cfg headerLines everything
 
                     if
                         Environment.GetEnvironmentVariable(envvar_fail_on_changed_output)
@@ -166,7 +182,7 @@ module Program =
                                 []
 
                         let shouldCheckLine (line: string) =
-                            not <| line.Trim().StartsWith("//", StringComparison.Ordinal)
+                            not <| line.Trim().StartsWith("\"assemblyHash\": ", StringComparison.Ordinal)
                             && not
                                <| line
                                    .Trim()
@@ -223,24 +239,31 @@ module Program =
 
                     regenerate ()
                 elif File.Exists(outFile) then
-                    let lines = File.ReadAllLines(outFile)
-                    let firstLine = lines |> Array.tryItem 0 |> Option.defaultValue "<missing line>"
-                    let secondLine = lines |> Array.tryItem 1 |> Option.defaultValue "<missing line>"
+                    let existingLines = File.ReadAllLines(outFile)
 
-                    let firstLineOk = firstLine = Render.firstLine
-                    let secondLineWithHashOk = secondLine = Render.secondLineWithHash hash
+                    let headerMatches =
+                        headerLines
+                        |> List.mapi (fun index expectedLine ->
+                            existingLines |> Array.tryItem index = Some expectedLine
+                        )
+                        |> List.forall id
 
-                    match firstLineOk, secondLineWithHashOk with
-                    | true, true -> Console.WriteLine($"Facil : Skipping regeneration of up-to-date file %s{outFile}")
-                    | false, _ ->
-                        Console.WriteLine($"Facil : First line changed; regenerating %s{outFile}")
-                        Console.WriteLine($"Facil :   Existing: %s{firstLine}")
-                        Console.WriteLine($"Facil :   Expected: %s{Render.firstLine}")
-                        regenerate ()
-                    | true, false ->
-                        Console.WriteLine($"Facil : Hash or second line changed; regenerating %s{outFile}")
-                        Console.WriteLine($"Facil :   Existing: %s{secondLine}")
-                        Console.WriteLine($"Facil :   Expected: %s{Render.secondLineWithHash hash}")
+                    if headerMatches then
+                        Console.WriteLine($"Facil : Skipping regeneration of up-to-date file %s{outFile}")
+                    else
+                        Console.WriteLine($"Facil : Regenerating %s{outFile}")
+
+                        if Environment.GetEnvironmentVariable(envvar_fail_on_regenerate) |> isNull |> not then
+                            let actualHeaderLines =
+                                match existingLines |> Array.tryFindIndex (fun line -> line.Trim() = "*)") with
+                                | Some index -> existingLines |> Array.take (index + 1)
+                                | None -> existingLines |> Array.truncate headerLines.Length
+
+                            Console.WriteLine("Facil : Expected manifest header:")
+                            headerLines |> List.iter Console.WriteLine
+                            Console.WriteLine("Facil : Actual manifest header:")
+                            actualHeaderLines |> Array.iter Console.WriteLine
+
                         regenerate ()
                 else
                     Console.WriteLine($"Facil : File not found; regenerating %s{outFile}")

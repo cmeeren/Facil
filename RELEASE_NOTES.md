@@ -3,6 +3,8 @@ Release notes
 
 ### Unreleased
 
+* To aid CI debugging, Facil now writes a manifest header to the generated files and outputs this when the build fails
+  due to `FACIL_FAIL_ON_REGENERATE` being set
 * Generation no longer warns when `except` glob patterns do not match any files
 
 ### 2.15.1 (2026-01-31)

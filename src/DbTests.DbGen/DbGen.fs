@@ -1,15 +1,222 @@
-﻿// Edit or remove this or the below line to regenerate on next build
-// Hash: ddf2b461e61dd129132a1f65bc3d72fb57324b4ba0fb0d00d1eff1926686b6ed
+﻿// Edit or remove any part of this header to force regeneration.
+// Manifest:
+(*
+{
+  "facil": {
+    "version": "2.15.1+e231b530b299527daaccb03be9c97193d2f1961e",
+    "assemblyHash": "3a82b16e58cb88e3e2991e950dddbae7"
+  },
+  "config": {
+    "path": "facil.yaml",
+    "configsHash": "9c7e87f1906bb406ad64d4e9e8264319",
+    "rulesetsHash": "c79839ebd5b23807fd039d419eda6876"
+  },
+  "scripts": [
+    {
+      "path": "ColumnInheritance.sql",
+      "hash": "bf3563e609831db23578e1d3b5a98c0a"
+    },
+    {
+      "path": "DeleteAllFromTableScriptTables.sql",
+      "hash": "08ec35ff9fc7f842062b6c7fa75c236e"
+    },
+    {
+      "path": "DynamicInsertIntoDesignTimeExecuteTest.sql",
+      "hash": "7f74f146690a9ecb093403edaff2598c"
+    },
+    {
+      "path": "DynamicInsertIntoDesignTimeExecuteTest2.sql",
+      "hash": "a54467b80a002d86794f6471f72c204b"
+    },
+    {
+      "path": "DynamicSqlSensitiveToParamValues.sql",
+      "hash": "d6bc35e1eab458023e924730fd81c89c"
+    },
+    {
+      "path": "DynamicSqlSensitiveToParamValuesWithResultSets.sql",
+      "hash": "59b4f61b934c2faba5605007ee9e62d7"
+    },
+    {
+      "path": "DynamicSqlWithConflictingBranches.sql",
+      "hash": "00ce623d72c693453f05caa007ad9be1"
+    },
+    {
+      "path": "DynamicSqlWithDeclaration.sql",
+      "hash": "b75df39c18341c1ab9cdb66b3b3f0e2e"
+    },
+    {
+      "path": "DynamicSqlWithoutDeclaration.sql",
+      "hash": "d7801619f338b1e4a30b5a4e3f66eb13"
+    },
+    {
+      "path": "DynamicSqlWithStringSplitParam.sql",
+      "hash": "6da603ec8b941c92e06f62aebf10433c"
+    },
+    {
+      "path": "DynamicSqlWithTvp.sql",
+      "hash": "7065b532f8a5d355ad7d7d0d8d79d49a"
+    },
+    {
+      "path": "LongRunningNonQuery.sql",
+      "hash": "3d0e829674ada1d8ce40a3ecf5d2a9b2"
+    },
+    {
+      "path": "LongRunningQuery.sql",
+      "hash": "d1d20397e8d1b72b58b984ce93892dcc"
+    },
+    {
+      "path": "ManualTableDtoResult.sql",
+      "hash": "9ea348c1908a0f9a4690b8a6e32d5eea"
+    },
+    {
+      "path": "ManyColumns.sql",
+      "hash": "d62436c9193db5137f42562762067b40"
+    },
+    {
+      "path": "MultipleTempTables.sql",
+      "hash": "f342b73d7813de2fed0ccf194b893977"
+    },
+    {
+      "path": "NominalResult.sql",
+      "hash": "9ea348c1908a0f9a4690b8a6e32d5eea"
+    },
+    {
+      "path": "NormalParams.sql",
+      "hash": "9889699d7cc0bdca6440c1da12def2b2"
+    },
+    {
+      "path": "Option/In.sql",
+      "hash": "a2e13e753822e131e3c0982735c809f0"
+    },
+    {
+      "path": "Option/Out.sql",
+      "hash": "a2e13e753822e131e3c0982735c809f0"
+    },
+    {
+      "path": "Option/TableOutWithDto.sql",
+      "hash": "764bfd933bde3ffd522841731c8f4a1f"
+    },
+    {
+      "path": "Option/TableOutWithoutDto.sql",
+      "hash": "5e2d59f341aca2b09a297a89a669690c"
+    },
+    {
+      "path": "Option/TvpInOut.sql",
+      "hash": "125d0b29e78549bf9e5237fe77a1951a"
+    },
+    {
+      "path": "OptionRecompileAndFetch.sql",
+      "hash": "87cfae02f7c0853e65af146cc5e227a2"
+    },
+    {
+      "path": "OverriddenDtoParamName.sql",
+      "hash": "23f0ede0444109333c031cf69ad62446"
+    },
+    {
+      "path": "ParamInheritance.sql",
+      "hash": "54b9c777d933e437acf5d2d1f1c06d34"
+    },
+    {
+      "path": "ParamsUsedTwice.sql",
+      "hash": "f43e149f009df89ee76b22c182740d30"
+    },
+    {
+      "path": "ScriptWithNullabilityOverride.sql",
+      "hash": "c1d66365ab4c80dfc937d89d451f159b"
+    },
+    {
+      "path": "SelectAllFromTable.sql",
+      "hash": "9ea348c1908a0f9a4690b8a6e32d5eea"
+    },
+    {
+      "path": "SingleRecordCol.sql",
+      "hash": "32bae6a37fff22e76bd5bb432d1c167b"
+    },
+    {
+      "path": "SkippedUnsupportedColumn.sql",
+      "hash": "18e52d68d4a60186bce1bc818c6b3a51"
+    },
+    {
+      "path": "StartsWithCTE.sql",
+      "hash": "85d887c11fc0870caa17c45dc48ac4d2"
+    },
+    {
+      "path": "SubPath/SelectAllFromTable.sql",
+      "hash": "9ea348c1908a0f9a4690b8a6e32d5eea"
+    },
+    {
+      "path": "TableDtoWithDifferentColumnOrder.sql",
+      "hash": "7db7f211e285864a52e25c5659ccee64"
+    },
+    {
+      "path": "TempTableAllTypesNonNull.sql",
+      "hash": "ee65b1fd4a97e8ae1f8d64d2c32037f2"
+    },
+    {
+      "path": "TempTableAllTypesNonNullNominalParams.sql",
+      "hash": "ee65b1fd4a97e8ae1f8d64d2c32037f2"
+    },
+    {
+      "path": "TempTableAllTypesNull.sql",
+      "hash": "7f2b0727fc08c8407fb82c3c49f5ba7e"
+    },
+    {
+      "path": "TempTableAllTypesNullNominalParams.sql",
+      "hash": "7f2b0727fc08c8407fb82c3c49f5ba7e"
+    },
+    {
+      "path": "TempTableAllTypesNullVoption.sql",
+      "hash": "7f2b0727fc08c8407fb82c3c49f5ba7e"
+    },
+    {
+      "path": "TempTableInlined.sql",
+      "hash": "f84c1c85a53c68fe545af931fcd90e01"
+    },
+    {
+      "path": "TempTableInlinedDynamic.sql",
+      "hash": "f518f10d0a299b9feb8e1f6d81da24dd"
+    },
+    {
+      "path": "TempTableInlinedWithOtherParams.sql",
+      "hash": "2c87dda0604a3238dff38219f5b2f960"
+    },
+    {
+      "path": "TempTableWithLengthTypes.sql",
+      "hash": "edbe13b5eba4b2f581008e8cbbfcead5"
+    },
+    {
+      "path": "TempTableWithMaxLengthTypes.sql",
+      "hash": "2d05ba03cab76a781352ee41caba5b52"
+    },
+    {
+      "path": "UserDefinedTableType.sql",
+      "hash": "125d0b29e78549bf9e5237fe77a1951a"
+    },
+    {
+      "path": "Voption/In.sql",
+      "hash": "a2e13e753822e131e3c0982735c809f0"
+    },
+    {
+      "path": "Voption/Out.sql",
+      "hash": "a2e13e753822e131e3c0982735c809f0"
+    },
+    {
+      "path": "Voption/TableOutWithDto.sql",
+      "hash": "b8c77c200b9ed60acd1a5ed8d9d189b6"
+    },
+    {
+      "path": "Voption/TableOutWithoutDto.sql",
+      "hash": "e0a391a47c251f59fdc0cf3c64c60484"
+    },
+    {
+      "path": "Voption/TvpInOut.sql",
+      "hash": "125d0b29e78549bf9e5237fe77a1951a"
+    }
+  ]
+}
+*)
 
-//////////////////////////////////////////
-//
-// THIS FILE IS AUTOMATICALLY GENERATED
-//
-// Facil 2.15.1+0b4ce787f50c44a8548f7eaac022b578ee871e70
-//
-//////////////////////////////////////////
-
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.1+0b4ce787f50c44a8548f7eaac022b578ee871e70")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.1+e231b530b299527daaccb03be9c97193d2f1961e")>]
 module DbGen
 
 #nowarn "49"
