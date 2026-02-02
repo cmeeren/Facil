@@ -181,14 +181,17 @@ module Program =
                             else
                                 []
 
+                        // This is needed for Facil's own CI pipeline, since the assembly version/hash used for the
+                        // checked-in DbGen.fs may be different than the version/hash used on CI.
+                        let ignoreLinesWithPrefix = [
+                            "\"assemblyVersion\": "
+                            "\"assemblyHash\": "
+                            "[<System.CodeDom.Compiler.GeneratedCode("
+                            "//"
+                        ]
+
                         let shouldCheckLine (line: string) =
-                            not <| line.Trim().StartsWith("\"assemblyVersion\": ", StringComparison.Ordinal)
-                            && not <| line.Trim().StartsWith("\"assemblyHash\": ", StringComparison.Ordinal)
-                            && not
-                               <| line
-                                   .Trim()
-                                   .StartsWith("[<System.CodeDom.Compiler.GeneratedCode(", StringComparison.Ordinal)
-                            && not <| line.Trim().StartsWith("//", StringComparison.Ordinal)
+                            ignoreLinesWithPrefix |> List.forall (not << line.Trim().StartsWith)
 
                         let linesToCheck =
                             lines |> List.toArray |> Array.collect (fun s -> s.Split Environment.NewLine)
