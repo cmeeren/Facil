@@ -182,7 +182,8 @@ module Program =
                                 []
 
                         let shouldCheckLine (line: string) =
-                            not <| line.Trim().StartsWith("\"assemblyHash\": ", StringComparison.Ordinal)
+                            not <| line.Trim().StartsWith("\"assemblyVersion\": ", StringComparison.Ordinal)
+                            && not <| line.Trim().StartsWith("\"assemblyHash\": ", StringComparison.Ordinal)
                             && not
                                <| line
                                    .Trim()
