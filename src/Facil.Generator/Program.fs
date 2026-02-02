@@ -71,17 +71,7 @@ module Program =
                         | Include pattern ->
                             let exceptMatches =
                                 match rule.Except with
-                                | Some pattern ->
-                                    let matches = Glob.Files(cfg.ScriptBasePath, pattern) |> set
-
-                                    if matches.IsEmpty then
-                                        logYamlWarning
-                                            yamlFilePath
-                                            0
-                                            0
-                                            $"The 'except' glob pattern '{pattern}' does not match any files"
-
-                                    matches
+                                | Some pattern -> Glob.Files(cfg.ScriptBasePath, pattern) |> set
                                 | None -> Set.empty
 
                             let includeMatches = Glob.Files(cfg.ScriptBasePath, pattern) |> set

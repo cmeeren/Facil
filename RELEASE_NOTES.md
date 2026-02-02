@@ -1,6 +1,10 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Generation no longer warns when `except` glob patterns do not match any files
+
 ### 2.15.1 (2026-01-31)
 
 * The reason for regeneration is now written to the console.
