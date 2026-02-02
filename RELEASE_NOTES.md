@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 2.15.2 (2026-02-02)
 
 * To aid CI debugging, Facil now writes a manifest header to the generated files and outputs this when the build fails
   due to `FACIL_FAIL_ON_REGENERATE` being set
