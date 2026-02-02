@@ -1363,7 +1363,7 @@ let private renderScripts (cfg: RuleSet) tableDtos (scripts: Script list) =
 
 
 type private ManifestFacil = {
-    version: string
+    assemblyVersion: string
     assemblyHash: string
 }
 
@@ -1400,7 +1400,7 @@ let getFacilVersion () =
 let renderManifestHeader version assemblyHash yamlFileName configsHash rulesetsHash (scripts: (string * string) list) =
     let manifest = {
         facil = {
-            version = version
+            assemblyVersion = version
             assemblyHash = assemblyHash
         }
         config = {

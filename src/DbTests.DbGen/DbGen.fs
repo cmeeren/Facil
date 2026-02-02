@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "version": "2.15.2+7d1242269fabef69378cc45320b32fc312123cd8",
-    "assemblyHash": "cddcb2f0773e171e65615d128c53032a"
+    "assemblyVersion": "2.15.2+0160d999dcbe9355bccef85bf34ecafa3a8904cf",
+    "assemblyHash": "cdb4e1cf4d99a37c4c4d0f063b7b5184"
   },
   "config": {
     "path": "facil.yaml",
@@ -216,7 +216,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+7d1242269fabef69378cc45320b32fc312123cd8")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+0160d999dcbe9355bccef85bf34ecafa3a8904cf")>]
 module DbGen
 
 #nowarn "49"
