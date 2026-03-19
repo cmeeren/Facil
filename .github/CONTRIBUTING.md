@@ -88,11 +88,12 @@ Development
 * ` Facil.Package` is the project that pulls together the generator, build tasks and runtime components into a single
   package, and also specifies all the package dependencies. It does not contain any code itself.
 * `DbTests` is the unit test project.
+* `PackageTests` is a small smoke test project that verifies the packed `Facil` package by building a separate consumer
+  fixture against the generated `.nupkg`.
 * `DbTests.DbGen` is the generation output project referenced by `DbTests`. Generation output is in a separate project
   because it takes a while to recompile due to the amount of generated code, so having it separated from the tests means
-  the test project can be modified and recompiled more quickly. In order to also test the build task, this project
-  references Facil using `PackageReference`, which after building `Facil.Package` exists in and (due to the
-  solution’s `nuget.config`) is restored from the `nupkg` directory in the solution root.
+  the test project can be modified and recompiled more quickly. For the normal dev loop it uses repo-local project
+  references plus a repo-local build target, so builds work the same regardless of IDE/CLI.
 * `TestDb` is the database project that contains the schema used by `DbTests.DbGen`.
 
 #### Dev workflow: Quick testing of generator output:
@@ -103,29 +104,20 @@ Development
 
 #### Dev workflow: Updating test project and running tests
 
-**Note: The steps below work in Visual Studio, but seemingly not in Rider.**
-
 After making changes in the generator, runtime, or package projects:
 
-* Set `DbTests` as the startup project
-* Right-click `Facil.Package` and choose Build
-* Right-click `Facil.Package` and choose Pack
-* Right-click `DbTests.DbGen` and choose Rebuild (not Build)
+* Build `DbTests.DbGen` (or just build `DbTests`, which references it)
 * Run the test project as a normal console app (orders of magnitude faster than using the test explorer, and there seems
   to be some issues where tests lock up in the Visual Studio Test Explorer)
 
 Notes about this workflow:
 
-* Build before Pack is needed due to what looks like some timing issues where Pack alone doesn’t (always) pick up the
-  most recent generator/runtime files (this includes using `<GeneratePackageOnBuild>`).
-* `Facil.Package` can’t have a project reference to `Facil.Generator` due to the different target frameworks, but the
-  solution file has a build dependency set up between them, so that building `Facil.Package` will also
-  build `Facil.Generator`. If using command-line utilities (like in the GitHub Actions build script), the generator must
-  be built manually before `Facil.Package`.
-* The Pack step will also remove the cached Facil version in the solution’s NuGet package cache (as well as all existing
-  nupkg files in the nupkg output folder), ensuring that when `DbTests` is rebuilt, it restores the most recently built
-  package.
-* This seems to work fine in Visual Studio, but not Rider.
+* `DbTests.DbGen` builds `Facil.Generator` via a normal project reference and then runs the local generator output
+  directly, so the generated test project stays part of the normal build graph.
+* `Facil.Package` now builds `Facil.Generator` itself, so `dotnet build src/Facil.Package` and `dotnet pack
+  src/Facil.Package` work without relying on solution-only build dependencies.
+* The `PackageTests` project packs `Facil.Package` and builds a clean consumer project against the generated `.nupkg`,
+  which is where package/build-task coverage now lives.
 
 ## Deployment checklist
 

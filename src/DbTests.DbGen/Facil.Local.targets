@@ -1,0 +1,14 @@
+<Project>
+
+  <PropertyGroup>
+    <FacilGeneratorPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../Facil.Generator/bin/$(Configuration)/net6.0/Facil.Generator.dll'))</FacilGeneratorPath>
+  </PropertyGroup>
+
+  <Target Name="FacilGenerate" BeforeTargets="CoreCompile" Condition="'$(DesignTimeBuild)' != 'true'">
+    <Error
+      Condition="!Exists('$(FacilGeneratorPath)')"
+      Text="Expected local Facil generator at '$(FacilGeneratorPath)'. Build the generator project first." />
+    <Exec Command="dotnet &quot;$(FacilGeneratorPath)&quot; &quot;$(MSBuildProjectDirectory)&quot;" />
+  </Target>
+
+</Project>

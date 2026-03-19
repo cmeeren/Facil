@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="facil.yaml" />
+    <None Include="SQL\**\*.sql" />
+    <Compile Include="DbGen.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Facil" Version="__FACIL_VERSION__" />
+    <PackageReference Update="FSharp.Core" Version="9.0.100" />
+  </ItemGroup>
+
+</Project>

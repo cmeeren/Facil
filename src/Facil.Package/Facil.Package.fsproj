@@ -17,6 +17,7 @@
     <PackageIcon>facil-logo-128x128.png</PackageIcon>
     <PackageReleaseNotes>https://github.com/cmeeren/Facil/blob/master/RELEASE_NOTES.md</PackageReleaseNotes>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);GetFacilPackageFiles</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,14 +38,6 @@
     <Content Include="FacilGenerate.targets">
       <PackagePath>tools/</PackagePath>
     </Content>
-    <Content Include="..\Facil.Generator\bin\$(Configuration)\**\*" Exclude="**\*.nupkg">
-      <PackagePath>tools/</PackagePath>
-      <Visible>false</Visible>
-    </Content>
-    <Content Include="bin\$(Configuration)\**\*" Exclude="bin\$(Configuration)\**\Facil.Package.*">
-      <PackagePath>lib/</PackagePath>
-      <Visible>false</Visible>
-    </Content>
     <None Include="facil-logo-128x128.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -58,8 +51,24 @@
     <Delete Files="@(FilesToDelete)" />
   </Target>
 
-  <Target Name="DeleteFacilNuGetCache" AfterTargets="GenerateNuspec">
-    <RemoveDir Directories="..\..\packages\facil" />
+  <Target Name="BuildFacilGenerator" BeforeTargets="Build;Pack">
+    <MSBuild
+      Projects="..\Facil.Generator\Facil.Generator.fsproj"
+      Targets="Build"
+      Properties="Configuration=$(Configuration)"
+      RemoveProperties="TargetFramework;TargetFrameworks" />
+  </Target>
+
+  <Target Name="GetFacilPackageFiles">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(OutputPath)**\*" Exclude="$(OutputPath)Facil.Package.*">
+        <PackagePath>lib/$(TargetFramework)/%(RecursiveDir)</PackagePath>
+      </TfmSpecificPackageFile>
+
+      <TfmSpecificPackageFile Include="..\Facil.Generator\bin\$(Configuration)\**\*" Exclude="**\*.nupkg">
+        <PackagePath>tools/%(RecursiveDir)</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
   </Target>
 
 </Project>

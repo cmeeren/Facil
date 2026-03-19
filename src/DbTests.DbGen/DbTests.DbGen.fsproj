@@ -17,11 +17,22 @@
   <ItemGroup>
     <UpToDateCheckInput Include="SQL\**\*.sql" />
     <UpToDateCheckInput Include="facil.yaml" />
+    <UpToDateCheckInput Include="..\Facil.Generator\**\*.fs" />
+    <UpToDateCheckInput Include="..\Facil.Generator\facil_minimal.yaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Facil" Version="*" />
     <PackageReference Update="FSharp.Core" Version="9.0.100" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Facil.Generator\Facil.Generator.fsproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+    </ProjectReference>
+    <ProjectReference Include="..\Facil.Runtime\Facil.Runtime.fsproj" />
+  </ItemGroup>
+
+  <Import Project="Facil.Local.targets" />
 
 </Project>

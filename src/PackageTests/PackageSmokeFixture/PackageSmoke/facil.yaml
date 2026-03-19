@@ -1,0 +1,12 @@
+configs:
+  - envVars: ''
+
+rulesets:
+  - connectionString: $(connectionString)
+    filename: DbGen.fs
+    namespaceOrModuleDeclaration: module DbGen
+
+    scriptBasePath: SQL
+
+    scripts:
+      - include: '**/*.sql'

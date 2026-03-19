@@ -1,0 +1,2 @@
+SELECT
+  Value = CAST(1 AS INT)
