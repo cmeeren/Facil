@@ -9,8 +9,39 @@ open System.Xml.Linq
 open Expecto
 
 
+let rec private tryFindRepoRoot startDir =
+    if String.IsNullOrWhiteSpace startDir || not (Directory.Exists startDir) then
+        None
+    else
+        let dir = Path.GetFullPath startDir
+        let propsPath = Path.Combine(dir, "Directory.Build.props")
+        let fixtureRoot = Path.Combine(dir, "src", "PackageTests", "PackageSmokeFixture")
+
+        if File.Exists propsPath && Directory.Exists fixtureRoot then
+            Some dir
+        else
+            let parent = Directory.GetParent dir
+
+            if isNull parent then
+                None
+            else
+                tryFindRepoRoot parent.FullName
+
+
 let private repoRoot =
-    Path.GetFullPath(Path.Combine(__SOURCE_DIRECTORY__, "..", ".."))
+    [
+        Directory.GetCurrentDirectory()
+        AppContext.BaseDirectory
+        __SOURCE_DIRECTORY__
+    ]
+    |> Seq.choose tryFindRepoRoot
+    |> Seq.tryHead
+    |> Option.defaultWith (fun () ->
+        failwith "Could not locate the repository root from the current PackageTests runtime context."
+    )
+
+
+let private packageTestsProjectRoot = Path.Combine(repoRoot, "src", "PackageTests")
 
 
 let private packageProjectPath =
@@ -18,11 +49,11 @@ let private packageProjectPath =
 
 
 let private packageFixtureRoot =
-    Path.Combine(__SOURCE_DIRECTORY__, "PackageSmokeFixture")
+    Path.Combine(packageTestsProjectRoot, "PackageSmokeFixture")
 
 
 let private packageSmokeTempRoot =
-    Path.Combine(__SOURCE_DIRECTORY__, "obj", "PackageSmoke")
+    Path.Combine(packageTestsProjectRoot, "obj", "PackageSmoke")
 
 
 let private packageVersion =
