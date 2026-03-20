@@ -54,7 +54,7 @@
   <Target Name="BuildFacilGenerator" BeforeTargets="Build;Pack">
     <MSBuild
       Projects="..\Facil.Generator\Facil.Generator.fsproj"
-      Targets="Build"
+      Targets="Restore;Build"
       Properties="Configuration=$(Configuration)"
       RemoveProperties="TargetFramework;TargetFrameworks" />
   </Target>
