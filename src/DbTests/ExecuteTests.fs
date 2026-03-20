@@ -3713,6 +3713,22 @@ let cancellationTests =
     testSequenced
     <| testList "Cancellation tests" [
 
+        testCaseAsync "Task.map preserves canceled tasks"
+        <| async {
+            use cts = new CancellationTokenSource()
+            cts.Cancel()
+
+            let mappedTask =
+                Task.FromCanceled<int>(cts.Token) |> GeneratedCodeUtils.Task.map string
+
+            let! result = mappedTask |> Async.AwaitTask |> Async.Catch
+
+            match result with
+            | Choice2Of2(:? OperationCanceledException) -> ()
+            | Choice2Of2 ex -> failtest $"Expected OperationCanceledException, got %s{ex.GetType().FullName}"
+            | Choice1Of2 _ -> failtest "Expected Task.map to keep the canceled state"
+        }
+
 
         testCaseAsync "Can cancel non-queries"
         <| async {

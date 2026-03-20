@@ -397,4 +397,7 @@ module GeneratedCodeUtils =
     module Task =
 
         let map f (t: Task<_>) =
-            t.ContinueWith(fun (t: Task<_>) -> f t.Result)
+            task {
+                let! result = t
+                return f result
+            }
