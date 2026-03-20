@@ -72,6 +72,31 @@ namespace Facil.Runtime.CSharp
       cmd.Transaction = tran;
     }
 
+    public static async IAsyncEnumerable<T> HandleSqlExceptionCancellation<T>(IAsyncEnumerable<T> items,
+      [EnumeratorCancellation] CancellationToken ct)
+    {
+      await using var e = items.GetAsyncEnumerator(ct);
+
+      while (true)
+      {
+        bool hasItem;
+
+        try
+        {
+          hasItem = await e.MoveNextAsync().ConfigureAwait(false);
+        }
+        catch (SqlException ex) when (ct.IsCancellationRequested && ex.Number == 0 && ex.State == 0 && ex.Class == 11)
+        {
+          throw new OperationCanceledException(null, ex, ct);
+        }
+
+        if (!hasItem)
+          yield break;
+
+        yield return e.Current;
+      }
+    }
+
     public static async Task<List<T>> ExecuteQueryEagerAsync<T>(SqlConnection? existingConn, SqlTransaction? tran,
       string? connStr, Action<SqlConnection> configureNewConn, Action<SqlCommand> configureCmd,
       Action<SqlDataReader> initOrdinals, Func<SqlDataReader, T> getItem, IEnumerable<TempTableData> tempTableData,

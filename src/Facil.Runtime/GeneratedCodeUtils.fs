@@ -41,6 +41,10 @@ module GeneratedCodeUtils =
                 return raise (OperationCanceledException(null, ex, ct))
         }
 
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    let inline handleSqlExceptionCancellationEnumerable (ct: CancellationToken) items =
+        HandleSqlExceptionCancellation(items, ct)
+
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQueryEagerAsync
@@ -137,6 +141,7 @@ module GeneratedCodeUtils =
             tempTableData,
             ct
         )
+        |> handleSqlExceptionCancellationEnumerable ct
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQueryLazyAsyncWithSyncRead
@@ -161,6 +166,7 @@ module GeneratedCodeUtils =
             tempTableData,
             ct
         )
+        |> handleSqlExceptionCancellationEnumerable ct
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
     let inline executeQueryLazy connStr conn tran configureConn configureCmd initOrdinals getItem tempTableData =

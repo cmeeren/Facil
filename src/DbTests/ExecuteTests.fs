@@ -3706,6 +3706,29 @@ let readerSeqExecTests =
         ]
     ]
 
+let private assertLazyAsyncCancellation
+    (source: System.Collections.Generic.IAsyncEnumerable<'a>)
+    (ct: CancellationToken)
+    =
+    task {
+        let e = source.GetAsyncEnumerator(ct)
+
+        let! result =
+            task {
+                try
+                    let! hasItem = e.MoveNextAsync().AsTask()
+                    return Choice1Of2 hasItem
+                with ex ->
+                    return Choice2Of2 ex
+            }
+
+        try
+            do! e.DisposeAsync().AsTask()
+        with _ ->
+            ()
+
+        return result
+    }
 
 
 [<Tests>]
@@ -3727,6 +3750,42 @@ let cancellationTests =
             | Choice2Of2(:? OperationCanceledException) -> ()
             | Choice2Of2 ex -> failtest $"Expected OperationCanceledException, got %s{ex.GetType().FullName}"
             | Choice1Of2 _ -> failtest "Expected Task.map to keep the canceled state"
+        }
+
+        testCaseAsync "LazyExecuteAsync preserves cancellation exceptions"
+        <| async {
+            use cts = new CancellationTokenSource()
+            cts.CancelAfter(1000)
+
+            let source =
+                DbGen.Scripts.LongRunningQuery
+                    .WithConnection(Config.connStr)
+                    .LazyExecuteAsync(cts.Token)
+
+            let! result = assertLazyAsyncCancellation source cts.Token |> Async.AwaitTask
+
+            match result with
+            | Choice2Of2(:? OperationCanceledException) -> ()
+            | Choice2Of2 ex -> failtest $"Expected OperationCanceledException, got %s{ex.GetType().FullName}"
+            | Choice1Of2 _ -> failtest "Expected lazy async enumeration to be canceled"
+        }
+
+        testCaseAsync "LazyExecuteAsyncWithSyncRead preserves cancellation exceptions"
+        <| async {
+            use cts = new CancellationTokenSource()
+            cts.CancelAfter(1000)
+
+            let source =
+                DbGen.Scripts.LongRunningQuery
+                    .WithConnection(Config.connStr)
+                    .LazyExecuteAsyncWithSyncRead(cts.Token)
+
+            let! result = assertLazyAsyncCancellation source cts.Token |> Async.AwaitTask
+
+            match result with
+            | Choice2Of2(:? OperationCanceledException) -> ()
+            | Choice2Of2 ex -> failtest $"Expected OperationCanceledException, got %s{ex.GetType().FullName}"
+            | Choice1Of2 _ -> failtest "Expected lazy async enumeration to be canceled"
         }
 
 
