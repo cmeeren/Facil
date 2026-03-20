@@ -111,6 +111,70 @@ let tests =
         ]
 
 
+        testList "Disposes managed connections and commands - single-row reader" [
+            yield!
+                allSingleReaderExecuteMethods<DbGen.Procedures.dbo.ProcSelectFromTable>
+                |> List.map (fun (name, exec) ->
+                    testCaseAsync name
+                    <| async {
+                        let mutable connDisposed = false
+                        let mutable cmdDisposed = false
+
+                        do
+                            use __ =
+                                DbGen.Procedures.dbo.ProcSelectFromTable
+                                    .WithConnection(
+                                        Config.connStr,
+                                        fun conn -> conn.Disposed.Add(fun _ -> connDisposed <- true)
+                                    )
+                                    .ConfigureCommand(fun cmd -> cmd.Disposed.Add(fun _ -> cmdDisposed <- true))
+                                |> exec
+
+                            ()
+
+                        do! Async.Sleep 100
+
+                        let connDisposed = connDisposed
+                        let cmdDisposed = cmdDisposed
+                        test <@ connDisposed = true @>
+                        test <@ cmdDisposed = true @>
+                    }
+                )
+        ]
+
+
+        testList "Disposes managed connections and commands - multi-row reader" [
+            yield!
+                allMultiReaderExecuteMethods<DbGen.Procedures.dbo.ProcSelectFromTable>
+                |> List.map (fun (name, exec) ->
+                    testCaseAsync name
+                    <| async {
+                        let mutable connDisposed = false
+                        let mutable cmdDisposed = false
+
+                        do
+                            use __ =
+                                DbGen.Procedures.dbo.ProcSelectFromTable
+                                    .WithConnection(
+                                        Config.connStr,
+                                        fun conn -> conn.Disposed.Add(fun _ -> connDisposed <- true)
+                                    )
+                                    .ConfigureCommand(fun cmd -> cmd.Disposed.Add(fun _ -> cmdDisposed <- true))
+                                |> exec
+
+                            ()
+
+                        do! Async.Sleep 100
+
+                        let connDisposed = connDisposed
+                        let cmdDisposed = cmdDisposed
+                        test <@ connDisposed = true @>
+                        test <@ cmdDisposed = true @>
+                    }
+                )
+        ]
+
+
         testList "Disposes commands but not unmanaged connections - query" [
             yield!
                 allExecuteMethodsAsSingle<DbGen.Procedures.dbo.ProcSelectFromTable, _>

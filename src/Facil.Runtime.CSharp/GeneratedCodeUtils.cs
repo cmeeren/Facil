@@ -522,7 +522,7 @@ namespace Facil.Runtime.CSharp
           {
             configureCmd(cmd);
             var reader = cmd.ExecuteReader(commandBehavior);
-            return (null, cmd, reader);
+            return (conn, cmd, reader);
           }
           catch (Exception)
           {
