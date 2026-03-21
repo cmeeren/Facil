@@ -744,7 +744,7 @@ module ProcedureOrScriptParameter =
 
     let merge (p1: ProcedureOrScriptParameter) (p2: ProcedureOrScriptParameter) : ProcedureOrScriptParameter = {
         DtoName = p2.DtoName |> Option.orElse p1.DtoName
-        BuildValue = p2.BuildValue |> Option.orElse p1.DtoName
+        BuildValue = p2.BuildValue |> Option.orElse p1.BuildValue
     }
 
 

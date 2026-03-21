@@ -12,6 +12,7 @@
     <Compile Include="ExecuteTests.fs" />
     <Compile Include="OptionAndVoptionTests.fs" />
     <Compile Include="ConnectionAndDisposalTests.fs" />
+    <Compile Include="ConfigMergeTests.fs" />
     <Compile Include="ConfigTests.fs" />
     <Compile Include="OutParameterAndReturnValueTests.fs" />
     <Compile Include="TempTableTests.fs" />
@@ -36,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Facil.Generator\Facil.Generator.fsproj" />
     <ProjectReference Include="..\DbTests.DbGen\DbTests.DbGen.fsproj" />
   </ItemGroup>
 
