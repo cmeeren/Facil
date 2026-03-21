@@ -7,6 +7,7 @@ namespace Facil.Runtime.CSharp
   internal class TempTableLoader : IDataReader
   {
     private readonly IEnumerator<object[]> _enumerator;
+    private bool _isClosed;
 
     public TempTableLoader(int fieldCount, IEnumerable<object[]> items)
     {
@@ -35,21 +36,23 @@ namespace Facil.Runtime.CSharp
 
     public object this[string name] => throw new NotImplementedException();
 
-    public int Depth => throw new NotImplementedException();
+    public int Depth => 0;
 
-    public bool IsClosed => throw new NotImplementedException();
+    public bool IsClosed => _isClosed;
 
-    public int RecordsAffected => throw new NotImplementedException();
+    public int RecordsAffected => -1;
 
 
     public void Close()
     {
-      throw new NotImplementedException();
+      Dispose();
     }
 
     public void Dispose()
     {
-      throw new NotImplementedException();
+      if (_isClosed) return;
+      _isClosed = true;
+      _enumerator.Dispose();
     }
 
     public bool GetBoolean(int i)

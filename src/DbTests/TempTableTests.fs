@@ -1,9 +1,53 @@
 ﻿module TempTableTests
 
 open System
+open System.Collections
+open System.Collections.Generic
 open Microsoft.Data.SqlClient
 open Expecto
 open Swensen.Unquote
+
+
+type FailingTempTableRows<'a>(item: 'a) =
+    let mutable wasDisposed = false
+
+    member _.WasDisposed = wasDisposed
+
+    interface IEnumerable<'a> with
+        member _.GetEnumerator() =
+            let mutable state = 0
+
+            { new IEnumerator<'a> with
+                member _.Current =
+                    match state with
+                    | 1 -> item
+                    | _ -> invalidOp "Enumerator is not positioned on an item"
+
+                member _.Dispose() = wasDisposed <- true
+
+              interface IEnumerator with
+                  member _.Current =
+                      box
+                      <| match state with
+                         | 1 -> item
+                         | _ -> invalidOp "Enumerator is not positioned on an item"
+
+                  member _.MoveNext() =
+                      match state with
+                      | 0 ->
+                          state <- 1
+                          true
+                      | 1 ->
+                          state <- 2
+                          raise (InvalidOperationException("Boom"))
+                      | _ -> false
+
+                  member _.Reset() = raise (NotSupportedException())
+            }
+
+    interface IEnumerable with
+        member this.GetEnumerator() =
+            (this :> IEnumerable<'a>).GetEnumerator() :> IEnumerator
 
 
 [<Tests>]
@@ -1247,6 +1291,47 @@ let tests =
                         tran.Commit()
                 )
         ]
+
+
+        testCase "Temp-table rows are disposed after sync load failure"
+        <| fun () ->
+            let row =
+                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+
+            let rows = FailingTempTableRows row
+
+            try
+                DbGen.Scripts.TempTableInlined
+                    .WithConnection(Config.connStr)
+                    .WithParameters(tempTableInlined = (rows :> seq<_>))
+                    .ExecuteSingle()
+                |> ignore
+
+                failtest "Expected temp-table loading to fail"
+            with _ ->
+                test <@ rows.WasDisposed @>
+
+
+        testCaseAsync "Temp-table rows are disposed after async load failure"
+        <| async {
+            let row =
+                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+
+            let rows = FailingTempTableRows row
+
+            try
+                do!
+                    DbGen.Scripts.TempTableInlined
+                        .WithConnection(Config.connStr)
+                        .WithParameters(tempTableInlined = (rows :> seq<_>))
+                        .ExecuteSingleAsync()
+                    |> Async.AwaitTask
+                    |> Async.Ignore
+
+                failtest "Expected temp-table loading to fail"
+            with _ ->
+                test <@ rows.WasDisposed @>
+        }
 
 
     ]
