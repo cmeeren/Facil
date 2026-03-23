@@ -548,15 +548,19 @@ let tests =
 
             testCase "Normal parameters"
             <| fun () ->
+                let nvarchar = String.replicate 5000 "x"
+                let varbinary = [| for i in 0..4999 -> byte (i % 256) |]
+                let varchar = String.replicate 5000 "y"
+
                 let res =
                     DbGen.Procedures.dbo.ProcWithMaxLengthTypes
                         .WithConnection(Config.connStr)
-                        .WithParameters(nvarchar = "1234", varbinary = [| 1uy; 2uy; 3uy; 4uy |], varchar = "1234")
+                        .WithParameters(nvarchar = nvarchar, varbinary = varbinary, varchar = varchar)
                         .ExecuteSingle()
 
-                test <@ res.Value.nvarchar = Some "1234" @>
-                test <@ res.Value.varbinary = Some [| 1uy; 2uy; 3uy; 4uy |] @>
-                test <@ res.Value.varchar = Some "1234" @>
+                test <@ res.Value.nvarchar = Some nvarchar @>
+                test <@ res.Value.varbinary = Some varbinary @>
+                test <@ res.Value.varchar = Some varchar @>
 
 
             testCase "TVP parameters"

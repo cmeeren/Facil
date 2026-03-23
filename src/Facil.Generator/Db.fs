@@ -13,7 +13,7 @@ let adjustSizeForDbType (dbType: SqlDbType) (size: int16) =
     match dbType with
     | SqlDbType.NChar
     | SqlDbType.NText
-    | SqlDbType.NVarChar -> size / 2s
+    | SqlDbType.NVarChar when size > 0s -> size / 2s
     | _ -> size
 
 

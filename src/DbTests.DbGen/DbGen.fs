@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+0160d999dcbe9355bccef85bf34ecafa3a8904cf",
-    "assemblyHash": "cdb4e1cf4d99a37c4c4d0f063b7b5184"
+    "assemblyVersion": "2.15.2+c42a73fb9d41afb2db6f66c9ce8d9ad889227cd9",
+    "assemblyHash": "cce6160faf4e587fa633771904c80308"
   },
   "config": {
     "path": "facil.yaml",
@@ -216,7 +216,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+0160d999dcbe9355bccef85bf34ecafa3a8904cf")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+c42a73fb9d41afb2db6f66c9ce8d9ad889227cd9")>]
 module DbGen
 
 #nowarn "49"
@@ -7867,7 +7867,7 @@ module Procedures =
         ) =
         let getSqlParams () =
           [|
-            SqlParameter("@nvarchar", SqlDbType.NVarChar, Size = 0, Value = ``nvarchar``)
+            SqlParameter("@nvarchar", SqlDbType.NVarChar, Size = -1, Value = ``nvarchar``)
             SqlParameter("@varbinary", SqlDbType.VarBinary, Size = -1, Value = ``varbinary``)
             SqlParameter("@varchar", SqlDbType.VarChar, Size = -1, Value = ``varchar``)
           |]
@@ -7876,7 +7876,7 @@ module Procedures =
       member inline this.WithParameters(dto: ^a) =
         let getSqlParams () =
           [|
-            SqlParameter("@nvarchar", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``Nvarchar``: string) dto))
+            SqlParameter("@nvarchar", SqlDbType.NVarChar, Size = -1, Value = (^a: (member ``Nvarchar``: string) dto))
             SqlParameter("@varbinary", SqlDbType.VarBinary, Size = -1, Value = (^a: (member ``Varbinary``: byte []) dto))
             SqlParameter("@varchar", SqlDbType.VarChar, Size = -1, Value = (^a: (member ``Varchar``: string) dto))
           |]
@@ -20268,14 +20268,14 @@ EXEC sp_executesql @sql, N''"""
       ) =
       let getSqlParams () =
         [|
-          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = ``orderBy``)
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = -1, Value = ``orderBy``)
         |]
       ``DynamicSqlSensitiveToParamValues_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
     member inline this.WithParameters(dto: ^a) =
       let getSqlParams () =
         [|
-          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``OrderBy``: string) dto))
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = -1, Value = (^a: (member ``OrderBy``: string) dto))
         |]
       ``DynamicSqlSensitiveToParamValues_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
@@ -20435,14 +20435,14 @@ WITH RESULT SETS (([TableCol1] NVARCHAR (42) NOT NULL, [TableCol2] INT NULL))"""
       ) =
       let getSqlParams () =
         [|
-          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = ``orderBy``)
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = -1, Value = ``orderBy``)
         |]
       ``DynamicSqlSensitiveToParamValuesWithResultSets_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
     member inline this.WithParameters(dto: ^a) =
       let getSqlParams () =
         [|
-          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``OrderBy``: string) dto))
+          SqlParameter("@orderBy", SqlDbType.NVarChar, Size = -1, Value = (^a: (member ``OrderBy``: string) dto))
         |]
       ``DynamicSqlSensitiveToParamValuesWithResultSets_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
@@ -26169,7 +26169,7 @@ VALUES
       let getSqlParams () =
         [|
           SqlParameter("key", SqlDbType.Int, Value = ``key``)
-          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = ``nvarchar``)
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = -1, Value = ``nvarchar``)
           SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = ``varbinary``)
           SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = ``varchar``)
         |]
@@ -26179,7 +26179,7 @@ VALUES
       let getSqlParams () =
         [|
           SqlParameter("key", SqlDbType.Int, Value = (^a: (member ``Key``: int) dto))
-          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``Nvarchar``: string) dto))
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = -1, Value = (^a: (member ``Nvarchar``: string) dto))
           SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = (^a: (member ``Varbinary``: byte []) dto))
           SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = (^a: (member ``Varchar``: string) dto))
         |]
@@ -26452,7 +26452,7 @@ WHEN NOT MATCHED THEN
       let getSqlParams () =
         [|
           SqlParameter("key", SqlDbType.Int, Value = ``key``)
-          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = ``nvarchar``)
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = -1, Value = ``nvarchar``)
           SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = ``varbinary``)
           SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = ``varchar``)
         |]
@@ -26462,7 +26462,7 @@ WHEN NOT MATCHED THEN
       let getSqlParams () =
         [|
           SqlParameter("key", SqlDbType.Int, Value = (^a: (member ``Key``: int) dto))
-          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``Nvarchar``: string) dto))
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = -1, Value = (^a: (member ``Nvarchar``: string) dto))
           SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = (^a: (member ``Varbinary``: byte []) dto))
           SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = (^a: (member ``Varchar``: string) dto))
         |]
@@ -26725,7 +26725,7 @@ WHERE
       let getSqlParams () =
         [|
           SqlParameter("key", SqlDbType.Int, Value = ``key``)
-          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = ``nvarchar``)
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = -1, Value = ``nvarchar``)
           SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = ``varbinary``)
           SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = ``varchar``)
         |]
@@ -26735,7 +26735,7 @@ WHERE
       let getSqlParams () =
         [|
           SqlParameter("key", SqlDbType.Int, Value = (^a: (member ``Key``: int) dto))
-          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = 0, Value = (^a: (member ``Nvarchar``: string) dto))
+          SqlParameter("nvarchar", SqlDbType.NVarChar, Size = -1, Value = (^a: (member ``Nvarchar``: string) dto))
           SqlParameter("varbinary", SqlDbType.VarBinary, Size = -1, Value = (^a: (member ``Varbinary``: byte []) dto))
           SqlParameter("varchar", SqlDbType.VarChar, Size = -1, Value = (^a: (member ``Varchar``: string) dto))
         |]
@@ -34447,7 +34447,7 @@ VALUES
       let getSqlParams () =
         [|
           SqlParameter("id", SqlDbType.Int, Value = ``id``)
-          SqlParameter("data", SqlDbType.NVarChar, Size = 0, Value = Option.toDbNull ``data``)
+          SqlParameter("data", SqlDbType.NVarChar, Size = -1, Value = Option.toDbNull ``data``)
         |]
       ``Temporal_Insert_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
@@ -34455,7 +34455,7 @@ VALUES
       let getSqlParams () =
         [|
           SqlParameter("id", SqlDbType.Int, Value = (^a: (member ``Id``: int) dto))
-          SqlParameter("data", SqlDbType.NVarChar, Size = 0, Value = Option.toDbNull (^a: (member ``Data``: string option) dto))
+          SqlParameter("data", SqlDbType.NVarChar, Size = -1, Value = Option.toDbNull (^a: (member ``Data``: string option) dto))
         |]
       ``Temporal_Insert_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
@@ -34704,7 +34704,7 @@ WHEN NOT MATCHED THEN
       let getSqlParams () =
         [|
           SqlParameter("id", SqlDbType.Int, Value = ``id``)
-          SqlParameter("data", SqlDbType.NVarChar, Size = 0, Value = Option.toDbNull ``data``)
+          SqlParameter("data", SqlDbType.NVarChar, Size = -1, Value = Option.toDbNull ``data``)
         |]
       ``Temporal_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
@@ -34712,7 +34712,7 @@ WHEN NOT MATCHED THEN
       let getSqlParams () =
         [|
           SqlParameter("id", SqlDbType.Int, Value = (^a: (member ``Id``: int) dto))
-          SqlParameter("data", SqlDbType.NVarChar, Size = 0, Value = Option.toDbNull (^a: (member ``Data``: string option) dto))
+          SqlParameter("data", SqlDbType.NVarChar, Size = -1, Value = Option.toDbNull (^a: (member ``Data``: string option) dto))
         |]
       ``Temporal_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
@@ -34955,7 +34955,7 @@ WHERE
       let getSqlParams () =
         [|
           SqlParameter("id", SqlDbType.Int, Value = ``id``)
-          SqlParameter("data", SqlDbType.NVarChar, Size = 0, Value = Option.toDbNull ``data``)
+          SqlParameter("data", SqlDbType.NVarChar, Size = -1, Value = Option.toDbNull ``data``)
         |]
       ``Temporal_Update_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
@@ -34963,7 +34963,7 @@ WHERE
       let getSqlParams () =
         [|
           SqlParameter("id", SqlDbType.Int, Value = (^a: (member ``Id``: int) dto))
-          SqlParameter("data", SqlDbType.NVarChar, Size = 0, Value = Option.toDbNull (^a: (member ``Data``: string option) dto))
+          SqlParameter("data", SqlDbType.NVarChar, Size = -1, Value = Option.toDbNull (^a: (member ``Data``: string option) dto))
         |]
       ``Temporal_Update_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
