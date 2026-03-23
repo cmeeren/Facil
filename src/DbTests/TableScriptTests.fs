@@ -4114,6 +4114,44 @@ let tests =
                 test <@ resForKey2.BAR = None @>
 
 
+            testCase "GetByColumnsBatch with reversed filter columns"
+            <| fun () ->
+                clearTableScriptTables ()
+
+                let insertRes1 =
+                    DbGen.Scripts.TableWithIdentityCol_Insert
+                        .WithConnection(Config.connStr)
+                        .WithParameters(foo = 123L, bar = None)
+                        .ExecuteSingle()
+
+                let insertRes2 =
+                    DbGen.Scripts.TableWithIdentityCol_Insert
+                        .WithConnection(Config.connStr)
+                        .WithParameters(foo = 456L, bar = None)
+                        .ExecuteSingle()
+
+                let key1 = insertRes1.Value.Id
+                let key2 = insertRes2.Value.Id
+
+                let getRes =
+                    DbGen.Scripts.TableWithIdentityCol_ByColumnsBatch_ReversedColumns
+                        .WithConnection(Config.connStr)
+                        .WithParameters(
+                            [
+                                DbGen.TableTypes.dbo.FilterForTableWithIdentityCol.create insertRes1.Value
+                                DbGen.TableTypes.dbo.FilterForTableWithIdentityCol.create insertRes2.Value
+                            ]
+                        )
+                        .Execute()
+
+                test <@ getRes.Count = 2 @>
+                let resForKey1 = getRes |> Seq.find (fun x -> x.Id = key1)
+                let resForKey2 = getRes |> Seq.find (fun x -> x.Id = key2)
+
+                test <@ resForKey1.Foo = 123L @>
+                test <@ resForKey2.Foo = 456L @>
+
+
             testCase "Name with subdir"
             <| fun () ->
                 clearTableScriptTables ()

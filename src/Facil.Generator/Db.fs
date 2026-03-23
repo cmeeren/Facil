@@ -1191,6 +1191,12 @@ let getEverything
             }
 
             let getTableTypeColMappingIfCanUse (tt: TableType) (tableCols: TableColumn list) =
+                let normalizeColForTableTypeMatching (col: TableColumn) = {
+                    col with
+                        SortKey = 0
+                        IsIdentity = false
+                }
+
                 match tt.Columns, tableCols with
                 | [ ttCol ], [ tableCol ] ->
                     if
@@ -1212,21 +1218,8 @@ let getEverything
                     else
                         None
                 | ttCols, tableCols when ttCols.Length = tableCols.Length ->
-                    let ttColsToCheck =
-                        ttCols
-                        |> List.map (fun x -> {
-                            x with
-                                SortKey = 0
-                                IsIdentity = false
-                        })
-
-                    let tableColsToCheck =
-                        tableCols
-                        |> List.map (fun x -> {
-                            x with
-                                SortKey = 0
-                                IsIdentity = false
-                        })
+                    let ttColsToCheck = ttCols |> List.map normalizeColForTableTypeMatching
+                    let tableColsToCheck = tableCols |> List.map normalizeColForTableTypeMatching
 
                     let hasSameColumnsIgnoringOrder =
                         ttColsToCheck
@@ -1234,11 +1227,19 @@ let getEverything
                         && tableColsToCheck
                            |> List.forall (fun tableCol -> ttColsToCheck |> List.contains tableCol)
 
-                    let ttAndTableCols = List.zip ttCols tableCols
-
                     if hasSameColumnsIgnoringOrder then
-                        ttAndTableCols
-                        |> List.map (fun (ttCol, tableCol) -> ttCol.Name, tableCol.Name)
+                        ttCols
+                        |> List.map (fun ttCol ->
+                            let ttColToCheck = ttCol |> normalizeColForTableTypeMatching
+
+                            let tableCol =
+                                tableCols
+                                |> List.find (fun tableCol ->
+                                    tableCol |> normalizeColForTableTypeMatching = ttColToCheck
+                                )
+
+                            ttCol.Name, tableCol.Name
+                        )
                         |> Some
                     else
                         None

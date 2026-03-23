@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+c42a73fb9d41afb2db6f66c9ce8d9ad889227cd9",
-    "assemblyHash": "cce6160faf4e587fa633771904c80308"
+    "assemblyVersion": "2.15.2+88eb5f265bc2567af6782419062dbc5601d7325e",
+    "assemblyHash": "9d5d575abebb2ef1e146f3eadd98481d"
   },
   "config": {
     "path": "facil.yaml",
@@ -216,7 +216,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+c42a73fb9d41afb2db6f66c9ce8d9ad889227cd9")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+88eb5f265bc2567af6782419062dbc5601d7325e")>]
 module DbGen
 
 #nowarn "49"
@@ -31065,8 +31065,8 @@ WHERE
   EXISTS (
     SELECT * FROM @ids ids
     WHERE
-      ids.[Id] = [TableWithIdentityCol].Foo
-      AND ids.[Foo] = [TableWithIdentityCol].Id
+      ids.[Id] = [TableWithIdentityCol].Id
+      AND ids.[Foo] = [TableWithIdentityCol].Foo
   )"""
       cmd.Parameters.AddRange sqlParams
       userConfigureCmd cmd
