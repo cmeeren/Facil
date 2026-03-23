@@ -533,6 +533,12 @@ rulesets:
         scripts:
           - type: insert
           - type: insertBatch
+          - type: getByColumnsBatch
+            name: TableWithComputedCol_ByIdAndFooBatch
+            tableType: dbo.FilterForTableWithIdentityCol
+            filterColumns:
+              - Id
+              - Foo
           - type: insert
             name: TableWithComputedCol_Insert_WithSkipFalse
             columns:

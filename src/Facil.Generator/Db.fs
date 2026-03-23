@@ -1195,23 +1195,18 @@ let getEverything
                     col with
                         SortKey = 0
                         IsIdentity = false
+                        ShouldSkipInTableDto = false
                 }
 
                 match tt.Columns, tableCols with
                 | [ ttCol ], [ tableCol ] ->
                     if
                         {
-                            ttCol with
+                            (ttCol |> normalizeColForTableTypeMatching) with
                                 Name = ""
-                                SortKey = 0
-                                IsIdentity = false
-                                ShouldSkipInTableDto = false
                         } = {
-                                tableCol with
+                                (tableCol |> normalizeColForTableTypeMatching) with
                                     Name = ""
-                                    SortKey = 0
-                                    IsIdentity = false
-                                    ShouldSkipInTableDto = false
                             }
                     then
                         Some [ ttCol.Name, tableCol.Name ]

@@ -4152,6 +4152,37 @@ let tests =
                 test <@ resForKey2.Foo = 456L @>
 
 
+            testCase "Skipped table DTO columns are ignored when matching batch-script table types"
+            <| fun () ->
+                use conn = new SqlConnection(Config.connStr)
+                conn.Open()
+
+                use cmd = conn.CreateCommand()
+
+                cmd.CommandText <-
+                    """
+DELETE FROM [dbo].[TableWithComputedCol];
+INSERT INTO [dbo].[TableWithComputedCol] ([Id], [Foo])
+VALUES (1, 10), (2, 20);
+"""
+
+                cmd.ExecuteNonQuery() |> ignore
+
+                let getRes =
+                    DbGen.Scripts.TableWithComputedCol_ByIdAndFooBatch
+                        .WithConnection(Config.connStr)
+                        .WithParameters(
+                            [
+                                DbGen.TableTypes.dbo.FilterForTableWithIdentityCol.create {| Id = 1; Foo = 10L |}
+                                DbGen.TableTypes.dbo.FilterForTableWithIdentityCol.create {| Id = 2; Foo = 20L |}
+                            ]
+                        )
+                        .Execute()
+
+                test <@ getRes.Count = 2 @>
+                test <@ getRes |> Seq.map _.Id |> Set.ofSeq = set [ 1; 2 ] @>
+
+
             testCase "Name with subdir"
             <| fun () ->
                 clearTableScriptTables ()
