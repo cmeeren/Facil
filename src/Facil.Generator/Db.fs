@@ -1195,6 +1195,8 @@ let getEverything
                     col with
                         SortKey = 0
                         IsIdentity = false
+                        IsComputed = false
+                        IsGeneratedAlways = false
                         ShouldSkipInTableDto = false
                 }
 

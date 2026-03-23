@@ -534,6 +534,11 @@ rulesets:
           - type: insert
           - type: insertBatch
           - type: getByColumnsBatch
+            name: TableWithComputedCol_ByBarBatch
+            tableType: dbo.SingleColNonNull
+            filterColumns:
+              - Bar
+          - type: getByColumnsBatch
             name: TableWithComputedCol_ByIdAndFooBatch
             tableType: dbo.FilterForTableWithIdentityCol
             filterColumns:
