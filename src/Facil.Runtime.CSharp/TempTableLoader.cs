@@ -6,12 +6,28 @@ namespace Facil.Runtime.CSharp
 {
   internal class TempTableLoader : IDataReader
   {
+    private readonly string[] _columnNames;
+    private readonly Dictionary<string, int> _ordinalsByName;
     private readonly IEnumerator<object[]> _enumerator;
     private bool _isClosed;
 
     public TempTableLoader(int fieldCount, IEnumerable<object[]> items)
+      : this(Array.Empty<string>(), fieldCount, items)
     {
+    }
+
+    public TempTableLoader(string[] columnNames, int fieldCount, IEnumerable<object[]> items)
+    {
+      if (columnNames.Length != 0 && columnNames.Length != fieldCount)
+        throw new ArgumentException("Column names must match the field count", nameof(columnNames));
+
       FieldCount = fieldCount;
+      _columnNames = columnNames;
+      _ordinalsByName = new Dictionary<string, int>(columnNames.Length, StringComparer.OrdinalIgnoreCase);
+
+      for (var i = 0; i < columnNames.Length; i++)
+        _ordinalsByName.Add(columnNames[i], i);
+
       _enumerator = items.GetEnumerator();
     }
 
@@ -32,9 +48,9 @@ namespace Facil.Runtime.CSharp
       throw new NotImplementedException();
     }
 
-    public object this[int i] => throw new NotImplementedException();
+    public object this[int i] => GetValue(i);
 
-    public object this[string name] => throw new NotImplementedException();
+    public object this[string name] => GetValue(GetOrdinal(name));
 
     public int Depth => 0;
 
@@ -137,12 +153,18 @@ namespace Facil.Runtime.CSharp
 
     public string GetName(int i)
     {
-      throw new NotImplementedException();
+      if (_columnNames.Length == 0)
+        throw new NotSupportedException("Source column names are not available.");
+
+      return _columnNames[i];
     }
 
     public int GetOrdinal(string name)
     {
-      throw new NotImplementedException();
+      if (_ordinalsByName.TryGetValue(name, out var ordinal))
+        return ordinal;
+
+      throw new IndexOutOfRangeException($"The column '{name}' does not exist.");
     }
 
     public DataTable GetSchemaTable()
@@ -157,12 +179,16 @@ namespace Facil.Runtime.CSharp
 
     public int GetValues(object[] values)
     {
-      throw new NotImplementedException();
+      var current = _enumerator.Current;
+      var count = Math.Min(values.Length, current.Length);
+      Array.Copy(current, values, count);
+      return count;
     }
 
     public bool IsDBNull(int i)
     {
-      throw new NotImplementedException();
+      var value = GetValue(i);
+      return value is null || value == DBNull.Value;
     }
   }
 }

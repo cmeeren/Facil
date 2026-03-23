@@ -1190,11 +1190,17 @@ let tests =
                             .WithConnection(Config.connStr)
                             .ConfigureBulkCopy(fun bc ->
                                 bc.NotifyAfter <- 1
+                                bc.ColumnMappings.Add("Col1", "Col1") |> ignore
+                                bc.ColumnMappings.Add("Col2", "Col2") |> ignore
                                 bc.SqlRowsCopied.Add(fun _ -> rowsCopied <- rowsCopied + 1)
                             )
                             .WithParameters(tempTableInlined = [ createRow (); createRow (); createRow () ])
                         |> exec
-                        |> ignore
+                        |> function
+                            | None -> failtest "Expected a result row"
+                            | Some res ->
+                                test <@ res.Col1 = 1 @>
+                                test <@ res.Col2 = Some "test" @>
 
                         let rowsCopied = rowsCopied
                         test <@ rowsCopied = 3 @>

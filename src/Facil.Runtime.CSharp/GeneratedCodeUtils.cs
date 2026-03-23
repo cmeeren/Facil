@@ -35,7 +35,7 @@ namespace Facil.Runtime.CSharp
         using var bulkCopy = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, tran)
           { DestinationTableName = data.DestinationTableName };
         data.ConfigureBulkCopy(bulkCopy);
-        using var reader = new TempTableLoader(data.NumFields, data.Data);
+        using var reader = new TempTableLoader(data.ColumnNames, data.NumFields, data.Data);
         await bulkCopy.WriteToServerAsync(reader, ct);
       }
     }
@@ -56,7 +56,7 @@ namespace Facil.Runtime.CSharp
         using var bulkCopy = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, tran)
           { DestinationTableName = data.DestinationTableName };
         data.ConfigureBulkCopy(bulkCopy);
-        using var reader = new TempTableLoader(data.NumFields, data.Data);
+        using var reader = new TempTableLoader(data.ColumnNames, data.NumFields, data.Data);
         bulkCopy.WriteToServer(reader);
       }
     }

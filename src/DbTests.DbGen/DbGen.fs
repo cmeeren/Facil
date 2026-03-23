@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+9e7ee9fb99f6185f725c9f9ab2776bc8dea20d17",
-    "assemblyHash": "35ab2764b14173d4b7fe2dd4b09d1ddf"
+    "assemblyVersion": "2.15.2+cf53ea2cbd64b88b43f258adb6d4ad1a6f4ab902",
+    "assemblyHash": "ca70576f8f64f5e5e1e0c2256ea7e38d"
   },
   "config": {
     "path": "facil.yaml",
@@ -220,7 +220,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+9e7ee9fb99f6185f725c9f9ab2776bc8dea20d17")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+cf53ea2cbd64b88b43f258adb6d4ad1a6f4ab902")>]
 module DbGen
 
 #nowarn "49"
@@ -14461,6 +14461,7 @@ module Procedures =
               CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
               """,
               (``tempTable`` |> Seq.map (fun x -> x.Fields)),
+              [| "Col1"; "Col2" |],
               2,
               Action<_> this.userConfigureBulkCopy
             )
@@ -14600,6 +14601,7 @@ module Procedures =
               CREATE TABLE #tempTable (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
               """,
               (``tempTable`` |> Seq.map (fun x -> x.Fields)),
+              [| "Col1"; "Col2" |],
               2,
               Action<_> this.userConfigureBulkCopy
             )
@@ -15389,6 +15391,7 @@ INNER JOIN [#args]
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key" |],
             1,
             Action<_> this.userConfigureBulkCopy
           )
@@ -15925,6 +15928,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "bigint"; "binary"; "bit"; "char"; "date"; "datetime"; "datetime2"; "datetimeoffset"; "decimal"; "float"; "image"; "int"; "money"; "nchar"; "ntext"; "numeric"; "nvarchar"; "real"; "smalldatetime"; "smallint"; "smallmoney"; "text"; "time"; "tinyint"; "uniqueidentifier"; "varbinary"; "varchar"; "xml" |],
             29,
             Action<_> this.userConfigureBulkCopy
           )
@@ -16576,6 +16580,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "bigint"; "binary"; "bit"; "char"; "date"; "datetime"; "datetime2"; "datetimeoffset"; "decimal"; "float"; "image"; "int"; "money"; "nchar"; "ntext"; "numeric"; "nvarchar"; "real"; "smalldatetime"; "smallint"; "smallmoney"; "text"; "time"; "tinyint"; "uniqueidentifier"; "varbinary"; "varchar"; "xml" |],
             29,
             Action<_> this.userConfigureBulkCopy
           )
@@ -17056,6 +17061,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "bigint"; "binary"; "bit"; "char"; "date"; "datetime"; "datetime2"; "datetimeoffset"; "decimal"; "float"; "image"; "int"; "money"; "nchar"; "ntext"; "numeric"; "nvarchar"; "real"; "smalldatetime"; "smallint"; "smallmoney"; "text"; "time"; "tinyint"; "uniqueidentifier"; "varbinary"; "varchar"; "xml" |],
             29,
             Action<_> this.userConfigureBulkCopy
           )
@@ -17865,6 +17871,7 @@ INNER JOIN [#args]
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key1"; "key2" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -18412,6 +18419,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key1"; "key2"; "bigint"; "binary"; "bit"; "char"; "date"; "datetime"; "datetime2"; "datetimeoffset"; "decimal"; "float"; "image"; "int"; "money"; "nchar"; "ntext"; "numeric"; "nvarchar"; "real"; "smalldatetime"; "smallint"; "smallmoney"; "text"; "time"; "tinyint"; "uniqueidentifier"; "varbinary"; "varchar"; "xml" |],
             30,
             Action<_> this.userConfigureBulkCopy
           )
@@ -19077,6 +19085,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key1"; "key2"; "bigint"; "binary"; "bit"; "char"; "date"; "datetime"; "datetime2"; "datetimeoffset"; "decimal"; "float"; "image"; "int"; "money"; "nchar"; "ntext"; "numeric"; "nvarchar"; "real"; "smalldatetime"; "smallint"; "smallmoney"; "text"; "time"; "tinyint"; "uniqueidentifier"; "varbinary"; "varchar"; "xml" |],
             30,
             Action<_> this.userConfigureBulkCopy
           )
@@ -19566,6 +19575,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key1"; "key2"; "bigint"; "binary"; "bit"; "char"; "date"; "datetime"; "datetime2"; "datetimeoffset"; "decimal"; "float"; "image"; "int"; "money"; "nchar"; "ntext"; "numeric"; "nvarchar"; "real"; "smalldatetime"; "smallint"; "smallmoney"; "text"; "time"; "tinyint"; "uniqueidentifier"; "varbinary"; "varchar"; "xml" |],
             30,
             Action<_> this.userConfigureBulkCopy
           )
@@ -21801,6 +21811,7 @@ INNER JOIN [#args]
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key" |],
             1,
             Action<_> this.userConfigureBulkCopy
           )
@@ -22095,6 +22106,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "binary"; "char"; "nchar"; "nvarchar"; "varbinary"; "varchar" |],
             7,
             Action<_> this.userConfigureBulkCopy
           )
@@ -22438,6 +22450,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "binary"; "char"; "nchar"; "nvarchar"; "varbinary"; "varchar" |],
             7,
             Action<_> this.userConfigureBulkCopy
           )
@@ -22720,6 +22733,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "binary"; "char"; "nchar"; "nvarchar"; "varbinary"; "varchar" |],
             7,
             Action<_> this.userConfigureBulkCopy
           )
@@ -26061,6 +26075,7 @@ INNER JOIN [#args]
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key" |],
             1,
             Action<_> this.userConfigureBulkCopy
           )
@@ -26322,6 +26337,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "nvarchar"; "varbinary"; "varchar" |],
             4,
             Action<_> this.userConfigureBulkCopy
           )
@@ -26623,6 +26639,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "nvarchar"; "varbinary"; "varchar" |],
             4,
             Action<_> this.userConfigureBulkCopy
           )
@@ -26878,6 +26895,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "key"; "nvarchar"; "varbinary"; "varchar" |],
             4,
             Action<_> this.userConfigureBulkCopy
           )
@@ -27136,6 +27154,7 @@ INNER JOIN
             CREATE TABLE #tempTable1 (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
             """,
             (``tempTable1`` |> Seq.map (fun x -> x.Fields)),
+            [| "Col1"; "Col2" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -27146,6 +27165,7 @@ INNER JOIN
             CREATE TABLE #tempTable2 (Col1 INT NOT NULL, Col3 NVARCHAR(42) NOT NULL)
             """,
             (``tempTable2`` |> Seq.map (fun x -> x.Fields)),
+            [| "Col1"; "Col3" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -30217,6 +30237,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -30365,6 +30386,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -30747,6 +30769,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -30911,6 +30934,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -31235,6 +31259,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -31385,6 +31410,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -32846,6 +32872,7 @@ INNER JOIN [#args]
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id" |],
             1,
             Action<_> this.userConfigureBulkCopy
           )
@@ -33261,6 +33288,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Foo"; "BAR" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -33720,6 +33748,7 @@ OUTPUT
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo"; "BAR" |],
             3,
             Action<_> this.userConfigureBulkCopy
           )
@@ -33889,6 +33918,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo"; "BAR" |],
             3,
             Action<_> this.userConfigureBulkCopy
           )
@@ -34425,6 +34455,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Foo"; "BAR" |],
             3,
             Action<_> this.userConfigureBulkCopy
           )
@@ -34943,6 +34974,7 @@ FROM #args"""
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Data" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -35216,6 +35248,7 @@ WHEN NOT MATCHED THEN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Data" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -35453,6 +35486,7 @@ INNER JOIN
             )
             """,
             (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Id"; "Data" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -35886,6 +35920,7 @@ SELECT * FROM #AllTypesNonNull"""
 
             """,
             (``AllTypesNonNull`` |> Seq.map (fun x -> x.Fields)),
+            [| "Bigint"; "Binary"; "Bit"; "Char"; "Date"; "Datetime"; "Datetime2"; "Datetimeoffset"; "Decimal"; "Float"; "Image"; "Int"; "Money"; "Nchar"; "Ntext"; "Numeric"; "Nvarchar"; "Real"; "Smalldatetime"; "Smallint"; "Smallmoney"; "Text"; "Time"; "Tinyint"; "Uniqueidentifier"; "Varbinary"; "Varchar"; "Xml" |],
             28,
             Action<_> this.userConfigureBulkCopy
           )
@@ -36325,6 +36360,7 @@ SELECT * FROM #AllTypesNonNull"""
 
             """,
             (``AllTypesNonNull`` |> Seq.map (fun x -> x.Fields)),
+            [| "Bigint"; "Binary"; "Bit"; "Char"; "Date"; "Datetime"; "Datetime2"; "Datetimeoffset"; "Decimal"; "Float"; "Image"; "Int"; "Money"; "Nchar"; "Ntext"; "Numeric"; "Nvarchar"; "Real"; "Smalldatetime"; "Smallint"; "Smallmoney"; "Text"; "Time"; "Tinyint"; "Uniqueidentifier"; "Varbinary"; "Varchar"; "Xml" |],
             28,
             Action<_> this.userConfigureBulkCopy
           )
@@ -36758,6 +36794,7 @@ SELECT * FROM #AllTypesNull"""
 
             """,
             (``AllTypesNull`` |> Seq.map (fun x -> x.Fields)),
+            [| "Bigint"; "Binary"; "Bit"; "Char"; "Date"; "Datetime"; "Datetime2"; "Datetimeoffset"; "Decimal"; "Float"; "Image"; "Int"; "Money"; "Nchar"; "Ntext"; "Numeric"; "Nvarchar"; "Real"; "Smalldatetime"; "Smallint"; "Smallmoney"; "Text"; "Time"; "Tinyint"; "Uniqueidentifier"; "Varbinary"; "Varchar"; "Xml" |],
             28,
             Action<_> this.userConfigureBulkCopy
           )
@@ -37197,6 +37234,7 @@ SELECT * FROM #AllTypesNull"""
 
             """,
             (``AllTypesNull`` |> Seq.map (fun x -> x.Fields)),
+            [| "Bigint"; "Binary"; "Bit"; "Char"; "Date"; "Datetime"; "Datetime2"; "Datetimeoffset"; "Decimal"; "Float"; "Image"; "Int"; "Money"; "Nchar"; "Ntext"; "Numeric"; "Nvarchar"; "Real"; "Smalldatetime"; "Smallint"; "Smallmoney"; "Text"; "Time"; "Tinyint"; "Uniqueidentifier"; "Varbinary"; "Varchar"; "Xml" |],
             28,
             Action<_> this.userConfigureBulkCopy
           )
@@ -37630,6 +37668,7 @@ SELECT * FROM #AllTypesNull"""
 
             """,
             (``AllTypesNull`` |> Seq.map (fun x -> x.Fields)),
+            [| "Bigint"; "Binary"; "Bit"; "Char"; "Date"; "Datetime"; "Datetime2"; "Datetimeoffset"; "Decimal"; "Float"; "Image"; "Int"; "Money"; "Nchar"; "Ntext"; "Numeric"; "Nvarchar"; "Real"; "Smalldatetime"; "Smallint"; "Smallmoney"; "Text"; "Time"; "Tinyint"; "Uniqueidentifier"; "Varbinary"; "Varchar"; "Xml" |],
             28,
             Action<_> this.userConfigureBulkCopy
           )
@@ -37851,6 +37890,7 @@ SELECT * FROM #tempTableInlined"""
             CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
             """,
             (``tempTableInlined`` |> Seq.map (fun x -> x.Fields)),
+            [| "Col1"; "Col2" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -38075,6 +38115,7 @@ EXEC sp_executesql @sql, N''"""
             CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
             """,
             (``tempTableInlined`` |> Seq.map (fun x -> x.Fields)),
+            [| "Col1"; "Col2" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -38298,6 +38339,7 @@ SELECT * FROM #tempTableInlined"""
             CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)
             """,
             (``tempTableInlined`` |> Seq.map (fun x -> x.Fields)),
+            [| "Col1"; "Col2" |],
             2,
             Action<_> this.userConfigureBulkCopy
           )
@@ -38558,6 +38600,7 @@ SELECT * FROM #tempTableWithLengthTypes"""
 
             """,
             (``tempTableWithLengthTypes`` |> Seq.map (fun x -> x.Fields)),
+            [| "binary"; "char"; "nchar"; "nvarchar"; "varbinary"; "varchar" |],
             6,
             Action<_> this.userConfigureBulkCopy
           )
@@ -38791,6 +38834,7 @@ SELECT * FROM #tempTableWithMaxLengthTypes"""
 
             """,
             (``tempTableWithMaxLengthTypes`` |> Seq.map (fun x -> x.Fields)),
+            [| "nvarchar"; "varbinary"; "varchar" |],
             3,
             Action<_> this.userConfigureBulkCopy
           )

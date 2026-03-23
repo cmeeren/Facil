@@ -1083,6 +1083,17 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                                 yield! String.getDeindentedLines tt.Source
                                                                 "\"\"\","
                                                                 $"(``{tt.FSharpName}`` |> Seq.map (fun x -> x.Fields)),"
+                                                                tt.Columns
+                                                                |> List.map (fun c ->
+                                                                    c.StringEscapedName
+                                                                    |> Option.defaultWith (fun () ->
+                                                                        failwith
+                                                                            $"Temp table {tt.Name} contains an unnamed column"
+                                                                    )
+                                                                    |> sprintf "\"%s\""
+                                                                )
+                                                                |> String.concat "; "
+                                                                |> sprintf "[| %s |],"
                                                                 $"{tt.Columns.Length},"
                                                                 "Action<_> this.userConfigureBulkCopy"
                                                             ]
