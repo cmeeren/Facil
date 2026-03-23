@@ -3,13 +3,13 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+c90d63a48d0de4e81ebefb5a1cd3adec947a502f",
-    "assemblyHash": "a09c85ebea0395d4769066944e0f140d"
+    "assemblyVersion": "2.15.2+9e7ee9fb99f6185f725c9f9ab2776bc8dea20d17",
+    "assemblyHash": "35ab2764b14173d4b7fe2dd4b09d1ddf"
   },
   "config": {
     "path": "facil.yaml",
     "configsHash": "9c7e87f1906bb406ad64d4e9e8264319",
-    "rulesetsHash": "2be0742d20e96e34e35c0b53abd483bb"
+    "rulesetsHash": "8a57aaad45a42fb07cd58c64d7388afa"
   },
   "scripts": [
     {
@@ -197,6 +197,10 @@
       "hash": "a2e13e753822e131e3c0982735c809f0"
     },
     {
+      "path": "Voption/NonNullTableOutWithDto.sql",
+      "hash": "7ab76de152ab04602f38219368165f1c"
+    },
+    {
       "path": "Voption/Out.sql",
       "hash": "a2e13e753822e131e3c0982735c809f0"
     },
@@ -216,7 +220,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+c90d63a48d0de4e81ebefb5a1cd3adec947a502f")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+9e7ee9fb99f6185f725c9f9ab2776bc8dea20d17")>]
 module DbGen
 
 #nowarn "49"
@@ -40244,6 +40248,135 @@ SELECT @param1"""
               SqlParameter("@param1", SqlDbType.NVarChar, Size = 50, Value = ValueOption.toDbNull (^a: (member ``Param1``: string voption) dto))
             |]
           ``In_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+
+      type ``NonNullTableOutWithDto`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+        let configureCmd userConfigureCmd (cmd: SqlCommand) =
+          cmd.CommandText <- """-- Voption/NonNullTableOutWithDto.sql
+SELECT * FROM MaxLengthTypes ORDER BY [key]"""
+          userConfigureCmd cmd
+
+        let mutable ``ordinal_key`` = 0
+        let mutable ``ordinal_nvarchar`` = 0
+        let mutable ``ordinal_varbinary`` = 0
+        let mutable ``ordinal_varchar`` = 0
+
+        let initOrdinals (reader: SqlDataReader) =
+          ``ordinal_key`` <- reader.GetOrdinal "key"
+          ``ordinal_nvarchar`` <- reader.GetOrdinal "nvarchar"
+          ``ordinal_varbinary`` <- reader.GetOrdinal "varbinary"
+          ``ordinal_varchar`` <- reader.GetOrdinal "varchar"
+
+        let getItem (reader: SqlDataReader) : TableDtos.``dbo``.``MaxLengthTypes`` =
+          let ``key`` = reader.GetInt32 ``ordinal_key``
+          let ``nvarchar`` = reader.GetString ``ordinal_nvarchar``
+          let ``varbinary`` = reader.GetBytes ``ordinal_varbinary``
+          let ``varchar`` = reader.GetString ``ordinal_varchar``
+          {
+            ``Key`` = ``key``
+            ``Nvarchar`` = ``nvarchar``
+            ``Varbinary`` = ``varbinary``
+            ``Varchar`` = ``varchar``
+          }
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        new() =
+          failwith "This constructor is for aiding reflection and type constraints only"
+          ``NonNullTableOutWithDto``(null, null, null)
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val configureConn : SqlConnection -> unit = ignore with get, set
+
+        [<EditorBrowsable(EditorBrowsableState.Never)>]
+        member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+        member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+          this.userConfigureCmd <- configureCommand
+          this
+
+        static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+          ``NonNullTableOutWithDto``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+        static member WithConnection(connection, ?transaction) = ``NonNullTableOutWithDto``(null, connection, defaultArg transaction null)
+
+        member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+          match configureConnection with
+          | None -> ()
+          | Some config -> this.configureConn <- config
+          this
+
+        member this.ExecuteAsync(?cancellationToken) =
+          executeQueryEagerAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecute() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsync(ct) |> Async.AwaitTask
+          }
+
+        member this.ExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryEagerAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteWithSyncRead() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+          }
+
+        member this.Execute() =
+          executeQueryEager connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+        member this.LazyExecuteAsync(?cancellationToken) =
+          executeQueryLazyAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+        member this.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+          executeQueryLazyAsyncWithSyncRead connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+        member this.LazyExecute() =
+          executeQueryLazy connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+        member this.ExecuteSingleAsync(?cancellationToken) =
+          executeQuerySingleAsyncVoption connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem [] (defaultArg cancellationToken CancellationToken.None)
+
+        member this.AsyncExecuteSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        member this.ExecuteSingle() =
+          executeQuerySingleVoption connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) initOrdinals getItem []
+
+        /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+        member this.ExecuteReaderAsync(?cancellationToken) =
+          executeReaderAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) [] (defaultArg cancellationToken CancellationToken.None)
+
+        /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+        member this.AsyncExecuteReader() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteReaderAsync(ct) |> Async.AwaitTask
+          }
+
+        /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+        member this.ExecuteReader() =
+          executeReader connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []
+
+        /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+        member this.ExecuteReaderSingleAsync(?cancellationToken) =
+          executeReaderSingleAsync connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) [] (defaultArg cancellationToken CancellationToken.None)
+
+        /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+        member this.AsyncExecuteReaderSingle() =
+          async {
+            let! ct = Async.CancellationToken
+            return! this.ExecuteReaderSingleAsync(ct) |> Async.AwaitTask
+          }
+
+        /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+        member this.ExecuteReaderSingle() =
+          executeReaderSingle connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []
 
 
       [<EditorBrowsable(EditorBrowsableState.Never)>]

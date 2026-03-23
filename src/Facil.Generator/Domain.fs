@@ -475,10 +475,38 @@ module TableDto =
                 (dto.Columns
                  |> List.map (fun c -> { c with SortKey = 0; Collation = None } |> TableColumn.toOutputColumn))
 
+            let hasNullableColumns = a |> List.exists _.IsNullable
+
             // Must contain all columns, but ignore order
             a |> List.forall (fun a' -> b |> List.contains a')
             && b |> List.forall (fun b' -> a |> List.contains b')
-            && procOrScriptRule.VoptionOut = dtoRule.Voption
+            && (not hasNullableColumns || procOrScriptRule.VoptionOut = dtoRule.Voption)
+
+
+    let private preferExactVoptionMatchesForAutoResult cfg procOrScriptRule (structuralMatches: TableDto list) =
+        match structuralMatches with
+        | []
+        | [ _ ] -> structuralMatches
+        | _ ->
+            // Non-null DTO fields have the same F# shape for option and voption rules, so use the
+            // voption setting as a tie-breaker before treating structural auto-matches as ambiguous.
+            let exactMatches =
+                structuralMatches
+                |> List.filter (fun dto ->
+                    let dtoRule = RuleSet.getEffectiveTableDtoRuleFor dto.SchemaName dto.Name cfg
+                    dtoRule.Voption = procOrScriptRule.VoptionOut
+                )
+
+            if exactMatches.IsEmpty then
+                structuralMatches
+            else
+                exactMatches
+
+
+    let findAutoMatches resultSet procOrScriptRule cfg tableDtos =
+        tableDtos
+        |> List.filter (canBeUsedBy resultSet procOrScriptRule cfg)
+        |> preferExactVoptionMatchesForAutoResult cfg procOrScriptRule
 
 
 open System.IO

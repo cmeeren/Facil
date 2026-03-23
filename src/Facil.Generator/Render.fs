@@ -243,7 +243,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
     let getItemReturnTypeExpr, getItemRecordStart, getItemRecordEnd, (getColName: OutputColumn -> string) =
         match rule.Result with
         | Auto ->
-            match tableDtos |> List.filter (TableDto.canBeUsedBy resultSet rule cfg) with
+            match tableDtos |> TableDto.findAutoMatches resultSet rule cfg with
             | [] -> "", "{|", "|}", (fun c -> c.Name.Value)
             | [ dto ] ->
                 $" : TableDtos.``{dto.SchemaName}``.``{dto.Name}``", "{", "}", (fun c -> c.PascalCaseName.Value)

@@ -168,6 +168,10 @@ rulesets:
       - for: Voption/TableOutWithDto.sql
         voptionOut: true
 
+      - for: Voption/NonNullTableOutWithDto.sql
+        voptionOut: true
+        result: dbo.MaxLengthTypes
+
       - for: Voption/TableOutWithoutDto.sql
         voptionOut: true
 

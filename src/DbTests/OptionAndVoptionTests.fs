@@ -1,6 +1,7 @@
 ﻿module OptionAndVoptionTests
 
 open Expecto
+open Microsoft.Data.SqlClient
 open Swensen.Unquote
 
 
@@ -578,6 +579,54 @@ let voptionTests =
                                 Col2 = ValueSome 1
                             }
                             { Col1 = ValueNone; Col2 = ValueNone }
+                        ]
+
+                        test <@ res = expected @>
+                )
+        ]
+
+
+        testSequenced
+        <| testList (nameof DbGen.Scripts.Voption.NonNullTableOutWithDto) [
+            yield!
+                allSeqExecuteMethods<DbGen.Scripts.Voption.NonNullTableOutWithDto, _>
+                |> List.map (fun (name, exec) ->
+                    testCase name
+                    <| fun () ->
+                        use conn = new SqlConnection(Config.connStr)
+                        conn.Open()
+
+                        use cmd = conn.CreateCommand()
+
+                        cmd.CommandText <-
+                            """
+DELETE FROM [dbo].[MaxLengthTypes];
+INSERT INTO [dbo].[MaxLengthTypes] ([key], [nvarchar], [varbinary], [varchar])
+VALUES
+  (1, N'test-1', 0x0102, 'alpha'),
+  (2, N'test-2', 0x0304, 'beta');
+"""
+
+                        cmd.ExecuteNonQuery() |> ignore
+
+                        let res =
+                            DbGen.Scripts.Voption.NonNullTableOutWithDto.WithConnection(Config.connStr)
+                            |> exec
+                            |> Seq.toList
+
+                        let expected: DbGen.TableDtos.dbo.MaxLengthTypes list = [
+                            {
+                                Key = 1
+                                Nvarchar = "test-1"
+                                Varbinary = [| 0x01uy; 0x02uy |]
+                                Varchar = "alpha"
+                            }
+                            {
+                                Key = 2
+                                Nvarchar = "test-2"
+                                Varbinary = [| 0x03uy; 0x04uy |]
+                                Varchar = "beta"
+                            }
                         ]
 
                         test <@ res = expected @>
