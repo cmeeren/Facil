@@ -72,6 +72,44 @@ let createAndDropTempTables rewrite (tempTables: TempTable list) (conn: SqlConne
     }
 
 
+let private findDuplicateNamesBy keySelector names =
+    names
+    |> List.groupBy keySelector
+    |> List.choose (fun (_, xs) ->
+        match xs with
+        | [] -> None
+        | [ _ ] -> None
+        | x :: _ -> Some x
+    )
+    |> List.sort
+
+
+let private validateTempTableNames executableName (tempTables: TempTable list) =
+    let duplicateTypeNames =
+        tempTables |> List.map _.FSharpName |> findDuplicateNamesBy id
+
+    match duplicateTypeNames with
+    | [] -> ()
+    | duplicates ->
+        let duplicateNames = duplicates |> String.concat ", "
+
+        failwithError
+            $"%s{executableName} has temp tables that map to the same generated type name. This is not supported. The duplicates are: %s{duplicateNames}"
+
+    let duplicateParamNames =
+        tempTables
+        |> List.map (_.FSharpName >> String.firstLower)
+        |> findDuplicateNamesBy id
+
+    match duplicateParamNames with
+    | [] -> ()
+    | duplicates ->
+        let duplicateNames = duplicates |> String.concat ", "
+
+        failwithError
+            $"%s{executableName} has temp tables that map to the same generated parameter name. This is not supported. The duplicates are: %s{duplicateNames}"
+
+
 let getScriptParameters
     (cfg: RuleSet)
     (sysTypeIdLookup: Map<int, string>)
@@ -2616,6 +2654,8 @@ let getEverything
                 failwithError
                     $"The rule for script '%s{script.GlobMatchOutput}' contains multiple temp table definitions using the same temp table name. This is not supported."
 
+            validateTempTableNames $"Script '%s{script.GlobMatchOutput}'" tempTables
+
             let paramNames =
                 script.Parameters
                 |> List.map (fun p -> p.FSharpParamName |> String.firstLower)
@@ -2717,6 +2757,8 @@ let getEverything
                 then
                     failwithError
                         $"The rule for procedure '%s{sproc.SchemaName}.%s{sproc.Name}' contains multiple temp table definitions using the same temp table name. This is not supported."
+
+                validateTempTableNames $"Procedure '%s{sproc.SchemaName}.%s{sproc.Name}'" tempTables
 
                 let paramNames =
                     sproc.Parameters
