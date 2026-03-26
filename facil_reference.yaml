@@ -131,7 +131,7 @@ rulesets:
         recordIfSingleCol: true
 
         # If true, the return value of the procedure will be made available (except when
-        # using lazy execution).
+        # using lazy or reader execution).
         useReturnValue: true
 
         # 'params' allows you to specify settings for individual parameters.

@@ -114,7 +114,7 @@ ask? [See the FAQ.](#why-not-a-type-provider))
   procedure instead of explicitly supplying all parameters from the DTO – less noise, and one less thing to update each
   time you add parameters
 * Supports table-valued parameters in both procedures and scripts
-* Supports stored procedure output parameters and return values
+* Supports stored procedure output parameters and return values (except with lazy and reader methods)
 * Supports lazy execution, both sync (returns `seq`) and async (the latter returns `IAsyncEnumerable`, use with
   e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
 * Supports inferring dynamic SQL result sets *without* `WITH RESULT SETS`
