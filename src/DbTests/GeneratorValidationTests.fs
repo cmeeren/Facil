@@ -47,7 +47,6 @@ let private runGenerator projectDir =
     finally
         Console.SetOut(originalOut)
 
-
 [<Tests>]
 let tests =
     testSequenced
@@ -128,4 +127,40 @@ let tests =
 
                 Expect.equal exitCode 1 "Generation should fail for temp-table generated-name collisions"
                 Expect.stringContains output "same generated type name" "Expected a clear error"
+
+
+        testCase "Nullable table-type columns can be used for getByIdBatch scripts"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    tableScripts:
+                      - include: '^dbo\.TableWithIdentityCol$'
+                        scripts:
+                          - type: getByIdBatch
+                            tableType: dbo.SingleColNull
+                """
+
+            withTemporaryGeneratorProject yaml []
+            <| fun projectDir ->
+                let exitCode, output = runGenerator projectDir
+                let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+
+                Expect.equal exitCode 0 "Generation should succeed for nullable batch table types"
+
+                Expect.stringContains
+                    generated
+                    "TypeName = \"dbo.SingleColNull\""
+                    "Expected the configured table type to be used"
+
+                Expect.isFalse
+                    (output.Contains("can not be used", StringComparison.Ordinal))
+                    "Generation should not reject the nullable table type"
+
     ]

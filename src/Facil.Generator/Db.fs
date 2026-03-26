@@ -1228,13 +1228,15 @@ let getEverything
                 IsCursorRef = false
             }
 
-            let getTableTypeColMappingIfCanUse (tt: TableType) (tableCols: TableColumn list) =
+            let getTableTypeColMappingIfCanUse (ignoreNullability: bool) (tt: TableType) (tableCols: TableColumn list) =
                 let normalizeColForTableTypeMatching (col: TableColumn) = {
                     col with
                         SortKey = 0
+                        IsNullable = if ignoreNullability then false else col.IsNullable
                         IsIdentity = false
                         IsComputed = false
                         IsGeneratedAlways = false
+                        Collation = col.Collation
                         ShouldSkipInTableDto = false
                 }
 
@@ -1299,7 +1301,7 @@ let getEverything
                         )
 
                     let mapping =
-                        getTableTypeColMappingIfCanUse tableType cols
+                        getTableTypeColMappingIfCanUse true tableType cols
                         |> Option.defaultWith (fun () ->
                             failwithYamlError
                                 fullYamlPath
@@ -1313,7 +1315,7 @@ let getEverything
                     let matching =
                         allTableTypes
                         |> List.choose (fun tt ->
-                            getTableTypeColMappingIfCanUse tt cols
+                            getTableTypeColMappingIfCanUse false tt cols
                             |> Option.map (fun mapping -> tt, mapping)
                         )
 
