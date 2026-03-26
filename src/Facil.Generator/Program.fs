@@ -106,6 +106,7 @@ module Program =
 
                             Set.toList finalMatches
                     )
+                    |> List.distinct
                     |> List.map (fun globOutput -> {
                         GlobMatchOutput = globOutput
                         RelativePathSegments =

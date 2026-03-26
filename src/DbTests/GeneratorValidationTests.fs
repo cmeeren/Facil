@@ -3,6 +3,7 @@ module GeneratorValidationTests
 open System
 open System.IO
 open System.Text.Json
+open System.Text.RegularExpressions
 open Expecto
 
 
@@ -162,5 +163,38 @@ let tests =
                 Expect.isFalse
                     (output.Contains("can not be used", StringComparison.Ordinal))
                     "Generation should not reject the nullable table type"
+
+
+        testCase "Scripts matched by multiple include rules are generated once"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    scriptBasePath: SQL
+                    scripts:
+                      - include: DuplicateInclude.sql
+                      - include: '*.sql'
+                """
+
+            withTemporaryGeneratorProject yaml [ "DuplicateInclude.sql", "SELECT Foo = 1" ]
+            <| fun projectDir ->
+                let exitCode, _ = runGenerator projectDir
+                let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+
+                let scriptOccurrences =
+                    Regex.Matches(generated, "\"path\": \"DuplicateInclude.sql\"").Count
+
+                let typeOccurrences =
+                    Regex.Matches(generated, "type ``DuplicateInclude`` private").Count
+
+                Expect.equal exitCode 0 "Generation should succeed when a script matches multiple include rules"
+                Expect.equal scriptOccurrences 1 "The manifest should contain the script once"
+                Expect.equal typeOccurrences 1 "The script should be generated once"
 
     ]
