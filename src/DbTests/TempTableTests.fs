@@ -1339,5 +1339,227 @@ let tests =
                 test <@ rows.WasDisposed @>
         }
 
+        testCase "Sync temp-table load failures do not poison caller-owned connections"
+        <| fun () ->
+            let createBadRow () =
+                DbGen.Scripts.TempTableWithLengthTypes.tempTableWithLengthTypes.create (
+                    binary = [| 1uy; 2uy; 3uy; 4uy |],
+                    char = "1234",
+                    nchar = "1234",
+                    nvarchar = "1234",
+                    varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                    varchar = "1234"
+                )
+
+            let createGoodRow () =
+                DbGen.Scripts.TempTableWithLengthTypes.tempTableWithLengthTypes.create (
+                    binary = [| 1uy; 2uy; 3uy |],
+                    char = "123",
+                    nchar = "123",
+                    nvarchar = "123",
+                    varbinary = [| 1uy; 2uy; 3uy |],
+                    varchar = "123"
+                )
+
+            use conn = new SqlConnection(Config.connStr)
+            conn.Open()
+
+            let runBad () =
+                DbGen.Scripts.TempTableWithLengthTypes
+                    .WithConnection(conn)
+                    .WithParameters([ createBadRow () ])
+                    .ExecuteSingle()
+                |> ignore
+
+            Expect.throws runBad "Should throw when bulk copy hits length limits"
+
+            let res =
+                DbGen.Scripts.TempTableWithLengthTypes
+                    .WithConnection(conn)
+                    .WithParameters([ createGoodRow () ])
+                    .ExecuteSingle()
+
+            test <@ res.Value.varchar = "123" @>
+
+        testCaseAsync "Async temp-table load failures do not poison caller-owned connections"
+        <| async {
+            let createBadRow () =
+                DbGen.Scripts.TempTableWithLengthTypes.tempTableWithLengthTypes.create (
+                    binary = [| 1uy; 2uy; 3uy; 4uy |],
+                    char = "1234",
+                    nchar = "1234",
+                    nvarchar = "1234",
+                    varbinary = [| 1uy; 2uy; 3uy; 4uy |],
+                    varchar = "1234"
+                )
+
+            let createGoodRow () =
+                DbGen.Scripts.TempTableWithLengthTypes.tempTableWithLengthTypes.create (
+                    binary = [| 1uy; 2uy; 3uy |],
+                    char = "123",
+                    nchar = "123",
+                    nvarchar = "123",
+                    varbinary = [| 1uy; 2uy; 3uy |],
+                    varchar = "123"
+                )
+
+            use conn = new SqlConnection(Config.connStr)
+            conn.Open()
+
+            let runBad () =
+                DbGen.Scripts.TempTableWithLengthTypes
+                    .WithConnection(conn)
+                    .WithParameters([ createBadRow () ])
+                    .ExecuteSingleAsync()
+                |> Async.AwaitTask
+
+            try
+                do! runBad () |> Async.Ignore
+                failtest "Expected temp-table loading to fail"
+            with _ ->
+                ()
+
+            let! res =
+                DbGen.Scripts.TempTableWithLengthTypes
+                    .WithConnection(conn)
+                    .WithParameters([ createGoodRow () ])
+                    .ExecuteSingleAsync()
+                |> Async.AwaitTask
+
+            test <@ res.Value.varchar = "123" @>
+        }
+
+        testList "Successful temp-table executions do not poison caller-owned connections" [
+            yield!
+                allExecuteMethodsAsSingle<DbGen.Scripts.TempTableInlined_Executable, _>
+                |> List.filter (fun (name, _) -> name <> "LazyExecuteAsync" && name <> "LazyExecuteAsyncWithSyncRead")
+                |> List.map (fun (name, exec) ->
+                    testCase name
+                    <| fun () ->
+                        use conn = new SqlConnection(Config.connStr)
+                        conn.Open()
+
+                        let createExecutable (conn: SqlConnection) =
+                            DbGen.Scripts.TempTableInlined
+                                .WithConnection(conn)
+                                .WithParameters(
+                                    tempTableInlined = [
+                                        DbGen.Scripts.TempTableInlined.tempTableInlined.create (
+                                            Col1 = 1,
+                                            Col2 = Some "test"
+                                        )
+                                    ]
+                                )
+
+                        let first = createExecutable conn |> exec
+                        let second = createExecutable conn |> exec
+
+                        test <@ first.Value.Col1 = 1 @>
+                        test <@ first.Value.Col2 = Some "test" @>
+                        test <@ second.Value.Col1 = 1 @>
+                        test <@ second.Value.Col2 = Some "test" @>
+                )
+        ]
+
+        testList "Successful async lazy temp-table executions do not poison caller-owned connections" [
+            testCase "LazyExecuteAsync"
+            <| fun () ->
+                use conn = new SqlConnection(Config.connStr)
+                conn.Open()
+
+                let getItems () =
+                    DbGen.Scripts.TempTableInlined
+                        .WithConnection(conn)
+                        .WithParameters(
+                            tempTableInlined = [
+                                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+                            ]
+                        )
+                        .LazyExecuteAsync()
+
+                let readSingleRow () =
+                    let items = getItems ()
+                    let enumerator = items.GetAsyncEnumerator()
+
+                    try
+                        let hasItem =
+                            enumerator.MoveNextAsync().AsTask() |> Async.AwaitTask |> Async.RunSynchronously
+
+                        test <@ hasItem @>
+                        test <@ enumerator.Current.Col1 = 1 @>
+                        test <@ enumerator.Current.Col2 = Some "test" @>
+                    finally
+                        enumerator.DisposeAsync().AsTask() |> Async.AwaitTask |> Async.RunSynchronously
+
+                readSingleRow ()
+                readSingleRow ()
+
+            testCase "LazyExecuteAsyncWithSyncRead"
+            <| fun () ->
+                use conn = new SqlConnection(Config.connStr)
+                conn.Open()
+
+                let getItems () =
+                    DbGen.Scripts.TempTableInlined
+                        .WithConnection(conn)
+                        .WithParameters(
+                            tempTableInlined = [
+                                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+                            ]
+                        )
+                        .LazyExecuteAsyncWithSyncRead()
+
+                let readSingleRow () =
+                    let items = getItems ()
+                    let enumerator = items.GetAsyncEnumerator()
+
+                    try
+                        let hasItem =
+                            enumerator.MoveNextAsync().AsTask() |> Async.AwaitTask |> Async.RunSynchronously
+
+                        test <@ hasItem @>
+                        test <@ enumerator.Current.Col1 = 1 @>
+                        test <@ enumerator.Current.Col2 = Some "test" @>
+                    finally
+                        enumerator.DisposeAsync().AsTask() |> Async.AwaitTask |> Async.RunSynchronously
+
+                readSingleRow ()
+                readSingleRow ()
+        ]
+
+        testList "Successful temp-table reader executions do not poison caller-owned connections" [
+            yield!
+                allSingleReaderExecuteMethods<DbGen.Scripts.TempTableInlined_Executable>
+                |> List.map (fun (name, exec) ->
+                    testCase name
+                    <| fun () ->
+                        use conn = new SqlConnection(Config.connStr)
+                        conn.Open()
+
+                        let createExecutable (conn: SqlConnection) =
+                            DbGen.Scripts.TempTableInlined
+                                .WithConnection(conn)
+                                .WithParameters(
+                                    tempTableInlined = [
+                                        DbGen.Scripts.TempTableInlined.tempTableInlined.create (
+                                            Col1 = 1,
+                                            Col2 = Some "test"
+                                        )
+                                    ]
+                                )
+
+                        let readSingleRow () =
+                            use readerDisposer = createExecutable conn |> exec
+                            let reader = readerDisposer.Reader
+                            test <@ reader.Read() @>
+                            test <@ reader.GetInt32(0) = 1 @>
+                            test <@ reader.GetString(1) = "test" @>
+                            test <@ not (reader.Read()) @>
+
+                        readSingleRow ()
+                        readSingleRow ()
+                )
+        ]
+
 
     ]

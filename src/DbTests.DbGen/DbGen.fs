@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+cf53ea2cbd64b88b43f258adb6d4ad1a6f4ab902",
-    "assemblyHash": "ca70576f8f64f5e5e1e0c2256ea7e38d"
+    "assemblyVersion": "2.15.2+ec948c31225402c5bd5117894dfb430a1bafc65b",
+    "assemblyHash": "339663dd65b7dcf191969c82324eac47"
   },
   "config": {
     "path": "facil.yaml",
@@ -220,7 +220,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+cf53ea2cbd64b88b43f258adb6d4ad1a6f4ab902")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+ec948c31225402c5bd5117894dfb430a1bafc65b")>]
 module DbGen
 
 #nowarn "49"
@@ -1471,7 +1471,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -1483,12 +1483,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -1500,7 +1500,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcOptionIn`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -1625,7 +1625,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -1637,12 +1637,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -1654,7 +1654,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcOptionOut`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -2031,7 +2031,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -2043,12 +2043,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -2060,7 +2060,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcOptionTvpInOut`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -2548,7 +2548,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -2560,12 +2560,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -2577,7 +2577,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcVoptionIn`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -2702,7 +2702,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -2714,12 +2714,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -2731,7 +2731,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcVoptionOut`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -3108,7 +3108,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -3120,12 +3120,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -3137,7 +3137,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcVoptionTvpInOut`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -3384,7 +3384,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -3396,12 +3396,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -3413,7 +3413,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypes`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -3747,7 +3747,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -3759,12 +3759,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -3776,7 +3776,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -4102,7 +4102,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -4114,12 +4114,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -4131,7 +4131,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNonNull`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -4370,7 +4370,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -4382,12 +4382,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -4399,7 +4399,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNonNullExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -4644,7 +4644,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -4656,12 +4656,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -4673,7 +4673,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNonNullNominalParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -4912,7 +4912,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -4924,12 +4924,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -4941,7 +4941,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNull`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -5180,7 +5180,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -5192,12 +5192,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -5209,7 +5209,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNullExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -5454,7 +5454,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -5466,12 +5466,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -5483,7 +5483,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesFromTvpNullNominalParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -5765,7 +5765,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -5777,12 +5777,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -5794,7 +5794,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesNominalParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -6128,7 +6128,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -6140,12 +6140,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -6157,7 +6157,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesNull`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -6491,7 +6491,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -6503,12 +6503,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -6520,7 +6520,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesNullExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -6889,7 +6889,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -6901,12 +6901,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -6918,7 +6918,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithAllTypesNullNominalParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -7251,7 +7251,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -7263,12 +7263,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -7280,7 +7280,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithDynamicSqlWithFullTextSearch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -7431,7 +7431,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -7443,12 +7443,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -7460,7 +7460,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithLengthTypes`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -7626,7 +7626,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -7638,12 +7638,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -7655,7 +7655,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithLengthTypesFromTvp`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -7794,7 +7794,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -7806,12 +7806,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -7823,7 +7823,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMaxLengthTypes`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -7968,7 +7968,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -7980,12 +7980,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -7997,7 +7997,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMaxLengthTypesFromTvp`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -8374,7 +8374,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -8386,12 +8386,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -8403,7 +8403,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleDefaultParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -8541,7 +8541,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -8553,12 +8553,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -8570,7 +8570,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleDefaultParamsExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -8708,7 +8708,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -8720,12 +8720,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -8737,7 +8737,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNonDefaultParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -8875,7 +8875,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -8887,12 +8887,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -8904,7 +8904,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNonDefaultParamsExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -9042,7 +9042,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -9054,12 +9054,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -9071,7 +9071,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNullParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -9209,7 +9209,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -9221,12 +9221,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -9238,7 +9238,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndSimpleNullParamsExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -9376,7 +9376,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -9388,12 +9388,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -9405,7 +9405,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndTvpParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -9543,7 +9543,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -9555,12 +9555,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -9572,7 +9572,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleColumnsAndTvpParamsExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -9710,7 +9710,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -9722,12 +9722,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -9739,7 +9739,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleNullableColumnsAndTvpParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -9877,7 +9877,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -9889,12 +9889,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -9906,7 +9906,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithMultipleNullableColumnsAndTvpParamsExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -10434,7 +10434,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -10446,12 +10446,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -10463,7 +10463,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithNullParamOverrides`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -11238,7 +11238,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -11250,12 +11250,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -11267,7 +11267,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithOverriddenDtoParamName`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -11417,7 +11417,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -11429,12 +11429,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -11446,7 +11446,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithResultsAndOutParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -11606,7 +11606,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -11618,12 +11618,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -11635,7 +11635,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithResultsAndOutParamsAndRetVal`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -11800,7 +11800,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -11812,12 +11812,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -11829,7 +11829,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithResultsAndOutParamsAndRetValExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -11993,7 +11993,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -12005,12 +12005,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -12022,7 +12022,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithResultsAndOutParamsExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -12177,7 +12177,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -12189,12 +12189,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -12206,7 +12206,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithResultsAndRetVal`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -12354,7 +12354,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -12366,12 +12366,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -12383,7 +12383,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithResultsAndRetValExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -13132,7 +13132,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -13144,12 +13144,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -13161,7 +13161,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithSingleNonNullColumn`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -13286,7 +13286,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -13298,12 +13298,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -13315,7 +13315,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithSingleNonNullColumnExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -13440,7 +13440,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -13452,12 +13452,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -13469,7 +13469,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithSingleNullColumn`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -13594,7 +13594,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -13606,12 +13606,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -13623,7 +13623,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithSingleNullColumnExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -14000,7 +14000,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -14012,12 +14012,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -14029,7 +14029,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithSpecialCasing`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -14174,7 +14174,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -14186,12 +14186,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -14203,7 +14203,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithSpecialCasingExtended`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -14371,7 +14371,7 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReader() =
@@ -14383,12 +14383,12 @@ module Procedures =
       /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReader() =
         let sqlParams = getSqlParams ()
-        executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
       /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingleAsync(?cancellationToken) =
         let sqlParams = getSqlParams ()
-        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
       /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
       member this.AsyncExecuteReaderSingle() =
@@ -14400,7 +14400,7 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         let sqlParams = getSqlParams ()
-        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
     type ``ProcWithTempTable`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -15111,7 +15111,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -15123,12 +15123,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -15140,7 +15140,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``AllTypesNonNull_ById`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -17579,7 +17579,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -17591,12 +17591,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -17608,7 +17608,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``AllTypesNull_ById`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -20207,7 +20207,7 @@ EXEC sp_executesql @sql, N''"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -20219,12 +20219,12 @@ EXEC sp_executesql @sql, N''"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -20236,7 +20236,7 @@ EXEC sp_executesql @sql, N''"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``DynamicSqlSensitiveToParamValues`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -20374,7 +20374,7 @@ WITH RESULT SETS (([TableCol1] NVARCHAR (42) NOT NULL, [TableCol2] INT NULL))"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -20386,12 +20386,12 @@ WITH RESULT SETS (([TableCol1] NVARCHAR (42) NOT NULL, [TableCol2] INT NULL))"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -20403,7 +20403,7 @@ WITH RESULT SETS (([TableCol1] NVARCHAR (42) NOT NULL, [TableCol2] INT NULL))"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``DynamicSqlSensitiveToParamValuesWithResultSets`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -20672,7 +20672,7 @@ EXEC sp_executesql @sql, @paramList, @_col1Filter"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -20684,12 +20684,12 @@ EXEC sp_executesql @sql, @paramList, @_col1Filter"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -20701,7 +20701,7 @@ EXEC sp_executesql @sql, @paramList, @_col1Filter"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``DynamicSqlWithDeclaration`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -20842,7 +20842,7 @@ EXEC sp_executesql @sql, @paramList, @col1Filter"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -20854,12 +20854,12 @@ EXEC sp_executesql @sql, @paramList, @col1Filter"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -20871,7 +20871,7 @@ EXEC sp_executesql @sql, @paramList, @col1Filter"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``DynamicSqlWithoutDeclaration`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -21016,7 +21016,7 @@ EXEC sp_executesql @sql, @paramList, @splitParam"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -21028,12 +21028,12 @@ EXEC sp_executesql @sql, @paramList, @splitParam"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -21045,7 +21045,7 @@ EXEC sp_executesql @sql, @paramList, @splitParam"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``DynamicSqlWithStringSplitParam`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -21186,7 +21186,7 @@ EXEC sp_executesql @sql, @paramList, @tvp"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -21198,12 +21198,12 @@ EXEC sp_executesql @sql, @paramList, @tvp"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -21215,7 +21215,7 @@ EXEC sp_executesql @sql, @paramList, @tvp"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``DynamicSqlWithTvp`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -21531,7 +21531,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -21543,12 +21543,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -21560,7 +21560,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``LengthTypes_ById`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -25795,7 +25795,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -25807,12 +25807,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -25824,7 +25824,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``MaxLengthTypes_ById`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -27064,7 +27064,7 @@ INNER JOIN
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -27076,12 +27076,12 @@ INNER JOIN
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -27093,7 +27093,7 @@ INNER JOIN
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``MultipleTempTables`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -27402,7 +27402,7 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -27414,12 +27414,12 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -27431,7 +27431,7 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``NormalParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -27582,7 +27582,7 @@ OPTION (RECOMPILE)"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -27594,12 +27594,12 @@ OPTION (RECOMPILE)"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -27611,7 +27611,7 @@ OPTION (RECOMPILE)"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``OptionRecompileAndFetch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -27864,7 +27864,7 @@ SELECT @nameToBeOverridden"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -27876,12 +27876,12 @@ SELECT @nameToBeOverridden"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -27893,7 +27893,7 @@ SELECT @nameToBeOverridden"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``OverriddenDtoParamName`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -28035,7 +28035,7 @@ SELECT
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -28047,12 +28047,12 @@ SELECT
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -28064,7 +28064,7 @@ SELECT
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``ParamInheritance`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -28205,7 +28205,7 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1 AND TableCol1 = @col1"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -28217,12 +28217,12 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1 AND TableCol1 = @col1"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -28234,7 +28234,7 @@ SELECT * FROM Table1 WHERE TableCol1 = @col1 AND TableCol1 = @col1"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``ParamsUsedTwice`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -28854,7 +28854,7 @@ SELECT * FROM CTE"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -28866,12 +28866,12 @@ SELECT * FROM CTE"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -28883,7 +28883,7 @@ SELECT * FROM CTE"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``StartsWithCTE`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -29024,7 +29024,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -29036,12 +29036,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -29053,7 +29053,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``Table1_ByTableCol1`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -29194,7 +29194,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -29206,12 +29206,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -29223,7 +29223,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``Table1_ByTableCol2`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -29368,7 +29368,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -29380,12 +29380,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -29397,7 +29397,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``Table1_ByTableCol2s`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -29668,7 +29668,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -29680,12 +29680,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -29697,7 +29697,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithComputedCol_ByBarBatch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -29848,7 +29848,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -29860,12 +29860,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -29877,7 +29877,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithComputedCol_ByIdAndFooBatch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -31532,7 +31532,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -31544,12 +31544,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -31561,7 +31561,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_ByColumnsBatch_ReversedColumns`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -31707,7 +31707,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -31719,12 +31719,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -31736,7 +31736,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_ByFoo`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -31877,7 +31877,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -31889,12 +31889,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -31906,7 +31906,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_ById`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -32047,7 +32047,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -32059,12 +32059,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -32076,7 +32076,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_ById_WithSelectColumns`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -32227,7 +32227,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -32239,12 +32239,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -32256,7 +32256,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_ByIdAndFoos`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -32406,7 +32406,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -32418,12 +32418,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -32435,7 +32435,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_ByIds`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -32580,7 +32580,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -32592,12 +32592,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -32609,7 +32609,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_Delete`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -32780,7 +32780,7 @@ INNER JOIN [#args]
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -32792,12 +32792,12 @@ INNER JOIN [#args]
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -32809,7 +32809,7 @@ INNER JOIN [#args]
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_DeleteBatch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -32990,7 +32990,7 @@ VALUES
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -33002,12 +33002,12 @@ VALUES
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -33019,7 +33019,7 @@ VALUES
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_Insert`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -33195,7 +33195,7 @@ FROM #args"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -33207,12 +33207,12 @@ FROM #args"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -33224,7 +33224,7 @@ FROM #args"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_InsertBatch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -33426,7 +33426,7 @@ OUTPUT
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -33438,12 +33438,12 @@ OUTPUT
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -33455,7 +33455,7 @@ OUTPUT
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_Merge`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -33653,7 +33653,7 @@ OUTPUT
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -33665,12 +33665,12 @@ OUTPUT
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -33682,7 +33682,7 @@ OUTPUT
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_MergeBatch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -34147,7 +34147,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -34159,12 +34159,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -34176,7 +34176,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_Update`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -34360,7 +34360,7 @@ INNER JOIN
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -34372,12 +34372,12 @@ INNER JOIN
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -34389,7 +34389,7 @@ INNER JOIN
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithIdentityCol_UpdateBatch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -34673,7 +34673,7 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -34685,12 +34685,12 @@ WHERE
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -34702,7 +34702,7 @@ WHERE
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TableWithSkippedPkColumn_ById`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -35801,7 +35801,7 @@ SELECT * FROM #AllTypesNonNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -35813,12 +35813,12 @@ SELECT * FROM #AllTypesNonNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -35830,7 +35830,7 @@ SELECT * FROM #AllTypesNonNull"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableAllTypesNonNull`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -36241,7 +36241,7 @@ SELECT * FROM #AllTypesNonNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -36253,12 +36253,12 @@ SELECT * FROM #AllTypesNonNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -36270,7 +36270,7 @@ SELECT * FROM #AllTypesNonNull"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableAllTypesNonNullNominalParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -36675,7 +36675,7 @@ SELECT * FROM #AllTypesNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -36687,12 +36687,12 @@ SELECT * FROM #AllTypesNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -36704,7 +36704,7 @@ SELECT * FROM #AllTypesNull"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableAllTypesNull`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -37115,7 +37115,7 @@ SELECT * FROM #AllTypesNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -37127,12 +37127,12 @@ SELECT * FROM #AllTypesNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -37144,7 +37144,7 @@ SELECT * FROM #AllTypesNull"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableAllTypesNullNominalParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -37549,7 +37549,7 @@ SELECT * FROM #AllTypesNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -37561,12 +37561,12 @@ SELECT * FROM #AllTypesNull"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -37578,7 +37578,7 @@ SELECT * FROM #AllTypesNull"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableAllTypesNullVoption`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -37801,7 +37801,7 @@ SELECT * FROM #tempTableInlined"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -37813,12 +37813,12 @@ SELECT * FROM #tempTableInlined"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -37830,7 +37830,7 @@ SELECT * FROM #tempTableInlined"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableInlined`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -38026,7 +38026,7 @@ EXEC sp_executesql @sql, N''"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -38038,12 +38038,12 @@ EXEC sp_executesql @sql, N''"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -38055,7 +38055,7 @@ EXEC sp_executesql @sql, N''"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableInlinedDynamic`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -38250,7 +38250,7 @@ SELECT * FROM #tempTableInlined"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -38262,12 +38262,12 @@ SELECT * FROM #tempTableInlined"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -38279,7 +38279,7 @@ SELECT * FROM #tempTableInlined"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableInlinedWithOtherParams`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -38503,7 +38503,7 @@ SELECT * FROM #tempTableWithLengthTypes"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -38515,12 +38515,12 @@ SELECT * FROM #tempTableWithLengthTypes"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -38532,7 +38532,7 @@ SELECT * FROM #tempTableWithLengthTypes"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableWithLengthTypes`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -38740,7 +38740,7 @@ SELECT * FROM #tempTableWithMaxLengthTypes"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -38752,12 +38752,12 @@ SELECT * FROM #tempTableWithMaxLengthTypes"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -38769,7 +38769,7 @@ SELECT * FROM #tempTableWithMaxLengthTypes"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``TempTableWithMaxLengthTypes`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -38940,7 +38940,7 @@ SELECT * FROM @tvp"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReader() =
@@ -38952,12 +38952,12 @@ SELECT * FROM @tvp"""
     /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReader() =
       let sqlParams = getSqlParams ()
-      executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
     /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingleAsync(?cancellationToken) =
       let sqlParams = getSqlParams ()
-      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
     /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
     member this.AsyncExecuteReaderSingle() =
@@ -38969,7 +38969,7 @@ SELECT * FROM @tvp"""
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       let sqlParams = getSqlParams ()
-      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
   type ``UserDefinedTableType`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -39097,7 +39097,7 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReader() =
@@ -39109,12 +39109,12 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReader() =
           let sqlParams = getSqlParams ()
-          executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
         /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingleAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReaderSingle() =
@@ -39126,7 +39126,7 @@ SELECT @param1"""
         /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingle() =
           let sqlParams = getSqlParams ()
-          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
       type ``In`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -39251,7 +39251,7 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReader() =
@@ -39263,12 +39263,12 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReader() =
           let sqlParams = getSqlParams ()
-          executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
         /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingleAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReaderSingle() =
@@ -39280,7 +39280,7 @@ SELECT @param1"""
         /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingle() =
           let sqlParams = getSqlParams ()
-          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
       type ``Out`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -39657,7 +39657,7 @@ SELECT * FROM @tvp"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReader() =
@@ -39669,12 +39669,12 @@ SELECT * FROM @tvp"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReader() =
           let sqlParams = getSqlParams ()
-          executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
         /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingleAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReaderSingle() =
@@ -39686,7 +39686,7 @@ SELECT * FROM @tvp"""
         /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingle() =
           let sqlParams = getSqlParams ()
-          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
       type ``TvpInOut`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -39959,7 +39959,7 @@ WHERE
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReader() =
@@ -39971,12 +39971,12 @@ WHERE
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReader() =
           let sqlParams = getSqlParams ()
-          executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
         /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingleAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReaderSingle() =
@@ -39988,7 +39988,7 @@ WHERE
         /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingle() =
           let sqlParams = getSqlParams ()
-          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
       type ``dbo_TableWithIdentityCol_GetById`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -40207,7 +40207,7 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReader() =
@@ -40219,12 +40219,12 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReader() =
           let sqlParams = getSqlParams ()
-          executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
         /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingleAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReaderSingle() =
@@ -40236,7 +40236,7 @@ SELECT @param1"""
         /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingle() =
           let sqlParams = getSqlParams ()
-          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
       type ``In`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -40490,7 +40490,7 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReader() =
@@ -40502,12 +40502,12 @@ SELECT @param1"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReader() =
           let sqlParams = getSqlParams ()
-          executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
         /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingleAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReaderSingle() =
@@ -40519,7 +40519,7 @@ SELECT @param1"""
         /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingle() =
           let sqlParams = getSqlParams ()
-          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
       type ``Out`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
@@ -40896,7 +40896,7 @@ SELECT * FROM @tvp"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReader() =
@@ -40908,12 +40908,12 @@ SELECT * FROM @tvp"""
         /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReader() =
           let sqlParams = getSqlParams ()
-          executeReader connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
         /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingleAsync(?cancellationToken) =
           let sqlParams = getSqlParams ()
-          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)
+          executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
 
         /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
         member this.AsyncExecuteReaderSingle() =
@@ -40925,7 +40925,7 @@ SELECT * FROM @tvp"""
         /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
         member this.ExecuteReaderSingle() =
           let sqlParams = getSqlParams ()
-          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []
+          executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
 
 
       type ``TvpInOut`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =

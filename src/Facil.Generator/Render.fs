@@ -944,7 +944,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                         yield!
                             indent [
                                 "let sqlParams = getSqlParams ()"
-                                "executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)"
+                                "executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)"
                             ]
 
                         ""
@@ -957,7 +957,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                         yield!
                             indent [
                                 "let sqlParams = getSqlParams ()"
-                                "executeReader connStr conn tran configureConn (configureCmd sqlParams) []"
+                                "executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData"
                             ]
 
                         ""
@@ -967,7 +967,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                         yield!
                             indent [
                                 "let sqlParams = getSqlParams ()"
-                                """executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) [] (defaultArg cancellationToken CancellationToken.None)"""
+                                """executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)"""
                             ]
 
                         ""
@@ -980,7 +980,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                         yield!
                             indent [
                                 "let sqlParams = getSqlParams ()"
-                                """executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) []"""
+                                """executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData"""
                             ]
                 ]
 
