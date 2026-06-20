@@ -1,10 +1,31 @@
 ﻿module MiscTests
 
 open System
+open System.Collections
+open System.Collections.Generic
+
 open Expecto
 open Hedgehog
 open Microsoft.Data.SqlClient
 open Swensen.Unquote
+
+
+type SingleUseEnumerable<'a>(items: 'a list) =
+    let mutable enumerated = false
+
+    member _.WasEnumerated = enumerated
+
+    interface IEnumerable<'a> with
+        member _.GetEnumerator() =
+            if enumerated then
+                failwith "The sequence was enumerated more than once."
+
+            enumerated <- true
+            (items :> IEnumerable<'a>).GetEnumerator()
+
+    interface IEnumerable with
+        member this.GetEnumerator() =
+            (this :> IEnumerable<'a>).GetEnumerator() :> IEnumerator
 
 
 [<Tests>]
@@ -615,6 +636,26 @@ let tests =
                         test <@ res.IsNone @>
                 )
         ]
+
+
+        testCase "Can send single-use TVPs"
+        <| fun () ->
+            let single =
+                SingleUseEnumerable [ DbGen.TableTypes.dbo.SingleColNonNull.create (Foo = 1) ]
+
+            let multi =
+                SingleUseEnumerable [ DbGen.TableTypes.dbo.MultiColNonNull.create (Foo = 1, Bar = "test") ]
+
+            let res =
+                DbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
+                    .WithConnection(Config.connStr)
+                    .WithParameters(single = single, multi = multi)
+                    .ExecuteSingle()
+
+            test <@ res.Value.Foo = 1 @>
+            test <@ res.Value.Bar = "test" @>
+            test <@ single.WasEnumerated @>
+            test <@ multi.WasEnumerated @>
 
         testAsync "Can run the resulting Async query computation several times when there are parameters" {
             let comp1 =

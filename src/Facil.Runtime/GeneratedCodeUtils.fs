@@ -1,6 +1,7 @@
 ﻿namespace Facil.Runtime
 
 open System
+open System.Collections.Generic
 open System.ComponentModel
 open System.Threading
 open System.Threading.Tasks
@@ -358,8 +359,15 @@ module GeneratedCodeUtils =
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
-    let boxNullIfEmpty (seq: #seq<'a>) =
-        if Seq.isEmpty seq then null else box seq
+    let boxNullIfEmpty (items: #seq<'a>) =
+        let items = items :> seq<'a>
+
+        match items with
+        | :? ICollection<'a> as collection -> if collection.Count = 0 then null else box items
+        | :? IReadOnlyCollection<'a> as collection -> if collection.Count = 0 then null else box items
+        | _ ->
+            let items = Seq.toArray items
+            if items.Length = 0 then null else box items
 
 
     type SqlDataRecord with
