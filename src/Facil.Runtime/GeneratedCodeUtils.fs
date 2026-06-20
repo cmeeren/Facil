@@ -397,7 +397,7 @@ module GeneratedCodeUtils =
     module Task =
 
         let map f (t: Task<_>) =
-            task {
+            backgroundTask {
                 let! result = t
                 return f result
             }
