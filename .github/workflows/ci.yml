@@ -54,14 +54,14 @@ jobs:
         run: dotnet build src/PackageTests -c Release
 
       - name: Run package smoke tests
-        run: dotnet src/PackageTests/bin/Release/net9.0/PackageTests.dll --fail-on-focused-tests
+        run: dotnet src/PackageTests/bin/Release/net10.0/PackageTests.dll --fail-on-focused-tests
 
       # Build tests
       - name: Build tests
         run: dotnet build src/DbTests -c Release
 
       - name: Test
-        run: dotnet src/DbTests/bin/Release/net9.0/DbTests.dll --fail-on-focused-tests
+        run: dotnet src/DbTests/bin/Release/net10.0/DbTests.dll --fail-on-focused-tests
 
       - name: NuGet login
         uses: NuGet/login@v1

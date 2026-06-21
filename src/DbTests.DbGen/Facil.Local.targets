@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <FacilGeneratorPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../Facil.Generator/bin/$(Configuration)/net6.0/Facil.Generator.dll'))</FacilGeneratorPath>
+    <FacilGeneratorPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../Facil.Generator/bin/$(Configuration)/net10.0/Facil.Generator.dll'))</FacilGeneratorPath>
   </PropertyGroup>
 
   <Target Name="FacilGenerate" BeforeTargets="CoreCompile" Condition="'$(DesignTimeBuild)' != 'true'">

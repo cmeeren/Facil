@@ -3,6 +3,11 @@ Release notes
 
 ### Unreleased
 
+#### Breaking
+
+* Facil now requires .NET SDK 10.0 or later at build time for code generation. Generated runtime assets remain .NET
+  Standard 2.0.
+
 #### Added
 
 * `mergeBatch` table scripts now support tables where every column is part of the primary key.

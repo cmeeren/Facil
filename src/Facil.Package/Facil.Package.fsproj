@@ -65,8 +65,9 @@
         <PackagePath>lib/$(TargetFramework)/%(RecursiveDir)</PackagePath>
       </TfmSpecificPackageFile>
 
-      <TfmSpecificPackageFile Include="..\Facil.Generator\bin\$(Configuration)\**\*" Exclude="**\*.nupkg">
-        <PackagePath>tools/%(RecursiveDir)</PackagePath>
+      <!-- Keep the TFM segment explicit; the target imports tools/net10.0 and stale outputs from old TFMs must not be packed. -->
+      <TfmSpecificPackageFile Include="..\Facil.Generator\bin\$(Configuration)\net10.0\**\*" Exclude="**\*.nupkg">
+        <PackagePath>tools/net10.0/%(RecursiveDir)</PackagePath>
       </TfmSpecificPackageFile>
     </ItemGroup>
   </Target>

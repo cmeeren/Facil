@@ -14,7 +14,7 @@ Quick start
 ### 0. Requirements
 
 * SQL Server 2012 or later at build-time (may work with older versions at runtime; untested)
-* .NET 6.0 or later at build-time (for running the generator)
+* .NET SDK 10.0 or later at build-time (for running the generator)
 
 ### 1. Install
 
