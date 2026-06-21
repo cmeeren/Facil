@@ -3,13 +3,13 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+7e0a332d28af0e355b3137736e1c11bb6c147ec2",
-    "assemblyHash": "1f895ccf26cf3e135acd4084f5e67b12"
+    "assemblyVersion": "2.15.2+6f2f9f72364c957c798c5274d2f6bddd9ddf2483",
+    "assemblyHash": "c6861dde33c81f521a1fd9eb3840e7f4"
   },
   "config": {
     "path": "facil.yaml",
     "configsHash": "9c7e87f1906bb406ad64d4e9e8264319",
-    "rulesetsHash": "8a57aaad45a42fb07cd58c64d7388afa"
+    "rulesetsHash": "1e47fb835e1ddfa7590f4e5885aac82b"
   },
   "scripts": [
     {
@@ -18,7 +18,7 @@
     },
     {
       "path": "DeleteAllFromTableScriptTables.sql",
-      "hash": "08ec35ff9fc7f842062b6c7fa75c236e"
+      "hash": "1de4efd918c73b1545f25242f437453f"
     },
     {
       "path": "DynamicInsertIntoDesignTimeExecuteTest.sql",
@@ -220,7 +220,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+7e0a332d28af0e355b3137736e1c11bb6c147ec2")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+6f2f9f72364c957c798c5274d2f6bddd9ddf2483")>]
 module DbGen
 
 #nowarn "49"
@@ -19739,7 +19739,8 @@ DELETE FROM AllTypesNonNull
 DELETE FROM AllTypesNull
 DELETE FROM LengthTypes
 DELETE FROM MaxLengthTypes
-DELETE FROM TableWithIdentityCol"""
+DELETE FROM TableWithIdentityCol
+DELETE FROM TableWithOnlyPkColumns"""
       userConfigureCmd cmd
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -34587,6 +34588,167 @@ WHEN NOT MATCHED THEN
           SqlParameter("key2", SqlDbType.Int, Value = (^a: (member ``Key2``: int) dto))
         |]
       ``TableWithOnlyPkColumns_Merge_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+
+  module ``TableWithOnlyPkColumns_MergeBatch`` =
+
+
+    type ``args`` (__: InternalUseOnly, fields: obj []) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member _.Fields = fields
+
+      static member create
+        (
+          ``Key1``: int,
+          ``Key2``: int
+        ) : ``args`` =
+        [|
+          ``Key1`` |> box
+          ``Key2`` |> box
+        |]
+        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+
+      static member inline create (dto: ^a) : ``args`` =
+        [|
+          (^a: (member ``Key1``: int) dto) |> box
+          (^a: (member ``Key2``: int) dto) |> box
+        |]
+        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``TableWithOnlyPkColumns_MergeBatch_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """-- TableWithOnlyPkColumns_MergeBatch
+MERGE [dbo].[TableWithOnlyPkColumns]
+USING
+  #args
+AS x
+ON
+  [TableWithOnlyPkColumns].[Key1] = x.[Key1]
+  AND [TableWithOnlyPkColumns].[Key2] = x.[Key2]
+
+WHEN NOT MATCHED THEN
+  INSERT
+  (
+    [Key1],
+    [Key2]
+  )
+  VALUES
+  (
+    x.[Key1],
+    x.[Key2]
+  )
+;"""
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    member _.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeNonQueryAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.Execute() =
+      let sqlParams = getSqlParams ()
+      executeNonQuery connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+  type ``TableWithOnlyPkColumns_MergeBatch`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``TableWithOnlyPkColumns_MergeBatch``(null, null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val tran = tran
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+      this.userConfigureBulkCopy <- configureBulkCopy
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``TableWithOnlyPkColumns_MergeBatch``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection, ?transaction) = ``TableWithOnlyPkColumns_MergeBatch``(null, connection, defaultArg transaction null)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member this.CreateTempTableData
+      (
+        ``args``: seq<``TableWithOnlyPkColumns_MergeBatch``.``args``>
+      ) =
+      [
+        TempTableData
+          (
+            "#args",
+            """
+            DROP TABLE IF EXISTS #args
+            CREATE TABLE #args (
+              [Key1] INT NOT NULL,
+              [Key2] INT NOT NULL,
+              PRIMARY KEY ([Key1], [Key2])
+            )
+            """,
+            (``args`` |> Seq.map (fun x -> x.Fields)),
+            [| "Key1"; "Key2" |],
+            2,
+            Action<_> this.userConfigureBulkCopy
+          )
+      ]
+    member this.WithParameters
+      (
+        ``args``: seq<``TableWithOnlyPkColumns_MergeBatch``.``args``>
+      ) =
+      let getSqlParams () =
+        [|
+        |]
+      let tempTableData =
+        this.CreateTempTableData(
+          ``args``
+        )
+      ``TableWithOnlyPkColumns_MergeBatch_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+        |]
+      let tempTableData =
+        this.CreateTempTableData(
+          (^a: (member ``Args``: #seq<``TableWithOnlyPkColumns_MergeBatch``.``args``>) dto)
+        )
+      ``TableWithOnlyPkColumns_MergeBatch_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]

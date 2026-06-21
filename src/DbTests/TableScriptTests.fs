@@ -3988,6 +3988,32 @@ let tests =
                 }
 
 
+            testCase "MERGE batch works for table with only primary key columns"
+            <| fun () ->
+                clearTableScriptTables ()
+
+                let args = [
+                    DbGen.Scripts.TableWithOnlyPkColumns_MergeBatch.args.create (1, 2)
+                    DbGen.Scripts.TableWithOnlyPkColumns_MergeBatch.args.create (3, 4)
+                ]
+
+                let insertedRows =
+                    DbGen.Scripts.TableWithOnlyPkColumns_MergeBatch
+                        .WithConnection(Config.connStr)
+                        .WithParameters(args)
+                        .Execute()
+
+                test <@ insertedRows = 2 @>
+
+                let matchedRows =
+                    DbGen.Scripts.TableWithOnlyPkColumns_MergeBatch
+                        .WithConnection(Config.connStr)
+                        .WithParameters(args)
+                        .Execute()
+
+                test <@ matchedRows = 0 @>
+
+
             testCase "GetById with selectColumns"
             <| fun () ->
                 clearTableScriptTables ()

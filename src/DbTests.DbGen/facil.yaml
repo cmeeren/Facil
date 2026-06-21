@@ -602,3 +602,4 @@ rulesets:
       - include: 'dbo\.TableWithOnlyPkColumns'
         scripts:
           - type: merge
+          - type: mergeBatch

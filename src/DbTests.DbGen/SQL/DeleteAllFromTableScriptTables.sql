@@ -3,3 +3,4 @@ DELETE FROM AllTypesNull
 DELETE FROM LengthTypes
 DELETE FROM MaxLengthTypes
 DELETE FROM TableWithIdentityCol
+DELETE FROM TableWithOnlyPkColumns
