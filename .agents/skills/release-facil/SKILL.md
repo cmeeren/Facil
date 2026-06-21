@@ -27,6 +27,7 @@ Use this skill to release Facil through the repo's normal tag-driven NuGet flow,
    - Update `RELEASE_NOTES.md` with user-facing behavior, migration impact, and usage guidance.
    - For user-relevant changes, add a concise entry in the `### Unreleased` section, creating that section if it does not exist.
    - Use categorizing subsections such as `#### Added` or `#### Fixed` only when the release notes are large enough that grouping materially improves readability; for small releases, prefer plain bullets under the version heading.
+   - Within each release-note bullet list, whether under the version heading or a categorizing subsection, order entries by user impact and breadth first. Put broad runtime correctness and behavior changes before narrow edge cases, and put documentation/package-metadata-only entries last unless they are the main release purpose.
    - Describe the observable effect from the user's perspective. Avoid naming internal mechanisms or implying an opt-in/configuration choice unless users actually control it.
    - Keep implementation-only rationale out of `README.md`, `RELEASE_NOTES.md`, and `facil_reference.yaml`.
    - Update `facil_reference.yaml` when public YAML configuration behavior, options, defaults, examples, or reference text change.
