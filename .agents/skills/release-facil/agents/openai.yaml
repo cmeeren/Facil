@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Facil"
+  short_description: "Prepare Facil NuGet and GitHub releases."
+  default_prompt: "Use $release-facil to prepare or publish a Facil release."
