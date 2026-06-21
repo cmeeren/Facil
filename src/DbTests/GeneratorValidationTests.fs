@@ -42,10 +42,26 @@ let private runGenerator projectDir =
 
     Console.SetOut(writer)
 
+    let generatorEnvVars = [
+        Facil.Program.envvar_force_regenerate
+        Facil.Program.envvar_fail_on_changed_output
+        Facil.Program.envvar_fail_on_regenerate
+    ]
+
+    let originalEnvVars =
+        generatorEnvVars
+        |> List.map (fun name -> name, Environment.GetEnvironmentVariable name)
+
     try
+        for name in generatorEnvVars do
+            Environment.SetEnvironmentVariable(name, null)
+
         let exitCode = Facil.Program.main [| projectDir |]
         exitCode, writer.ToString()
     finally
+        for name, value in originalEnvVars do
+            Environment.SetEnvironmentVariable(name, value)
+
         Console.SetOut(originalOut)
 
 [<Tests>]
