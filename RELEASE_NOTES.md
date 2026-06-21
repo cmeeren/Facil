@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### Unreleased
+
+* Generation now fails before writing output when multiple rulesets resolve to the same generated file.
+* Script analysis now accepts named `sp_executesql` parameter assignments, including fully named calls.
+
 ### 2.15.2 (2026-02-02)
 
 * Facil now writes a manifest header instead of just a single hash to the generated files. This manifest header is the

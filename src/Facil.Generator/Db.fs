@@ -40,6 +40,68 @@ let rewriteLocalTempTablesToGlobalTempTablesWithPrefix (nameOrDefinition: string
     |> fun s -> Regex.Replace(s, "##(?=\w)", $"##{facilGlobalTempTablePrefix}")
 
 
+let private parseScript source =
+    let parser = TSql150Parser(true)
+    let fragment, errs = parser.Parse(new StringReader(source))
+
+    if errs.Count > 0 then
+        let e = errs[0]
+
+        failwith $"Parsing script failed with error %i{e.Number} on line %i{e.Line}, column %i{e.Column}: %s{e.Message}"
+
+    fragment
+
+
+let private isSpExecuteSqlProcedure (procRef: ExecutableProcedureReference) =
+    let isIdentifier named (identifier: Identifier) =
+        not (isNull identifier)
+        && String.Equals(identifier.Value, named, StringComparison.OrdinalIgnoreCase)
+
+    match procRef.ProcedureReference with
+    | null -> false
+    | procRefName ->
+        match procRefName.ProcedureReference with
+        | null -> false
+        | procedureReference ->
+            match procedureReference.Name with
+            | null -> false
+            | name ->
+                let isSpExecuteSql = name.BaseIdentifier |> isIdentifier "sp_executesql"
+
+                let isSysSchema =
+                    match name.SchemaIdentifier with
+                    | null -> true
+                    | schema -> schema |> isIdentifier "sys"
+
+                isSpExecuteSql && isSysSchema
+
+
+let private rewriteNamedSpExecuteSqlParameters source =
+    let fragment = parseScript source
+    let rangesToRemove = ResizeArray()
+
+    fragment.Accept
+        { new TSqlFragmentVisitor() with
+            member _.Visit(node: ExecuteStatement) =
+                base.Visit node
+
+                match node.ExecuteSpecification.ExecutableEntity with
+                | :? ExecutableProcedureReference as procRef when isSpExecuteSqlProcedure procRef ->
+                    procRef.Parameters
+                    |> Seq.iter (fun param ->
+                        if not (isNull param.Variable) then
+                            rangesToRemove.Add(param.StartOffset, param.ParameterValue.StartOffset - param.StartOffset)
+                    )
+                | _ -> ()
+        }
+
+    (source,
+     rangesToRemove
+     |> Seq.filter (fun (_, length) -> length > 0)
+     |> Seq.sortByDescending fst)
+    ||> Seq.fold (fun rewritten (startOffset, length) -> rewritten.Remove(startOffset, length))
+
+
 let createAndDropTempTables rewrite (tempTables: TempTable list) (conn: SqlConnection) (tran: SqlTransaction option) =
     for tt in tempTables do
         use cmd = conn.CreateCommand()
@@ -125,15 +187,11 @@ let getScriptParameters
 
         let rule = RuleSet.getEffectiveScriptRuleFor script.GlobMatchOutput cfg
 
+        let sourceForParameterDiscovery =
+            script.Source |> rewriteNamedSpExecuteSqlParameters
+
         let paramsWithFirstUsageOffset = Dictionary()
-        let parser = TSql150Parser(true)
-        let fragment, errs = parser.Parse(new StringReader(script.Source))
-
-        if errs.Count > 0 then
-            let e = errs[0]
-
-            failwith
-                $"Parsing script failed with error %i{e.Number} on line %i{e.Line}, colum %i{e.Column}: %s{e.Message}"
+        let fragment = parseScript sourceForParameterDiscovery
 
         fragment.Accept
             { new TSqlFragmentVisitor() with
@@ -146,14 +204,6 @@ let getScriptParameters
             }
 
         let declaredParams = ResizeArray()
-        let parser = TSql150Parser(true)
-        let fragment, errs = parser.Parse(new StringReader(script.Source))
-
-        if errs.Count > 0 then
-            let e = errs[0]
-
-            failwith
-                $"Parsing script failed with error %i{e.Number} on line %i{e.Line}, colum %i{e.Column}: %s{e.Message}"
 
         fragment.Accept
             { new TSqlFragmentVisitor() with
@@ -174,6 +224,7 @@ let getScriptParameters
                 | _ -> source
             )
             |> rewriteLocalTempTablesToGlobalTempTablesWithPrefix
+            |> rewriteNamedSpExecuteSqlParameters
 
 
         let unusedParamRules =

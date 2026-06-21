@@ -246,4 +246,115 @@ let tests =
                 Expect.equal scriptOccurrences 1 "The manifest should contain the script once"
                 Expect.equal typeOccurrences 1 "The script should be generated once"
 
+
+        testCase "Named sp_executesql dynamic parameters are accepted during script analysis"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    scriptBasePath: SQL
+                    scripts:
+                      - include: NamedSysSpExecuteSql.sql
+                        params:
+                          col1Filter:
+                            type: NVARCHAR(42)
+
+                      - include: NamedBareSpExecuteSql.sql
+                        params:
+                          col1Filter:
+                            type: NVARCHAR(42)
+
+                      - include: FullyNamedSpExecuteSql.sql
+                        params:
+                          col1Filter:
+                            type: NVARCHAR(42)
+                """
+
+            let sysScript =
+                """
+                DECLARE @sql NVARCHAR(MAX) =
+                  N'SELECT * FROM dbo.Table1 WHERE TableCol1 = @col1Filter'
+
+                EXEC sys.sp_executesql @sql, N'@col1Filter NVARCHAR(42)', @col1Filter = @col1Filter
+                """
+
+            let bareScript =
+                """
+                DECLARE @sql NVARCHAR(MAX) =
+                  N'SELECT * FROM dbo.Table1 WHERE TableCol1 = @col1Filter'
+
+                EXEC sp_executesql @sql, N'@col1Filter NVARCHAR(42)', @col1Filter = @col1Filter
+                """
+
+            let fullyNamedScript =
+                """
+                DECLARE @sql NVARCHAR(MAX) =
+                  N'SELECT * FROM dbo.Table1 WHERE TableCol1 = @col1Filter'
+
+                EXEC sys.sp_executesql @stmt = @sql, @params = N'@col1Filter NVARCHAR(42)', @col1Filter = @col1Filter
+                """
+
+            let scripts = [
+                "NamedSysSpExecuteSql.sql", sysScript
+                "NamedBareSpExecuteSql.sql", bareScript
+                "FullyNamedSpExecuteSql.sql", fullyNamedScript
+            ]
+
+            withTemporaryGeneratorProject yaml scripts
+            <| fun projectDir ->
+                let exitCode, _ = runGenerator projectDir
+                let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+
+                Expect.equal exitCode 0 "Generation should succeed for named sp_executesql dynamic parameters"
+
+                Expect.stringContains
+                    generated
+                    "@col1Filter = @col1Filter"
+                    "The generated source should preserve the original SQL"
+
+
+        testCase "Named sp_executesql parameter names do not count as script parameter usage"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    scriptBasePath: SQL
+                    scripts:
+                      - include: NamedSpExecuteSqlLiteral.sql
+                        params:
+                          col1Filter:
+                            type: INT
+                """
+
+            let script =
+                """
+                DECLARE @sql NVARCHAR(MAX) =
+                  N'SELECT * FROM dbo.Table1 WHERE TableCol1 = @col1Filter'
+
+                EXEC sys.sp_executesql @sql, N'@col1Filter INT', @col1Filter = 42
+                """
+
+            withTemporaryGeneratorProject yaml [ "NamedSpExecuteSqlLiteral.sql", script ]
+            <| fun projectDir ->
+                let exitCode, output = runGenerator projectDir
+
+                Expect.equal exitCode 0 "Generation should succeed when a named dynamic argument uses a literal"
+
+                Expect.stringContains
+                    output
+                    "parameter '@col1Filter' that is not used"
+                    "The dynamic parameter name should not count as outer script parameter usage"
+
     ]
