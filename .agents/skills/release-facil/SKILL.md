@@ -15,12 +15,11 @@ Use this skill to release Facil through the repo's normal tag-driven NuGet flow,
 
 2. Confirm the release shape before editing:
    - Bump `Version` in `Directory.Build.props`.
-   - Keep `PackageReleaseNotes` in `src/Facil.Package/Facil.Package.fsproj` pointing at the repo release notes unless the user explicitly wants to change package metadata:
+   - Keep `PackageReleaseNotes` in `src/Facil.Package/Facil.Package.fsproj` pointing at the versioned GitHub Release URL:
 
 ````xml
-<PackageReleaseNotes>https://github.com/cmeeren/Facil/blob/master/RELEASE_NOTES.md</PackageReleaseNotes>
+<PackageReleaseNotes>https://github.com/cmeeren/Facil/releases/tag/v/$(Version)</PackageReleaseNotes>
 ````
-
    - Use `v/<Version>` for the release tag. The CI workflow publishes packages only for tags under `refs/tags/v/`.
 
 3. Prepare the release content:

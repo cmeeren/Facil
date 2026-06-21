@@ -5,6 +5,7 @@ Release notes
 
 * Generation now fails before writing output when multiple rulesets resolve to the same generated file.
 * Script analysis now accepts named `sp_executesql` parameter assignments, including fully named calls.
+* NuGet package metadata now links to the GitHub Release for the packaged version.
 
 ### 2.15.2 (2026-02-02)
 
