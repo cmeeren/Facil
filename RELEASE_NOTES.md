@@ -3,9 +3,38 @@ Release notes
 
 ### Unreleased
 
-* Generation now fails before writing output when multiple rulesets resolve to the same generated file.
-* Script analysis now accepts named `sp_executesql` parameter assignments, including fully named calls.
+#### Added
+
+* `mergeBatch` table scripts now support tables where every column is part of the primary key.
+* Temp-table loading now supports name-based `SqlBulkCopy` column mappings configured through `ConfigureBulkCopy`.
+
+#### Changed
+
 * NuGet package metadata now links to the GitHub Release for the packaged version.
+* Documentation now clarifies that lazy and reader methods do not expose stored procedure output parameters or return
+  values.
+
+#### Fixed
+
+* Reader methods now support generated temp-table inputs, and temp tables are cleaned up after successful eager, lazy,
+  async-lazy, and reader calls on caller-owned connections.
+* Generated async wrappers now preserve cancellation, avoid resuming through a caller synchronization context, and lazy
+  async queries now translate provider cancellation failures to `OperationCanceledException`.
+* Reader APIs created from a connection string now close their internally managed connection when the returned reader is
+  disposed.
+* Table-valued parameters no longer double-enumerate single-use or lazy inputs while checking for emptiness.
+* Unicode MAX parameters such as `NVARCHAR(MAX)` now preserve their MAX size metadata, allowing large values to
+  round-trip correctly.
+* Batch table scripts now match compatible table types by column schema instead of column order, ignore
+  computed/generated columns and skipped table DTO columns, and allow nullable columns when a table type is named
+  explicitly.
+* Script analysis now accepts named `sp_executesql` parameter assignments, including fully named calls.
+* Table DTO result matching can now reuse non-null DTOs across `Option` and `ValueOption` output modes when the result
+  set has no nullable columns.
+* Inherited parameter `buildValue` settings are now preserved when later procedure or script rules omit `buildValue`.
+* Overlapping script include rules now generate each matching script only once.
+* Generation now fails before writing output when multiple rulesets resolve to the same generated file, and now rejects
+  temp-table definitions that would generate colliding API names.
 
 ### 2.15.2 (2026-02-02)
 
