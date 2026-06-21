@@ -63,34 +63,34 @@ let tests =
                     <| fun () ->
                         let createTempTableRow () =
                             DbGen.Scripts.TempTableAllTypesNonNull.AllTypesNonNull.create (
-                                Bigint = 1L,
-                                Binary = Array.replicate 42 1uy,
-                                Bit = true,
-                                Char = String.replicate 42 "a",
-                                Date = DateTime(2000, 1, 1),
-                                Datetime = DateTime(2000, 1, 1),
-                                Datetime2 = DateTime(2000, 1, 1),
-                                Datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                                Decimal = 1M,
-                                Float = 1.,
-                                Image = [| 1uy |],
-                                Int = 1,
-                                Money = 1M,
-                                Nchar = String.replicate 42 "a",
-                                Ntext = "test",
-                                Numeric = 1M,
-                                Nvarchar = "test",
-                                Real = 1.f,
-                                Smalldatetime = DateTime(2000, 1, 1),
-                                Smallint = 1s,
-                                Smallmoney = 1M,
-                                Text = "test",
-                                Time = TimeSpan.FromSeconds 1.,
-                                Tinyint = 1uy,
-                                Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
-                                Varbinary = [| 1uy |],
-                                Varchar = "test",
-                                Xml = "<tag />"
+                                bigint = 1L,
+                                binary = Array.replicate 42 1uy,
+                                bit = true,
+                                char = String.replicate 42 "a",
+                                date = DateTime(2000, 1, 1),
+                                datetime = DateTime(2000, 1, 1),
+                                datetime2 = DateTime(2000, 1, 1),
+                                datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                                decimal = 1M,
+                                float = 1.,
+                                image = [| 1uy |],
+                                int = 1,
+                                money = 1M,
+                                nchar = String.replicate 42 "a",
+                                ntext = "test",
+                                numeric = 1M,
+                                nvarchar = "test",
+                                real = 1.f,
+                                smalldatetime = DateTime(2000, 1, 1),
+                                smallint = 1s,
+                                smallmoney = 1M,
+                                text = "test",
+                                time = TimeSpan.FromSeconds 1.,
+                                tinyint = 1uy,
+                                uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
+                                varbinary = [| 1uy |],
+                                varchar = "test",
+                                xml = "<tag />"
                             )
 
                         let res =
@@ -237,34 +237,34 @@ let tests =
                     <| fun () ->
                         let createTempTableRow () =
                             DbGen.Scripts.TempTableAllTypesNull.AllTypesNull.create (
-                                Bigint = Some 1L,
-                                Binary = Some(Array.replicate 42 1uy),
-                                Bit = Some true,
-                                Char = Some(String.replicate 42 "a"),
-                                Date = Some(DateTime(2000, 1, 1)),
-                                Datetime = Some(DateTime(2000, 1, 1)),
-                                Datetime2 = Some(DateTime(2000, 1, 1)),
-                                Datetimeoffset = Some(DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)),
-                                Decimal = Some 1M,
-                                Float = Some 1.,
-                                Image = Some [| 1uy |],
-                                Int = Some 1,
-                                Money = Some 1M,
-                                Nchar = Some(String.replicate 42 "a"),
-                                Ntext = Some "test",
-                                Numeric = Some 1M,
-                                Nvarchar = Some "test",
-                                Real = Some 1.f,
-                                Smalldatetime = Some(DateTime(2000, 1, 1)),
-                                Smallint = Some 1s,
-                                Smallmoney = Some 1M,
-                                Text = Some "test",
-                                Time = Some(TimeSpan.FromSeconds 1.),
-                                Tinyint = Some 1uy,
-                                Uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")),
-                                Varbinary = Some [| 1uy |],
-                                Varchar = Some "test",
-                                Xml = Some "<tag />"
+                                bigint = Some 1L,
+                                binary = Some(Array.replicate 42 1uy),
+                                bit = Some true,
+                                char = Some(String.replicate 42 "a"),
+                                date = Some(DateTime(2000, 1, 1)),
+                                datetime = Some(DateTime(2000, 1, 1)),
+                                datetime2 = Some(DateTime(2000, 1, 1)),
+                                datetimeoffset = Some(DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)),
+                                decimal = Some 1M,
+                                float = Some 1.,
+                                image = Some [| 1uy |],
+                                int = Some 1,
+                                money = Some 1M,
+                                nchar = Some(String.replicate 42 "a"),
+                                ntext = Some "test",
+                                numeric = Some 1M,
+                                nvarchar = Some "test",
+                                real = Some 1.f,
+                                smalldatetime = Some(DateTime(2000, 1, 1)),
+                                smallint = Some 1s,
+                                smallmoney = Some 1M,
+                                text = Some "test",
+                                time = Some(TimeSpan.FromSeconds 1.),
+                                tinyint = Some 1uy,
+                                uniqueidentifier = Some(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")),
+                                varbinary = Some [| 1uy |],
+                                varchar = Some "test",
+                                xml = Some "<tag />"
                             )
 
                         let res =
@@ -411,34 +411,34 @@ let tests =
                     <| fun () ->
                         let createTempTableRow () =
                             DbGen.Scripts.TempTableAllTypesNull.AllTypesNull.create (
-                                Bigint = None,
-                                Binary = None,
-                                Bit = None,
-                                Char = None,
-                                Date = None,
-                                Datetime = None,
-                                Datetime2 = None,
-                                Datetimeoffset = None,
-                                Decimal = None,
-                                Float = None,
-                                Image = None,
-                                Int = None,
-                                Money = None,
-                                Nchar = None,
-                                Ntext = None,
-                                Numeric = None,
-                                Nvarchar = None,
-                                Real = None,
-                                Smalldatetime = None,
-                                Smallint = None,
-                                Smallmoney = None,
-                                Text = None,
-                                Time = None,
-                                Tinyint = None,
-                                Uniqueidentifier = None,
-                                Varbinary = None,
-                                Varchar = None,
-                                Xml = None
+                                bigint = None,
+                                binary = None,
+                                bit = None,
+                                char = None,
+                                date = None,
+                                datetime = None,
+                                datetime2 = None,
+                                datetimeoffset = None,
+                                decimal = None,
+                                float = None,
+                                image = None,
+                                int = None,
+                                money = None,
+                                nchar = None,
+                                ntext = None,
+                                numeric = None,
+                                nvarchar = None,
+                                real = None,
+                                smalldatetime = None,
+                                smallint = None,
+                                smallmoney = None,
+                                text = None,
+                                time = None,
+                                tinyint = None,
+                                uniqueidentifier = None,
+                                varbinary = None,
+                                varchar = None,
+                                xml = None
                             )
 
                         let res =
@@ -585,34 +585,34 @@ let tests =
                     <| fun () ->
                         let createTempTableRow () =
                             DbGen.Scripts.TempTableAllTypesNullVoption.AllTypesNull.create (
-                                Bigint = ValueSome 1L,
-                                Binary = ValueSome(Array.replicate 42 1uy),
-                                Bit = ValueSome true,
-                                Char = ValueSome(String.replicate 42 "a"),
-                                Date = ValueSome(DateTime(2000, 1, 1)),
-                                Datetime = ValueSome(DateTime(2000, 1, 1)),
-                                Datetime2 = ValueSome(DateTime(2000, 1, 1)),
-                                Datetimeoffset = ValueSome(DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)),
-                                Decimal = ValueSome 1M,
-                                Float = ValueSome 1.,
-                                Image = ValueSome [| 1uy |],
-                                Int = ValueSome 1,
-                                Money = ValueSome 1M,
-                                Nchar = ValueSome(String.replicate 42 "a"),
-                                Ntext = ValueSome "test",
-                                Numeric = ValueSome 1M,
-                                Nvarchar = ValueSome "test",
-                                Real = ValueSome 1.f,
-                                Smalldatetime = ValueSome(DateTime(2000, 1, 1)),
-                                Smallint = ValueSome 1s,
-                                Smallmoney = ValueSome 1M,
-                                Text = ValueSome "test",
-                                Time = ValueSome(TimeSpan.FromSeconds 1.),
-                                Tinyint = ValueSome 1uy,
-                                Uniqueidentifier = ValueSome(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")),
-                                Varbinary = ValueSome [| 1uy |],
-                                Varchar = ValueSome "test",
-                                Xml = ValueSome "<tag />"
+                                bigint = ValueSome 1L,
+                                binary = ValueSome(Array.replicate 42 1uy),
+                                bit = ValueSome true,
+                                char = ValueSome(String.replicate 42 "a"),
+                                date = ValueSome(DateTime(2000, 1, 1)),
+                                datetime = ValueSome(DateTime(2000, 1, 1)),
+                                datetime2 = ValueSome(DateTime(2000, 1, 1)),
+                                datetimeoffset = ValueSome(DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero)),
+                                decimal = ValueSome 1M,
+                                float = ValueSome 1.,
+                                image = ValueSome [| 1uy |],
+                                int = ValueSome 1,
+                                money = ValueSome 1M,
+                                nchar = ValueSome(String.replicate 42 "a"),
+                                ntext = ValueSome "test",
+                                numeric = ValueSome 1M,
+                                nvarchar = ValueSome "test",
+                                real = ValueSome 1.f,
+                                smalldatetime = ValueSome(DateTime(2000, 1, 1)),
+                                smallint = ValueSome 1s,
+                                smallmoney = ValueSome 1M,
+                                text = ValueSome "test",
+                                time = ValueSome(TimeSpan.FromSeconds 1.),
+                                tinyint = ValueSome 1uy,
+                                uniqueidentifier = ValueSome(Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145")),
+                                varbinary = ValueSome [| 1uy |],
+                                varchar = ValueSome "test",
+                                xml = ValueSome "<tag />"
                             )
 
                         let res =
@@ -759,34 +759,34 @@ let tests =
                     <| fun () ->
                         let createTempTableRow () =
                             DbGen.Scripts.TempTableAllTypesNullVoption.AllTypesNull.create (
-                                Bigint = ValueNone,
-                                Binary = ValueNone,
-                                Bit = ValueNone,
-                                Char = ValueNone,
-                                Date = ValueNone,
-                                Datetime = ValueNone,
-                                Datetime2 = ValueNone,
-                                Datetimeoffset = ValueNone,
-                                Decimal = ValueNone,
-                                Float = ValueNone,
-                                Image = ValueNone,
-                                Int = ValueNone,
-                                Money = ValueNone,
-                                Nchar = ValueNone,
-                                Ntext = ValueNone,
-                                Numeric = ValueNone,
-                                Nvarchar = ValueNone,
-                                Real = ValueNone,
-                                Smalldatetime = ValueNone,
-                                Smallint = ValueNone,
-                                Smallmoney = ValueNone,
-                                Text = ValueNone,
-                                Time = ValueNone,
-                                Tinyint = ValueNone,
-                                Uniqueidentifier = ValueNone,
-                                Varbinary = ValueNone,
-                                Varchar = ValueNone,
-                                Xml = ValueNone
+                                bigint = ValueNone,
+                                binary = ValueNone,
+                                bit = ValueNone,
+                                char = ValueNone,
+                                date = ValueNone,
+                                datetime = ValueNone,
+                                datetime2 = ValueNone,
+                                datetimeoffset = ValueNone,
+                                decimal = ValueNone,
+                                float = ValueNone,
+                                image = ValueNone,
+                                int = ValueNone,
+                                money = ValueNone,
+                                nchar = ValueNone,
+                                ntext = ValueNone,
+                                numeric = ValueNone,
+                                nvarchar = ValueNone,
+                                real = ValueNone,
+                                smalldatetime = ValueNone,
+                                smallint = ValueNone,
+                                smallmoney = ValueNone,
+                                text = ValueNone,
+                                time = ValueNone,
+                                tinyint = ValueNone,
+                                uniqueidentifier = ValueNone,
+                                varbinary = ValueNone,
+                                varchar = ValueNone,
+                                xml = ValueNone
                             )
 
                         let res =
@@ -938,8 +938,8 @@ let tests =
                                 .WithParameters(
                                     tempTableInlined = [
                                         DbGen.Scripts.TempTableInlined.tempTableInlined.create (
-                                            Col1 = 1,
-                                            Col2 = Some "test"
+                                            col1 = 1,
+                                            col2 = Some "test"
                                         )
                                     ]
                                 )
@@ -991,8 +991,8 @@ let tests =
                                 .WithParameters(
                                     tempTableInlined = [
                                         DbGen.Scripts.TempTableInlinedDynamic.tempTableInlined.create (
-                                            Col1 = 1,
-                                            Col2 = Some "test"
+                                            col1 = 1,
+                                            col2 = Some "test"
                                         )
                                     ]
                                 )
@@ -1044,8 +1044,8 @@ let tests =
                                 .WithParameters(
                                     tempTableInlined = [
                                         DbGen.Scripts.TempTableInlinedWithOtherParams.tempTableInlined.create (
-                                            Col1 = 1,
-                                            Col2 = Some "test"
+                                            col1 = 1,
+                                            col2 = Some "test"
                                         )
                                     ],
                                     someParam = 2
@@ -1125,12 +1125,12 @@ let tests =
                                 .WithParameters(
                                     tempTable1 = [
                                         DbGen.Scripts.MultipleTempTables.tempTable1.create (
-                                            Col1 = 1,
-                                            Col2 = Some "test"
+                                            col1 = 1,
+                                            col2 = Some "test"
                                         )
                                     ],
                                     tempTable2 = [
-                                        DbGen.Scripts.MultipleTempTables.tempTable2.create (Col1 = 1, Col3 = "foobar")
+                                        DbGen.Scripts.MultipleTempTables.tempTable2.create (col1 = 1, col3 = "foobar")
                                     ]
                                 )
                             |> exec
@@ -1184,7 +1184,7 @@ let tests =
                         let mutable rowsCopied = 0
 
                         let createRow () =
-                            DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+                            DbGen.Scripts.TempTableInlined.tempTableInlined.create (col1 = 1, col2 = Some "test")
 
                         DbGen.Scripts.TempTableInlined
                             .WithConnection(Config.connStr)
@@ -1216,34 +1216,34 @@ let tests =
                     <| fun () ->
                         let createTempTableRow () =
                             DbGen.Scripts.TempTableAllTypesNonNull.AllTypesNonNull.create (
-                                Bigint = 1L,
-                                Binary = Array.replicate 42 1uy,
-                                Bit = true,
-                                Char = String.replicate 42 "a",
-                                Date = DateTime(2000, 1, 1),
-                                Datetime = DateTime(2000, 1, 1),
-                                Datetime2 = DateTime(2000, 1, 1),
-                                Datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                                Decimal = 1M,
-                                Float = 1.,
-                                Image = [| 1uy |],
-                                Int = 1,
-                                Money = 1M,
-                                Nchar = String.replicate 42 "a",
-                                Ntext = "test",
-                                Numeric = 1M,
-                                Nvarchar = "test",
-                                Real = 1.f,
-                                Smalldatetime = DateTime(2000, 1, 1),
-                                Smallint = 1s,
-                                Smallmoney = 1M,
-                                Text = "test",
-                                Time = TimeSpan.FromSeconds 1.,
-                                Tinyint = 1uy,
-                                Uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
-                                Varbinary = [| 1uy |],
-                                Varchar = "test",
-                                Xml = "<tag />"
+                                bigint = 1L,
+                                binary = Array.replicate 42 1uy,
+                                bit = true,
+                                char = String.replicate 42 "a",
+                                date = DateTime(2000, 1, 1),
+                                datetime = DateTime(2000, 1, 1),
+                                datetime2 = DateTime(2000, 1, 1),
+                                datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                                decimal = 1M,
+                                float = 1.,
+                                image = [| 1uy |],
+                                int = 1,
+                                money = 1M,
+                                nchar = String.replicate 42 "a",
+                                ntext = "test",
+                                numeric = 1M,
+                                nvarchar = "test",
+                                real = 1.f,
+                                smalldatetime = DateTime(2000, 1, 1),
+                                smallint = 1s,
+                                smallmoney = 1M,
+                                text = "test",
+                                time = TimeSpan.FromSeconds 1.,
+                                tinyint = 1uy,
+                                uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
+                                varbinary = [| 1uy |],
+                                varchar = "test",
+                                xml = "<tag />"
                             )
 
                         use conn = new SqlConnection(Config.connStr)
@@ -1302,7 +1302,7 @@ let tests =
         testCase "Temp-table rows are disposed after sync load failure"
         <| fun () ->
             let row =
-                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+                DbGen.Scripts.TempTableInlined.tempTableInlined.create (col1 = 1, col2 = Some "test")
 
             let rows = FailingTempTableRows row
 
@@ -1321,7 +1321,7 @@ let tests =
         testCaseAsync "Temp-table rows are disposed after async load failure"
         <| async {
             let row =
-                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+                DbGen.Scripts.TempTableInlined.tempTableInlined.create (col1 = 1, col2 = Some "test")
 
             let rows = FailingTempTableRows row
 
@@ -1445,8 +1445,8 @@ let tests =
                                 .WithParameters(
                                     tempTableInlined = [
                                         DbGen.Scripts.TempTableInlined.tempTableInlined.create (
-                                            Col1 = 1,
-                                            Col2 = Some "test"
+                                            col1 = 1,
+                                            col2 = Some "test"
                                         )
                                     ]
                                 )
@@ -1472,7 +1472,7 @@ let tests =
                         .WithConnection(conn)
                         .WithParameters(
                             tempTableInlined = [
-                                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+                                DbGen.Scripts.TempTableInlined.tempTableInlined.create (col1 = 1, col2 = Some "test")
                             ]
                         )
                         .LazyExecuteAsync()
@@ -1504,7 +1504,7 @@ let tests =
                         .WithConnection(conn)
                         .WithParameters(
                             tempTableInlined = [
-                                DbGen.Scripts.TempTableInlined.tempTableInlined.create (Col1 = 1, Col2 = Some "test")
+                                DbGen.Scripts.TempTableInlined.tempTableInlined.create (col1 = 1, col2 = Some "test")
                             ]
                         )
                         .LazyExecuteAsyncWithSyncRead()
@@ -1542,8 +1542,8 @@ let tests =
                                 .WithParameters(
                                     tempTableInlined = [
                                         DbGen.Scripts.TempTableInlined.tempTableInlined.create (
-                                            Col1 = 1,
-                                            Col2 = Some "test"
+                                            col1 = 1,
+                                            col2 = Some "test"
                                         )
                                     ]
                                 )

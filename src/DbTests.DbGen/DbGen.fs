@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+8a639df0c5cc067f02f72173a6b754ead2237b03",
-    "assemblyHash": "9b783e2a4478aa1a88535f820afcbf16"
+    "assemblyVersion": "2.15.2+a71009df2426d99aa7acfd4a47f2778cf2b6238c",
+    "assemblyHash": "43706f2bc40164fb83f3188381fa2bdb"
   },
   "config": {
     "path": "facil.yaml",
@@ -220,7 +220,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+8a639df0c5cc067f02f72173a6b754ead2237b03")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+a71009df2426d99aa7acfd4a47f2778cf2b6238c")>]
 module DbGen
 
 #nowarn "49"
@@ -14277,12 +14277,12 @@ module Procedures =
 
         static member create
           (
-            ``Col1``: int,
-            ``Col2``: string option
+            ``col1``: int,
+            ``col2``: string option
           ) : ``tempTable`` =
           [|
-            ``Col1`` |> box
-            Option.toDbNull ``Col2`` |> box
+            ``col1`` |> box
+            Option.toDbNull ``col2`` |> box
           |]
           |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
 
@@ -14503,12 +14503,12 @@ module Procedures =
 
         static member create
           (
-            ``Col1``: int,
-            ``Col2``: string option
+            ``col1``: int,
+            ``col2``: string option
           ) : ``tempTable`` =
           [|
-            ``Col1`` |> box
-            Option.toDbNull ``Col2`` |> box
+            ``col1`` |> box
+            Option.toDbNull ``col2`` |> box
           |]
           |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
 
@@ -26935,12 +26935,12 @@ INNER JOIN
 
       static member create
         (
-          ``Col1``: int,
-          ``Col2``: string option
+          ``col1``: int,
+          ``col2``: string option
         ) : ``tempTable1`` =
         [|
-          ``Col1`` |> box
-          Option.toDbNull ``Col2`` |> box
+          ``col1`` |> box
+          Option.toDbNull ``col2`` |> box
         |]
         |> fun fields -> ``tempTable1``(internalUseOnlyValue, fields)
 
@@ -26959,12 +26959,12 @@ INNER JOIN
 
       static member create
         (
-          ``Col1``: int,
-          ``Col3``: string
+          ``col1``: int,
+          ``col3``: string
         ) : ``tempTable2`` =
         [|
-          ``Col1`` |> box
-          ``Col3`` |> box
+          ``col1`` |> box
+          ``col3`` |> box
         |]
         |> fun fields -> ``tempTable2``(internalUseOnlyValue, fields)
 
@@ -30128,12 +30128,12 @@ VALUES
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64
+          ``id``: int,
+          ``foo``: int64
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
+          ``id`` |> box
+          ``foo`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -30277,12 +30277,12 @@ FROM #args"""
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64
+          ``id``: int,
+          ``foo``: int64
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
+          ``id`` |> box
+          ``foo`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -30644,12 +30644,12 @@ WHEN NOT MATCHED THEN
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64
+          ``id``: int,
+          ``foo``: int64
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
+          ``id`` |> box
+          ``foo`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -30809,12 +30809,12 @@ WHEN NOT MATCHED THEN
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64
+          ``id``: int,
+          ``foo``: int64
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
+          ``id`` |> box
+          ``foo`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -31148,12 +31148,12 @@ WHERE
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64
+          ``id``: int,
+          ``foo``: int64
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
+          ``id`` |> box
+          ``foo`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -31299,12 +31299,12 @@ INNER JOIN
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64
+          ``id``: int,
+          ``foo``: int64
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
+          ``id`` |> box
+          ``foo`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -32678,10 +32678,10 @@ WHERE
 
       static member create
         (
-          ``Id``: int
+          ``id``: int
         ) : ``args`` =
         [|
-          ``Id`` |> box
+          ``id`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -33091,12 +33091,12 @@ VALUES
 
       static member create
         (
-          ``Foo``: int64,
-          ``BAR``: DateTimeOffset option
+          ``foo``: int64,
+          ``bAR``: DateTimeOffset option
         ) : ``args`` =
         [|
-          ``Foo`` |> box
-          Option.toDbNull ``BAR`` |> box
+          ``foo`` |> box
+          Option.toDbNull ``bAR`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -33530,14 +33530,14 @@ OUTPUT
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64,
-          ``BAR``: DateTimeOffset option
+          ``id``: int,
+          ``foo``: int64,
+          ``bAR``: DateTimeOffset option
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
-          Option.toDbNull ``BAR`` |> box
+          ``id`` |> box
+          ``foo`` |> box
+          Option.toDbNull ``bAR`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -33788,14 +33788,14 @@ OUTPUT
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64,
-          ``BAR``: DateTimeOffset option
+          ``id``: int,
+          ``foo``: int64,
+          ``bAR``: DateTimeOffset option
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
-          Option.toDbNull ``BAR`` |> box
+          ``id`` |> box
+          ``foo`` |> box
+          Option.toDbNull ``bAR`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -34251,14 +34251,14 @@ WHERE
 
       static member create
         (
-          ``Id``: int,
-          ``Foo``: int64,
-          ``BAR``: DateTimeOffset option
+          ``id``: int,
+          ``foo``: int64,
+          ``bAR``: DateTimeOffset option
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          ``Foo`` |> box
-          Option.toDbNull ``BAR`` |> box
+          ``id`` |> box
+          ``foo`` |> box
+          Option.toDbNull ``bAR`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -34600,12 +34600,12 @@ WHEN NOT MATCHED THEN
 
       static member create
         (
-          ``Key1``: int,
-          ``Key2``: int
+          ``key1``: int,
+          ``key2``: int
         ) : ``args`` =
         [|
-          ``Key1`` |> box
-          ``Key2`` |> box
+          ``key1`` |> box
+          ``key2`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -35026,12 +35026,12 @@ VALUES
 
       static member create
         (
-          ``Id``: int,
-          ``Data``: string option
+          ``id``: int,
+          ``data``: string option
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          Option.toDbNull ``Data`` |> box
+          ``id`` |> box
+          Option.toDbNull ``data`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -35284,12 +35284,12 @@ WHEN NOT MATCHED THEN
 
       static member create
         (
-          ``Id``: int,
-          ``Data``: string option
+          ``id``: int,
+          ``data``: string option
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          Option.toDbNull ``Data`` |> box
+          ``id`` |> box
+          Option.toDbNull ``data`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -35536,12 +35536,12 @@ WHERE
 
       static member create
         (
-          ``Id``: int,
-          ``Data``: string option
+          ``id``: int,
+          ``data``: string option
         ) : ``args`` =
         [|
-          ``Id`` |> box
-          Option.toDbNull ``Data`` |> box
+          ``id`` |> box
+          Option.toDbNull ``data`` |> box
         |]
         |> fun fields -> ``args``(internalUseOnlyValue, fields)
 
@@ -35687,64 +35687,64 @@ INNER JOIN
 
       static member create
         (
-          ``Bigint``: int64,
-          ``Binary``: byte [],
-          ``Bit``: bool,
-          ``Char``: string,
-          ``Date``: DateTime,
-          ``Datetime``: DateTime,
-          ``Datetime2``: DateTime,
-          ``Datetimeoffset``: DateTimeOffset,
-          ``Decimal``: decimal,
-          ``Float``: float,
-          ``Image``: byte [],
-          ``Int``: int,
-          ``Money``: decimal,
-          ``Nchar``: string,
-          ``Ntext``: string,
-          ``Numeric``: decimal,
-          ``Nvarchar``: string,
-          ``Real``: float32,
-          ``Smalldatetime``: DateTime,
-          ``Smallint``: int16,
-          ``Smallmoney``: decimal,
-          ``Text``: string,
-          ``Time``: TimeSpan,
-          ``Tinyint``: byte,
-          ``Uniqueidentifier``: Guid,
-          ``Varbinary``: byte [],
-          ``Varchar``: string,
-          ``Xml``: string
+          ``bigint``: int64,
+          ``binary``: byte [],
+          ``bit``: bool,
+          ``char``: string,
+          ``date``: DateTime,
+          ``datetime``: DateTime,
+          ``datetime2``: DateTime,
+          ``datetimeoffset``: DateTimeOffset,
+          ``decimal``: decimal,
+          ``float``: float,
+          ``image``: byte [],
+          ``int``: int,
+          ``money``: decimal,
+          ``nchar``: string,
+          ``ntext``: string,
+          ``numeric``: decimal,
+          ``nvarchar``: string,
+          ``real``: float32,
+          ``smalldatetime``: DateTime,
+          ``smallint``: int16,
+          ``smallmoney``: decimal,
+          ``text``: string,
+          ``time``: TimeSpan,
+          ``tinyint``: byte,
+          ``uniqueidentifier``: Guid,
+          ``varbinary``: byte [],
+          ``varchar``: string,
+          ``xml``: string
         ) : ``AllTypesNonNull`` =
         [|
-          ``Bigint`` |> box
-          ``Binary`` |> box
-          ``Bit`` |> box
-          ``Char`` |> box
-          ``Date`` |> box
-          ``Datetime`` |> box
-          ``Datetime2`` |> box
-          ``Datetimeoffset`` |> box
-          ``Decimal`` |> box
-          ``Float`` |> box
-          ``Image`` |> box
-          ``Int`` |> box
-          ``Money`` |> box
-          ``Nchar`` |> box
-          ``Ntext`` |> box
-          ``Numeric`` |> box
-          ``Nvarchar`` |> box
-          ``Real`` |> box
-          ``Smalldatetime`` |> box
-          ``Smallint`` |> box
-          ``Smallmoney`` |> box
-          ``Text`` |> box
-          ``Time`` |> box
-          ``Tinyint`` |> box
-          ``Uniqueidentifier`` |> box
-          ``Varbinary`` |> box
-          ``Varchar`` |> box
-          ``Xml`` |> box
+          ``bigint`` |> box
+          ``binary`` |> box
+          ``bit`` |> box
+          ``char`` |> box
+          ``date`` |> box
+          ``datetime`` |> box
+          ``datetime2`` |> box
+          ``datetimeoffset`` |> box
+          ``decimal`` |> box
+          ``float`` |> box
+          ``image`` |> box
+          ``int`` |> box
+          ``money`` |> box
+          ``nchar`` |> box
+          ``ntext`` |> box
+          ``numeric`` |> box
+          ``nvarchar`` |> box
+          ``real`` |> box
+          ``smalldatetime`` |> box
+          ``smallint`` |> box
+          ``smallmoney`` |> box
+          ``text`` |> box
+          ``time`` |> box
+          ``tinyint`` |> box
+          ``uniqueidentifier`` |> box
+          ``varbinary`` |> box
+          ``varchar`` |> box
+          ``xml`` |> box
         |]
         |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
 
@@ -36121,64 +36121,64 @@ SELECT * FROM #AllTypesNonNull"""
 
       static member create
         (
-          ``Bigint``: int64,
-          ``Binary``: byte [],
-          ``Bit``: bool,
-          ``Char``: string,
-          ``Date``: DateTime,
-          ``Datetime``: DateTime,
-          ``Datetime2``: DateTime,
-          ``Datetimeoffset``: DateTimeOffset,
-          ``Decimal``: decimal,
-          ``Float``: float,
-          ``Image``: byte [],
-          ``Int``: int,
-          ``Money``: decimal,
-          ``Nchar``: string,
-          ``Ntext``: string,
-          ``Numeric``: decimal,
-          ``Nvarchar``: string,
-          ``Real``: float32,
-          ``Smalldatetime``: DateTime,
-          ``Smallint``: int16,
-          ``Smallmoney``: decimal,
-          ``Text``: string,
-          ``Time``: TimeSpan,
-          ``Tinyint``: byte,
-          ``Uniqueidentifier``: Guid,
-          ``Varbinary``: byte [],
-          ``Varchar``: string,
-          ``Xml``: string
+          ``bigint``: int64,
+          ``binary``: byte [],
+          ``bit``: bool,
+          ``char``: string,
+          ``date``: DateTime,
+          ``datetime``: DateTime,
+          ``datetime2``: DateTime,
+          ``datetimeoffset``: DateTimeOffset,
+          ``decimal``: decimal,
+          ``float``: float,
+          ``image``: byte [],
+          ``int``: int,
+          ``money``: decimal,
+          ``nchar``: string,
+          ``ntext``: string,
+          ``numeric``: decimal,
+          ``nvarchar``: string,
+          ``real``: float32,
+          ``smalldatetime``: DateTime,
+          ``smallint``: int16,
+          ``smallmoney``: decimal,
+          ``text``: string,
+          ``time``: TimeSpan,
+          ``tinyint``: byte,
+          ``uniqueidentifier``: Guid,
+          ``varbinary``: byte [],
+          ``varchar``: string,
+          ``xml``: string
         ) : ``AllTypesNonNull`` =
         [|
-          ``Bigint`` |> box
-          ``Binary`` |> box
-          ``Bit`` |> box
-          ``Char`` |> box
-          ``Date`` |> box
-          ``Datetime`` |> box
-          ``Datetime2`` |> box
-          ``Datetimeoffset`` |> box
-          ``Decimal`` |> box
-          ``Float`` |> box
-          ``Image`` |> box
-          ``Int`` |> box
-          ``Money`` |> box
-          ``Nchar`` |> box
-          ``Ntext`` |> box
-          ``Numeric`` |> box
-          ``Nvarchar`` |> box
-          ``Real`` |> box
-          ``Smalldatetime`` |> box
-          ``Smallint`` |> box
-          ``Smallmoney`` |> box
-          ``Text`` |> box
-          ``Time`` |> box
-          ``Tinyint`` |> box
-          ``Uniqueidentifier`` |> box
-          ``Varbinary`` |> box
-          ``Varchar`` |> box
-          ``Xml`` |> box
+          ``bigint`` |> box
+          ``binary`` |> box
+          ``bit`` |> box
+          ``char`` |> box
+          ``date`` |> box
+          ``datetime`` |> box
+          ``datetime2`` |> box
+          ``datetimeoffset`` |> box
+          ``decimal`` |> box
+          ``float`` |> box
+          ``image`` |> box
+          ``int`` |> box
+          ``money`` |> box
+          ``nchar`` |> box
+          ``ntext`` |> box
+          ``numeric`` |> box
+          ``nvarchar`` |> box
+          ``real`` |> box
+          ``smalldatetime`` |> box
+          ``smallint`` |> box
+          ``smallmoney`` |> box
+          ``text`` |> box
+          ``time`` |> box
+          ``tinyint`` |> box
+          ``uniqueidentifier`` |> box
+          ``varbinary`` |> box
+          ``varchar`` |> box
+          ``xml`` |> box
         |]
         |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
 
@@ -36561,64 +36561,64 @@ SELECT * FROM #AllTypesNonNull"""
 
       static member create
         (
-          ``Bigint``: int64 option,
-          ``Binary``: byte [] option,
-          ``Bit``: bool option,
-          ``Char``: string option,
-          ``Date``: DateTime option,
-          ``Datetime``: DateTime option,
-          ``Datetime2``: DateTime option,
-          ``Datetimeoffset``: DateTimeOffset option,
-          ``Decimal``: decimal option,
-          ``Float``: float option,
-          ``Image``: byte [] option,
-          ``Int``: int option,
-          ``Money``: decimal option,
-          ``Nchar``: string option,
-          ``Ntext``: string option,
-          ``Numeric``: decimal option,
-          ``Nvarchar``: string option,
-          ``Real``: float32 option,
-          ``Smalldatetime``: DateTime option,
-          ``Smallint``: int16 option,
-          ``Smallmoney``: decimal option,
-          ``Text``: string option,
-          ``Time``: TimeSpan option,
-          ``Tinyint``: byte option,
-          ``Uniqueidentifier``: Guid option,
-          ``Varbinary``: byte [] option,
-          ``Varchar``: string option,
-          ``Xml``: string option
+          ``bigint``: int64 option,
+          ``binary``: byte [] option,
+          ``bit``: bool option,
+          ``char``: string option,
+          ``date``: DateTime option,
+          ``datetime``: DateTime option,
+          ``datetime2``: DateTime option,
+          ``datetimeoffset``: DateTimeOffset option,
+          ``decimal``: decimal option,
+          ``float``: float option,
+          ``image``: byte [] option,
+          ``int``: int option,
+          ``money``: decimal option,
+          ``nchar``: string option,
+          ``ntext``: string option,
+          ``numeric``: decimal option,
+          ``nvarchar``: string option,
+          ``real``: float32 option,
+          ``smalldatetime``: DateTime option,
+          ``smallint``: int16 option,
+          ``smallmoney``: decimal option,
+          ``text``: string option,
+          ``time``: TimeSpan option,
+          ``tinyint``: byte option,
+          ``uniqueidentifier``: Guid option,
+          ``varbinary``: byte [] option,
+          ``varchar``: string option,
+          ``xml``: string option
         ) : ``AllTypesNull`` =
         [|
-          Option.toDbNull ``Bigint`` |> box
-          Option.toDbNull ``Binary`` |> box
-          Option.toDbNull ``Bit`` |> box
-          Option.toDbNull ``Char`` |> box
-          Option.toDbNull ``Date`` |> box
-          Option.toDbNull ``Datetime`` |> box
-          Option.toDbNull ``Datetime2`` |> box
-          Option.toDbNull ``Datetimeoffset`` |> box
-          Option.toDbNull ``Decimal`` |> box
-          Option.toDbNull ``Float`` |> box
-          Option.toDbNull ``Image`` |> box
-          Option.toDbNull ``Int`` |> box
-          Option.toDbNull ``Money`` |> box
-          Option.toDbNull ``Nchar`` |> box
-          Option.toDbNull ``Ntext`` |> box
-          Option.toDbNull ``Numeric`` |> box
-          Option.toDbNull ``Nvarchar`` |> box
-          Option.toDbNull ``Real`` |> box
-          Option.toDbNull ``Smalldatetime`` |> box
-          Option.toDbNull ``Smallint`` |> box
-          Option.toDbNull ``Smallmoney`` |> box
-          Option.toDbNull ``Text`` |> box
-          Option.toDbNull ``Time`` |> box
-          Option.toDbNull ``Tinyint`` |> box
-          Option.toDbNull ``Uniqueidentifier`` |> box
-          Option.toDbNull ``Varbinary`` |> box
-          Option.toDbNull ``Varchar`` |> box
-          Option.toDbNull ``Xml`` |> box
+          Option.toDbNull ``bigint`` |> box
+          Option.toDbNull ``binary`` |> box
+          Option.toDbNull ``bit`` |> box
+          Option.toDbNull ``char`` |> box
+          Option.toDbNull ``date`` |> box
+          Option.toDbNull ``datetime`` |> box
+          Option.toDbNull ``datetime2`` |> box
+          Option.toDbNull ``datetimeoffset`` |> box
+          Option.toDbNull ``decimal`` |> box
+          Option.toDbNull ``float`` |> box
+          Option.toDbNull ``image`` |> box
+          Option.toDbNull ``int`` |> box
+          Option.toDbNull ``money`` |> box
+          Option.toDbNull ``nchar`` |> box
+          Option.toDbNull ``ntext`` |> box
+          Option.toDbNull ``numeric`` |> box
+          Option.toDbNull ``nvarchar`` |> box
+          Option.toDbNull ``real`` |> box
+          Option.toDbNull ``smalldatetime`` |> box
+          Option.toDbNull ``smallint`` |> box
+          Option.toDbNull ``smallmoney`` |> box
+          Option.toDbNull ``text`` |> box
+          Option.toDbNull ``time`` |> box
+          Option.toDbNull ``tinyint`` |> box
+          Option.toDbNull ``uniqueidentifier`` |> box
+          Option.toDbNull ``varbinary`` |> box
+          Option.toDbNull ``varchar`` |> box
+          Option.toDbNull ``xml`` |> box
         |]
         |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
 
@@ -36995,64 +36995,64 @@ SELECT * FROM #AllTypesNull"""
 
       static member create
         (
-          ``Bigint``: int64 option,
-          ``Binary``: byte [] option,
-          ``Bit``: bool option,
-          ``Char``: string option,
-          ``Date``: DateTime option,
-          ``Datetime``: DateTime option,
-          ``Datetime2``: DateTime option,
-          ``Datetimeoffset``: DateTimeOffset option,
-          ``Decimal``: decimal option,
-          ``Float``: float option,
-          ``Image``: byte [] option,
-          ``Int``: int option,
-          ``Money``: decimal option,
-          ``Nchar``: string option,
-          ``Ntext``: string option,
-          ``Numeric``: decimal option,
-          ``Nvarchar``: string option,
-          ``Real``: float32 option,
-          ``Smalldatetime``: DateTime option,
-          ``Smallint``: int16 option,
-          ``Smallmoney``: decimal option,
-          ``Text``: string option,
-          ``Time``: TimeSpan option,
-          ``Tinyint``: byte option,
-          ``Uniqueidentifier``: Guid option,
-          ``Varbinary``: byte [] option,
-          ``Varchar``: string option,
-          ``Xml``: string option
+          ``bigint``: int64 option,
+          ``binary``: byte [] option,
+          ``bit``: bool option,
+          ``char``: string option,
+          ``date``: DateTime option,
+          ``datetime``: DateTime option,
+          ``datetime2``: DateTime option,
+          ``datetimeoffset``: DateTimeOffset option,
+          ``decimal``: decimal option,
+          ``float``: float option,
+          ``image``: byte [] option,
+          ``int``: int option,
+          ``money``: decimal option,
+          ``nchar``: string option,
+          ``ntext``: string option,
+          ``numeric``: decimal option,
+          ``nvarchar``: string option,
+          ``real``: float32 option,
+          ``smalldatetime``: DateTime option,
+          ``smallint``: int16 option,
+          ``smallmoney``: decimal option,
+          ``text``: string option,
+          ``time``: TimeSpan option,
+          ``tinyint``: byte option,
+          ``uniqueidentifier``: Guid option,
+          ``varbinary``: byte [] option,
+          ``varchar``: string option,
+          ``xml``: string option
         ) : ``AllTypesNull`` =
         [|
-          Option.toDbNull ``Bigint`` |> box
-          Option.toDbNull ``Binary`` |> box
-          Option.toDbNull ``Bit`` |> box
-          Option.toDbNull ``Char`` |> box
-          Option.toDbNull ``Date`` |> box
-          Option.toDbNull ``Datetime`` |> box
-          Option.toDbNull ``Datetime2`` |> box
-          Option.toDbNull ``Datetimeoffset`` |> box
-          Option.toDbNull ``Decimal`` |> box
-          Option.toDbNull ``Float`` |> box
-          Option.toDbNull ``Image`` |> box
-          Option.toDbNull ``Int`` |> box
-          Option.toDbNull ``Money`` |> box
-          Option.toDbNull ``Nchar`` |> box
-          Option.toDbNull ``Ntext`` |> box
-          Option.toDbNull ``Numeric`` |> box
-          Option.toDbNull ``Nvarchar`` |> box
-          Option.toDbNull ``Real`` |> box
-          Option.toDbNull ``Smalldatetime`` |> box
-          Option.toDbNull ``Smallint`` |> box
-          Option.toDbNull ``Smallmoney`` |> box
-          Option.toDbNull ``Text`` |> box
-          Option.toDbNull ``Time`` |> box
-          Option.toDbNull ``Tinyint`` |> box
-          Option.toDbNull ``Uniqueidentifier`` |> box
-          Option.toDbNull ``Varbinary`` |> box
-          Option.toDbNull ``Varchar`` |> box
-          Option.toDbNull ``Xml`` |> box
+          Option.toDbNull ``bigint`` |> box
+          Option.toDbNull ``binary`` |> box
+          Option.toDbNull ``bit`` |> box
+          Option.toDbNull ``char`` |> box
+          Option.toDbNull ``date`` |> box
+          Option.toDbNull ``datetime`` |> box
+          Option.toDbNull ``datetime2`` |> box
+          Option.toDbNull ``datetimeoffset`` |> box
+          Option.toDbNull ``decimal`` |> box
+          Option.toDbNull ``float`` |> box
+          Option.toDbNull ``image`` |> box
+          Option.toDbNull ``int`` |> box
+          Option.toDbNull ``money`` |> box
+          Option.toDbNull ``nchar`` |> box
+          Option.toDbNull ``ntext`` |> box
+          Option.toDbNull ``numeric`` |> box
+          Option.toDbNull ``nvarchar`` |> box
+          Option.toDbNull ``real`` |> box
+          Option.toDbNull ``smalldatetime`` |> box
+          Option.toDbNull ``smallint`` |> box
+          Option.toDbNull ``smallmoney`` |> box
+          Option.toDbNull ``text`` |> box
+          Option.toDbNull ``time`` |> box
+          Option.toDbNull ``tinyint`` |> box
+          Option.toDbNull ``uniqueidentifier`` |> box
+          Option.toDbNull ``varbinary`` |> box
+          Option.toDbNull ``varchar`` |> box
+          Option.toDbNull ``xml`` |> box
         |]
         |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
 
@@ -37435,64 +37435,64 @@ SELECT * FROM #AllTypesNull"""
 
       static member create
         (
-          ``Bigint``: int64 voption,
-          ``Binary``: byte [] voption,
-          ``Bit``: bool voption,
-          ``Char``: string voption,
-          ``Date``: DateTime voption,
-          ``Datetime``: DateTime voption,
-          ``Datetime2``: DateTime voption,
-          ``Datetimeoffset``: DateTimeOffset voption,
-          ``Decimal``: decimal voption,
-          ``Float``: float voption,
-          ``Image``: byte [] voption,
-          ``Int``: int voption,
-          ``Money``: decimal voption,
-          ``Nchar``: string voption,
-          ``Ntext``: string voption,
-          ``Numeric``: decimal voption,
-          ``Nvarchar``: string voption,
-          ``Real``: float32 voption,
-          ``Smalldatetime``: DateTime voption,
-          ``Smallint``: int16 voption,
-          ``Smallmoney``: decimal voption,
-          ``Text``: string voption,
-          ``Time``: TimeSpan voption,
-          ``Tinyint``: byte voption,
-          ``Uniqueidentifier``: Guid voption,
-          ``Varbinary``: byte [] voption,
-          ``Varchar``: string voption,
-          ``Xml``: string voption
+          ``bigint``: int64 voption,
+          ``binary``: byte [] voption,
+          ``bit``: bool voption,
+          ``char``: string voption,
+          ``date``: DateTime voption,
+          ``datetime``: DateTime voption,
+          ``datetime2``: DateTime voption,
+          ``datetimeoffset``: DateTimeOffset voption,
+          ``decimal``: decimal voption,
+          ``float``: float voption,
+          ``image``: byte [] voption,
+          ``int``: int voption,
+          ``money``: decimal voption,
+          ``nchar``: string voption,
+          ``ntext``: string voption,
+          ``numeric``: decimal voption,
+          ``nvarchar``: string voption,
+          ``real``: float32 voption,
+          ``smalldatetime``: DateTime voption,
+          ``smallint``: int16 voption,
+          ``smallmoney``: decimal voption,
+          ``text``: string voption,
+          ``time``: TimeSpan voption,
+          ``tinyint``: byte voption,
+          ``uniqueidentifier``: Guid voption,
+          ``varbinary``: byte [] voption,
+          ``varchar``: string voption,
+          ``xml``: string voption
         ) : ``AllTypesNull`` =
         [|
-          ValueOption.toDbNull ``Bigint`` |> box
-          ValueOption.toDbNull ``Binary`` |> box
-          ValueOption.toDbNull ``Bit`` |> box
-          ValueOption.toDbNull ``Char`` |> box
-          ValueOption.toDbNull ``Date`` |> box
-          ValueOption.toDbNull ``Datetime`` |> box
-          ValueOption.toDbNull ``Datetime2`` |> box
-          ValueOption.toDbNull ``Datetimeoffset`` |> box
-          ValueOption.toDbNull ``Decimal`` |> box
-          ValueOption.toDbNull ``Float`` |> box
-          ValueOption.toDbNull ``Image`` |> box
-          ValueOption.toDbNull ``Int`` |> box
-          ValueOption.toDbNull ``Money`` |> box
-          ValueOption.toDbNull ``Nchar`` |> box
-          ValueOption.toDbNull ``Ntext`` |> box
-          ValueOption.toDbNull ``Numeric`` |> box
-          ValueOption.toDbNull ``Nvarchar`` |> box
-          ValueOption.toDbNull ``Real`` |> box
-          ValueOption.toDbNull ``Smalldatetime`` |> box
-          ValueOption.toDbNull ``Smallint`` |> box
-          ValueOption.toDbNull ``Smallmoney`` |> box
-          ValueOption.toDbNull ``Text`` |> box
-          ValueOption.toDbNull ``Time`` |> box
-          ValueOption.toDbNull ``Tinyint`` |> box
-          ValueOption.toDbNull ``Uniqueidentifier`` |> box
-          ValueOption.toDbNull ``Varbinary`` |> box
-          ValueOption.toDbNull ``Varchar`` |> box
-          ValueOption.toDbNull ``Xml`` |> box
+          ValueOption.toDbNull ``bigint`` |> box
+          ValueOption.toDbNull ``binary`` |> box
+          ValueOption.toDbNull ``bit`` |> box
+          ValueOption.toDbNull ``char`` |> box
+          ValueOption.toDbNull ``date`` |> box
+          ValueOption.toDbNull ``datetime`` |> box
+          ValueOption.toDbNull ``datetime2`` |> box
+          ValueOption.toDbNull ``datetimeoffset`` |> box
+          ValueOption.toDbNull ``decimal`` |> box
+          ValueOption.toDbNull ``float`` |> box
+          ValueOption.toDbNull ``image`` |> box
+          ValueOption.toDbNull ``int`` |> box
+          ValueOption.toDbNull ``money`` |> box
+          ValueOption.toDbNull ``nchar`` |> box
+          ValueOption.toDbNull ``ntext`` |> box
+          ValueOption.toDbNull ``numeric`` |> box
+          ValueOption.toDbNull ``nvarchar`` |> box
+          ValueOption.toDbNull ``real`` |> box
+          ValueOption.toDbNull ``smalldatetime`` |> box
+          ValueOption.toDbNull ``smallint`` |> box
+          ValueOption.toDbNull ``smallmoney`` |> box
+          ValueOption.toDbNull ``text`` |> box
+          ValueOption.toDbNull ``time`` |> box
+          ValueOption.toDbNull ``tinyint`` |> box
+          ValueOption.toDbNull ``uniqueidentifier`` |> box
+          ValueOption.toDbNull ``varbinary`` |> box
+          ValueOption.toDbNull ``varchar`` |> box
+          ValueOption.toDbNull ``xml`` |> box
         |]
         |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
 
@@ -37869,12 +37869,12 @@ SELECT * FROM #AllTypesNull"""
 
       static member create
         (
-          ``Col1``: int,
-          ``Col2``: string option
+          ``col1``: int,
+          ``col2``: string option
         ) : ``tempTableInlined`` =
         [|
-          ``Col1`` |> box
-          Option.toDbNull ``Col2`` |> box
+          ``col1`` |> box
+          Option.toDbNull ``col2`` |> box
         |]
         |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
 
@@ -38091,12 +38091,12 @@ SELECT * FROM #tempTableInlined"""
 
       static member create
         (
-          ``Col1``: int,
-          ``Col2``: string option
+          ``col1``: int,
+          ``col2``: string option
         ) : ``tempTableInlined`` =
         [|
-          ``Col1`` |> box
-          Option.toDbNull ``Col2`` |> box
+          ``col1`` |> box
+          Option.toDbNull ``col2`` |> box
         |]
         |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
 
@@ -38316,12 +38316,12 @@ EXEC sp_executesql @sql, N''"""
 
       static member create
         (
-          ``Col1``: int,
-          ``Col2``: string option
+          ``col1``: int,
+          ``col2``: string option
         ) : ``tempTableInlined`` =
         [|
-          ``Col1`` |> box
-          Option.toDbNull ``Col2`` |> box
+          ``col1`` |> box
+          Option.toDbNull ``col2`` |> box
         |]
         |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
 

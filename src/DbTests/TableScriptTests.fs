@@ -3796,7 +3796,7 @@ let tests =
                             .WithConnection(Config.connStr)
                             .WithParameters(
                                 [
-                                    DbGen.Scripts.TableWithIdentityCol_InsertBatch.args.create (Foo = 0L, BAR = None)
+                                    DbGen.Scripts.TableWithIdentityCol_InsertBatch.args.create (foo = 0L, bAR = None)
                                 ]
                             )
                             .ExecuteSingle()
@@ -3818,9 +3818,9 @@ let tests =
                             .WithParameters(
                                 [
                                     DbGen.Scripts.TableWithIdentityCol_UpdateBatch.args.create (
-                                        Id = key,
-                                        Foo = bigint,
-                                        BAR = datetimeoffset
+                                        id = key,
+                                        foo = bigint,
+                                        bAR = datetimeoffset
                                     )
                                 ]
                             )
@@ -3900,9 +3900,9 @@ let tests =
                             .WithParameters(
                                 [
                                     DbGen.Scripts.TableWithIdentityCol_MergeBatch.args.create (
-                                        Id = tempKey,
-                                        Foo = 0L,
-                                        BAR = None
+                                        id = tempKey,
+                                        foo = 0L,
+                                        bAR = None
                                     )
                                 ]
                             )
@@ -3928,8 +3928,8 @@ let tests =
                                 [
                                     DbGen.Scripts.TableWithIdentityCol_MergeBatch.args.create (
                                         key,
-                                        Foo = bigint,
-                                        BAR = datetimeoffset
+                                        foo = bigint,
+                                        bAR = datetimeoffset
                                     )
                                 ]
                             )
@@ -3976,9 +3976,9 @@ let tests =
                             .WithParameters(
                                 [
                                     DbGen.Scripts.TableWithIdentityCol_MergeBatchWithHoldlock.args.create (
-                                        Id = tempKey,
-                                        Foo = 0L,
-                                        BAR = None
+                                        id = tempKey,
+                                        foo = 0L,
+                                        bAR = None
                                     )
                                 ]
                             )

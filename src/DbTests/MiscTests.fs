@@ -734,9 +734,9 @@ let tests =
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         tempTable1 = [
-                            DbGen.Scripts.MultipleTempTables.tempTable1.create (Col1 = 1, Col2 = Some "test")
+                            DbGen.Scripts.MultipleTempTables.tempTable1.create (col1 = 1, col2 = Some "test")
                         ],
-                        tempTable2 = [ DbGen.Scripts.MultipleTempTables.tempTable2.create (Col1 = 1, Col3 = "test") ]
+                        tempTable2 = [ DbGen.Scripts.MultipleTempTables.tempTable2.create (col1 = 1, col3 = "test") ]
                     )
                     .AsyncExecute()
 
@@ -745,9 +745,9 @@ let tests =
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         tempTable1 = [
-                            DbGen.Scripts.MultipleTempTables.tempTable1.create (Col1 = 1, Col2 = Some "test")
+                            DbGen.Scripts.MultipleTempTables.tempTable1.create (col1 = 1, col2 = Some "test")
                         ],
-                        tempTable2 = [ DbGen.Scripts.MultipleTempTables.tempTable2.create (Col1 = 1, Col3 = "test") ]
+                        tempTable2 = [ DbGen.Scripts.MultipleTempTables.tempTable2.create (col1 = 1, col3 = "test") ]
                     )
                     .AsyncExecute()
 
@@ -756,9 +756,9 @@ let tests =
                     .WithConnection(Config.connStr)
                     .WithParameters(
                         tempTable1 = [
-                            DbGen.Scripts.MultipleTempTables.tempTable1.create (Col1 = 1, Col2 = Some "test")
+                            DbGen.Scripts.MultipleTempTables.tempTable1.create (col1 = 1, col2 = Some "test")
                         ],
-                        tempTable2 = [ DbGen.Scripts.MultipleTempTables.tempTable2.create (Col1 = 1, Col3 = "test") ]
+                        tempTable2 = [ DbGen.Scripts.MultipleTempTables.tempTable2.create (col1 = 1, col3 = "test") ]
                     )
                     .AsyncExecute()
 

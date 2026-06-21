@@ -171,6 +171,20 @@ let private validateTempTableNames executableName (tempTables: TempTable list) =
         failwithError
             $"%s{executableName} has temp tables that map to the same generated parameter name. This is not supported. The duplicates are: %s{duplicateNames}"
 
+    for tt in tempTables do
+        let duplicateColumnParamNames =
+            tt.Columns
+            |> List.choose (fun c -> c.Name |> Option.map String.firstLower)
+            |> findDuplicateNamesBy id
+
+        match duplicateColumnParamNames with
+        | [] -> ()
+        | duplicates ->
+            let duplicateNames = duplicates |> String.concat ", "
+
+            failwithError
+                $"%s{executableName} has temp table %s{tt.Name} with columns that map to the same generated row create parameter name. This is not supported. The duplicates are: %s{duplicateNames}"
+
 
 let getScriptParameters
     (cfg: RuleSet)

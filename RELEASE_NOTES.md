@@ -7,6 +7,8 @@ Release notes
 
 * Facil now requires .NET SDK 10.0 or later at build time for code generation. Generated runtime assets remain .NET
   Standard 2.0.
+* Generated temp-table row `create` overloads now use camelCase parameter names for individual row values, matching other
+  generated parameter APIs.
 
 #### Added
 

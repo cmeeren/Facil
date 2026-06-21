@@ -146,6 +146,53 @@ let tests =
                 Expect.stringContains output "same generated type name" "Expected a clear error"
 
 
+        testCase "Temp table row factory create overload parameters are camelCased"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    scriptBasePath: SQL
+                    scripts:
+                      - include: TempTableRows.sql
+                        tempTables:
+                          - definition: 'CREATE TABLE #Rows (Id INT NOT NULL, Foo BIGINT NOT NULL)'
+                """
+
+            let script =
+                """
+                SELECT Id, Foo
+                FROM #Rows
+                """
+
+            withTemporaryGeneratorProject yaml [ "TempTableRows.sql", script ]
+            <| fun projectDir ->
+                let exitCode, _ = runGenerator projectDir
+                let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+
+                Expect.equal exitCode 0 "Generation should succeed"
+
+                Expect.isTrue
+                    (Regex
+                        .Match(
+                            generated,
+                            "static member create\\s+\\(\\s+``id``: int,\\s+``foo``: int64\\s+\\) : ``Rows`` =",
+                            RegexOptions.Singleline
+                        )
+                        .Success)
+                    "The individual-parameter create overload should use camelCased parameter names"
+
+                Expect.stringContains
+                    generated
+                    "(^a: (member ``Id``: int) dto) |> box"
+                    "The DTO overload should still use column-shaped member names"
+
+
         testCase "Nullable table-type columns can be used for getByIdBatch scripts"
         <| fun () ->
             let yaml =

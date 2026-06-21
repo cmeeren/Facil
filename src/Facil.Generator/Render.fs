@@ -239,6 +239,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
     let outOptionType = if rule.VoptionOut then "voption" else "option"
     let outOptionSome = if rule.VoptionOut then "ValueSome" else "Some"
     let outOptionNone = if rule.VoptionOut then "ValueNone" else "None"
+    let getTempTableColumnParamName (c: OutputColumn) = c.Name.Value |> String.firstLower
 
     let getItemReturnTypeExpr, getItemRecordStart, getItemRecordEnd, (getColName: OutputColumn -> string) =
         match rule.Result with
@@ -687,7 +688,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                 yield!
                                                     tt.Columns
                                                     |> List.map (fun c ->
-                                                        $"""``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}"""
+                                                        $"""``{getTempTableColumnParamName c}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}"""
                                                     )
                                                     |> List.mapAllExceptLast (fun s -> s + ",")
                                             ]
@@ -698,7 +699,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                 yield!
                                                     tt.Columns
                                                     |> List.map (fun c ->
-                                                        $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}``{c.Name.Value}`` |> box"""
+                                                        $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}``{getTempTableColumnParamName c}`` |> box"""
                                                     )
                                             ]
                                         "|]"
