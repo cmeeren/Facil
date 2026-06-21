@@ -1226,6 +1226,34 @@ module TableScriptRule =
 module RuleSet =
 
 
+    let private getOutputPath projectDir (cfg: RuleSet) =
+        Path.Combine(projectDir, cfg.Filename) |> Path.GetFullPath
+
+
+    let validateUniqueOutputPaths projectDir fullYamlPath (rulesets: (RuleSetDto * RuleSet) list) =
+        let duplicatePaths =
+            rulesets
+            |> List.map (fun (_, cfg) -> getOutputPath projectDir cfg)
+            |> List.groupBy _.ToUpperInvariant()
+            |> List.choose (fun (_, paths) ->
+                match paths with
+                | duplicatePath :: _ :: _ -> Some duplicatePath
+                | _ -> None
+            )
+
+        match duplicatePaths with
+        | [] -> ()
+        | paths ->
+            let formattedPaths =
+                paths |> List.map (fun path -> $"'%s{path}'") |> String.concat ", "
+
+            failwithYamlError
+                fullYamlPath
+                0
+                0
+                $"Multiple items in the 'rulesets' section resolve to the same output file: %s{formattedPaths}"
+
+
     let fromDto projectDir resolveVariable fullYamlPath (dto: RuleSetDto) =
         let scriptBasePath =
             dto.scriptBasePath
@@ -1430,6 +1458,10 @@ module FacilConfig =
         | None -> failwithYamlError fullYamlPath 0 0 "The 'rulesets' section is required"
         | Some [] -> failwithYamlError fullYamlPath 0 0 "At least one item must be specified in the 'rulesets' section"
         | Some rulesets ->
-            facilConfig.configs,
-            rulesets
-            |> List.map (fun dto -> dto, RuleSet.fromDto projectDir resolveVariable fullYamlPath dto)
+            let ruleSets =
+                rulesets
+                |> List.map (fun dto -> dto, RuleSet.fromDto projectDir resolveVariable fullYamlPath dto)
+
+            RuleSet.validateUniqueOutputPaths projectDir fullYamlPath ruleSets
+
+            facilConfig.configs, ruleSets

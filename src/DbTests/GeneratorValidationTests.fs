@@ -181,6 +181,39 @@ let tests =
                     "Generation should not reject the nullable table type"
 
 
+        testCase "Rulesets that resolve to the same output file fail generation"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+
+                  - connectionString: $(connectionString)
+                    filename: ./DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen2
+                """
+
+            withTemporaryGeneratorProject yaml []
+            <| fun projectDir ->
+                let exitCode, output = runGenerator projectDir
+
+                Expect.equal exitCode 1 "Generation should fail before duplicate output files can be written"
+
+                Expect.stringContains
+                    output
+                    "resolve to the same output file"
+                    "Expected a clear duplicate output file error"
+
+                Expect.isFalse
+                    (File.Exists(Path.Combine(projectDir, "DbGen.fs")))
+                    "Generation should fail before writing the duplicate output file"
+
+
         testCase "Scripts matched by multiple include rules are generated once"
         <| fun () ->
             let yaml =
