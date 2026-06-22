@@ -194,6 +194,8 @@ let getScriptParameters
     (conn: SqlConnection)
     =
 
+    let sqlDbTypeMap = getSqlDbTypeMap cfg.DateType
+
     try
 
         // Prefix temp var names to ensure no collisions
@@ -362,6 +364,8 @@ let getColumnsFromSpDescribeFirstResultSet
     (conn: SqlConnection)
     =
 
+    let sqlDbTypeMap = getSqlDbTypeMap cfg.DateType
+
     let tempTablesToCreateAndDrop, rewriteTempTableNames =
         match executable with
         | Choice1Of3 sproc ->
@@ -479,6 +483,8 @@ let getColumnsFromQuery
     connStr
     (conn: SqlConnection)
     =
+    let sqlDbTypeMap = getSqlDbTypeMap cfg.DateType
+
     let tempTablesToCreateAndDrop, rewriteTempTableNames =
         match executable with
         | Choice1Of3 sproc ->
@@ -670,7 +676,9 @@ let getColumns connStr conn cfg sysTypeIdLookup (executable: Choice<StoredProced
     cols
 
 
-let getTableTypes (conn: SqlConnection) =
+let getTableTypes cfg (conn: SqlConnection) =
+    let sqlDbTypeMap = getSqlDbTypeMap cfg.DateType
+
     try
         use cmd = conn.CreateCommand()
 
@@ -756,6 +764,8 @@ let getStoredProceduresWithoutResultSetOrTempTables
     (tableTypesByUserId: Map<int, TableType>)
     (conn: SqlConnection)
     =
+
+    let sqlDbTypeMap = getSqlDbTypeMap cfg.DateType
 
     let getStoredProceduresWithoutParamsOrResultSet () =
         try
@@ -980,6 +990,8 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
     (primaryKeyColumnNamesByTable: Map<string * string, string list>)
     (conn: SqlConnection)
     =
+    let sqlDbTypeMap = getSqlDbTypeMap cfg.DateType
+
     try
         use cmd = conn.CreateCommand()
 
@@ -1222,7 +1234,7 @@ let getEverything
 
     let sysTypeIdLookup = getSysTypeIdLookup conn
 
-    let allTableTypes = getTableTypes conn
+    let allTableTypes = getTableTypes cfg conn
 
     let tableTypesByUserId =
         allTableTypes |> List.map (fun t -> t.UserTypeId, t) |> Map.ofList

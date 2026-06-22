@@ -64,6 +64,72 @@ let private runGenerator projectDir =
 
         Console.SetOut(originalOut)
 
+
+let private dateOnlyTableTypeRow date dateTime =
+    DateOnlyDbGen.TableTypes.dbo.AllTypesNonNull.create (
+        bigint = 1L,
+        binary = Array.replicate 42 1uy,
+        bit = true,
+        char = String.replicate 42 "a",
+        date = date,
+        datetime = dateTime,
+        datetime2 = dateTime,
+        datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
+        decimal = 1M,
+        float = 1.,
+        image = [| 1uy |],
+        int = 1,
+        money = 1M,
+        nchar = String.replicate 42 "a",
+        ntext = "test",
+        numeric = 1M,
+        nvarchar = "test",
+        real = 1.f,
+        smalldatetime = dateTime,
+        smallint = 1s,
+        smallmoney = 1M,
+        text = "test",
+        time = TimeSpan.FromSeconds 1.,
+        tinyint = 1uy,
+        uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
+        varbinary = [| 1uy |],
+        varchar = "test",
+        xml = "<tag />"
+    )
+
+
+let private dateOnlyTempTableRow date dateTime =
+    DateOnlyDbGen.Scripts.TempTableAllTypesNonNull.AllTypesNonNull.create (
+        bigint = 1L,
+        binary = Array.replicate 42 1uy,
+        bit = true,
+        char = String.replicate 42 "a",
+        date = date,
+        datetime = dateTime,
+        datetime2 = dateTime,
+        datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
+        decimal = 1M,
+        float = 1.,
+        image = [| 1uy |],
+        int = 1,
+        money = 1M,
+        nchar = String.replicate 42 "a",
+        ntext = "test",
+        numeric = 1M,
+        nvarchar = "test",
+        real = 1.f,
+        smalldatetime = dateTime,
+        smallint = 1s,
+        smallmoney = 1M,
+        text = "test",
+        time = TimeSpan.FromSeconds 1.,
+        tinyint = 1uy,
+        uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
+        varbinary = [| 1uy |],
+        varchar = "test",
+        xml = "<tag />"
+    )
+
 [<Tests>]
 let tests =
     testSequenced
@@ -403,5 +469,131 @@ let tests =
                     output
                     "parameter '@col1Filter' that is not used"
                     "The dynamic parameter name should not count as outer script parameter usage"
+
+
+        testCase "SQL date generates DateOnly by default"
+        <| fun () ->
+            let expectedDate = DateOnly(2000, 1, 2)
+            let expectedRowDate = DateOnly(2001, 2, 3)
+            let expectedDateTime = DateTime(2000, 1, 3)
+
+            let procRes =
+                DateOnlyDbGen.Procedures.dbo.ProcWithAllTypes
+                    .WithConnection(Config.connStr)
+                    .WithParameters(
+                        bigint = 1L,
+                        binary = Array.replicate 42 1uy,
+                        bit = true,
+                        char = String.replicate 42 "a",
+                        date = expectedDate,
+                        datetime = expectedDateTime,
+                        datetime2 = expectedDateTime,
+                        datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                        decimal = 1M,
+                        float = 1.,
+                        image = [| 1uy |],
+                        int = 1,
+                        money = 1M,
+                        nchar = String.replicate 42 "a",
+                        ntext = "test",
+                        numeric = 1M,
+                        nvarchar = "test",
+                        real = 1.f,
+                        rowversion = Array.replicate 8 1uy,
+                        smalldatetime = expectedDateTime,
+                        smallint = 1s,
+                        smallmoney = 1M,
+                        text = "test",
+                        time = TimeSpan.FromSeconds 1.,
+                        timestamp = Array.replicate 8 1uy,
+                        tinyint = 1uy,
+                        uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
+                        varbinary = [| 1uy |],
+                        varchar = "test",
+                        xml = "<tag />"
+                    )
+                    .ExecuteSingle()
+                    .Value
+
+            Expect.equal procRes.date.Value expectedDate "Procedure DATE parameters and results should use DateOnly"
+            Expect.equal procRes.datetime.Value expectedDateTime "DATETIME should remain DateTime"
+
+            let tvpRes =
+                DateOnlyDbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNull
+                    .WithConnection(Config.connStr)
+                    .WithParameters(``params`` = [ dateOnlyTableTypeRow expectedDate expectedDateTime ])
+                    .ExecuteSingle()
+                    .Value
+
+            Expect.equal tvpRes.date expectedDate "Table-type DATE values should use DateOnly"
+            Expect.equal tvpRes.datetime expectedDateTime "Table-type DATETIME values should remain DateTime"
+
+            let tempTableRes =
+                DateOnlyDbGen.Scripts.TempTableAllTypesNonNull
+                    .WithConnection(Config.connStr)
+                    .WithParameters(allTypesNonNull = [ dateOnlyTempTableRow expectedRowDate expectedDateTime ])
+                    .ExecuteSingle()
+                    .Value
+
+            Expect.equal tempTableRes.Date expectedRowDate "Temp-table DATE rows should use DateOnly"
+            Expect.equal tempTableRes.Datetime expectedDateTime "Temp-table DATETIME rows should remain DateTime"
+
+            let outRes =
+                DateOnlyDbGen.Procedures.dbo.ProcDateOnlyOut
+                    .WithConnection(Config.connStr)
+                    .WithParameters(dateParam = expectedDate)
+                    .ExecuteSingle()
+
+            Expect.equal outRes.Result (Some(Some expectedDate)) "SQL date reader code should use DateOnly"
+            Expect.equal outRes.Out.dateOut (Some expectedDate) "SQL date output parameters should use DateOnly"
+
+
+        testCase "SQL date can opt out to DateTime"
+        <| fun () ->
+            let expectedDate = DateTime(2000, 1, 2)
+            let expectedDateTime = DateTime(2000, 1, 3)
+
+            let tvpRes =
+                DbGen.Procedures.dbo.ProcWithAllTypesFromTvpNonNull
+                    .WithConnection(Config.connStr)
+                    .WithParameters(
+                        ``params`` = [
+                            DbGen.TableTypes.dbo.AllTypesNonNull.create (
+                                bigint = 1L,
+                                binary = Array.replicate 42 1uy,
+                                bit = true,
+                                char = String.replicate 42 "a",
+                                date = expectedDate,
+                                datetime = expectedDateTime,
+                                datetime2 = expectedDateTime,
+                                datetimeoffset = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                                decimal = 1M,
+                                float = 1.,
+                                image = [| 1uy |],
+                                int = 1,
+                                money = 1M,
+                                nchar = String.replicate 42 "a",
+                                ntext = "test",
+                                numeric = 1M,
+                                nvarchar = "test",
+                                real = 1.f,
+                                smalldatetime = expectedDateTime,
+                                smallint = 1s,
+                                smallmoney = 1M,
+                                text = "test",
+                                time = TimeSpan.FromSeconds 1.,
+                                tinyint = 1uy,
+                                uniqueidentifier = Guid("0fdc8130-b9f1-4dec-9cbc-0f67cd70d145"),
+                                varbinary = [| 1uy |],
+                                varchar = "test",
+                                xml = "<tag />"
+                            )
+                        ]
+                    )
+                    .ExecuteSingle()
+                    .Value
+
+            Expect.equal tvpRes.date expectedDate "dateType: dateTime should keep table-type DATE values as DateTime"
+            Expect.equal tvpRes.datetime expectedDateTime "dateType: dateTime should not affect DATETIME"
 
     ]

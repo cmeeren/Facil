@@ -40,6 +40,11 @@ rulesets:
     filename: DbGen.fs
     namespaceOrModuleDeclaration: module DbGen
 
+    # Which F#/.NET type to generate for SQL 'date'. Valid values:
+    #  - 'dateOnly' (default): Generate DateOnly.
+    #  - 'dateTime': Generate DateTime, matching Facil's legacy behavior.
+    dateType: dateOnly
+
     # The base path for all scripts (including temp table definitions) in this ruleset,
     # relative to the project directory.
     scriptBasePath: ../some/path

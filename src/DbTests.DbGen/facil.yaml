@@ -4,6 +4,7 @@ configs:
 
 rulesets:
   - connectionString: $(connectionString)
+    dateType: dateTime
     filename: DbGen.fs
     namespaceOrModuleDeclaration: module DbGen
 
@@ -16,6 +17,7 @@ rulesets:
 
     procedures:
       - include: .*
+        except: '^dbo\.ProcDateOnlyOut$'
 
       - for: WithoutDto
         result: anonymous
@@ -603,3 +605,22 @@ rulesets:
         scripts:
           - type: merge
           - type: mergeBatch
+
+  - connectionString: $(connectionString)
+    filename: DateOnlyDbGen.fs
+    namespaceOrModuleDeclaration: module DateOnlyDbGen
+
+    scriptBasePath: SQL
+
+    procedures:
+      - include: '^dbo\.ProcWithAllTypes$'
+      - include: '^dbo\.ProcWithAllTypesFromTvpNonNull$'
+      - include: '^dbo\.ProcDateOnlyOut$'
+
+    scripts:
+      - include: TempTableAllTypesNonNull.sql
+        tempTables:
+          - definition: TempTableDefinitions/TempTableAllTypesNonNull.sql
+
+    tableDtos:
+      - include: '^dbo\.AllTypesNonNull$'

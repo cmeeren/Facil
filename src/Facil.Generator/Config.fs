@@ -25,6 +25,11 @@ type ParamDtoKind =
     | Skip
 
 
+type SqlDateType =
+    | SqlDateOnly
+    | SqlDateTime
+
+
 [<CLIMutable>]
 type ConfigSourceDto = {
     appSettings: string option
@@ -355,6 +360,7 @@ type EffectiveProcedureOrScriptRule = {
 [<CLIMutable>]
 type RuleSetDto = {
     connectionString: string option
+    dateType: string option
     filename: string option
     namespaceOrModuleDeclaration: string option
     scriptBasePath: string option
@@ -369,6 +375,7 @@ type RuleSetDto = {
 
 type RuleSet = {
     ConnectionString: Lazy<string>
+    DateType: SqlDateType
     Filename: string
     NamespaceOrModuleDeclaration: string
     ScriptBasePath: string
@@ -1226,6 +1233,14 @@ module TableScriptRule =
 module RuleSet =
 
 
+    let private parseDateType fullYamlPath =
+        function
+        | None -> SqlDateOnly
+        | Some "dateOnly" -> SqlDateOnly
+        | Some "dateTime" -> SqlDateTime
+        | Some x -> failwithYamlError fullYamlPath 0 0 $"Invalid 'dateType' value '%s{x}'"
+
+
     let private getOutputPath projectDir (cfg: RuleSet) =
         Path.Combine(projectDir, cfg.Filename) |> Path.GetFullPath
 
@@ -1273,6 +1288,7 @@ module RuleSet =
                             "All array items in the 'rulesets' section must have a 'connectionString' property"
                     )
                     |> resolveVariable
+            DateType = parseDateType fullYamlPath dto.dateType
             Filename = dto.filename |> Option.defaultValue "DbGen.fs"
             NamespaceOrModuleDeclaration = dto.namespaceOrModuleDeclaration |> Option.defaultValue "module DbGen"
             ScriptBasePath = scriptBasePath

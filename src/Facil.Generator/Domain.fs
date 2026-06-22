@@ -77,16 +77,42 @@ let isSizeRelevantForSqlMetaData =
     | _ -> false
 
 
+type SqlClientValueBridge =
+    | NoBridge
+    | DateOnlyBackedByDateTime
+
+
 type SqlTypeInfo = {
     SqlType: string
     FSharpTypeString: string
     SqlDbType: SqlDbType
     SqlDataReaderGetMethodName: string
     DefaultBuildValue: obj
+    SqlClientValueBridge: SqlClientValueBridge
 }
 
 
-let sqlDbTypeMap =
+let private sqlDateTypeInfo =
+    function
+    | SqlDateOnly -> {
+        SqlType = "date"
+        FSharpTypeString = "DateOnly"
+        SqlDbType = SqlDbType.Date
+        SqlDataReaderGetMethodName = "GetFieldValue<DateOnly>"
+        DefaultBuildValue = DateOnly(2000, 1, 1) |> box<DateOnly>
+        SqlClientValueBridge = DateOnlyBackedByDateTime
+      }
+    | SqlDateTime -> {
+        SqlType = "date"
+        FSharpTypeString = "DateTime"
+        SqlDbType = SqlDbType.Date
+        SqlDataReaderGetMethodName = "GetDateTime"
+        DefaultBuildValue = DateTime(2000, 1, 1) |> box<DateTime>
+        SqlClientValueBridge = NoBridge
+      }
+
+
+let private createSqlDbTypeMap dateType =
     [
         {
             SqlType = "bigint"
@@ -94,6 +120,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.BigInt
             SqlDataReaderGetMethodName = "GetInt64"
             DefaultBuildValue = 1L |> box<int64>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "binary"
@@ -101,6 +128,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Binary
             SqlDataReaderGetMethodName = "GetBytes"
             DefaultBuildValue = [| 1uy |] |> box<byte[]>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "bit"
@@ -108,6 +136,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Bit
             SqlDataReaderGetMethodName = "GetBoolean"
             DefaultBuildValue = true |> box<bool>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "char"
@@ -115,20 +144,16 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Char
             SqlDataReaderGetMethodName = "GetString"
             DefaultBuildValue = "1" |> box<string>
+            SqlClientValueBridge = NoBridge
         }
-        {
-            SqlType = "date"
-            FSharpTypeString = "DateTime"
-            SqlDbType = SqlDbType.Date
-            SqlDataReaderGetMethodName = "GetDateTime"
-            DefaultBuildValue = DateTime(2000, 1, 1) |> box<DateTime>
-        }
+        sqlDateTypeInfo dateType
         {
             SqlType = "datetime"
             FSharpTypeString = "DateTime"
             SqlDbType = SqlDbType.DateTime
             SqlDataReaderGetMethodName = "GetDateTime"
             DefaultBuildValue = DateTime(2000, 1, 1) |> box<DateTime>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "datetime2"
@@ -136,6 +161,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.DateTime2
             SqlDataReaderGetMethodName = "GetDateTime"
             DefaultBuildValue = DateTime(2000, 1, 1) |> box<DateTime>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "datetimeoffset"
@@ -143,6 +169,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.DateTimeOffset
             SqlDataReaderGetMethodName = "GetDateTimeOffset"
             DefaultBuildValue = DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero) |> box<DateTimeOffset>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "decimal"
@@ -150,6 +177,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Decimal
             SqlDataReaderGetMethodName = "GetDecimal"
             DefaultBuildValue = 1M |> box<decimal>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "float"
@@ -157,6 +185,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Float
             SqlDataReaderGetMethodName = "GetDouble"
             DefaultBuildValue = 1. |> box<float>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "image"
@@ -164,6 +193,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Image
             SqlDataReaderGetMethodName = "GetBytes"
             DefaultBuildValue = [| 1uy |] |> box<byte[]>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "int"
@@ -171,6 +201,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Int
             SqlDataReaderGetMethodName = "GetInt32"
             DefaultBuildValue = 1 |> box<int>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "money"
@@ -178,6 +209,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Money
             SqlDataReaderGetMethodName = "GetDecimal"
             DefaultBuildValue = 1M |> box<decimal>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "nchar"
@@ -185,6 +217,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.NChar
             SqlDataReaderGetMethodName = "GetString"
             DefaultBuildValue = "1" |> box<string>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "ntext"
@@ -192,6 +225,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.NText
             SqlDataReaderGetMethodName = "GetString"
             DefaultBuildValue = "1" |> box<string>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "numeric"
@@ -199,6 +233,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Decimal
             SqlDataReaderGetMethodName = "GetDecimal"
             DefaultBuildValue = 1M |> box<decimal>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "nvarchar"
@@ -206,6 +241,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.NVarChar
             SqlDataReaderGetMethodName = "GetString"
             DefaultBuildValue = "1" |> box<string>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "real"
@@ -213,6 +249,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Real
             SqlDataReaderGetMethodName = "GetFloat"
             DefaultBuildValue = 1.f |> box<float32>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "rowversion"
@@ -220,6 +257,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Timestamp
             SqlDataReaderGetMethodName = "GetBytes"
             DefaultBuildValue = [| 1uy |] |> box<byte[]>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "smalldatetime"
@@ -227,6 +265,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.SmallDateTime
             SqlDataReaderGetMethodName = "GetDateTime"
             DefaultBuildValue = DateTime(2000, 1, 1) |> box<DateTime>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "smallint"
@@ -234,6 +273,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.SmallInt
             SqlDataReaderGetMethodName = "GetInt16"
             DefaultBuildValue = 1s |> box<int16>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "smallmoney"
@@ -241,6 +281,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.SmallMoney
             SqlDataReaderGetMethodName = "GetDecimal"
             DefaultBuildValue = 1M |> box<decimal>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "text"
@@ -248,6 +289,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Text
             SqlDataReaderGetMethodName = "GetString"
             DefaultBuildValue = "1" |> box<string>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "time"
@@ -255,6 +297,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Time
             SqlDataReaderGetMethodName = "GetTimeSpan"
             DefaultBuildValue = TimeSpan.Zero |> box<TimeSpan>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "timestamp"
@@ -262,6 +305,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Timestamp
             SqlDataReaderGetMethodName = "GetBytes"
             DefaultBuildValue = [| 1uy |] |> box<byte[]>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "tinyint"
@@ -269,6 +313,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.TinyInt
             SqlDataReaderGetMethodName = "GetByte"
             DefaultBuildValue = 1uy |> box<byte>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "uniqueidentifier"
@@ -276,6 +321,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.UniqueIdentifier
             SqlDataReaderGetMethodName = "GetGuid"
             DefaultBuildValue = Guid.NewGuid() |> box<Guid>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "varbinary"
@@ -283,6 +329,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.VarBinary
             SqlDataReaderGetMethodName = "GetBytes"
             DefaultBuildValue = [| 1uy |] |> box<byte[]>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "varchar"
@@ -290,6 +337,7 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.VarChar
             SqlDataReaderGetMethodName = "GetString"
             DefaultBuildValue = "1" |> box<string>
+            SqlClientValueBridge = NoBridge
         }
         {
             SqlType = "xml"
@@ -297,10 +345,23 @@ let sqlDbTypeMap =
             SqlDbType = SqlDbType.Xml
             SqlDataReaderGetMethodName = "GetString"
             DefaultBuildValue = "1" |> box<string>
+            SqlClientValueBridge = NoBridge
         }
     ]
     |> List.map (fun ti -> ti.SqlType, ti)
     |> Map.ofList
+
+
+// Keep these maps cached instead of rebuilding them on each lookup. Some DefaultBuildValue objects are generated values,
+// so fresh maps can contain semantically equivalent SqlTypeInfo records that do not compare equal.
+let private sqlDbTypeMapWithDateOnly = createSqlDbTypeMap SqlDateOnly
+
+let private sqlDbTypeMapWithDateTime = createSqlDbTypeMap SqlDateTime
+
+let getSqlDbTypeMap =
+    function
+    | SqlDateOnly -> sqlDbTypeMapWithDateOnly
+    | SqlDateTime -> sqlDbTypeMapWithDateTime
 
 
 type OutputColumn = {

@@ -8,6 +8,30 @@ open System.Text.Json
 let private indent (lines: string list) = lines |> List.map (fun s -> "  " + s)
 
 
+let private dateOnlyToDateTimeExpr valueExpr =
+    $"DateTime({valueExpr}.Year, {valueExpr}.Month, {valueExpr}.Day)"
+
+
+let private sqlRecordValueExpr optionModule isNullable typeInfo valueExpr =
+    if typeInfo.SqlClientValueBridge = DateOnlyBackedByDateTime then
+        if isNullable then
+            let mappedValueExpr = dateOnlyToDateTimeExpr "x"
+            $"({valueExpr} |> {optionModule}.map (fun x -> {mappedValueExpr}) |> {optionModule}.toDbNull)"
+        else
+            dateOnlyToDateTimeExpr valueExpr
+    elif isNullable then
+        $"{optionModule}.toDbNull {valueExpr}"
+    else
+        valueExpr
+
+
+let private sqlOutputParameterValueExpr optionSome (typeInfo: SqlTypeInfo) valueExpr =
+    if typeInfo.SqlClientValueBridge = DateOnlyBackedByDateTime then
+        $"{valueExpr} |> unbox<DateTime> |> DateOnly.FromDateTime |> {optionSome}"
+    else
+        $"{valueExpr} |> unbox<{typeInfo.FSharpTypeString}> |> {optionSome}"
+
+
 let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
     let rule = RuleSet.getEffectiveTableDtoRuleFor dto.SchemaName dto.Name cfg
     let optionType = if rule.Voption then "voption" else "option"
@@ -144,7 +168,7 @@ let private renderTableType cfg (t: TableType) =
                                 yield!
                                     t.Columns
                                     |> List.map (fun c ->
-                                        $"""{if c.IsNullable then $"{optionModule}.toDbNull " else ""}``{c.Name}``"""
+                                        sqlRecordValueExpr optionModule c.IsNullable c.TypeInfo $"``{c.Name}``"
                                     )
                                     |> List.mapAllExceptLast (fun s -> s + ",")
                             ]
@@ -165,7 +189,12 @@ let private renderTableType cfg (t: TableType) =
                                     yield!
                                         t.Columns
                                         |> List.map (fun c ->
-                                            $"""{if c.IsNullable then $"{optionModule}.toDbNull " else ""}(^a: (member ``{c.Name}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + optionType else ""}) dto)"""
+                                            let typeSuffix = if c.IsNullable then " " + optionType else ""
+
+                                            let dtoValueExpr =
+                                                $"(^a: (member ``{c.Name}``: {c.TypeInfo.FSharpTypeString}{typeSuffix}) dto)"
+
+                                            sqlRecordValueExpr optionModule c.IsNullable c.TypeInfo dtoValueExpr
                                         )
                                         |> List.mapAllExceptLast (fun s -> s + ",")
                                 ]
@@ -362,7 +391,15 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                             failwith
                                                                 $"Parsed parameter '{p.Name}' as both table and output, which is impossible"
 
-                                                    $"``{p.FSharpParamName}`` = if sqlParams[{i}].Value = box DBNull.Value then {outOptionNone} else sqlParams[{i}].Value |> unbox<{typeInfo.FSharpTypeString}> |> {outOptionSome}"
+                                                    let providerValueExpr = $"sqlParams[{i}].Value"
+
+                                                    let valueExpr =
+                                                        sqlOutputParameterValueExpr
+                                                            outOptionSome
+                                                            typeInfo
+                                                            providerValueExpr
+
+                                                    $"``{p.FSharpParamName}`` = if sqlParams[{i}].Value = box DBNull.Value then {outOptionNone} else {valueExpr}"
                                                 )
                                         ]
                                     "|}"
@@ -699,7 +736,12 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                 yield!
                                                     tt.Columns
                                                     |> List.map (fun c ->
-                                                        $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}``{getTempTableColumnParamName c}`` |> box"""
+                                                        sqlRecordValueExpr
+                                                            inOptionModule
+                                                            c.IsNullable
+                                                            c.TypeInfo
+                                                            $"``{getTempTableColumnParamName c}``"
+                                                        + " |> box"
                                                     )
                                             ]
                                         "|]"
@@ -717,7 +759,18 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                     yield!
                                                         tt.Columns
                                                         |> List.map (fun c ->
-                                                            $"""{if c.IsNullable then $"{inOptionModule}.toDbNull " else ""}(^a: (member ``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{if c.IsNullable then " " + inOptionType else ""}) dto) |> box"""
+                                                            let typeSuffix =
+                                                                if c.IsNullable then " " + inOptionType else ""
+
+                                                            let dtoValueExpr =
+                                                                $"(^a: (member ``{c.Name.Value}``: {c.TypeInfo.FSharpTypeString}{typeSuffix}) dto)"
+
+                                                            sqlRecordValueExpr
+                                                                inOptionModule
+                                                                c.IsNullable
+                                                                c.TypeInfo
+                                                                dtoValueExpr
+                                                            + " |> box"
                                                         )
                                                 ]
                                             "|]"
