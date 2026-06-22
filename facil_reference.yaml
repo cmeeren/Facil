@@ -157,9 +157,10 @@ rulesets:
             # letter upper-cased.
             dtoName: SOMEparam
             # The value this parameter will have during build when inferring the output
-            # result set. This is probably only needed if you use dynamic SQL and this
-            # parameter represents e.g. a column name. Only string parameters (e.g.
-            # NVARCHAR) are supported.
+            # result set. Facil generally uses non-null default values during build, but
+            # uses NULL for SQL Server geometry and geography parameters. This is
+            # probably only needed if you use dynamic SQL and this parameter represents
+            # e.g. a column name. Only string parameters (e.g. NVARCHAR) are supported.
             buildValue: foo
 
         # If a procedure uses temp tables that must be loaded by Facil (effectively acting as
@@ -260,9 +261,10 @@ rulesets:
             # letter upper-cased.
             dtoName: SOMEparam
             # The value this parameter will have during build when inferring the output
-            # result set. This is probably only needed if you use dynamic SQL and this
-            # parameter represents e.g. a column name. Only string parameters (e.g.
-            # NVARCHAR) are supported.
+            # result set. Facil generally uses non-null default values during build, but
+            # uses NULL for SQL Server geometry and geography parameters. This is
+            # probably only needed if you use dynamic SQL and this parameter represents
+            # e.g. a column name. Only string parameters (e.g. NVARCHAR) are supported.
             buildValue: foo
           anotherParam:
 

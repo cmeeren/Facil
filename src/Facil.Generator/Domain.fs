@@ -112,6 +112,11 @@ let private sqlDateTypeInfo =
       }
 
 
+// Spatial values can require platform-specific native assets. A NULL value is enough for build-time result-schema
+// discovery, and avoids touching those native assets while generating code.
+let private spatialDefaultBuildValue = null
+
+
 let private createSqlDbTypeMap dateType =
     [
         {
@@ -185,6 +190,22 @@ let private createSqlDbTypeMap dateType =
             SqlDbType = SqlDbType.Float
             SqlDataReaderGetMethodName = "GetDouble"
             DefaultBuildValue = 1. |> box<float>
+            SqlClientValueBridge = NoBridge
+        }
+        {
+            SqlType = "geography"
+            FSharpTypeString = "Microsoft.SqlServer.Types.SqlGeography"
+            SqlDbType = SqlDbType.Udt
+            SqlDataReaderGetMethodName = "GetFieldValue<Microsoft.SqlServer.Types.SqlGeography>"
+            DefaultBuildValue = spatialDefaultBuildValue
+            SqlClientValueBridge = NoBridge
+        }
+        {
+            SqlType = "geometry"
+            FSharpTypeString = "Microsoft.SqlServer.Types.SqlGeometry"
+            SqlDbType = SqlDbType.Udt
+            SqlDataReaderGetMethodName = "GetFieldValue<Microsoft.SqlServer.Types.SqlGeometry>"
+            DefaultBuildValue = spatialDefaultBuildValue
             SqlClientValueBridge = NoBridge
         }
         {
@@ -362,8 +383,8 @@ let private createSqlDbTypeMap dateType =
     |> Map.ofList
 
 
-// Keep these maps cached instead of rebuilding them on each lookup. Some DefaultBuildValue objects are generated values,
-// so fresh maps can contain semantically equivalent SqlTypeInfo records that do not compare equal.
+// Keep these maps cached instead of rebuilding them on each lookup. Some DefaultBuildValue objects are generated or
+// reference values, so fresh maps can contain semantically equivalent SqlTypeInfo records that do not compare equal.
 let private sqlDbTypeMapWithDateOnly = createSqlDbTypeMap SqlDateOnly
 
 let private sqlDbTypeMapWithDateTime = createSqlDbTypeMap SqlDateTime

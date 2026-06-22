@@ -256,6 +256,10 @@ rulesets:
         tempTables:
           - definition: TempTableDefinitions/HierarchyIdTempTable.sql
 
+      - for: SpatialTypesTempTable.sql
+        tempTables:
+          - definition: TempTableDefinitions/SpatialTypesTempTable.sql
+
       - for: TempTableInlined.sql
         tempTables:
 

@@ -17,6 +17,8 @@ Release notes
 * `mergeBatch` table scripts now support tables where every column is part of the primary key.
 * Generated code now supports SQL Server `hierarchyid` columns, parameters, table-valued parameters, and temp-table
   inputs.
+* Generated code now supports SQL Server `geometry` and `geography` columns, parameters, table-valued parameters, and
+  temp-table inputs through `SqlGeometry` and `SqlGeography`.
 * Temp-table loading now supports name-based `SqlBulkCopy` column mappings configured through `ConfigureBulkCopy`.
 
 #### Changed

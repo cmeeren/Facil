@@ -3,13 +3,13 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+d7840e8208561d5cf7effc33bb280f0bfeb25b8b",
-    "assemblyHash": "7991456788b3b37c4e1e34c33496bde5"
+    "assemblyVersion": "2.15.2+1d8822d5eff32751a9912b3aa5f08f1bda9d59a1",
+    "assemblyHash": "0360c830926d1fdf65ee38886cc433bd"
   },
   "config": {
     "path": "facil.yaml",
     "configsHash": "9c7e87f1906bb406ad64d4e9e8264319",
-    "rulesetsHash": "da3d74743a30e58f4f1aa88dd7b93efc"
+    "rulesetsHash": "bb940940d6863207b90b5d9aa5b75bfe"
   },
   "scripts": [
     {
@@ -141,6 +141,10 @@
       "hash": "18e52d68d4a60186bce1bc818c6b3a51"
     },
     {
+      "path": "SpatialTypesTempTable.sql",
+      "hash": "1a358c707c4102d51f14a2d62b11f9a0"
+    },
+    {
       "path": "StartsWithCTE.sql",
       "hash": "85d887c11fc0870caa17c45dc48ac4d2"
     },
@@ -224,7 +228,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+d7840e8208561d5cf7effc33bb280f0bfeb25b8b")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+1d8822d5eff32751a9912b3aa5f08f1bda9d59a1")>]
 module DbGen
 
 #nowarn "49"
@@ -524,6 +528,19 @@ module TableDtos =
         ``SupportedCol1``: string
         ``SupportedCol2``: int
       }
+
+
+    type ``TableWithSpatialTypes`` =
+      {
+        ``Key``: int
+        ``Shape``: Microsoft.SqlServer.Types.SqlGeometry
+        ``NullableShape``: Microsoft.SqlServer.Types.SqlGeometry option
+        ``Location``: Microsoft.SqlServer.Types.SqlGeography
+        ``NullableLocation``: Microsoft.SqlServer.Types.SqlGeography option
+      }
+
+      static member getPrimaryKey (dto: ``TableWithSpatialTypes``) =
+        dto.``Key``
 
 
     type ``Temporal`` =
@@ -1146,6 +1163,47 @@ module TableTypes =
         let x = ``SingleColNull``(internalUseOnlyValue)
         x.SetValues(
           Option.toDbNull (^a: (member ``Foo``: int option) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``SpatialTypesTableType_meta`` =
+      [|
+        SqlMetaData("shape", SqlDbType.Udt, typeof<Microsoft.SqlServer.Types.SqlGeometry>, "geometry")
+        SqlMetaData("nullableShape", SqlDbType.Udt, typeof<Microsoft.SqlServer.Types.SqlGeometry>, "geometry")
+        SqlMetaData("location", SqlDbType.Udt, typeof<Microsoft.SqlServer.Types.SqlGeography>, "geography")
+        SqlMetaData("nullableLocation", SqlDbType.Udt, typeof<Microsoft.SqlServer.Types.SqlGeography>, "geography")
+      |]
+
+
+    type ``SpatialTypesTableType`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``SpatialTypesTableType_meta``)
+
+      static member create
+        (
+          ``shape``: Microsoft.SqlServer.Types.SqlGeometry,
+          ``nullableShape``: Microsoft.SqlServer.Types.SqlGeometry option,
+          ``location``: Microsoft.SqlServer.Types.SqlGeography,
+          ``nullableLocation``: Microsoft.SqlServer.Types.SqlGeography option
+        ) =
+        let x = ``SpatialTypesTableType``(internalUseOnlyValue)
+        x.SetValues(
+          ``shape``,
+          Option.toDbNull ``nullableShape``,
+          ``location``,
+          Option.toDbNull ``nullableLocation``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``SpatialTypesTableType``(internalUseOnlyValue)
+        x.SetValues(
+          (^a: (member ``shape``: Microsoft.SqlServer.Types.SqlGeometry) dto),
+          Option.toDbNull (^a: (member ``nullableShape``: Microsoft.SqlServer.Types.SqlGeometry option) dto),
+          (^a: (member ``location``: Microsoft.SqlServer.Types.SqlGeography) dto),
+          Option.toDbNull (^a: (member ``nullableLocation``: Microsoft.SqlServer.Types.SqlGeography option) dto)
         )
         |> ignore
         x
@@ -14296,6 +14354,359 @@ module Procedures =
       /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
       member this.ExecuteReaderSingle() =
         executeReaderSingle connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    type ``ProcWithSpatialTypes_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+      let configureCmd sqlParams (cmd: SqlCommand) =
+        cmd.CommandType <- CommandType.StoredProcedure
+        cmd.CommandText <- "dbo.ProcWithSpatialTypes"
+        cmd.Parameters.AddRange sqlParams
+        userConfigureCmd cmd
+
+      let mutable ``ordinal_shape`` = 0
+      let mutable ``ordinal_nullableShape`` = 0
+      let mutable ``ordinal_location`` = 0
+      let mutable ``ordinal_nullableLocation`` = 0
+
+      let initOrdinals (reader: SqlDataReader) =
+        ``ordinal_shape`` <- reader.GetOrdinal "shape"
+        ``ordinal_nullableShape`` <- reader.GetOrdinal "nullableShape"
+        ``ordinal_location`` <- reader.GetOrdinal "location"
+        ``ordinal_nullableLocation`` <- reader.GetOrdinal "nullableLocation"
+
+      let getItem (reader: SqlDataReader) =
+        let ``shape`` = if reader.IsDBNull ``ordinal_shape`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeometry> ``ordinal_shape`` |> Some
+        let ``nullableShape`` = if reader.IsDBNull ``ordinal_nullableShape`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeometry> ``ordinal_nullableShape`` |> Some
+        let ``location`` = if reader.IsDBNull ``ordinal_location`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeography> ``ordinal_location`` |> Some
+        let ``nullableLocation`` = if reader.IsDBNull ``ordinal_nullableLocation`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeography> ``ordinal_nullableLocation`` |> Some
+        {|
+          ``shape`` = ``shape``
+          ``nullableShape`` = ``nullableShape``
+          ``location`` = ``location``
+          ``nullableLocation`` = ``nullableLocation``
+        |}
+
+      member _.ExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecute() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteWithSyncRead() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+        }
+
+      member _.Execute() =
+        let sqlParams = getSqlParams ()
+        executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.LazyExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecute() =
+        let sqlParams = getSqlParams ()
+        executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.ExecuteSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQuerySingleAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteSingle() =
+        let sqlParams = getSqlParams ()
+        executeQuerySingle connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReader() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReader() =
+        let sqlParams = getSqlParams ()
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+      /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReaderSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingle() =
+        let sqlParams = getSqlParams ()
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+    type ``ProcWithSpatialTypes`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      new() =
+        failwith "This constructor is for aiding reflection and type constraints only"
+        ``ProcWithSpatialTypes``(null, null, null)
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val connStr = connStr
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val conn = conn
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val tran = tran
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val configureConn : SqlConnection -> unit = ignore with get, set
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+      member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+        this.userConfigureCmd <- configureCommand
+        this
+
+      static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+        ``ProcWithSpatialTypes``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+      static member WithConnection(connection, ?transaction) = ``ProcWithSpatialTypes``(null, connection, defaultArg transaction null)
+
+      member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+        match configureConnection with
+        | None -> ()
+        | Some config -> this.configureConn <- config
+        this
+
+      member this.WithParameters
+        (
+          ``shape``: Microsoft.SqlServer.Types.SqlGeometry,
+          ``nullableShape``: Microsoft.SqlServer.Types.SqlGeometry option,
+          ``location``: Microsoft.SqlServer.Types.SqlGeography,
+          ``nullableLocation``: Microsoft.SqlServer.Types.SqlGeography option
+        ) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@shape", SqlDbType.Udt, UdtTypeName = "geometry", Value = ``shape``)
+            SqlParameter("@nullableShape", SqlDbType.Udt, UdtTypeName = "geometry", Value = Option.toDbNull ``nullableShape``)
+            SqlParameter("@location", SqlDbType.Udt, UdtTypeName = "geography", Value = ``location``)
+            SqlParameter("@nullableLocation", SqlDbType.Udt, UdtTypeName = "geography", Value = Option.toDbNull ``nullableLocation``)
+          |]
+        ``ProcWithSpatialTypes_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+      member inline this.WithParameters(dto: ^a) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@shape", SqlDbType.Udt, UdtTypeName = "geometry", Value = (^a: (member ``Shape``: Microsoft.SqlServer.Types.SqlGeometry) dto))
+            SqlParameter("@nullableShape", SqlDbType.Udt, UdtTypeName = "geometry", Value = Option.toDbNull (^a: (member ``NullableShape``: Microsoft.SqlServer.Types.SqlGeometry option) dto))
+            SqlParameter("@location", SqlDbType.Udt, UdtTypeName = "geography", Value = (^a: (member ``Location``: Microsoft.SqlServer.Types.SqlGeography) dto))
+            SqlParameter("@nullableLocation", SqlDbType.Udt, UdtTypeName = "geography", Value = Option.toDbNull (^a: (member ``NullableLocation``: Microsoft.SqlServer.Types.SqlGeography option) dto))
+          |]
+        ``ProcWithSpatialTypes_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    type ``ProcWithSpatialTypesFromTvp_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+      let configureCmd sqlParams (cmd: SqlCommand) =
+        cmd.CommandType <- CommandType.StoredProcedure
+        cmd.CommandText <- "dbo.ProcWithSpatialTypesFromTvp"
+        cmd.Parameters.AddRange sqlParams
+        userConfigureCmd cmd
+
+      let mutable ``ordinal_shape`` = 0
+      let mutable ``ordinal_nullableShape`` = 0
+      let mutable ``ordinal_location`` = 0
+      let mutable ``ordinal_nullableLocation`` = 0
+
+      let initOrdinals (reader: SqlDataReader) =
+        ``ordinal_shape`` <- reader.GetOrdinal "shape"
+        ``ordinal_nullableShape`` <- reader.GetOrdinal "nullableShape"
+        ``ordinal_location`` <- reader.GetOrdinal "location"
+        ``ordinal_nullableLocation`` <- reader.GetOrdinal "nullableLocation"
+
+      let getItem (reader: SqlDataReader) =
+        let ``shape`` = reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeometry> ``ordinal_shape``
+        let ``nullableShape`` = if reader.IsDBNull ``ordinal_nullableShape`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeometry> ``ordinal_nullableShape`` |> Some
+        let ``location`` = reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeography> ``ordinal_location``
+        let ``nullableLocation`` = if reader.IsDBNull ``ordinal_nullableLocation`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeography> ``ordinal_nullableLocation`` |> Some
+        {|
+          ``shape`` = ``shape``
+          ``nullableShape`` = ``nullableShape``
+          ``location`` = ``location``
+          ``nullableLocation`` = ``nullableLocation``
+        |}
+
+      member _.ExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecute() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteWithSyncRead() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+        }
+
+      member _.Execute() =
+        let sqlParams = getSqlParams ()
+        executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.LazyExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecute() =
+        let sqlParams = getSqlParams ()
+        executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.ExecuteSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQuerySingleAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteSingle() =
+        let sqlParams = getSqlParams ()
+        executeQuerySingle connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReader() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReader() =
+        let sqlParams = getSqlParams ()
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+      /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReaderSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingle() =
+        let sqlParams = getSqlParams ()
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+    type ``ProcWithSpatialTypesFromTvp`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      new() =
+        failwith "This constructor is for aiding reflection and type constraints only"
+        ``ProcWithSpatialTypesFromTvp``(null, null, null)
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val connStr = connStr
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val conn = conn
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val tran = tran
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val configureConn : SqlConnection -> unit = ignore with get, set
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+      member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+        this.userConfigureCmd <- configureCommand
+        this
+
+      static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+        ``ProcWithSpatialTypesFromTvp``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+      static member WithConnection(connection, ?transaction) = ``ProcWithSpatialTypesFromTvp``(null, connection, defaultArg transaction null)
+
+      member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+        match configureConnection with
+        | None -> ()
+        | Some config -> this.configureConn <- config
+        this
+
+      member this.WithParameters
+        (
+          ``params``: seq<TableTypes.``dbo``.``SpatialTypesTableType``>
+        ) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.SpatialTypesTableType", Value = boxNullIfEmpty ``params``)
+          |]
+        ``ProcWithSpatialTypesFromTvp_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+      member inline this.WithParameters(dto: ^a) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.SpatialTypesTableType", Value = boxNullIfEmpty (^a: (member ``Params``: #seq<TableTypes.``dbo``.``SpatialTypesTableType``>) dto))
+          |]
+        ``ProcWithSpatialTypesFromTvp_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -29390,6 +29801,249 @@ SELECT
     /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
     member this.ExecuteReaderSingle() =
       executeReaderSingle connStr conn tran this.configureConn (configureCmd this.userConfigureCmd) []
+
+
+  module ``SpatialTypesTempTable`` =
+
+
+    type ``SpatialTypesTempTable`` (__: InternalUseOnly, fields: obj []) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member _.Fields = fields
+
+      static member create
+        (
+          ``shape``: Microsoft.SqlServer.Types.SqlGeometry,
+          ``nullableShape``: Microsoft.SqlServer.Types.SqlGeometry option,
+          ``location``: Microsoft.SqlServer.Types.SqlGeography,
+          ``nullableLocation``: Microsoft.SqlServer.Types.SqlGeography option
+        ) : ``SpatialTypesTempTable`` =
+        [|
+          ``shape`` |> box
+          Option.toDbNull ``nullableShape`` |> box
+          ``location`` |> box
+          Option.toDbNull ``nullableLocation`` |> box
+        |]
+        |> fun fields -> ``SpatialTypesTempTable``(internalUseOnlyValue, fields)
+
+      static member inline create (dto: ^a) : ``SpatialTypesTempTable`` =
+        [|
+          (^a: (member ``Shape``: Microsoft.SqlServer.Types.SqlGeometry) dto) |> box
+          Option.toDbNull (^a: (member ``NullableShape``: Microsoft.SqlServer.Types.SqlGeometry option) dto) |> box
+          (^a: (member ``Location``: Microsoft.SqlServer.Types.SqlGeography) dto) |> box
+          Option.toDbNull (^a: (member ``NullableLocation``: Microsoft.SqlServer.Types.SqlGeography option) dto) |> box
+        |]
+        |> fun fields -> ``SpatialTypesTempTable``(internalUseOnlyValue, fields)
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``SpatialTypesTempTable_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """-- SpatialTypesTempTable.sql
+SELECT * FROM #SpatialTypesTempTable"""
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_Shape`` = 0
+    let mutable ``ordinal_NullableShape`` = 0
+    let mutable ``ordinal_Location`` = 0
+    let mutable ``ordinal_NullableLocation`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_Shape`` <- reader.GetOrdinal "Shape"
+      ``ordinal_NullableShape`` <- reader.GetOrdinal "NullableShape"
+      ``ordinal_Location`` <- reader.GetOrdinal "Location"
+      ``ordinal_NullableLocation`` <- reader.GetOrdinal "NullableLocation"
+
+    let getItem (reader: SqlDataReader) =
+      let ``Shape`` = reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeometry> ``ordinal_Shape``
+      let ``NullableShape`` = if reader.IsDBNull ``ordinal_NullableShape`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeometry> ``ordinal_NullableShape`` |> Some
+      let ``Location`` = reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeography> ``ordinal_Location``
+      let ``NullableLocation`` = if reader.IsDBNull ``ordinal_NullableLocation`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlGeography> ``ordinal_NullableLocation`` |> Some
+      {|
+        ``Shape`` = ``Shape``
+        ``NullableShape`` = ``NullableShape``
+        ``Location`` = ``Location``
+        ``NullableLocation`` = ``NullableLocation``
+      |}
+
+    member _.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member _.Execute() =
+      let sqlParams = getSqlParams ()
+      executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member _.LazyExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecute() =
+      let sqlParams = getSqlParams ()
+      executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member _.ExecuteSingleAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQuerySingleAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteSingle() =
+      let sqlParams = getSqlParams ()
+      executeQuerySingle connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReaderAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.AsyncExecuteReader() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteReaderAsync(ct) |> Async.AwaitTask
+      }
+
+    /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReader() =
+      let sqlParams = getSqlParams ()
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+    /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReaderSingleAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.AsyncExecuteReaderSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteReaderSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReaderSingle() =
+      let sqlParams = getSqlParams ()
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+  type ``SpatialTypesTempTable`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``SpatialTypesTempTable``(null, null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val tran = tran
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+      this.userConfigureBulkCopy <- configureBulkCopy
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``SpatialTypesTempTable``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection, ?transaction) = ``SpatialTypesTempTable``(null, connection, defaultArg transaction null)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member this.CreateTempTableData
+      (
+        ``SpatialTypesTempTable``: seq<``SpatialTypesTempTable``.``SpatialTypesTempTable``>
+      ) =
+      [
+        TempTableData
+          (
+            "#SpatialTypesTempTable",
+            """
+            CREATE TABLE #SpatialTypesTempTable
+            (
+              [Shape] GEOMETRY NOT NULL,
+              [NullableShape] GEOMETRY NULL,
+              [Location] GEOGRAPHY NOT NULL,
+              [NullableLocation] GEOGRAPHY NULL
+            )
+
+            """,
+            (``SpatialTypesTempTable`` |> Seq.map (fun x -> x.Fields)),
+            [| "Shape"; "NullableShape"; "Location"; "NullableLocation" |],
+            4,
+            Action<_> this.userConfigureBulkCopy
+          )
+      ]
+    member this.WithParameters
+      (
+        ``spatialTypesTempTable``: seq<``SpatialTypesTempTable``.``SpatialTypesTempTable``>
+      ) =
+      let getSqlParams () =
+        [|
+        |]
+      let tempTableData =
+        this.CreateTempTableData(
+          ``spatialTypesTempTable``
+        )
+      ``SpatialTypesTempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+        |]
+      let tempTableData =
+        this.CreateTempTableData(
+          (^a: (member ``SpatialTypesTempTable``: #seq<``SpatialTypesTempTable``.``SpatialTypesTempTable``>) dto)
+        )
+      ``SpatialTypesTempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]

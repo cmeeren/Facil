@@ -113,7 +113,8 @@ ask? [See the FAQ.](#why-not-a-type-provider))
 * Can accept suitable DTOs instead of a list of parameters, e.g. you can just pass your `UserDto` to your `SaveUser`
   procedure instead of explicitly supplying all parameters from the DTO – less noise, and one less thing to update each
   time you add parameters
-* Supports SQL Server `hierarchyid` values through `SqlHierarchyId`
+* Supports SQL Server `hierarchyid`, `geometry`, and `geography` values through `SqlHierarchyId`, `SqlGeometry`,
+  and `SqlGeography`
 * Supports table-valued parameters in both procedures and scripts
 * Supports stored procedure output parameters and return values (except with lazy and reader methods)
 * Supports lazy execution, both sync (returns `seq`) and async (the latter returns `IAsyncEnumerable`, use with
@@ -490,9 +491,10 @@ EXEC sp_executesql @sql, @paramList, @col1Filter
 ```
 
 In order to parse the output columns of dynamic SQL queries, Facil must execute your query and see which columns come
-back. At build time, Facil generally passes `1` (or `"1"` etc.) for all parameters when executing the query. In the
-common case of dynamic filters as shown above, where you use `IS NOT NULL` or `@param = 1` to add filters to the
-executed SQL, this means that your dynamic SQL will be executed with all the optional filters.
+back. At build time, Facil generally passes `1` (or `"1"` etc.) for all parameters when executing the query, except for
+SQL Server `geometry` and `geography` parameters, where it passes `NULL`. In the common case of dynamic filters as shown
+above, where you use `IS NOT NULL` or `@param = 1` to add filters to the executed SQL, this means that your dynamic SQL
+will be executed with all the optional filters except spatial filters.
 
 Facil may not completely check your dynamic SQL. For example, you may have a parameter that is used to choose one of
 several different `ORDER BY` clauses. In this case, only one of them will be used at build time (and you may be able to

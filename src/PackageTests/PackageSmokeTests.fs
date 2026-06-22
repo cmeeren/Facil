@@ -243,4 +243,6 @@ let tests =
 
                 Expect.notEqual generatedContent placeholderContent "Expected DbGen.fs to be regenerated"
                 Expect.stringContains generatedContent "GeneratedCode(\"Facil\"" "Expected Facil-generated source"
+                Expect.stringContains generatedContent "SqlGeometry" "Expected generated source to expose geometry"
+                Expect.stringContains generatedContent "SqlGeography" "Expected generated source to expose geography"
     ]

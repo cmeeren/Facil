@@ -18,6 +18,7 @@
     <Compile Include="OutParameterAndReturnValueTests.fs" />
     <Compile Include="TempTableTests.fs" />
     <Compile Include="HierarchyIdTests.fs" />
+    <Compile Include="SpatialTypesTests.fs" />
     <Compile Include="TableScriptTests.fs" />
     <Compile Include="NominalParamDtoTests.fs" />
     <Compile Include="MiscTests.fs" />
