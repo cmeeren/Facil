@@ -17,19 +17,111 @@ let adjustSizeForDbType (dbType: SqlDbType) (size: int16) =
     | _ -> size
 
 
-let getSysTypeIdLookup (conn: SqlConnection) =
+type SqlTypeNameLookup = {
+    SystemTypeNamesById: Map<int, string>
+    TypeNamesByUserTypeId: Map<int, string>
+}
+
+
+let getSqlTypeNameLookup (conn: SqlConnection) =
     try
         use cmd = conn.CreateCommand()
-        cmd.CommandText <- "SELECT system_type_id, name FROM sys.types WHERE system_type_id = user_type_id"
+        cmd.CommandText <- "SELECT system_type_id, user_type_id, name FROM sys.types"
         use reader = cmd.ExecuteReader()
-        let lookup = ResizeArray()
+        let rows = ResizeArray()
 
         while reader.Read() do
-            lookup.Add(reader["system_type_id"] |> unbox<byte> |> int, reader["name"] |> unbox<string>)
+            rows.Add(
+                reader["system_type_id"] |> unbox<byte> |> int,
+                reader["user_type_id"] |> unbox<int>,
+                reader["name"] |> unbox<string>
+            )
 
-        lookup |> Map.ofSeq
+        {
+            SystemTypeNamesById =
+                rows
+                |> Seq.choose (fun (systemTypeId, userTypeId, name) ->
+                    if systemTypeId = userTypeId then
+                        Some(systemTypeId, name)
+                    else
+                        None
+                )
+                |> Map.ofSeq
+            TypeNamesByUserTypeId = rows |> Seq.map (fun (_, userTypeId, name) -> userTypeId, name) |> Map.ofSeq
+        }
     with ex ->
-        raise <| Exception("Error getting system type IDs", ex)
+        raise <| Exception("Error getting SQL type names", ex)
+
+
+let private normalizeSqlTypeName (typeName: string) =
+    let trimmed = typeName.Trim()
+    let parenIndex = trimmed.IndexOf '('
+
+    let withoutArgs =
+        if parenIndex < 0 then
+            trimmed
+        else
+            trimmed.Substring(0, parenIndex)
+
+    withoutArgs.ToLowerInvariant()
+
+
+let private getSqlTypeInfo
+    (sqlDbTypeMap: Map<string, SqlTypeInfo>)
+    (typeName: string)
+    (createUnsupportedTypeMessage: string -> string)
+    =
+    sqlDbTypeMap.TryFind(normalizeSqlTypeName typeName)
+    |> Option.defaultWith (fun () -> failwith (createUnsupportedTypeMessage typeName))
+
+
+let private tryGetSqlTypeNameFromTypeIds (typeNameLookup: SqlTypeNameLookup) systemTypeId userTypeId =
+    typeNameLookup.SystemTypeNamesById.TryFind systemTypeId
+    |> Option.orElseWith (fun () -> typeNameLookup.TypeNamesByUserTypeId.TryFind userTypeId)
+
+
+let private getSqlTypeNameFromTypeIds typeNameLookup systemTypeId userTypeId createUnsupportedTypeIdMessage =
+    tryGetSqlTypeNameFromTypeIds typeNameLookup systemTypeId userTypeId
+    |> Option.defaultWith (fun () -> failwith (createUnsupportedTypeIdMessage systemTypeId))
+
+
+let private tryGetSqlTypeInfoFromTypeIds
+    (sqlDbTypeMap: Map<string, SqlTypeInfo>)
+    typeNameLookup
+    systemTypeId
+    userTypeId
+    =
+    tryGetSqlTypeNameFromTypeIds typeNameLookup systemTypeId userTypeId
+    |> Option.map (fun typeName -> typeName, sqlDbTypeMap.TryFind(normalizeSqlTypeName typeName))
+
+
+let private getSqlTypeInfoFromTypeIds
+    sqlDbTypeMap
+    typeNameLookup
+    systemTypeId
+    userTypeId
+    createUnsupportedTypeIdMessage
+    createUnsupportedTypeMessage
+    =
+    tryGetSqlTypeInfoFromTypeIds sqlDbTypeMap typeNameLookup systemTypeId userTypeId
+    |> Option.defaultWith (fun () -> failwith (createUnsupportedTypeIdMessage systemTypeId))
+    |> fun (typeName, typeInfo) ->
+        typeInfo
+        |> Option.defaultWith (fun () -> failwith (createUnsupportedTypeMessage typeName))
+
+
+let private getOptionalString (reader: SqlDataReader) name =
+    let ordinal = reader.GetOrdinal name
+
+    if reader.IsDBNull ordinal then
+        None
+    else
+        reader[name] |> unbox<string> |> Some
+
+
+let private configureUdtTypeName (param: SqlParameter) (typeInfo: SqlTypeInfo) =
+    if typeInfo.SqlDbType = SqlDbType.Udt then
+        param.UdtTypeName <- typeInfo.SqlType
 
 
 // Prefix temp table names to ensure no collisions with existing global temp tables
@@ -188,7 +280,7 @@ let private validateTempTableNames executableName (tempTables: TempTable list) =
 
 let getScriptParameters
     (cfg: RuleSet)
-    (sysTypeIdLookup: Map<int, string>)
+    (typeNameLookup: SqlTypeNameLookup)
     (tableTypesByUserId: Map<int, TableType>)
     (script: Script)
     (conn: SqlConnection)
@@ -289,18 +381,21 @@ let getScriptParameters
 
                     Table tt
                 | None ->
-                    reader["suggested_system_type_id"]
-                    |> unbox<int>
-                    |> fun id ->
-                        sysTypeIdLookup.TryFind id
-                        |> Option.defaultWith (fun () ->
-                            failwith $"Unsupported SQL system type ID '%i{id}' for parameter '%s{paramName}'"
-                        )
+                    let systemTypeId = reader["suggested_system_type_id"] |> unbox<int>
+
+                    getOptionalString reader "suggested_system_type_name"
+                    |> Option.defaultWith (fun () ->
+                        getSqlTypeNameFromTypeIds
+                            typeNameLookup
+                            systemTypeId
+                            (userTypeId |> Option.defaultValue systemTypeId)
+                            (fun id -> $"Unsupported SQL system type ID '%i{id}' for parameter '%s{paramName}'")
+                    )
                     |> fun typeName ->
-                        sqlDbTypeMap.TryFind typeName
-                        |> Option.defaultWith (fun () ->
-                            failwith $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}'"
-                        )
+                        getSqlTypeInfo
+                            sqlDbTypeMap
+                            typeName
+                            (fun typeName -> $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}'")
                     |> Scalar
 
             parameters.Add(
@@ -359,7 +454,7 @@ let getScriptParameters
 
 let getColumnsFromSpDescribeFirstResultSet
     (cfg: RuleSet)
-    (sysTypeIdLookup: Map<int, string>)
+    (typeNameLookup: SqlTypeNameLookup)
     (executable: Choice<StoredProcedure, Script, TempTable>)
     (conn: SqlConnection)
     =
@@ -444,20 +539,31 @@ let getColumnsFromSpDescribeFirstResultSet
         if not shouldSkipCol then
 
             let typeInfo =
-                reader["system_type_id"]
-                |> unbox<int>
-                |> fun id ->
-                    sysTypeIdLookup.TryFind id
-                    |> Option.defaultWith (fun () ->
-                        failwith
+                let systemTypeId = reader["system_type_id"] |> unbox<int>
+
+                let userTypeId =
+                    if reader.IsDBNull "user_type_id" then
+                        systemTypeId
+                    else
+                        reader["user_type_id"] |> unbox<int>
+
+                getOptionalString reader "system_type_name"
+                |> Option.defaultWith (fun () ->
+                    getSqlTypeNameFromTypeIds
+                        typeNameLookup
+                        systemTypeId
+                        userTypeId
+                        (fun id ->
                             $"""Unsupported SQL system type ID '%i{id}' for column '%s{defaultArg colName "<unnamed column>"}'"""
-                    )
+                        )
+                )
                 |> fun typeName ->
-                    sqlDbTypeMap.TryFind typeName
-                    |> Option.defaultWith (fun () ->
-                        failwith
+                    getSqlTypeInfo
+                        sqlDbTypeMap
+                        typeName
+                        (fun typeName ->
                             $"""Unsupported SQL type '%s{typeName}' for column '%s{defaultArg colName "<unnamed column>"}'"""
-                    )
+                        )
 
             cols.Add {
                 OutputColumn.Name = colName
@@ -514,6 +620,7 @@ let getColumnsFromQuery
                 match param.TypeInfo with
                 | Scalar ti ->
                     let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+                    configureUdtTypeName p ti
 
                     rule
                     |> EffectiveProcedureRule.getParam (param.Name.TrimStart '@')
@@ -533,6 +640,7 @@ let getColumnsFromQuery
                 match param.TypeInfo with
                 | Scalar ti ->
                     let p = cmd.Parameters.Add(param.Name, ti.SqlDbType)
+                    configureUdtTypeName p ti
 
                     rule
                     |> EffectiveScriptRule.getParam (param.Name.TrimStart '@')
@@ -632,7 +740,7 @@ let getColumnsFromQuery
         Seq.toList allColNames, Seq.toList cols |> List.sortBy (fun c -> c.SortKey) |> Some
 
 
-let getColumns connStr conn cfg sysTypeIdLookup (executable: Choice<StoredProcedure, Script, TempTable>) =
+let getColumns connStr conn cfg typeNameLookup (executable: Choice<StoredProcedure, Script, TempTable>) =
     let executableName =
         match executable with
         | Choice1Of3 sp -> $"stored procedure %s{sp.SchemaName}.%s{sp.Name}"
@@ -647,7 +755,7 @@ let getColumns connStr conn cfg sysTypeIdLookup (executable: Choice<StoredProced
     let allColNames, cols =
         try
             try
-                getColumnsFromSpDescribeFirstResultSet cfg sysTypeIdLookup executable conn
+                getColumnsFromSpDescribeFirstResultSet cfg typeNameLookup executable conn
             with :? SqlException ->
                 getColumnsFromQuery cfg executable connStr conn
         with ex ->
@@ -676,7 +784,7 @@ let getColumns connStr conn cfg sysTypeIdLookup (executable: Choice<StoredProced
     cols
 
 
-let getTableTypes cfg (conn: SqlConnection) =
+let getTableTypes cfg typeNameLookup (conn: SqlConnection) =
     let sqlDbTypeMap = getSqlDbTypeMap cfg.DateType
 
     try
@@ -690,6 +798,8 @@ let getTableTypes cfg (conn: SqlConnection) =
         sys.table_types.name AS TableTypeName,
         sys.columns.name AS ColumnName,
         sys.columns.column_id AS ColumnId,
+        sys.columns.user_type_id AS ColumnUserTypeId,
+        sys.columns.system_type_id AS ColumnSystemTypeId,
         sys.columns.max_length AS ColumnSize,
         sys.columns.precision AS ColumnPrecision,
         sys.columns.scale AS ColumnScale,
@@ -697,8 +807,7 @@ let getTableTypes cfg (conn: SqlConnection) =
         sys.columns.is_identity AS ColumnIsIdentity,
         sys.columns.is_computed AS ColumnIsComputed,
         sys.columns.collation_name AS CollationName,
-        sys.columns.generated_always_type AS GeneratedAlwaysType,
-        TYPE_NAME(sys.columns.system_type_id) AS ColumnTypeName
+        sys.columns.generated_always_type AS GeneratedAlwaysType
       FROM
         sys.table_types
       INNER JOIN
@@ -713,13 +822,13 @@ let getTableTypes cfg (conn: SqlConnection) =
             let colName = reader["ColumnName"] |> unbox<string>
 
             let typeInfo =
-                reader["ColumnTypeName"]
-                |> unbox<string>
-                |> fun typeName ->
-                    sqlDbTypeMap.TryFind typeName
-                    |> Option.defaultWith (fun () ->
-                        failwith $"Unsupported SQL type '%s{typeName}' for column '%s{colName}'"
-                    )
+                getSqlTypeInfoFromTypeIds
+                    sqlDbTypeMap
+                    typeNameLookup
+                    (reader["ColumnSystemTypeId"] |> unbox<byte> |> int)
+                    (reader["ColumnUserTypeId"] |> unbox<int>)
+                    (fun id -> $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}'")
+                    (fun typeName -> $"Unsupported SQL type '%s{typeName}' for column '%s{colName}'")
 
             tableTypes.Add {
                 UserTypeId = reader["TableTypeUserTypeId"] |> unbox<int>
@@ -761,6 +870,7 @@ let getTableTypes cfg (conn: SqlConnection) =
 
 let getStoredProceduresWithoutResultSetOrTempTables
     cfg
+    typeNameLookup
     (tableTypesByUserId: Map<int, TableType>)
     (conn: SqlConnection)
     =
@@ -823,13 +933,13 @@ let getStoredProceduresWithoutResultSetOrTempTables
           OBJECT_NAME(object_id) AS SprocName,
           name,
           parameter_id,
+          system_type_id,
           user_type_id,
           max_length,
           precision,
           scale,
           is_output,
-          is_cursor_ref,
-          TYPE_NAME(system_type_id) AS SystemTypeName
+          is_cursor_ref
         FROM
           sys.parameters
       "
@@ -843,22 +953,23 @@ let getStoredProceduresWithoutResultSetOrTempTables
                 let sprocName = reader["SprocName"] |> unbox<string>
 
                 let typeInfo =
-                    match reader["SystemTypeName"] |> unbox<string> with
-                    | "table type" ->
-                        let userTypeId = reader["user_type_id"] |> unbox<int>
+                    let systemTypeId = reader["system_type_id"] |> unbox<byte> |> int
+                    let userTypeId = reader["user_type_id"] |> unbox<int>
 
-                        tableTypesByUserId.TryFind userTypeId
-                        |> Option.defaultWith (fun () ->
-                            failwith
-                                $"Unknown user type ID '%i{userTypeId}' for table type parameter '%s{paramName}' in stored procedure '%s{sprocName}'"
-                        )
-                        |> Table
-                    | typeName ->
-                        sqlDbTypeMap.TryFind typeName
-                        |> Option.defaultWith (fun () ->
-                            failwith
+                    match tableTypesByUserId.TryFind userTypeId with
+                    | Some tableType -> Table tableType
+                    | None ->
+                        getSqlTypeInfoFromTypeIds
+                            sqlDbTypeMap
+                            typeNameLookup
+                            systemTypeId
+                            userTypeId
+                            (fun id ->
+                                $"Unsupported SQL system type ID '%i{id}' for parameter '%s{paramName}' in stored procedure '%s{sprocName}'"
+                            )
+                            (fun typeName ->
                                 $"Unsupported SQL type '%s{typeName}' for parameter '%s{paramName}' in stored procedure '%s{sprocName}'"
-                        )
+                            )
                         |> Scalar
 
                 parameters.Add(
@@ -986,7 +1097,7 @@ let getPrimaryKeyColumnNamesByTableName (conn: SqlConnection) =
 
 let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
     cfg
-    (sysTypeIdLookup: Map<int, string>)
+    (typeNameLookup: SqlTypeNameLookup)
     (primaryKeyColumnNamesByTable: Map<string * string, string list>)
     (conn: SqlConnection)
     =
@@ -1004,6 +1115,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
         sys.all_columns.column_id,
         sys.all_columns.is_nullable,
         sys.all_columns.system_type_id,
+        sys.all_columns.user_type_id,
         sys.all_columns.max_length,
         sys.all_columns.precision,
         sys.all_columns.scale,
@@ -1027,6 +1139,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
         sys.all_columns.column_id,
         sys.all_columns.is_nullable,
         sys.all_columns.system_type_id,
+        sys.all_columns.user_type_id,
         sys.all_columns.max_length,
         sys.all_columns.precision,
         sys.all_columns.scale,
@@ -1073,18 +1186,17 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
                 let shouldSkipCol = tableDtoColRule.Skip |> Option.defaultValue false
 
                 let typeInfo =
-                    reader["system_type_id"]
-                    |> unbox<byte>
-                    |> int
-                    |> fun id ->
-                        sysTypeIdLookup.TryFind id
-                        |> Option.teeNone (fun () ->
-                            if RuleSet.shouldIncludeTableDto schemaName tableName cfg && not shouldSkipCol then
-                                logWarning
-                                    $"Unsupported SQL system type ID '%i{id}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped."
-                        )
-                    |> Option.bind (fun typeName ->
-                        sqlDbTypeMap.TryFind typeName
+                    let systemTypeId = reader["system_type_id"] |> unbox<byte> |> int
+                    let userTypeId = reader["user_type_id"] |> unbox<int>
+
+                    tryGetSqlTypeInfoFromTypeIds sqlDbTypeMap typeNameLookup systemTypeId userTypeId
+                    |> Option.teeNone (fun () ->
+                        if RuleSet.shouldIncludeTableDto schemaName tableName cfg && not shouldSkipCol then
+                            logWarning
+                                $"Unsupported SQL system type ID '%i{systemTypeId}' for column '%s{colName}' in table '%s{tableName}'; ignoring column. To silence this warning, configure a table DTO rule that sets column as skipped."
+                    )
+                    |> Option.bind (fun (typeName, typeInfo) ->
+                        typeInfo
                         |> Option.teeNone (fun () ->
                             if RuleSet.shouldIncludeTableDto schemaName tableName cfg && not shouldSkipCol then
                                 logWarning
@@ -1169,7 +1281,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
 
 
 
-let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition connStr (conn: SqlConnection) =
+let getTempTable cfg (typeNameLookup: SqlTypeNameLookup) definition connStr (conn: SqlConnection) =
     try
         let mutable name = null
         let parser = TSql150Parser(true)
@@ -1208,7 +1320,7 @@ let getTempTable cfg (sysTypeIdLookup: Map<int, string>) definition connStr (con
         let tempTable = {
             tempTableWithoutColumns with
                 Columns =
-                    getColumns connStr conn cfg sysTypeIdLookup (Choice3Of3 tempTableWithoutColumns)
+                    getColumns connStr conn cfg typeNameLookup (Choice3Of3 tempTableWithoutColumns)
                     |> Option.defaultValue []
         }
 
@@ -1232,9 +1344,9 @@ let getEverything
     (conn: SqlConnection)
     =
 
-    let sysTypeIdLookup = getSysTypeIdLookup conn
+    let typeNameLookup = getSqlTypeNameLookup conn
 
-    let allTableTypes = getTableTypes cfg conn
+    let allTableTypes = getTableTypes cfg typeNameLookup conn
 
     let tableTypesByUserId =
         allTableTypes |> List.map (fun t -> t.UserTypeId, t) |> Map.ofList
@@ -1244,7 +1356,7 @@ let getEverything
     let allTableDtos =
         getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
             cfg
-            sysTypeIdLookup
+            typeNameLookup
             primaryKeyColumnNamesByTable
             conn
 
@@ -1276,7 +1388,7 @@ let getEverything
         @ (cfg.Procedures |> List.collect (fun p -> p.TempTables |> Option.defaultValue []))
         |> List.map (fun rule -> rule.Definition)
         |> List.distinct
-        |> List.map (fun definition -> definition, getTempTable cfg sysTypeIdLookup definition connStr conn)
+        |> List.map (fun definition -> definition, getTempTable cfg typeNameLookup definition connStr conn)
         |> Map.ofList
 
 
@@ -2755,12 +2867,12 @@ let getEverything
                 script
             else
                 let parameters =
-                    getScriptParameters cfg sysTypeIdLookup tableTypesByUserId script conn
+                    getScriptParameters cfg typeNameLookup tableTypesByUserId script conn
 
                 { script with Parameters = parameters }
         )
         |> List.map (fun script ->
-            let resultSet = getColumns connStr conn cfg sysTypeIdLookup (Choice2Of3 script)
+            let resultSet = getColumns connStr conn cfg typeNameLookup (Choice2Of3 script)
             { script with ResultSet = resultSet }
         )
         |> List.filter (fun s ->
@@ -2823,7 +2935,7 @@ let getEverything
         if cfg.Procedures.IsEmpty then
             []
         else
-            getStoredProceduresWithoutResultSetOrTempTables cfg tableTypesByUserId conn
+            getStoredProceduresWithoutResultSetOrTempTables cfg typeNameLookup tableTypesByUserId conn
             |> List.map (fun sproc ->
                 let rule = RuleSet.getEffectiveProcedureRuleFor sproc.SchemaName sproc.Name cfg
 
@@ -2856,7 +2968,7 @@ let getEverything
             )
         |> List.map (fun sproc -> {
             sproc with
-                ResultSet = getColumns connStr conn cfg sysTypeIdLookup (Choice1Of3 sproc)
+                ResultSet = getColumns connStr conn cfg typeNameLookup (Choice1Of3 sproc)
         })
         |> List.filter (fun sp -> RuleSet.shouldIncludeProcedure sp.SchemaName sp.Name cfg)
         |> List.filter (fun sp ->

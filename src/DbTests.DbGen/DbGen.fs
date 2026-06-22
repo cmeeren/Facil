@@ -3,13 +3,13 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "2.15.2+8cefade9cc855c28117cb7586844068fcc6601d6",
-    "assemblyHash": "465096988498ed090559449703efbe5f"
+    "assemblyVersion": "2.15.2+d7840e8208561d5cf7effc33bb280f0bfeb25b8b",
+    "assemblyHash": "7991456788b3b37c4e1e34c33496bde5"
   },
   "config": {
     "path": "facil.yaml",
     "configsHash": "9c7e87f1906bb406ad64d4e9e8264319",
-    "rulesetsHash": "22e693aa3e98771cef0db5bcbe1dbd0a"
+    "rulesetsHash": "da3d74743a30e58f4f1aa88dd7b93efc"
   },
   "scripts": [
     {
@@ -55,6 +55,10 @@
     {
       "path": "DynamicSqlWithTvp.sql",
       "hash": "7065b532f8a5d355ad7d7d0d8d79d49a"
+    },
+    {
+      "path": "HierarchyIdTempTable.sql",
+      "hash": "27c9130f6aace50ec504d8839aff351d"
     },
     {
       "path": "LongRunningNonQuery.sql",
@@ -220,7 +224,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+8cefade9cc855c28117cb7586844068fcc6601d6")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "2.15.2+d7840e8208561d5cf7effc33bb280f0bfeb25b8b")>]
 module DbGen
 
 #nowarn "49"
@@ -476,6 +480,17 @@ module TableDtos =
 
       static member getPrimaryKey (dto: ``TableWithFullTextCatalog``) =
         dto.``Col1``
+
+
+    type ``TableWithHierarchyId`` =
+      {
+        ``Key``: int
+        ``Path``: Microsoft.SqlServer.Types.SqlHierarchyId
+        ``NullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option
+      }
+
+      static member getPrimaryKey (dto: ``TableWithHierarchyId``) =
+        dto.``Key``
 
 
     type ``TableWithIdentityCol`` =
@@ -855,6 +870,39 @@ module TableTypes =
         x.SetValues(
           (^a: (member ``Id``: int) dto),
           (^a: (member ``Foo``: int64) dto)
+        )
+        |> ignore
+        x
+
+
+    let private ``HierarchyIdTableType_meta`` =
+      [|
+        SqlMetaData("path", SqlDbType.Udt, typeof<Microsoft.SqlServer.Types.SqlHierarchyId>, "hierarchyid")
+        SqlMetaData("nullablePath", SqlDbType.Udt, typeof<Microsoft.SqlServer.Types.SqlHierarchyId>, "hierarchyid")
+      |]
+
+
+    type ``HierarchyIdTableType`` (__: InternalUseOnly) =
+      inherit SqlDataRecord (``HierarchyIdTableType_meta``)
+
+      static member create
+        (
+          ``path``: Microsoft.SqlServer.Types.SqlHierarchyId,
+          ``nullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option
+        ) =
+        let x = ``HierarchyIdTableType``(internalUseOnlyValue)
+        x.SetValues(
+          ``path``,
+          Option.toDbNull ``nullablePath``
+        )
+        |> ignore
+        x
+
+      static member inline create (dto: ^a) =
+        let x = ``HierarchyIdTableType``(internalUseOnlyValue)
+        x.SetValues(
+          (^a: (member ``path``: Microsoft.SqlServer.Types.SqlHierarchyId) dto),
+          Option.toDbNull (^a: (member ``nullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option) dto)
         )
         |> ignore
         x
@@ -7336,6 +7384,337 @@ module Procedures =
             SqlParameter("@fullTextPredicate", SqlDbType.NVarChar, Size = 1000, Value = (^a: (member ``FullTextPredicate``: string) dto))
           |]
         ``ProcWithDynamicSqlWithFullTextSearch_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    type ``ProcWithHierarchyId_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+      let configureCmd sqlParams (cmd: SqlCommand) =
+        cmd.CommandType <- CommandType.StoredProcedure
+        cmd.CommandText <- "dbo.ProcWithHierarchyId"
+        cmd.Parameters.AddRange sqlParams
+        userConfigureCmd cmd
+
+      let mutable ``ordinal_path`` = 0
+      let mutable ``ordinal_nullablePath`` = 0
+
+      let initOrdinals (reader: SqlDataReader) =
+        ``ordinal_path`` <- reader.GetOrdinal "path"
+        ``ordinal_nullablePath`` <- reader.GetOrdinal "nullablePath"
+
+      let getItem (reader: SqlDataReader) =
+        let ``path`` = if reader.IsDBNull ``ordinal_path`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlHierarchyId> ``ordinal_path`` |> Some
+        let ``nullablePath`` = if reader.IsDBNull ``ordinal_nullablePath`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlHierarchyId> ``ordinal_nullablePath`` |> Some
+        {|
+          ``path`` = ``path``
+          ``nullablePath`` = ``nullablePath``
+        |}
+
+      member _.ExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecute() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteWithSyncRead() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+        }
+
+      member _.Execute() =
+        let sqlParams = getSqlParams ()
+        executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.LazyExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecute() =
+        let sqlParams = getSqlParams ()
+        executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.ExecuteSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQuerySingleAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteSingle() =
+        let sqlParams = getSqlParams ()
+        executeQuerySingle connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReader() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReader() =
+        let sqlParams = getSqlParams ()
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+      /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReaderSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingle() =
+        let sqlParams = getSqlParams ()
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+    type ``ProcWithHierarchyId`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      new() =
+        failwith "This constructor is for aiding reflection and type constraints only"
+        ``ProcWithHierarchyId``(null, null, null)
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val connStr = connStr
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val conn = conn
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val tran = tran
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val configureConn : SqlConnection -> unit = ignore with get, set
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+      member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+        this.userConfigureCmd <- configureCommand
+        this
+
+      static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+        ``ProcWithHierarchyId``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+      static member WithConnection(connection, ?transaction) = ``ProcWithHierarchyId``(null, connection, defaultArg transaction null)
+
+      member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+        match configureConnection with
+        | None -> ()
+        | Some config -> this.configureConn <- config
+        this
+
+      member this.WithParameters
+        (
+          ``path``: Microsoft.SqlServer.Types.SqlHierarchyId,
+          ``nullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option
+        ) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@path", SqlDbType.Udt, UdtTypeName = "hierarchyid", Value = ``path``)
+            SqlParameter("@nullablePath", SqlDbType.Udt, UdtTypeName = "hierarchyid", Value = Option.toDbNull ``nullablePath``)
+          |]
+        ``ProcWithHierarchyId_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+      member inline this.WithParameters(dto: ^a) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@path", SqlDbType.Udt, UdtTypeName = "hierarchyid", Value = (^a: (member ``Path``: Microsoft.SqlServer.Types.SqlHierarchyId) dto))
+            SqlParameter("@nullablePath", SqlDbType.Udt, UdtTypeName = "hierarchyid", Value = Option.toDbNull (^a: (member ``NullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option) dto))
+          |]
+        ``ProcWithHierarchyId_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    type ``ProcWithHierarchyIdFromTvp_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+      let configureCmd sqlParams (cmd: SqlCommand) =
+        cmd.CommandType <- CommandType.StoredProcedure
+        cmd.CommandText <- "dbo.ProcWithHierarchyIdFromTvp"
+        cmd.Parameters.AddRange sqlParams
+        userConfigureCmd cmd
+
+      let mutable ``ordinal_path`` = 0
+      let mutable ``ordinal_nullablePath`` = 0
+
+      let initOrdinals (reader: SqlDataReader) =
+        ``ordinal_path`` <- reader.GetOrdinal "path"
+        ``ordinal_nullablePath`` <- reader.GetOrdinal "nullablePath"
+
+      let getItem (reader: SqlDataReader) =
+        let ``path`` = reader.GetFieldValue<Microsoft.SqlServer.Types.SqlHierarchyId> ``ordinal_path``
+        let ``nullablePath`` = if reader.IsDBNull ``ordinal_nullablePath`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlHierarchyId> ``ordinal_nullablePath`` |> Some
+        {|
+          ``path`` = ``path``
+          ``nullablePath`` = ``nullablePath``
+        |}
+
+      member _.ExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecute() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteWithSyncRead() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+        }
+
+      member _.Execute() =
+        let sqlParams = getSqlParams ()
+        executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.LazyExecuteAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member _.LazyExecute() =
+        let sqlParams = getSqlParams ()
+        executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      member _.ExecuteSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeQuerySingleAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      member this.AsyncExecuteSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      member _.ExecuteSingle() =
+        let sqlParams = getSqlParams ()
+        executeQuerySingle connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReader() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReader() =
+        let sqlParams = getSqlParams ()
+        executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+      /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingleAsync(?cancellationToken) =
+        let sqlParams = getSqlParams ()
+        executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+      /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+      member this.AsyncExecuteReaderSingle() =
+        async {
+          let! ct = Async.CancellationToken
+          return! this.ExecuteReaderSingleAsync(ct) |> Async.AwaitTask
+        }
+
+      /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+      member this.ExecuteReaderSingle() =
+        let sqlParams = getSqlParams ()
+        executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+    type ``ProcWithHierarchyIdFromTvp`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      new() =
+        failwith "This constructor is for aiding reflection and type constraints only"
+        ``ProcWithHierarchyIdFromTvp``(null, null, null)
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val connStr = connStr
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val conn = conn
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val tran = tran
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val configureConn : SqlConnection -> unit = ignore with get, set
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+      member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+        this.userConfigureCmd <- configureCommand
+        this
+
+      static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+        ``ProcWithHierarchyIdFromTvp``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+      static member WithConnection(connection, ?transaction) = ``ProcWithHierarchyIdFromTvp``(null, connection, defaultArg transaction null)
+
+      member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+        match configureConnection with
+        | None -> ()
+        | Some config -> this.configureConn <- config
+        this
+
+      member this.WithParameters
+        (
+          ``params``: seq<TableTypes.``dbo``.``HierarchyIdTableType``>
+        ) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.HierarchyIdTableType", Value = boxNullIfEmpty ``params``)
+          |]
+        ``ProcWithHierarchyIdFromTvp_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+      member inline this.WithParameters(dto: ^a) =
+        let getSqlParams () =
+          [|
+            SqlParameter("@params", SqlDbType.Structured, TypeName = "dbo.HierarchyIdTableType", Value = boxNullIfEmpty (^a: (member ``Params``: #seq<TableTypes.``dbo``.``HierarchyIdTableType``>) dto))
+          |]
+        ``ProcWithHierarchyIdFromTvp_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -21272,6 +21651,233 @@ EXEC sp_executesql @sql, @paramList, @tvp"""
           SqlParameter("@tvp", SqlDbType.Structured, TypeName = "dbo.SingleColNonNull", Value = boxNullIfEmpty (^a: (member ``Tvp``: #seq<TableTypes.``dbo``.``SingleColNonNull``>) dto))
         |]
       ``DynamicSqlWithTvp_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, [], this.tran)
+
+
+  module ``HierarchyIdTempTable`` =
+
+
+    type ``HierarchyIdTempTable`` (__: InternalUseOnly, fields: obj []) =
+
+      [<EditorBrowsable(EditorBrowsableState.Never)>]
+      member _.Fields = fields
+
+      static member create
+        (
+          ``path``: Microsoft.SqlServer.Types.SqlHierarchyId,
+          ``nullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option
+        ) : ``HierarchyIdTempTable`` =
+        [|
+          ``path`` |> box
+          Option.toDbNull ``nullablePath`` |> box
+        |]
+        |> fun fields -> ``HierarchyIdTempTable``(internalUseOnlyValue, fields)
+
+      static member inline create (dto: ^a) : ``HierarchyIdTempTable`` =
+        [|
+          (^a: (member ``Path``: Microsoft.SqlServer.Types.SqlHierarchyId) dto) |> box
+          Option.toDbNull (^a: (member ``NullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option) dto) |> box
+        |]
+        |> fun fields -> ``HierarchyIdTempTable``(internalUseOnlyValue, fields)
+
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  type ``HierarchyIdTempTable_Executable`` (connStr: string, conn: SqlConnection, configureConn: SqlConnection -> unit, userConfigureCmd: SqlCommand -> unit, getSqlParams: unit -> SqlParameter [], tempTableData: seq<TempTableData>, tran: SqlTransaction) =
+
+    let configureCmd sqlParams (cmd: SqlCommand) =
+      cmd.CommandText <- """-- HierarchyIdTempTable.sql
+SELECT * FROM #HierarchyIdTempTable"""
+      cmd.Parameters.AddRange sqlParams
+      userConfigureCmd cmd
+
+    let mutable ``ordinal_Path`` = 0
+    let mutable ``ordinal_NullablePath`` = 0
+
+    let initOrdinals (reader: SqlDataReader) =
+      ``ordinal_Path`` <- reader.GetOrdinal "Path"
+      ``ordinal_NullablePath`` <- reader.GetOrdinal "NullablePath"
+
+    let getItem (reader: SqlDataReader) =
+      let ``Path`` = reader.GetFieldValue<Microsoft.SqlServer.Types.SqlHierarchyId> ``ordinal_Path``
+      let ``NullablePath`` = if reader.IsDBNull ``ordinal_NullablePath`` then None else reader.GetFieldValue<Microsoft.SqlServer.Types.SqlHierarchyId> ``ordinal_NullablePath`` |> Some
+      {|
+        ``Path`` = ``Path``
+        ``NullablePath`` = ``NullablePath``
+      |}
+
+    member _.ExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecute() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryEagerAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteWithSyncRead() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteAsyncWithSyncRead(ct) |> Async.AwaitTask
+      }
+
+    member _.Execute() =
+      let sqlParams = getSqlParams ()
+      executeQueryEager connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member _.LazyExecuteAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecuteAsyncWithSyncRead(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQueryLazyAsyncWithSyncRead connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member _.LazyExecute() =
+      let sqlParams = getSqlParams ()
+      executeQueryLazy connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    member _.ExecuteSingleAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeQuerySingleAsync connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    member this.AsyncExecuteSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    member _.ExecuteSingle() =
+      let sqlParams = getSqlParams ()
+      executeQuerySingle connStr conn tran configureConn (configureCmd sqlParams) initOrdinals getItem tempTableData
+
+    /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReaderAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeReaderAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.AsyncExecuteReader() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteReaderAsync(ct) |> Async.AwaitTask
+      }
+
+    /// Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReader() =
+      let sqlParams = getSqlParams ()
+      executeReader connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+    /// Same as ExecuteReaderAsync, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReaderSingleAsync(?cancellationToken) =
+      let sqlParams = getSqlParams ()
+      executeReaderSingleAsync connStr conn tran configureConn (configureCmd sqlParams) tempTableData (defaultArg cancellationToken CancellationToken.None)
+
+    /// Same as AsyncExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use!' to ensure disposal of all resources managed by Facil for this query.
+    member this.AsyncExecuteReaderSingle() =
+      async {
+        let! ct = Async.CancellationToken
+        return! this.ExecuteReaderSingleAsync(ct) |> Async.AwaitTask
+      }
+
+    /// Same as ExecuteReader, but uses CommandBehavior.SingleRow. Returns a value wrapping a SqlDataReader. The wrapper should be bound with 'use' to ensure disposal of all resources managed by Facil for this query.
+    member this.ExecuteReaderSingle() =
+      let sqlParams = getSqlParams ()
+      executeReaderSingle connStr conn tran configureConn (configureCmd sqlParams) tempTableData
+
+
+  type ``HierarchyIdTempTable`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    new() =
+      failwith "This constructor is for aiding reflection and type constraints only"
+      ``HierarchyIdTempTable``(null, null, null)
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val connStr = connStr
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val conn = conn
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val tran = tran
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val configureConn : SqlConnection -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureCmd : SqlCommand -> unit = ignore with get, set
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member val userConfigureBulkCopy : SqlBulkCopy -> unit = ignore with get, set
+
+    member this.ConfigureCommand(configureCommand: SqlCommand -> unit) =
+      this.userConfigureCmd <- configureCommand
+      this
+
+    member this.ConfigureBulkCopy(configureBulkCopy: SqlBulkCopy -> unit) =
+      this.userConfigureBulkCopy <- configureBulkCopy
+      this
+
+    static member WithConnection(connectionString, ?configureConnection: SqlConnection -> unit) =
+      ``HierarchyIdTempTable``(connectionString, null, null).ConfigureConnection(?configureConnection=configureConnection)
+
+    static member WithConnection(connection, ?transaction) = ``HierarchyIdTempTable``(null, connection, defaultArg transaction null)
+
+    member private this.ConfigureConnection(?configureConnection: SqlConnection -> unit) =
+      match configureConnection with
+      | None -> ()
+      | Some config -> this.configureConn <- config
+      this
+
+    [<EditorBrowsable(EditorBrowsableState.Never)>]
+    member this.CreateTempTableData
+      (
+        ``HierarchyIdTempTable``: seq<``HierarchyIdTempTable``.``HierarchyIdTempTable``>
+      ) =
+      [
+        TempTableData
+          (
+            "#HierarchyIdTempTable",
+            """
+            CREATE TABLE #HierarchyIdTempTable
+            (
+              [Path] HIERARCHYID NOT NULL,
+              [NullablePath] HIERARCHYID NULL
+            )
+
+            """,
+            (``HierarchyIdTempTable`` |> Seq.map (fun x -> x.Fields)),
+            [| "Path"; "NullablePath" |],
+            2,
+            Action<_> this.userConfigureBulkCopy
+          )
+      ]
+    member this.WithParameters
+      (
+        ``hierarchyIdTempTable``: seq<``HierarchyIdTempTable``.``HierarchyIdTempTable``>
+      ) =
+      let getSqlParams () =
+        [|
+        |]
+      let tempTableData =
+        this.CreateTempTableData(
+          ``hierarchyIdTempTable``
+        )
+      ``HierarchyIdTempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
+
+    member inline this.WithParameters(dto: ^a) =
+      let getSqlParams () =
+        [|
+        |]
+      let tempTableData =
+        this.CreateTempTableData(
+          (^a: (member ``HierarchyIdTempTable``: #seq<``HierarchyIdTempTable``.``HierarchyIdTempTable``>) dto)
+        )
+      ``HierarchyIdTempTable_Executable``(this.connStr, this.conn, this.configureConn, this.userConfigureCmd, getSqlParams, tempTableData, this.tran)
 
 
   type ``LengthTypes_All`` private (connStr: string, conn: SqlConnection, tran: SqlTransaction) =

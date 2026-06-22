@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageReference Include="Microsoft.SqlServer.Types" Version="170.1000.7" />
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
   </ItemGroup>
 

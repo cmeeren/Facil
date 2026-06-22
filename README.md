@@ -113,6 +113,7 @@ ask? [See the FAQ.](#why-not-a-type-provider))
 * Can accept suitable DTOs instead of a list of parameters, e.g. you can just pass your `UserDto` to your `SaveUser`
   procedure instead of explicitly supplying all parameters from the DTO – less noise, and one less thing to update each
   time you add parameters
+* Supports SQL Server `hierarchyid` values through `SqlHierarchyId`
 * Supports table-valued parameters in both procedures and scripts
 * Supports stored procedure output parameters and return values (except with lazy and reader methods)
 * Supports lazy execution, both sync (returns `seq`) and async (the latter returns `IAsyncEnumerable`, use with

@@ -252,6 +252,10 @@ rulesets:
         tempTables:
           - definition: TempTableDefinitions/TempTableAllTypesNull.sql
 
+      - for: HierarchyIdTempTable.sql
+        tempTables:
+          - definition: TempTableDefinitions/HierarchyIdTempTable.sql
+
       - for: TempTableInlined.sql
         tempTables:
 

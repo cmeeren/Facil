@@ -1,6 +1,7 @@
 ﻿module internal Facil.Render
 
 open System
+open System.Data
 open System.Text.Encodings.Web
 open System.Text.Json
 
@@ -30,6 +31,23 @@ let private sqlOutputParameterValueExpr optionSome (typeInfo: SqlTypeInfo) value
         $"{valueExpr} |> unbox<DateTime> |> DateOnly.FromDateTime |> {optionSome}"
     else
         $"{valueExpr} |> unbox<{typeInfo.FSharpTypeString}> |> {optionSome}"
+
+
+let private renderScalarSqlParameter (p: Parameter) (ti: SqlTypeInfo) valueExpr =
+    let directionArg =
+        if p.IsOutput then
+            "Direction = ParameterDirection.InputOutput, "
+        else
+            ""
+
+    if isSizeRelevantForSqlParameter ti.SqlDbType then
+        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Size = {p.Size}, {directionArg}Value = {valueExpr})"""
+    elif isPrecisionAndScaleRelevantForSqlParameter ti.SqlDbType then
+        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Precision = {p.Precision}uy, Scale = {p.Scale}uy, {directionArg}Value = {valueExpr})"""
+    elif ti.SqlDbType = SqlDbType.Udt then
+        $"""SqlParameter("{p.Name}", SqlDbType.Udt, UdtTypeName = "{ti.SqlType}", {directionArg}Value = {valueExpr})"""
+    else
+        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {directionArg}Value = {valueExpr})"""
 
 
 let private renderTableDto (cfg: RuleSet) (dto: TableDto) =
@@ -131,7 +149,9 @@ let private renderTableType cfg (t: TableType) =
                 yield!
                     indent [
                         for c in t.Columns do
-                            if isPrecisionAndScaleRelevantForSqlMetaData c.TypeInfo.SqlDbType then
+                            if c.TypeInfo.SqlDbType = SqlDbType.Udt then
+                                $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.Udt, typeof<{c.TypeInfo.FSharpTypeString}>, "{c.TypeInfo.SqlType}")"""
+                            elif isPrecisionAndScaleRelevantForSqlMetaData c.TypeInfo.SqlDbType then
                                 $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.{c.TypeInfo.SqlDbType}, {c.PrecisionForSqlMetaData}uy, {c.Scale}uy)"""
                             elif isSizeRelevantForSqlMetaData c.TypeInfo.SqlDbType then
                                 $"""SqlMetaData("{c.StringEscapedName}", SqlDbType.{c.TypeInfo.SqlDbType}, {c.SizeForSqlMetaData}L)"""
@@ -1213,21 +1233,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                         $"(``{p.FSharpParamName}`` |> Option.map {inOptionModule}.toDbNull |> Option.defaultValue (box DBNull.Value))"
 
                                                 match p.TypeInfo with
-                                                | Scalar ti when isSizeRelevantForSqlParameter ti.SqlDbType ->
-                                                    $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Size = {p.Size}, {if p.IsOutput then
-                                                                                                                                 "Direction = ParameterDirection.InputOutput, "
-                                                                                                                             else
-                                                                                                                                 ""}Value = {scalarParamValueExpr})"""
-                                                | Scalar ti when isPrecisionAndScaleRelevantForSqlParameter ti.SqlDbType ->
-                                                    $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Precision = {p.Precision}uy, Scale = {p.Scale}uy, {if p.IsOutput then
-                                                                                                                                                                  "Direction = ParameterDirection.InputOutput, "
-                                                                                                                                                              else
-                                                                                                                                                                  ""}Value = {scalarParamValueExpr})"""
-                                                | Scalar ti ->
-                                                    $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then
-                                                                                                                "Direction = ParameterDirection.InputOutput, "
-                                                                                                            else
-                                                                                                                ""}Value = {scalarParamValueExpr})"""
+                                                | Scalar ti -> renderScalarSqlParameter p ti scalarParamValueExpr
                                                 | Table tt ->
                                                     $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = boxNullIfEmpty ``{p.FSharpParamName}``)"""
 
@@ -1313,23 +1319,11 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                         |> Option.defaultValue (p.FSharpParamName |> String.firstUpper)
 
                                                     match p.TypeInfo with
-                                                    | Scalar ti when isSizeRelevantForSqlParameter ti.SqlDbType ->
-                                                        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Size = {p.Size}, {if p.IsOutput then
-                                                                                                                                     "Direction = ParameterDirection.InputOutput, "
-                                                                                                                                 else
-                                                                                                                                     ""}Value = {paramData.GetScalarParamValueExpr p dtoName ti})"""
-                                                    | Scalar ti when
-                                                        isPrecisionAndScaleRelevantForSqlParameter ti.SqlDbType
-                                                        ->
-                                                        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, Precision = {p.Precision}uy, Scale = {p.Scale}uy, {if p.IsOutput then
-                                                                                                                                                                      "Direction = ParameterDirection.InputOutput, "
-                                                                                                                                                                  else
-                                                                                                                                                                      ""}Value = {paramData.GetScalarParamValueExpr p dtoName ti})"""
                                                     | Scalar ti ->
-                                                        $"""SqlParameter("{p.Name}", SqlDbType.{ti.SqlDbType}, {if p.IsOutput then
-                                                                                                                    "Direction = ParameterDirection.InputOutput, "
-                                                                                                                else
-                                                                                                                    ""}Value = {paramData.GetScalarParamValueExpr p dtoName ti})"""
+                                                        renderScalarSqlParameter
+                                                            p
+                                                            ti
+                                                            (paramData.GetScalarParamValueExpr p dtoName ti)
                                                     | Table tt ->
                                                         $"""SqlParameter("{p.Name}", SqlDbType.Structured, TypeName = "{tt.SchemaName}.{tt.Name}", Value = {paramData.GetTableParamValueExpr dtoName tt})"""
 

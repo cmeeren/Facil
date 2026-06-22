@@ -188,6 +188,16 @@ let private createSqlDbTypeMap dateType =
             SqlClientValueBridge = NoBridge
         }
         {
+            SqlType = "hierarchyid"
+            FSharpTypeString = "Microsoft.SqlServer.Types.SqlHierarchyId"
+            SqlDbType = SqlDbType.Udt
+            SqlDataReaderGetMethodName = "GetFieldValue<Microsoft.SqlServer.Types.SqlHierarchyId>"
+            DefaultBuildValue =
+                Microsoft.SqlServer.Types.SqlHierarchyId.Parse(System.Data.SqlTypes.SqlString "/")
+                |> box<Microsoft.SqlServer.Types.SqlHierarchyId>
+            SqlClientValueBridge = NoBridge
+        }
+        {
             SqlType = "image"
             FSharpTypeString = "byte []"
             SqlDbType = SqlDbType.Image

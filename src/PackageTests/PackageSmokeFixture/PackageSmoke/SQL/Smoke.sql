@@ -1,2 +1,2 @@
 SELECT
-  Value = CAST(1 AS INT)
+  Value = CAST('/1/' AS HIERARCHYID)
