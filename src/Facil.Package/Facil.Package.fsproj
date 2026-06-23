@@ -52,7 +52,7 @@
     <Delete Files="@(FilesToDelete)" />
   </Target>
 
-  <Target Name="BuildFacilGenerator" BeforeTargets="Build;Pack">
+  <Target Name="BuildFacilGenerator" BeforeTargets="Build">
     <MSBuild
       Projects="..\Facil.Generator\Facil.Generator.fsproj"
       Targets="Restore;Build"
