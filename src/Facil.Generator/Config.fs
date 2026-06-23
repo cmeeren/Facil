@@ -1134,20 +1134,24 @@ module TableScriptTypeRule =
     }
 
 
-    let merge (eff: EffectiveTableScriptTypeRule) (rule: TableScriptTypeRule) : EffectiveTableScriptTypeRule =
-        if eff.Type <> rule.Type then
-            failwith $"Facil bug: Attempted to merge table script rules with different types: %A{eff}, %A{rule}"
+    let merge
+        (newRule: EffectiveTableScriptTypeRule)
+        (eff: EffectiveTableScriptTypeRule)
+        (rule: TableScriptTypeRule)
+        : EffectiveTableScriptTypeRule =
+        if eff.Type <> newRule.Type then
+            failwith $"Facil bug: Attempted to merge table script rules with different types: %A{eff}, %A{newRule}"
 
-        if rule.Name.IsSome && rule.Name <> Some eff.Name then
-            failwith $"Facil bug: Attempted to merge table script rules with different names: %A{eff}, %A{rule}"
+        if newRule.Name <> eff.Name then
+            failwith $"Facil bug: Attempted to merge table script rules with different names: %A{eff}, %A{newRule}"
 
         {
-            Type = rule.Type
-            Name = rule.Name |> Option.defaultValue eff.Name
+            Type = newRule.Type
+            Name = newRule.Name
             TableType = rule.TableType |> Option.orElse eff.TableType
             Holdlock = rule.Holdlock |> Option.defaultValue eff.Holdlock
             FilterColumns = rule.FilterColumns |> Option.orElse eff.FilterColumns
-            ColumnsFromAllRules = eff.ColumnsFromAllRules @ [ rule.Columns ]
+            ColumnsFromAllRules = eff.ColumnsFromAllRules @ newRule.ColumnsFromAllRules
         }
 
 
@@ -1220,11 +1224,22 @@ module TableScriptRule =
                     let defaultRule =
                         TableScriptTypeRule.defaultEffectiveRuleFor rule schemaName tableName fullYamlPath
 
-                    let key = rule.Type, (rule.Name |> Option.defaultValue defaultRule.Name)
+                    let key = rule.Type, defaultRule.Name
+
+                    let hasDifferentTypeWithSameName =
+                        current
+                        |> Map.exists (fun (scriptType, name) _ -> scriptType <> rule.Type && name = defaultRule.Name)
+
+                    if hasDifferentTypeWithSameName then
+                        failwithYamlError
+                            fullYamlPath
+                            0
+                            0
+                            $"Multiple table scripts for %s{schemaName}.%s{tableName} resolve to the same script name '%s{defaultRule.Name}'. Use unique names for scripts with different types."
 
                     match current.TryFind key with
                     | None -> current.Add(key, defaultRule)
-                    | Some effRule -> current.Add(key, TableScriptTypeRule.merge effRule rule)
+                    | Some effRule -> current.Add(key, TableScriptTypeRule.merge defaultRule effRule rule)
                 )
         }
 

@@ -294,6 +294,83 @@ let tests =
                     "Generation should not reject the nullable table type"
 
 
+        testCase "Table scripts with the same final name are generated once"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    tableScripts:
+                      - include: '^dbo\.TableWithIdentityCol$'
+                        scripts:
+                          - type: getById
+
+                      - for: '^dbo\.TableWithIdentityCol$'
+                        scripts:
+                          - type: getById
+                            name: '{TableName}_ById'
+                            selectColumns:
+                              - Id
+                """
+
+            withTemporaryGeneratorProject yaml []
+            <| fun projectDir ->
+                let exitCode, _ = runGenerator projectDir
+                let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+
+                let scriptTypeOccurrences =
+                    Regex.Matches(generated, "type ``TableWithIdentityCol_ById`` private").Count
+
+                let executableTypeOccurrences =
+                    Regex.Matches(generated, "type ``TableWithIdentityCol_ById_Executable``").Count
+
+                Expect.equal exitCode 0 "Generation should succeed when table script rules resolve to the same name"
+                Expect.equal scriptTypeOccurrences 1 "The script type should be generated once"
+                Expect.equal executableTypeOccurrences 1 "The executable type should be generated once"
+
+                Expect.isFalse
+                    (generated.Contains("let mutable ``ordinal_Foo``", StringComparison.Ordinal))
+                    "Column rules from the resolved-name rule should be preserved"
+
+
+        testCase "Table scripts with the same final name and different types fail generation"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionString)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    tableScripts:
+                      - include: '^dbo\.TableWithIdentityCol$'
+                        scripts:
+                          - type: getAll
+                            name: ConflictingName
+
+                          - type: getById
+                            name: ConflictingName
+                """
+
+            withTemporaryGeneratorProject yaml []
+            <| fun projectDir ->
+                let exitCode, output = runGenerator projectDir
+
+                Expect.equal exitCode 1 "Generation should fail before duplicate generated type names can be written"
+
+                Expect.stringContains
+                    output
+                    "resolve to the same script name 'ConflictingName'"
+                    "Expected a clear duplicate table-script name error"
+
+
         testCase "Rulesets that resolve to the same output file fail generation"
         <| fun () ->
             let yaml =

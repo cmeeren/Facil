@@ -46,6 +46,8 @@ Release notes
   set has no nullable columns.
 * Inherited parameter `buildValue` settings are now preserved when later procedure or script rules omit `buildValue`.
 * Overlapping script include rules now generate each matching script only once.
+* Overlapping table-script rules of the same type that resolve to the same script name now generate a single script
+  instead of duplicate generated types.
 * Generation now fails before writing output when multiple rulesets resolve to the same generated file, and now rejects
   temp-table definitions that would generate colliding API names.
 
