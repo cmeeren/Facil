@@ -1459,9 +1459,9 @@ module FacilConfig =
         let config = configBuilder.Build()
 
         let resolveVariable (str: string) =
-            let m = Regex.Match(str, "\$\((.+)\)")
+            let variablePattern = "\$\(([^)]+)\)"
 
-            if not m.Success then
+            if not (Regex.IsMatch(str, variablePattern)) then
                 str
             else
                 match facilConfig.configs with
@@ -1474,16 +1474,22 @@ module FacilConfig =
                         $"Cannot use variable {str} since no configuration sources has been specified"
                 | _ -> ()
 
-                let varName = m.Groups[1].Value
+                Regex.Replace(
+                    str,
+                    variablePattern,
+                    MatchEvaluator(fun m ->
+                        let varName = m.Groups[1].Value
 
-                match config.GetValue varName with
-                | null ->
-                    failwithYamlError
-                        fullYamlPath
-                        0
-                        0
-                        $"The variable {str} could not be found in the specified configuration sources"
-                | str -> str
+                        match config.GetValue varName with
+                        | null ->
+                            failwithYamlError
+                                fullYamlPath
+                                0
+                                0
+                                $"The variable {m.Value} could not be found in the specified configuration sources"
+                        | str -> str
+                    )
+                )
 
         match facilConfig.rulesets with
         | None -> failwithYamlError fullYamlPath 0 0 "The 'rulesets' section is required"

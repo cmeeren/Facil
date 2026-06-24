@@ -5,6 +5,7 @@ open System.IO
 open System.Text.Json
 open System.Text.RegularExpressions
 open Expecto
+open Microsoft.Data.SqlClient
 
 
 let private withTemporaryGeneratorProject (yaml: string) (scripts: (string * string) list) action =
@@ -158,6 +159,46 @@ let tests =
                 Expect.equal exitCode 0 "Generation should succeed and ignore the script"
                 Expect.stringContains output "returns 2 columns named 'Foo'" "Expected a clear warning"
                 Expect.stringContains output "Ignoring script" "Expected the script to be ignored"
+
+
+        testCase "Config variables are interpolated inside connection strings"
+        <| fun () ->
+            let yaml =
+                """
+                configs:
+                  - appSettings: appsettings.json
+
+                rulesets:
+                  - connectionString: $(connectionStringWithoutDatabase);Initial Catalog=$(databaseName)
+                    filename: DbGen.fs
+                    namespaceOrModuleDeclaration: module DbGen
+                    scriptBasePath: SQL
+                    scripts:
+                      - include: Smoke.sql
+                """
+
+            withTemporaryGeneratorProject yaml [ "Smoke.sql", "SELECT * FROM dbo.Table1" ]
+            <| fun projectDir ->
+                let connStrBuilder = SqlConnectionStringBuilder(Config.connStr)
+                let databaseName = connStrBuilder.InitialCatalog
+                connStrBuilder.InitialCatalog <- ""
+
+                let appSettings =
+                    JsonSerializer.Serialize(
+                        {|
+                            connectionStringWithoutDatabase = connStrBuilder.ConnectionString
+                            databaseName = databaseName
+                        |}
+                    )
+
+                File.WriteAllText(Path.Combine(projectDir, "appsettings.json"), appSettings)
+
+                let exitCode, output = runGenerator projectDir
+
+                Expect.equal
+                    exitCode
+                    0
+                    $"Generation should succeed with an interpolated connection string. Output: {output}"
 
 
         testCase "Unnamed columns in multi-column result sets are ignored with a clear warning"

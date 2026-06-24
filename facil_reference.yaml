@@ -31,8 +31,8 @@ configs:
 # single DB and generates a single file. You will often only need one ruleset.
 rulesets:
 
-  # 'connectionString' is the only required property of a ruleset. You may use a
-  # variable here with the syntax $(VariableName).
+  # 'connectionString' is the only required property of a ruleset. You may use
+  # variables with the syntax $(VariableName), including inside larger values.
   - connectionString: $(ConnectionStrings:Db)
 
     # The filename and namespace/module declaration of the generated file. The values

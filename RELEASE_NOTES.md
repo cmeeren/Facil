@@ -20,6 +20,7 @@ Release notes
 * Generated code now supports SQL Server `geometry` and `geography` columns, parameters, table-valued parameters, and
   temp-table inputs through `SqlGeometry` and `SqlGeography`.
 * Temp-table loading now supports name-based `SqlBulkCopy` column mappings configured through `ConfigureBulkCopy`.
+* Config variables can now be interpolated inside larger values, such as appending connection-string keywords.
 
 #### Changed
 
