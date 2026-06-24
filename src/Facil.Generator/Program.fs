@@ -182,8 +182,8 @@ module Program =
                             else
                                 []
 
-                        // This is needed for Facil's own CI pipeline, since the assembly version/hash used for the
-                        // checked-in DbGen.fs may be different than the version/hash used on CI.
+                        // Facil source builds can change assemblyVersion/assemblyHash without changing generated code.
+                        // CI intentionally ignores those volatile lines when checking generated output.
                         let ignoreLinesWithPrefix = [
                             "\"assemblyVersion\": "
                             "\"assemblyHash\": "
