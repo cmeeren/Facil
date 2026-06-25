@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 3.0.0 (2026-06-25)
 
 #### Breaking
 
@@ -24,7 +24,7 @@ Release notes
 
 #### Changed
 
-* NuGet package metadata now links to the GitHub Release for the packaged version.
+* NuGet package metadata now includes the README and links to the GitHub Release for the packaged version.
 * Documentation now clarifies that lazy and reader methods do not expose stored procedure output parameters or return
   values.
 

@@ -15,6 +15,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>f# fsharp data typeprovider type-provider sql tsql sql-server generator code-generator</PackageTags>
     <PackageIcon>facil-logo-128x128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>https://github.com/cmeeren/Facil/releases/tag/v/$(Version)</PackageReleaseNotes>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);GetFacilPackageFiles</TargetsForTfmSpecificContentInPackage>
@@ -39,6 +40,10 @@
     <Content Include="FacilGenerate.targets">
       <PackagePath>tools/</PackagePath>
     </Content>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="facil-logo-128x128.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

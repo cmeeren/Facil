@@ -50,9 +50,9 @@ dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dac
 dotnet build src/Facil.Package -c Release
 dotnet pack src/Facil.Package -c Release
 dotnet build src/PackageTests -c Release
-dotnet src/PackageTests/bin/Release/net9.0/PackageTests.dll --fail-on-focused-tests
+dotnet src/PackageTests/bin/Release/net10.0/PackageTests.dll --fail-on-focused-tests
 dotnet build src/DbTests -c Release
-dotnet src/DbTests/bin/Release/net9.0/DbTests.dll --fail-on-focused-tests
+dotnet src/DbTests/bin/Release/net10.0/DbTests.dll --fail-on-focused-tests
 ````
 
    If a local SQL Server or connection string is unavailable, stop and report which CI-equivalent checks could not be run instead of replacing them with weaker `dotnet test` runs.
