@@ -1709,7 +1709,7 @@ let getEverything
                                     yield!
                                         columnMapping
                                         |> List.map (fun (ttColName, tableColName) ->
-                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}"
+                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].[%s{tableColName}]"
                                         )
                                         |> List.mapAllExceptFirst (sprintf "AND %s")
                                         |> List.map (sprintf "      %s")
@@ -1895,7 +1895,7 @@ let getEverything
                                     yield!
                                         columnMapping
                                         |> List.map (fun (ttColName, tableColName) ->
-                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].%s{tableColName}"
+                                            $"ids.[%s{ttColName}] = [%s{dto.Name}].[%s{tableColName}]"
                                         )
                                         |> List.mapAllExceptFirst (sprintf "AND %s")
                                         |> List.map (sprintf "      %s")

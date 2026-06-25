@@ -32,6 +32,7 @@ Release notes
 
 * Reader methods now support generated temp-table inputs, and temp tables are cleaned up after successful eager, lazy,
   async-lazy, and reader calls on caller-owned connections.
+* Generated batch lookup table scripts now bracket table column names in filter predicates.
 * Generated async wrappers now preserve cancellation, avoid resuming through a caller synchronization context, and lazy
   async queries now translate provider cancellation failures to `OperationCanceledException`.
 * Reader APIs created from a connection string now close their internally managed connection when the returned reader is
