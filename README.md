@@ -119,6 +119,7 @@ ask? [See the FAQ.](#why-not-a-type-provider))
 * Supports stored procedure output parameters and return values (except with lazy and reader methods)
 * Supports lazy execution, both sync (returns `seq`) and async (the latter returns `IAsyncEnumerable`, use with
   e.g. [FSharp.Control.AsyncSeq](https://github.com/fsprojects/FSharp.Control.AsyncSeq))
+* Supports raw `SqlDataReader` execution when you need custom or legacy mapping
 * Supports inferring dynamic SQL result sets *without* `WITH RESULT SETS`
 * To some extent [checks your dynamic SQL at build time](#can-facil-check-my-dynamic-sql)
 * Supports [temp tables](#can-i-use-temp-tables)
@@ -378,6 +379,39 @@ that temp table needs to exist at build-time. (This limitation does not apply to
 Note also that if you plan to use the same temp table name in another command with the same connection, you need to drop
 it. The easiest way to do this is to use `DROP TABLE #myTempTable` as the first line in the temp table definition. (This
 is automatically done for Facil-generated `tableScripts` that use temp tables).
+
+### How do I use the `SqlDataReader` APIs?
+
+If you need a raw `SqlDataReader` for legacy mappers, `DataTable` loading, or custom mapping code, use the reader
+methods instead of `Execute`. These methods are less type safe, but still let Facil configure the command, load temp
+tables, and clean up the resources it owns.
+
+The multi-row reader methods are `ExecuteReader`, `ExecuteReaderAsync`, and `AsyncExecuteReader`. The single-row
+variants are `ExecuteReaderSingle`, `ExecuteReaderSingleAsync`, and `AsyncExecuteReaderSingle`; these use
+`CommandBehavior.SingleRow`.
+
+All reader methods return `FacilReaderDisposer`, a wrapper with a `Reader` property. Bind the wrapper with `use` (or
+`use!` after async binding) and read from its `Reader`. Do not dispose the `Reader` directly. Disposing the wrapper
+disposes the reader, command, temp-table cleanup, and any connection Facil opened from a connection string. If you pass
+your own `SqlConnection`, that connection remains yours to dispose.
+
+```f#
+let printProducts connStr (args: ProductSearchArgs) =
+    let dtoWithPrimitiveParams = ProductSearchArgs.toDto args
+
+    use readerDisposer =
+        SearchProducts
+            .WithConnection(connStr)
+            .WithParameters(dtoWithPrimitiveParams)
+            .ExecuteReader()
+
+    let reader = readerDisposer.Reader
+
+    while reader.Read() do
+        printfn "%O" reader["ProductName"]
+```
+
+Like lazy execution, reader execution does not expose stored procedure output parameters or return values.
 
 ### Why do the `Execute` methods return `ResizeArray` and not an F# `list`?
 
