@@ -61,7 +61,7 @@ let searchProducts (connStr: string) (args: ProductSearchArgs) : Async<ResizeArr
     let dtoWithPrimitiveParams = ProductSearchArgs.toDto args
 
     return!
-        GetUserById
+        SearchProducts
             .WithConnection(connStr)
             // You can load parameters from any object with the right members
             // instead of passing each parameter manually
@@ -82,7 +82,7 @@ entry [When does Facil regenerate files?](#when-does-facil-regenerate-files).
 Facil is a friendly, flexible, and full-featured fabricator of files for fluent and frictionless facades facilitating
 the facile and functional fetching of facts.
 
-(“Facts” referring to data stored in SQL server. It would be better if SQL started with an F. Oh well.)
+(“Facts” referring to data stored in SQL Server. It would be better if SQL started with an F. Oh well.)
 
 Okay, elevator pitch without the alliteration: Facil works similarly to type providers
 like [FSharp.Data.SqlClient](https://github.com/fsprojects/FSharp.Data.SqlClient/) by letting you call SQL scripts and
@@ -145,6 +145,7 @@ configuring them:
 * “Upsert” - use MERGE to insert or update a row by its primary key (supports output columns)
 * Insert/update/upsert a batch of rows efficiently (supports output columns)
 * Delete a row by its primary key (supports output columns)
+* Delete a batch of rows by primary key
 * Get all rows
 * Get a row by its primary key
 * Get rows by a batch of primary keys (using a TVP)
@@ -210,7 +211,7 @@ Yes. There are three environment variables you can set. You can use any of them 
   effectively make Facil mimic a type provider without caching/offline capabilities. As always during regeneration, any
   configured connection strings must be available in the specified configuration sources.
 * `FACIL_FAIL_ON_REGENERATE`: Set this to make Facil fail the build if regeneration is triggered (i.e., if an output
-  file is missing or its header is not up-to-date). You can use this to reject commits that does not include up-to-date
+  file is missing or its header is not up-to-date). You can use this to reject commits that do not include up-to-date
   generated code.
 * `FACIL_FAIL_ON_CHANGED_OUTPUT`: Set this to make Facil fail the build if the output has changed. Unlike
   `FACIL_FAIL_ON_REGENERATE`, this is checked after regeneration has taken place, and compares the entire output, not
@@ -248,6 +249,7 @@ For each file, you can configure:
 * The generated filename
 * The generated namespace/module
 * Arbitrary code to put at the top of the generated file
+* Whether SQL Server `date` values generate as `DateOnly` or legacy `DateTime`
 * Which stored procedures (regex matching) or scripts (glob matching) to generate code for
 * Which tables to generate DTO records for (which can be used, automatically or manually, for matching procedure/script
   result sets)
@@ -264,6 +266,7 @@ For each procedure/script (or any set of these that matches a specified regex/gl
 * For each parameter: Its nullability and the name to use in parameter DTO objects
 * For each script parameter: Its type (to work around type inference limitations for
   scripts, [see below](#type-inference-limitations-in-scripts))
+* For each output column: Whether to skip it and its nullability
 * Temp tables ([see below](#can-i-use-temp-tables))
 
 For each table DTO, you can configure:
@@ -395,7 +398,7 @@ cost of `Seq.toList`, then 1) I don’t think that’s correct, because (as ment
 built up in reverse by prepending each item, and the `List.rev` at the end would cause at least one “copy” anyway, and
 
 2) in the rare case that your use-case is so sensitive to performance that you are concerned about the performance
-   impact of `Seq.toList`, then you should probably just just use the returned `ResizeArray` directly.
+   impact of `Seq.toList`, then you should probably just use the returned `ResizeArray` directly.
 
 Note that since Facil is a general-purpose data access library, I do not know anything about user workloads, databases
 or connections, and I have not benchmarked anything. All of the above is going by intuition (admittedly a dangerous
