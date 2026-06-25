@@ -413,6 +413,33 @@ let printProducts connStr (args: ProductSearchArgs) =
 
 Like lazy execution, reader execution does not expose stored procedure output parameters or return values.
 
+### How do I use an existing connection or transaction?
+
+Pass an open `SqlConnection` to `WithConnection`. If you also have an active `SqlTransaction`, pass it as the second
+argument. Facil will use the connection and transaction you provide, but it will not dispose caller-owned connections or
+transactions.
+
+```f#
+open Microsoft.Data.SqlClient
+
+open DbGen.Procedures.dbo
+
+let saveUser connStr user =
+    use conn = new SqlConnection(connStr)
+    conn.Open()
+    use tran = conn.BeginTransaction()
+
+      SaveUser
+          .WithConnection(conn, tran)
+          .WithParameters(user)
+          .Execute()
+
+      tran.Commit()
+```
+
+If you only need to reuse a connection, omit the transaction argument. Do not also set `cmd.Transaction` in
+`ConfigureCommand`; pass the transaction only through `WithConnection`.
+
 ### Why do the `Execute` methods return `ResizeArray` and not an F# `list`?
 
 The rows have to be read from the DB one at a time without knowing how many rows there are. As far as I know, a
