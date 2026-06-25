@@ -282,6 +282,22 @@ For each table type (automatically included by Facil if used in included procedu
 * Whether to use `ValueOption` instead of `Option`
 * Whether to skip the `inline` DTO parameter overloads (for faster compilation if you don’t use them)
 
+### How do I keep generated SQL `date` values as `DateTime`?
+
+SQL Server `date` values generate as `DateOnly` by default. If you are upgrading existing generated code and want to
+keep the legacy `DateTime` public signatures while migrating, set `dateType: dateTime` on each affected ruleset:
+
+```yaml
+rulesets:
+  - connectionString: YOUR CONNECTION STRING HERE
+    dateType: dateTime
+    procedures:
+      - include: .*
+```
+
+When you are ready to migrate to `DateOnly`, remove the setting and update callers that use generated `date` parameters
+or results.
+
 ### Type inference limitations in scripts
 
 Type inference in scripts is limited due to limitations in SQL
