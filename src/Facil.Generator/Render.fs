@@ -449,6 +449,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                 "cmd.CommandType <- CommandType.StoredProcedure"
                                 $"cmd.CommandText <- \"{sp.SchemaName}.{sp.Name}\""
                             | Choice2Of2 s ->
+                                // Known limitation: SQL text containing F#'s raw-string delimiter (""") can make generated source invalid.
+                                // This is not a deliberate design decision; we are leaving it as-is until users report a real case.
                                 $"cmd.CommandText <- \"\"\"-- %s{s.GlobMatchOutput.Replace('\\', '/')}%s{Environment.NewLine}%s{s.Source.Split '\n' |> String.concat Environment.NewLine}\"\"\""
                             "userConfigureCmd cmd"
                         ]
@@ -816,6 +818,8 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                 "cmd.CommandType <- CommandType.StoredProcedure"
                                 $"cmd.CommandText <- \"{sp.SchemaName}.{sp.Name}\""
                             | Choice2Of2 s ->
+                                // Known limitation: SQL text containing F#'s raw-string delimiter (""") can make generated source invalid.
+                                // This is not a deliberate design decision; we are leaving it as-is until users report a real case.
                                 $"cmd.CommandText <- \"\"\"-- %s{s.GlobMatchOutput.Replace('\\', '/')}%s{Environment.NewLine}%s{s.Source.Split '\n' |> String.concat Environment.NewLine}\"\"\""
                             "cmd.Parameters.AddRange sqlParams"
                             "userConfigureCmd cmd"
