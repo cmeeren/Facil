@@ -1,0 +1,34 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".fantomasignore" />
+    <File Path="AGENTS.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="facil_reference.yaml" />
+    <File Path="global.json" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+    <File Path="RELEASE_NOTES.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.config/">
+    <File Path=".config/dotnet-tools.json" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/">
+    <File Path=".github/CONTRIBUTING.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/workflows/">
+    <File Path=".github/workflows/ci.yml" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="src/DbTests.DbGen/DbTests.DbGen.fsproj" />
+    <Project Path="src/DbTests/DbTests.fsproj" />
+    <Project Path="src/PackageTests/PackageTests.fsproj" />
+    <Project Path="src/TestDb/TestDb.sqlproj">
+      <Build />
+    </Project>
+  </Folder>
+  <Project Path="src/Facil.Generator/Facil.Generator.fsproj" />
+  <Project Path="src/Facil.Package/Facil.Package.fsproj" />
+  <Project Path="src/Facil.Runtime.CSharp/Facil.Runtime.CSharp.csproj" />
+  <Project Path="src/Facil.Runtime/Facil.Runtime.fsproj" />
+</Solution>
