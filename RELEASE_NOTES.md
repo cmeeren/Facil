@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 3.1.0 (2026-09-08)
 
 * SQL scripts, stored procedures, and temp-table definitions now support SQL Server 2025 syntax, up from SQL Server 2019,
   including `IS [NOT] DISTINCT FROM`, named `WINDOW` clauses, and `REGEXP_LIKE` predicates.
