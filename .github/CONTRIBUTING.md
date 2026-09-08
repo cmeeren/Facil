@@ -76,7 +76,7 @@ Development
 
 #### Dev dependencies
 
-* A SQL Server (e.g. Developer Edition) instance with full-text search available at `Data Source=.`
+* A SQL Server 2025 (e.g. Developer Edition) instance with full-text search available at `Data Source=.`
   * If you’d like to use another SQL Server instance, just modify the data source in `DbTests.DbGen\appsettings.json`
     and `TestDb\LocalDB.publish.xml`
 * Publish using `TestDb\LocalDB.publish.xml` (in VS, just double-click it and choose Publish)

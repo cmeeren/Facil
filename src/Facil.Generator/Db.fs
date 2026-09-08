@@ -133,7 +133,7 @@ let rewriteLocalTempTablesToGlobalTempTablesWithPrefix (nameOrDefinition: string
 
 
 let private parseScript source =
-    let parser = TSql150Parser(true)
+    let parser = TSql170Parser(true)
     let fragment, errs = parser.Parse(new StringReader(source))
 
     if errs.Count > 0 then
@@ -1284,7 +1284,7 @@ let getTableDtosIncludingThoseNeededForTableScriptsWithSkippedColumns
 let getTempTable cfg (typeNameLookup: SqlTypeNameLookup) definition connStr (conn: SqlConnection) =
     try
         let mutable name = null
-        let parser = TSql150Parser(true)
+        let parser = TSql170Parser(true)
         let fragment, errs = parser.Parse(new StringReader(definition))
 
         if errs.Count > 0 then

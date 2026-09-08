@@ -635,7 +635,7 @@ let parseDefaultValue (definition: string) (expr: ScalarExpression) =
 
 
 let getParameterDefaultValues (sproc: StoredProcedure) =
-    let parser = TSql150Parser(true)
+    let parser = TSql170Parser(true)
     let fragment, errs = parser.Parse(new StringReader(sproc.Definition))
 
     if errs.Count > 0 then

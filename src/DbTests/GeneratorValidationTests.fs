@@ -136,6 +136,111 @@ let tests =
     testSequenced
     <| testList "Generator validation tests" [
 
+        for predicate in [ "IS DISTINCT FROM"; "IS NOT DISTINCT FROM" ] do
+            testCase $"%s{predicate} is supported in parameterized scripts"
+            <| fun () ->
+                let yaml =
+                    """
+                    configs:
+                      - appSettings: appsettings.json
+
+                    rulesets:
+                      - connectionString: $(connectionString)
+                        filename: DbGen.fs
+                        namespaceOrModuleDeclaration: module DbGen
+                        scriptBasePath: SQL
+                        scripts:
+                          - include: Distinct.sql
+                    """
+
+                let script = $"SELECT Value = 1 WHERE CAST(@value AS INT) %s{predicate} NULL"
+
+                withTemporaryGeneratorProject yaml [ "Distinct.sql", script ]
+                <| fun projectDir ->
+                    let exitCode, output = runGenerator projectDir
+
+                    if exitCode <> 0 then
+                        failtest output
+
+                    let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+                    Expect.stringContains generated "``value``: int" "The predicate parameter should be discovered"
+
+
+            testCase $"%s{predicate} is supported when reading procedure parameter defaults"
+            <| fun () ->
+                let name = "FacilDistinct" + Guid.NewGuid().ToString("N")
+                use conn = new SqlConnection(Config.connStr)
+                conn.Open()
+                use cmd = conn.CreateCommand()
+
+                cmd.CommandText <-
+                    $"CREATE PROCEDURE dbo.%s{name} @value INT = NULL AS SELECT Value = 1 WHERE @value %s{predicate} NULL"
+
+                cmd.ExecuteNonQuery() |> ignore
+
+                try
+                    let yaml =
+                        """
+                        configs:
+                          - appSettings: appsettings.json
+
+                        rulesets:
+                          - connectionString: $(connectionString)
+                            filename: DbGen.fs
+                            namespaceOrModuleDeclaration: module DbGen
+                            procedures:
+                              - include: '^dbo\.PROCEDURE$'
+                        """
+                            .Replace("PROCEDURE", name)
+
+                    withTemporaryGeneratorProject yaml []
+                    <| fun projectDir ->
+                        let exitCode, output = runGenerator projectDir
+
+                        if exitCode <> 0 then
+                            failtest output
+
+                        let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+
+                        Expect.stringContains
+                            generated
+                            "``value``: int option"
+                            "A NULL default should make the parameter optional"
+                finally
+                    cmd.CommandText <- $"DROP PROCEDURE dbo.%s{name}"
+                    cmd.ExecuteNonQuery() |> ignore
+
+
+            testCase $"%s{predicate} is supported in temp table definitions"
+            <| fun () ->
+                let yaml =
+                    """
+                    configs:
+                      - appSettings: appsettings.json
+
+                    rulesets:
+                      - connectionString: $(connectionString)
+                        filename: DbGen.fs
+                        namespaceOrModuleDeclaration: module DbGen
+                        scriptBasePath: SQL
+                        scripts:
+                          - include: Distinct.sql
+                            tempTables:
+                              - definition: 'CREATE TABLE #Rows (Value INT NULL CHECK (Value PREDICATE 0))'
+                    """
+                        .Replace("PREDICATE", predicate)
+
+                withTemporaryGeneratorProject yaml [ "Distinct.sql", "SELECT Value FROM #Rows" ]
+                <| fun projectDir ->
+                    let exitCode, output = runGenerator projectDir
+
+                    if exitCode <> 0 then
+                        failtest output
+
+                    let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+                    Expect.stringContains generated "``Value``: int option" "The temp table column should be discovered"
+
+
         testCase "Duplicate output column names are ignored with a clear warning"
         <| fun () ->
             let yaml =

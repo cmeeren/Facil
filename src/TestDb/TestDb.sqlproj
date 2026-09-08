@@ -1,10 +1,10 @@
 ﻿<Project DefaultTargets="Build">
 
-  <Sdk Name="Microsoft.Build.Sql" Version="0.1.7-preview" />
+  <Sdk Name="Microsoft.Build.Sql" Version="2.2.0" />
 
   <PropertyGroup>
     <Name>TestDb</Name>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql170DatabaseSchemaProvider</DSP>
     <ModelCollation>1033,CI</ModelCollation>
   </PropertyGroup>
 
