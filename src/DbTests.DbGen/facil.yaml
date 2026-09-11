@@ -632,3 +632,15 @@ rulesets:
 
     tableDtos:
       - include: '^dbo\.AllTypesNonNull$'
+
+  - connectionString: $(connectionString)
+    filename: IncludeDbGen.fs
+    namespaceOrModuleDeclaration: module IncludeDbGen
+    scriptBasePath: IncludeFixtures
+    scripts:
+      - include: '**/*.sql'
+        except: Shared/**
+        expandIncludes: true
+        params:
+          minId:
+            type: INT

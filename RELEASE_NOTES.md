@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### Unreleased
+
+* SQL scripts can share SQL fragments using `{{include "relative/path.sql"}}` with `expandIncludes: true`.
+  See the [README](README.md#can-i-share-sql-between-scripts) for details.
+
 ### 3.1.0 (2026-09-08)
 
 * SQL scripts, stored procedures, and temp-table definitions now support SQL Server 2025 syntax, up from SQL Server 2019,

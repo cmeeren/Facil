@@ -170,6 +170,47 @@ likely need a very high utility-to-maintenance ratio, or scratch a personal itch
 If the above queries with the available configuration options don’t satisfy your needs, you can, after all, just write
 the queries manually and consume them using Facil.
 
+### Can I share SQL between scripts?
+
+Yes. Set `expandIncludes: true` on a script rule to replace `{{include "relative/path.sql"}}` tokens with the contents
+of another file before Facil processes the SQL. For example:
+
+```yaml
+rulesets:
+  - connectionString: YOUR CONNECTION STRING HERE
+    scriptBasePath: SQL
+    scripts:
+      - include: "**/*.sql"
+        except: "Shared/**/*.sql"
+        expandIncludes: true
+```
+
+In `SQL/GetActiveUsers.sql`:
+
+```sql
+SELECT Id, Name
+FROM dbo.Users
+WHERE {{include "Shared/ActiveUserFilter.sql"}}
+```
+
+In `SQL/Shared/ActiveUserFilter.sql`:
+
+```sql
+IsActive = 1
+```
+
+Paths are relative to the file containing the include. Fragments can have any file extension and include other
+fragments, but all files must stay within `scriptBasePath`. Symbolic links, directory junctions, and other reparse
+points below `scriptBasePath` are not supported, even if they point to files inside it.
+
+Includes work inside SQL strings and comments too. The text is inserted as-is, so escape any quotes needed when
+including SQL inside a string.
+
+The script's `expandIncludes` setting also applies to nested includes. Keep fragments excluded from script matching,
+as with `Shared` above, to avoid generating separate wrappers for them.
+
+For SQL Server errors, line numbers refer to the SQL after includes have been expanded.
+
 ### Why not a type provider?
 
 Type providers are great in theory, and to a large extent also in practice, but have some notable drawbacks:
@@ -193,7 +234,7 @@ forced generation on CI and also optionally failing the build if the generated c
 Facil will regenerate (hitting your DB) before the compilation step of your build if any of the following are true:
 
 * There are changes to the header of the generated file(s) (this is the simplest way to manually force a rebuild)
-* There are changes in included SQL scripts
+* There are changes in included SQL scripts, including fragments used with `expandIncludes: true`
 * There are changes in the config file
 * There are changes to Facil itself (i.e., when updating Facil)
 * The environment variable `FACIL_FORCE_REGENERATE` exists
@@ -231,6 +272,9 @@ these files to the project's up-to-date check. Simply add this in your `.fsproj`
   <UpToDateCheckInput Include="facil.yaml" />
 </ItemGroup>
 ```
+
+If you use `expandIncludes`, make sure its fragment files are also covered by `UpToDateCheckInput`. The example above
+covers `.sql` fragments under the project directory; add entries for fragments with other extensions or locations.
 
 ### What can I configure?
 

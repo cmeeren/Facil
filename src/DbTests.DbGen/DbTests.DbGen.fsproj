@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <UpToDateCheckInput Include="SQL\**\*.sql" />
+    <UpToDateCheckInput Include="IncludeFixtures\**\*.sql" />
     <UpToDateCheckInput Include="facil.yaml" />
     <UpToDateCheckInput Include="..\Facil.Generator\**\*.fs" />
     <UpToDateCheckInput Include="..\Facil.Generator\facil_minimal.yaml" />

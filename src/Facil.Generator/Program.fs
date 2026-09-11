@@ -116,8 +116,8 @@ module Program =
                             segmentsWithName[0 .. segmentsWithName.Length - 2] |> Array.toList
                         NameWithoutExtension = Path.GetFileNameWithoutExtension globOutput
                         Source =
-                            File.ReadAllLines(Path.Combine(cfg.ScriptBasePath, globOutput))
-                            |> String.concat "\n"
+                            let rule = RuleSet.getEffectiveScriptRuleFor globOutput cfg
+                            ScriptIncludes.readSource cfg.ScriptBasePath globOutput rule.ExpandIncludes
                         Parameters = []
                         ResultSet = None
                         TempTables = []

@@ -213,6 +213,7 @@ type ScriptRuleDto = {
     ``include``: string option
     ``for``: string option
     except: string option
+    expandIncludes: bool option
     result: string option
     paramDto: string option
     skipParamDto: bool option
@@ -228,6 +229,7 @@ type ScriptRuleDto = {
 type ScriptRule = {
     IncludeOrFor: IncludeOrFor
     Except: string option
+    ExpandIncludes: bool option
     Result: ResultKind option
     ParamDto: ParamDtoKind option
     VoptionIn: bool option
@@ -240,6 +242,7 @@ type ScriptRule = {
 
 
 type EffectiveScriptRule = {
+    ExpandIncludes: bool
     Result: ResultKind
     ParamDto: ParamDtoKind
     VoptionIn: bool
@@ -869,6 +872,7 @@ module ScriptRule =
                 | Some _, Some _ ->
                     failwithYamlError fullYamlPath 0 0 "'include' and 'for' may not be combined in a script rule"
             Except = dto.except
+            ExpandIncludes = dto.expandIncludes
             Result =
                 dto.result
                 |> Option.map (
@@ -909,6 +913,7 @@ module ScriptRule =
 
 
     let defaultEffectiveRule: EffectiveScriptRule = {
+        ExpandIncludes = false
         Result = Auto
         ParamDto = Inline
         VoptionIn = false
@@ -937,6 +942,7 @@ module ScriptRule =
 
 
     let merge (eff: EffectiveScriptRule) (rule: ScriptRule) : EffectiveScriptRule = {
+        ExpandIncludes = rule.ExpandIncludes |> Option.defaultValue eff.ExpandIncludes
         Result = rule.Result |> Option.defaultValue eff.Result
         ParamDto = rule.ParamDto |> Option.defaultValue eff.ParamDto
         VoptionIn = rule.VoptionIn |> Option.defaultValue eff.VoptionIn

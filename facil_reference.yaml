@@ -218,6 +218,16 @@ rulesets:
       - include: '**/*.sql'
         except: SQL/ScriptToExclude.sql
 
+        # Share SQL between scripts by replacing {{include "relative/path.sql"}} tokens
+        # with file contents. Default false. Paths are relative to the file containing
+        # the token and must stay within scriptBasePath.
+        #
+        # Replacement also happens inside SQL strings and comments, without escaping.
+        # Use include/except globs to exclude shared fragments from standalone generation.
+        #
+        # See "Can I share SQL between scripts?" in the README for examples and details.
+        expandIncludes: true
+
         # The following work exactly like they do in stored procedure rules.
         result: anonymous
         paramDto: nominal

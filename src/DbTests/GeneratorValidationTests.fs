@@ -136,6 +136,79 @@ let tests =
     testSequenced
     <| testList "Generator validation tests" [
 
+        for scenario in
+            [
+                "expanded source"
+                "unchanged input"
+                "nested fragment changed"
+                "nested fragment missing"
+            ] do
+            testCase $"Script includes: %s{scenario}"
+            <| fun () ->
+                let yaml =
+                    """
+                    configs:
+                      - appSettings: appsettings.json
+                    rulesets:
+                      - connectionString: $(connectionString)
+                        scriptBasePath: SQL
+                        scripts:
+                          - include: '**/*.sql'
+                            except: Shared/**
+                            expandIncludes: true
+                          - for: Query.sql
+                            params:
+                              input:
+                                type: INT
+                          - for: Shared/**
+                            expandIncludes: false
+                    """
+
+                let scripts = [
+                    "Query.sql", "SELECT {{include \"Shared/Projection.sql\"}} WHERE @input = 1"
+                    "Shared/Projection.sql", "{{include \"Value.txt\"}} AS Value"
+                    "Shared/Value.txt", "42"
+                ]
+
+                withTemporaryGeneratorProject yaml scripts
+                <| fun projectDir ->
+                    let initialExit, initialOutput = runGenerator projectDir
+
+                    if initialExit <> 0 then
+                        failtest initialOutput
+
+                    let nestedPath = Path.Combine(projectDir, "SQL", "Shared", "Value.txt")
+
+                    match scenario with
+                    | "nested fragment changed" -> File.WriteAllText(nestedPath, "43")
+                    | "nested fragment missing" -> File.Delete(nestedPath)
+                    | _ -> ()
+
+                    let exitCode, output = runGenerator projectDir
+                    let generated = File.ReadAllText(Path.Combine(projectDir, "DbGen.fs"))
+
+                    let observed, expected =
+                        match scenario with
+                        | "expanded source" ->
+                            (exitCode = 0
+                             && generated.Contains("SELECT 42 AS Value WHERE @input = 1")
+                             && generated.Contains("``input``: int")
+                             && not (generated.Contains("{{include"))
+                             && not (generated.Contains("type ``Projection``"))),
+                            true
+                        | "unchanged input" -> (exitCode = 0 && output.Contains("Skipping regeneration")), true
+                        | "nested fragment changed" ->
+                            (exitCode = 0
+                             && output.Contains("Regenerating")
+                             && generated.Contains("SELECT 43 AS Value WHERE @input = 1")),
+                            true
+                        | _ ->
+                            (exitCode <> 0
+                             && output.Contains("Query.sql -> Shared/Projection.sql -> Shared/Value.txt")),
+                            true
+
+                    Expect.equal observed expected output
+
         for predicate in [ "IS DISTINCT FROM"; "IS NOT DISTINCT FROM" ] do
             testCase $"%s{predicate} is supported in parameterized scripts"
             <| fun () ->
