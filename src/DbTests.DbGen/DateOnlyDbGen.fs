@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "3.1.0+9cb788c61790429d079189b3b5eb55e0871222be",
-    "assemblyHash": "30832dfb231aa86eddaaf79d749823b6"
+    "assemblyVersion": "3.2.0+585adb160b6b1e5eccb4f3d13dd671a49c9fa854",
+    "assemblyHash": "3f77108c0521dff2a955b04ef83bea75"
   },
   "config": {
     "path": "facil.yaml",
@@ -20,7 +20,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "3.1.0+9cb788c61790429d079189b3b5eb55e0871222be")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "3.2.0+585adb160b6b1e5eccb4f3d13dd671a49c9fa854")>]
 module DateOnlyDbGen
 
 #nowarn "49"

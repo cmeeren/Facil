@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 3.2.0 (2026-09-11)
 
 * SQL scripts can share SQL fragments using `{{include "relative/path.sql"}}` with `expandIncludes: true`.
   See the [README](README.md#can-i-share-sql-between-scripts) for details.
