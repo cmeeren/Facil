@@ -60,7 +60,7 @@ dotnet src/DbTests/bin/Release/net10.0/DbTests.dll --fail-on-focused-tests
 5. When packaging behavior or package metadata matters, inspect the produced `nupkg/Facil.<Version>.nupkg` metadata. Local pack can prove the package version and release-notes URL are embedded.
 
 6. Commit and tag:
-   - Load `git-commit-message` before authoring the commit.
+   - Use `git-commit` to execute the authorized commit; it routes message authoring to `git-commit-message`.
    - Use `v/<Version>` for releases, for example `v/2.16.0`.
 
 7. Push the commit and tag. Successful tag CI publishes the package to NuGet.
@@ -79,21 +79,11 @@ gh run watch $runId --repo $repo --exit-status
 ````
 
    - Confirm the tag run succeeded and that the `Push` step performed a real NuGet upload. The workflow uses `--skip-duplicate`, so a successful step can still mean the package already existed and was skipped. Inspect the fresh run logs; if the push was skipped as a duplicate, the push logs are unavailable, or NuGet publication is unclear, stop and inspect/report before creating a GitHub Release.
-   - Verify the exact package version is visible on NuGet before creating a GitHub Release:
+   - Verify the exact package version is visible on NuGet with [scripts/wait-for-nuget.js](scripts/wait-for-nuget.js) before creating a GitHub Release. Run from the repository root with Node.js 22 or newer. The helper checks every 30 seconds for up to ten minutes, bounds each request to 15 seconds, and exits nonzero on timeout or an unexpected HTTP response. It retries HTTP 404, 429, server errors, and network failures; it does not publish anything. Wait for completion using bounded tool waits rather than starting additional polling commands. Proceed only after exit code 0; otherwise report the failure and keep the GitHub Release unpublished.
 
 ````powershell
-$version = "<Version>".ToLowerInvariant()
-$packageUrl = "https://api.nuget.org/v3-flatcontainer/facil/$version/facil.$version.nupkg"
-
-for ($attempt = 1; $attempt -le 12; $attempt++) {
-    try {
-        Invoke-WebRequest -Method Head -Uri $packageUrl -UseBasicParsing | Out-Null
-        break
-    } catch {
-        if ($attempt -eq 12) { throw "NuGet package is not available: $packageUrl" }
-        Start-Sleep -Seconds 10
-    }
-}
+node .agents/skills/release-facil/scripts/wait-for-nuget.js "<Version>"
+if ($LASTEXITCODE -ne 0) { throw "NuGet availability check failed; do not create the GitHub Release" }
 ````
 
 9. Refresh and inspect the GitHub Release notes immediately before creating the release:
