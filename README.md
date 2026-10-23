@@ -631,6 +631,25 @@ that no changes are made to the database during build time.
 
 This is exactly what [Fling](https://github.com/cmeeren/Fling) does. Fling works great with Facil!
 
+Agent skill
+-----------
+
+The [Facil skill](https://github.com/cmeeren/Facil/tree/main/.agents/skills/facil) helps coding agents configure Facil
+and use the generated code.
+
+To install it, copy the `.agents/skills/facil` folder from this repository into your project's skill directory (for
+Codex, `.agents/skills/facil`), or ask your agent's skill installer to install that folder. Install only `facil`;
+`release-facil` is for maintainers of this library.
+
+The skill is available starting with Facil 3.3. Use the Git tag matching your package version (`v/<version>`), or
+`main` for development builds. Review and commit the installed skill with your project, and update it when upgrading
+Facil. Installation is optional and explicit; the NuGet package does not install agent instructions during builds.
+
+The same skill is bundled as `skills/SKILL.md` in the NuGet package. Agents and package-aware tools can read it from
+`<global-packages-folder>/facil/<version>/skills/SKILL.md` after restore. Run `dotnet nuget locals global-packages
+--list` to locate that folder. This copy matches the installed package version; bundling it does not automatically make
+it discoverable by your agent.
+
 Release notes
 -------------
 

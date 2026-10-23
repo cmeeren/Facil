@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### Unreleased
+
+* The package now includes an agent skill that helps coding agents configure Facil and use the generated code. See
+  the [README](README.md#agent-skill) for how to install it.
+
 ### 3.2.0 (2026-09-11)
 
 * SQL scripts can share SQL fragments using `{{include "relative/path.sql"}}` with `expandIncludes: true`.

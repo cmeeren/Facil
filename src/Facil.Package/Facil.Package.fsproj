@@ -48,6 +48,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="..\..\.agents\skills\facil\SKILL.md">
+      <Pack>True</Pack>
+      <PackagePath>skills/SKILL.md</PackagePath>
+    </None>
   </ItemGroup>
 
   <Target Name="DeleteOldNupkgFiles" BeforeTargets="GenerateNuspec">

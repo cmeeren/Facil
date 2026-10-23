@@ -11,3 +11,4 @@
 - Keep `README.md`, `RELEASE_NOTES.md`, and `facil_reference.yaml` user-facing. Describe behavior, migration impact, usage guidance, and YAML configuration reference details; avoid implementation details, internal-only rationale, and irrelevant churn.
 - Keep YAML comments focused on the setting, default, and essential caveats; use the README for examples, usage guidance, and surprising limitations. Avoid restating behavior shared with ordinary Facil scripts.
 - Update `facil_reference.yaml` when public YAML configuration behavior, options, defaults, examples, or reference text change.
+- The consumer skill `.agents/skills/facil/SKILL.md` is packed into the NuGet package as `skills/SKILL.md`. Update it when user-facing behavior, configuration, or usage guidance changes.

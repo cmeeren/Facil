@@ -7,7 +7,7 @@ description: Prepare and publish Facil releases. Use when updating release notes
 
 ## Overview
 
-Use this skill to release Facil through the repo's normal tag-driven NuGet flow, then create a GitHub Release after the tag CI has successfully pushed the package to NuGet. Keep the release change small and user-facing: version fields, release notes, README and `facil_reference.yaml` updates when behavior or configuration changed, verification, commit, tag, push, CI/NuGet confirmation, and GitHub Release publication. Follow the user's existing authorization boundaries for commits, pushes, and publication; preparation alone does not authorize them.
+Use this skill to release Facil through the repo's normal tag-driven NuGet flow, then create a GitHub Release after the tag CI has successfully pushed the package to NuGet. Keep the release change small and user-facing: version fields, release notes, README, `facil_reference.yaml` and consumer skill updates when behavior or configuration changed, verification, commit, tag, push, CI/NuGet confirmation, and GitHub Release publication. Follow the user's existing authorization boundaries for commits, pushes, and publication; preparation alone does not authorize them.
 
 ## Workflow
 
@@ -25,6 +25,7 @@ Use this skill to release Facil through the repo's normal tag-driven NuGet flow,
 
 3. Prepare the release content:
    - Update code and docs only as needed for the release.
+   - Check `.agents/skills/facil/SKILL.md` against the release's behavior and configuration, including its stated version scope and documentation links, and keep the README's skill installation guidance current.
    - Update `RELEASE_NOTES.md` with user-facing behavior, migration impact, and usage guidance. Add entries under `### Unreleased`, creating that section if necessary.
    - Put actionable breaking changes first, using a `#### Breaking changes` or `#### Upgrading from <previous major>.x` subsection. Explain what affected users need to change, such as regenerating code, changing YAML settings, or updating calls to generated APIs. Group correctness fixes that restore expected behavior; do not catalog niche edge cases unless they have meaningful migration consequences.
    - Use other categorizing subsections only when grouping materially improves readability; for small releases, prefer plain bullets under the version heading.

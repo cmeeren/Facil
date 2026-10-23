@@ -3,6 +3,7 @@ module PackageSmokeTests
 open System
 open System.Diagnostics
 open System.IO
+open System.IO.Compression
 open System.Security
 open System.Text.Json
 open System.Xml.Linq
@@ -245,4 +246,24 @@ let tests =
                 Expect.stringContains generatedContent "GeneratedCode(\"Facil\"" "Expected Facil-generated source"
                 Expect.stringContains generatedContent "SqlGeometry" "Expected generated source to expose geometry"
                 Expect.stringContains generatedContent "SqlGeography" "Expected generated source to expose geography"
+
+        testCase "Packed Facil package bundles the consumer agent skill"
+        <| fun () ->
+            runProcess repoRoot [] "dotnet" $"pack \"{packageProjectPath}\" -c Release"
+
+            use package = ZipFile.OpenRead packagePath
+            let entry = package.GetEntry "skills/SKILL.md"
+            Expect.isNotNull entry "Expected skills/SKILL.md in the package"
+
+            use entryStream = entry.Open()
+            use packagedSkill = new MemoryStream()
+            entryStream.CopyTo packagedSkill
+
+            let repoSkill =
+                File.ReadAllBytes(Path.Combine(repoRoot, ".agents", "skills", "facil", "SKILL.md"))
+
+            Expect.sequenceEqual
+                (packagedSkill.ToArray())
+                repoSkill
+                "Expected the packaged skill to match the repo skill"
     ]
