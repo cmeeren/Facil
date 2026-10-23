@@ -78,7 +78,7 @@ $runId = $run[0].databaseId
 gh run watch $runId --repo $repo --exit-status
 ````
 
-   - Confirm the tag run succeeded and that the `publish` job's `Push` step performed a real NuGet upload. The workflow uses `--skip-duplicate`, so a successful step can mean the package already existed. Inspect the fresh run logs; if the push was skipped as a duplicate, logs are unavailable, or publication is unclear, stop and inspect/report before creating a GitHub Release.
+   - Confirm the tag run succeeded, including its `publish` job. That job pushes only the package whose version matches the tag and fails if NuGet already has that version, so success means this run uploaded it. If it failed, stop and inspect/report before creating a GitHub Release.
    - Verify the exact package version is visible on NuGet with [scripts/wait-for-nuget.js](scripts/wait-for-nuget.js). Run from the repository root with Node.js 22 or newer. The helper checks every 30 seconds for up to ten minutes, bounds each request to 15 seconds, and exits nonzero on timeout or an unexpected HTTP response. It retries HTTP 404, 429, server errors, and network failures; it does not publish anything. Wait using bounded tool waits rather than starting additional polling commands.
 
 ````powershell

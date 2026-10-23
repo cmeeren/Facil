@@ -102,8 +102,15 @@ jobs:
         with:
           user: ${{ secrets.NUGET_USER }}
 
-      # Uses the runner's preinstalled .NET SDK, since this job builds nothing
+      # Uses the runner's preinstalled .NET SDK, since this job builds nothing. Pushes only the package matching the tag,
+      # and fails if NuGet already has that version, so a green run means this run uploaded it.
       - name: Push
         env:
           NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
-        run: dotnet nuget push artifacts/packages/*.nupkg -s "https://api.nuget.org/v3/index.json" -k "$NUGET_API_KEY" --skip-duplicate
+        run: |
+          package="artifacts/packages/Facil.${GITHUB_REF_NAME#v/}.nupkg"
+          if [ ! -f "$package" ]; then
+            echo "::error::No package matches tag $GITHUB_REF_NAME. Packages built:" $(ls artifacts/packages)
+            exit 1
+          fi
+          dotnet nuget push "$package" -s "https://api.nuget.org/v3/index.json" -k "$NUGET_API_KEY"
