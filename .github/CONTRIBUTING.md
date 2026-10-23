@@ -123,10 +123,11 @@ Notes about this workflow:
 
 For maintainers.
 
-* Make necessary changes to the code
-* Update the changelog
-* Update the version in `Directory.Build.props`
-* Regenerate the test project (see steps above)
-* Commit and tag the commit in the format `v/x.y.z` (this is what triggers deployment from GitHub Actions)
-* Push the changes and the tag to the repo. If the GitHub Actions build succeeds, the package is automatically published
-  to NuGet.
+Follow the [release-facil skill](../.agents/skills/release-facil/SKILL.md) for the full release workflow.
+
+* Update `Version` in `Directory.Build.props` and finalize the version/date heading in `RELEASE_NOTES.md`. Update
+  `facil_reference.yaml` if the YAML configuration changed.
+* Check formatting, run the Release build and tests against SQL Server as CI does (this also regenerates the test
+  project), and inspect the packed NuGet package.
+* Commit and tag the commit as `v/x.y.z`, then push the commit and tag. Successful tag CI publishes to NuGet.
+* Confirm the exact version is available on NuGet, then create the GitHub Release using the tagged release notes.

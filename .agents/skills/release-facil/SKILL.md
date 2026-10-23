@@ -7,11 +7,11 @@ description: Prepare and publish Facil releases. Use when updating release notes
 
 ## Overview
 
-Use this skill to release Facil through the repo's normal tag-driven NuGet flow, then create a GitHub Release after the tag CI has successfully pushed the package to NuGet. Keep the release change small and user-facing: version fields, release notes, README and `facil_reference.yaml` updates when behavior or configuration changed, verification, commit, tag, push, CI/NuGet confirmation, and GitHub Release publication.
+Use this skill to release Facil through the repo's normal tag-driven NuGet flow, then create a GitHub Release after the tag CI has successfully pushed the package to NuGet. Keep the release change small and user-facing: version fields, release notes, README and `facil_reference.yaml` updates when behavior or configuration changed, verification, commit, tag, push, CI/NuGet confirmation, and GitHub Release publication. Follow the user's existing authorization boundaries for commits, pushes, and publication; preparation alone does not authorize them.
 
 ## Workflow
 
-1. Require a clean working directory before proceeding. If `git status --short` reports any changes, stop and ask the user whether to commit, stash, discard, or otherwise resolve them first.
+1. Require a clean working directory before starting a release. If `git status --short` reports changes unrelated to the authorized release work, stop and ask how to resolve them. Do not discard or stash user changes automatically. This precondition does not block an explicitly requested documentation edit or continuation of release preparation already underway.
 
 2. Confirm the release shape before editing:
    - Bump `Version` in `Directory.Build.props`.
@@ -20,23 +20,21 @@ Use this skill to release Facil through the repo's normal tag-driven NuGet flow,
 ````xml
 <PackageReleaseNotes>https://github.com/cmeeren/Facil/releases/tag/v/$(Version)</PackageReleaseNotes>
 ````
+
    - Use `v/<Version>` for the release tag. The CI workflow publishes packages only for tags under `refs/tags/v/`.
 
 3. Prepare the release content:
    - Update code and docs only as needed for the release.
-   - Update `RELEASE_NOTES.md` with user-facing behavior, migration impact, and usage guidance.
-   - For user-relevant changes, add a concise entry in the `### Unreleased` section, creating that section if it does not exist.
-   - When the release includes any breaking change, create or keep a `#### Breaking` subsection and place it before other categorizing subsections. Put every breaking release-note entry there; do not bury breaking changes under `#### Changed`, `#### Fixed`, or plain bullets.
-   - Use categorizing subsections such as `#### Added` or `#### Fixed` only when the release notes are large enough that grouping materially improves readability; for small releases, prefer plain bullets under the version heading.
-   - Within each release-note bullet list, whether under the version heading or a categorizing subsection, order entries by user impact and breadth first. Put broad runtime correctness and behavior changes before narrow edge cases, and put documentation/package-metadata-only entries last unless they are the main release purpose.
-   - Describe the observable effect from the user's perspective. Avoid naming internal mechanisms or implying an opt-in/configuration choice unless users actually control it.
-   - Keep implementation-only rationale out of `README.md`, `RELEASE_NOTES.md`, and `facil_reference.yaml`.
-   - Update `facil_reference.yaml` when public YAML configuration behavior, options, defaults, examples, or reference text change.
-   - Before tagging, rename the release notes heading from `### Unreleased` to `### <Version> (<YYYY-MM-DD>)`, using the release date.
-   - Inspect the versioned release notes before committing and tagging. The section should contain only intended public release notes, with no stale `Unreleased` heading and no private or implementation-only details.
-   - Do not create or reuse the GitHub Release notes temp file yet; refresh it from the final tagged content after the successful NuGet push.
+   - Update `RELEASE_NOTES.md` with user-facing behavior, migration impact, and usage guidance. Add entries under `### Unreleased`, creating that section if necessary.
+   - Put actionable breaking changes first, using a `#### Breaking changes` or `#### Upgrading from <previous major>.x` subsection. Explain what affected users need to change, such as regenerating code, changing YAML settings, or updating calls to generated APIs. Group correctness fixes that restore expected behavior; do not catalog niche edge cases unless they have meaningful migration consequences.
+   - Use other categorizing subsections only when grouping materially improves readability; for small releases, prefer plain bullets under the version heading.
+   - Within each list, order entries by user impact and breadth. Put documentation/package-metadata-only entries last unless they are the main release purpose.
+   - Keep `README.md`, `RELEASE_NOTES.md`, and `facil_reference.yaml` public and user-facing. Keep implementation-only rationale out of them. Update `facil_reference.yaml` when public YAML configuration behavior, options, defaults, examples, or reference text change.
+   - Before tagging, rename `### Unreleased` to `### <Version> (<YYYY-MM-DD>)`, using the release date.
+   - Inspect the versioned notes before committing and tagging. Include only intended public notes, with no stale `Unreleased` heading or private details.
+   - Do not create or reuse the GitHub Release notes temp file yet; refresh it from the final tagged content after successful NuGet publication.
 
-4. Verify locally. Mirror CI where practical, using the same release-critical environment variables and the Expecto console apps directly:
+4. Verify locally. Mirror CI, using the same release-critical environment variables and the Expecto console apps directly:
 
 ````powershell
 $env:FACIL_FORCE_REGENERATE = "1"
@@ -45,6 +43,7 @@ $env:connectionString = "<connectionString>"
 
 dotnet tool restore
 dotnet fantomas --check .
+node --test .agents/skills/release-facil/scripts/wait-for-nuget.test.js
 dotnet build src/TestDb/TestDb.sqlproj -c Release
 dotnet sqlpackage /Action:Publish /SourceFile:"src/TestDb/bin/Release/TestDb.dacpac" /TargetConnectionString:"$env:connectionString"
 dotnet build src/Facil.Package -c Release
@@ -55,31 +54,32 @@ dotnet build src/DbTests -c Release
 dotnet src/DbTests/bin/Release/net10.0/DbTests.dll --fail-on-focused-tests
 ````
 
-   If a local SQL Server or connection string is unavailable, stop and report which CI-equivalent checks could not be run instead of replacing them with weaker `dotnet test` runs.
+   Require each command to succeed before continuing. Use the SDK selected by `global.json`. If a local SQL Server or connection string is unavailable, stop and report which CI-equivalent checks could not be run instead of replacing them with weaker `dotnet test` runs. Local success does not replace the tag's CI results.
 
-5. When packaging behavior or package metadata matters, inspect the produced `nupkg/Facil.<Version>.nupkg` metadata. Local pack can prove the package version and release-notes URL are embedded.
+   The `DbTests` build regenerates the test project, which updates the Facil version recorded in the generated files in `src/DbTests.DbGen`. Include those changes in the release commit.
 
-6. Commit and tag:
+5. Inspect `nupkg/Facil.<Version>.nupkg`, the package that step 4 packed and smoke-tested: confirm the version, versioned release-notes URL, packaged README and icon, the runtime assemblies under `lib/netstandard2.0/`, the build targets under `build/` and `tools/`, and the generator under the `tools/` framework folder that `FacilGenerate.targets` runs. Check that README links work outside GitHub, since NuGet shows the packaged README. Local pack proves that the release URL is embedded; it cannot resolve until the matching GitHub Release exists. If preparing a major release, inspect important known consumers for affected contracts and run representative compatibility checks when practical, such as regenerating and building a consumer against the packed package.
+
+6. Commit and tag when authorized:
    - Use `git-commit` to execute the authorized commit; it routes message authoring to `git-commit-message`.
-   - Use `v/<Version>` for releases, for example `v/2.16.0`.
+   - Use `v/<Version>` for releases, for example `v/3.2.0`. Confirm the tag points at the intended release commit and matches the package version.
 
-7. Push the commit and tag. Successful tag CI publishes the package to NuGet.
+7. Push the reviewed commit and tag after the user explicitly confirms that action. Successful tag CI publishes the package to NuGet, so pushing the tag is publication authorization, not merely a backup operation.
 
 8. Watch the tag CI run and confirm NuGet publication before creating a GitHub Release:
-   - Find the CI run for the pushed `v/<Version>` tag, not just the branch push run.
-   - This repo's tag runs can be found with `gh run list --branch "v/<Version>"`:
+   - Find the run for the pushed `v/<Version>` tag, not just the branch push run. Verify its `headSha` matches the release commit.
 
 ````powershell
 $tag = "v/<Version>"
 $repo = "cmeeren/Facil"
-$run = @(gh run list --repo $repo --workflow ci.yml --branch $tag --event push --limit 1 --json databaseId,headBranch,status,conclusion,url | ConvertFrom-Json)
+$run = @(gh run list --repo $repo --workflow ci.yml --branch $tag --event push --limit 1 --json databaseId,headBranch,headSha,status,conclusion,url | ConvertFrom-Json)
 if (-not $run) { throw "No CI run found for tag $tag" }
 $runId = $run[0].databaseId
 gh run watch $runId --repo $repo --exit-status
 ````
 
-   - Confirm the tag run succeeded and that the `Push` step performed a real NuGet upload. The workflow uses `--skip-duplicate`, so a successful step can still mean the package already existed and was skipped. Inspect the fresh run logs; if the push was skipped as a duplicate, the push logs are unavailable, or NuGet publication is unclear, stop and inspect/report before creating a GitHub Release.
-   - Verify the exact package version is visible on NuGet with [scripts/wait-for-nuget.js](scripts/wait-for-nuget.js) before creating a GitHub Release. Run from the repository root with Node.js 22 or newer. The helper checks every 30 seconds for up to ten minutes, bounds each request to 15 seconds, and exits nonzero on timeout or an unexpected HTTP response. It retries HTTP 404, 429, server errors, and network failures; it does not publish anything. Wait for completion using bounded tool waits rather than starting additional polling commands. Proceed only after exit code 0; otherwise report the failure and keep the GitHub Release unpublished.
+   - Confirm the tag run succeeded and that the `publish` job's `Push` step performed a real NuGet upload. The workflow uses `--skip-duplicate`, so a successful step can mean the package already existed. Inspect the fresh run logs; if the push was skipped as a duplicate, logs are unavailable, or publication is unclear, stop and inspect/report before creating a GitHub Release.
+   - Verify the exact package version is visible on NuGet with [scripts/wait-for-nuget.js](scripts/wait-for-nuget.js). Run from the repository root with Node.js 22 or newer. The helper checks every 30 seconds for up to ten minutes, bounds each request to 15 seconds, and exits nonzero on timeout or an unexpected HTTP response. It retries HTTP 404, 429, server errors, and network failures; it does not publish anything. Wait using bounded tool waits rather than starting additional polling commands.
 
 ````powershell
 node .agents/skills/release-facil/scripts/wait-for-nuget.js "<Version>"
@@ -87,11 +87,11 @@ if ($LASTEXITCODE -ne 0) { throw "NuGet availability check failed; do not create
 ````
 
 9. Refresh and inspect the GitHub Release notes immediately before creating the release:
-   - Copy the exact release section from the tagged `RELEASE_NOTES.md` to a temporary file under the user's temp directory, for example `$env:TEMP\facil-release-v<Version>.md` on PowerShell.
-   - Prefer reading the tagged file with `git show "v/<Version>:RELEASE_NOTES.md"` so the GitHub Release notes match the commit that was packaged and published.
-   - Manually inspect the temporary notes file. It should contain only the released version's notes, not the whole changelog and not a stale `Unreleased` heading.
+   - Copy the exact release section from the tagged `RELEASE_NOTES.md` to a file under the user's temp directory, for example `$env:TEMP\facil-release-v<Version>.md`.
+   - Read the tagged file with `git show "v/<Version>:RELEASE_NOTES.md"` so the notes match the commit that was packaged and published.
+   - Inspect the temporary file. Include only the released version's notes, not the whole changelog or a stale `Unreleased` heading. Check that its links work from the GitHub Release page, which resolves relative links such as `README.md#<anchor>` against the release tag.
 
-10. Create the GitHub Release only after the successful NuGet push and notes inspection:
+10. Create the GitHub Release only after successful NuGet publication, notes inspection, and authorization for that action:
 
 ````powershell
 $tag = "v/<Version>"
@@ -100,7 +100,7 @@ if (gh release view $tag --repo $repo 2>$null) { throw "GitHub Release already e
 gh release create $tag --repo $repo --verify-tag --title "Facil <Version>" --notes-file "$env:TEMP\facil-release-v<Version>.md"
 ````
 
-   If the existing-release check finds a release, stop instead of creating a duplicate.
+   If the existing-release check finds a release, stop instead of creating a duplicate. If the check fails for authentication or connectivity reasons, resolve that uncertainty before creating one. For a prerelease version, also pass `--prerelease`.
 
 11. Verify the created release and remove the temporary notes file when practical:
 
@@ -110,13 +110,13 @@ $repo = "cmeeren/Facil"
 gh release view $tag --repo $repo --json tagName,name,url
 ````
 
+   Confirm the release URL targets the same tag as the `PackageReleaseNotes` URL embedded in the package metadata.
+
 ## Guardrails
 
-- Do not start release steps from a dirty worktree.
-- Do not create the GitHub Release before the tag CI has successfully pushed to NuGet.
+- Do not create the GitHub Release before the tag CI has successfully pushed to NuGet and the exact version is available.
 - Use `gh release create --verify-tag` so GitHub does not auto-create or retarget the release tag.
-- Use `--repo cmeeren/Facil` for `gh` release and run commands; do not rely on implicit `gh` repository context.
-- Check for an existing GitHub Release for the tag before creating one; do not create duplicates.
+- Use `--repo cmeeren/Facil` for `gh` release and run commands; do not rely on implicit repository context.
+- Do not create duplicate releases or move an existing release tag.
 - Refresh release notes from tagged content after NuGet publication; do not reuse an older temp file.
-- Keep `README.md`, `RELEASE_NOTES.md`, and `facil_reference.yaml` public and user-facing.
-- Update `facil_reference.yaml` whenever a release changes public YAML configuration behavior or reference material.
+- Do not treat the versioned `PackageReleaseNotes` URL as fully verified until the matching GitHub Release exists.
