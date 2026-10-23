@@ -36,7 +36,7 @@ rulesets:
   - connectionString: $(ConnectionStrings:Db)
 
     # The filename and namespace/module declaration of the generated file. The values
-    # below are the defaults.
+    # below are the defaults. Each ruleset needs its own namespace or module.
     filename: DbGen.fs
     namespaceOrModuleDeclaration: module DbGen
 

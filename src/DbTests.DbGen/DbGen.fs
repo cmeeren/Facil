@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "3.2.0+585adb160b6b1e5eccb4f3d13dd671a49c9fa854",
-    "assemblyHash": "3f77108c0521dff2a955b04ef83bea75"
+    "assemblyVersion": "3.2.0+f201a25e3d111bffc43eef23e2f819021b8b9563",
+    "assemblyHash": "ad55ff8feb5e5a704622faf9e0a42fc9"
   },
   "config": {
     "path": "facil.yaml",
@@ -228,7 +228,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "3.2.0+585adb160b6b1e5eccb4f3d13dd671a49c9fa854")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "3.2.0+f201a25e3d111bffc43eef23e2f819021b8b9563")>]
 module DbGen
 
 #nowarn "49"
@@ -250,9 +250,12 @@ module MyPreludeModule =
 
 
 [<EditorBrowsable(EditorBrowsableState.Never)>]
-type InternalUseOnly = private | InternalUseOnly
-[<EditorBrowsable(EditorBrowsableState.Never)>]
-let internalUseOnlyValue = InternalUseOnly
+type InternalUseOnly =
+  private
+  | InternalUseOnly
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  static member Value = InternalUseOnly
 
 
 module TableDtos =
@@ -652,7 +655,7 @@ module TableTypes =
           ``varchar``: string,
           ``xml``: string
         ) =
-        let x = ``AllTypesNonNull``(internalUseOnlyValue)
+        let x = ``AllTypesNonNull``(InternalUseOnly.Value)
         x.SetValues(
           ``bigint``,
           ``binary``,
@@ -687,7 +690,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``AllTypesNonNull``(internalUseOnlyValue)
+        let x = ``AllTypesNonNull``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``bigint``: int64) dto),
           (^a: (member ``binary``: byte []) dto),
@@ -789,7 +792,7 @@ module TableTypes =
           ``varchar``: string option,
           ``xml``: string option
         ) =
-        let x = ``AllTypesNull``(internalUseOnlyValue)
+        let x = ``AllTypesNull``(InternalUseOnly.Value)
         x.SetValues(
           Option.toDbNull ``bigint``,
           Option.toDbNull ``binary``,
@@ -824,7 +827,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``AllTypesNull``(internalUseOnlyValue)
+        let x = ``AllTypesNull``(InternalUseOnly.Value)
         x.SetValues(
           Option.toDbNull (^a: (member ``bigint``: int64 option) dto),
           Option.toDbNull (^a: (member ``binary``: byte [] option) dto),
@@ -874,7 +877,7 @@ module TableTypes =
           ``Id``: int,
           ``Foo``: int64
         ) =
-        let x = ``FilterForTableWithIdentityCol``(internalUseOnlyValue)
+        let x = ``FilterForTableWithIdentityCol``(InternalUseOnly.Value)
         x.SetValues(
           ``Id``,
           ``Foo``
@@ -883,7 +886,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``FilterForTableWithIdentityCol``(internalUseOnlyValue)
+        let x = ``FilterForTableWithIdentityCol``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``Id``: int) dto),
           (^a: (member ``Foo``: int64) dto)
@@ -907,7 +910,7 @@ module TableTypes =
           ``path``: Microsoft.SqlServer.Types.SqlHierarchyId,
           ``nullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option
         ) =
-        let x = ``HierarchyIdTableType``(internalUseOnlyValue)
+        let x = ``HierarchyIdTableType``(InternalUseOnly.Value)
         x.SetValues(
           ``path``,
           Option.toDbNull ``nullablePath``
@@ -916,7 +919,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``HierarchyIdTableType``(internalUseOnlyValue)
+        let x = ``HierarchyIdTableType``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``path``: Microsoft.SqlServer.Types.SqlHierarchyId) dto),
           Option.toDbNull (^a: (member ``nullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option) dto)
@@ -948,7 +951,7 @@ module TableTypes =
           ``varbinary``: byte [],
           ``varchar``: string
         ) =
-        let x = ``LengthTypes``(internalUseOnlyValue)
+        let x = ``LengthTypes``(InternalUseOnly.Value)
         x.SetValues(
           ``binary``,
           ``char``,
@@ -961,7 +964,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``LengthTypes``(internalUseOnlyValue)
+        let x = ``LengthTypes``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``binary``: byte []) dto),
           (^a: (member ``char``: string) dto),
@@ -991,7 +994,7 @@ module TableTypes =
           ``varbinary``: byte [],
           ``varchar``: string
         ) =
-        let x = ``MaxLengthTypes``(internalUseOnlyValue)
+        let x = ``MaxLengthTypes``(InternalUseOnly.Value)
         x.SetValues(
           ``nvarchar``,
           ``varbinary``,
@@ -1001,7 +1004,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``MaxLengthTypes``(internalUseOnlyValue)
+        let x = ``MaxLengthTypes``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``nvarchar``: string) dto),
           (^a: (member ``varbinary``: byte []) dto),
@@ -1026,7 +1029,7 @@ module TableTypes =
           ``Foo``: int,
           ``Bar``: string
         ) =
-        let x = ``MultiColNonNull``(internalUseOnlyValue)
+        let x = ``MultiColNonNull``(InternalUseOnly.Value)
         x.SetValues(
           ``Foo``,
           ``Bar``
@@ -1035,7 +1038,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``MultiColNonNull``(internalUseOnlyValue)
+        let x = ``MultiColNonNull``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``Foo``: int) dto),
           (^a: (member ``Bar``: string) dto)
@@ -1059,7 +1062,7 @@ module TableTypes =
           ``Foo``: int option,
           ``Bar``: string option
         ) =
-        let x = ``MultiColNull``(internalUseOnlyValue)
+        let x = ``MultiColNull``(InternalUseOnly.Value)
         x.SetValues(
           Option.toDbNull ``Foo``,
           Option.toDbNull ``Bar``
@@ -1068,7 +1071,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``MultiColNull``(internalUseOnlyValue)
+        let x = ``MultiColNull``(InternalUseOnly.Value)
         x.SetValues(
           Option.toDbNull (^a: (member ``Foo``: int option) dto),
           Option.toDbNull (^a: (member ``Bar``: string option) dto)
@@ -1092,7 +1095,7 @@ module TableTypes =
           ``Foo``: int voption,
           ``Bar``: string voption
         ) =
-        let x = ``MultiColNullVoption``(internalUseOnlyValue)
+        let x = ``MultiColNullVoption``(InternalUseOnly.Value)
         x.SetValues(
           ValueOption.toDbNull ``Foo``,
           ValueOption.toDbNull ``Bar``
@@ -1101,7 +1104,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``MultiColNullVoption``(internalUseOnlyValue)
+        let x = ``MultiColNullVoption``(InternalUseOnly.Value)
         x.SetValues(
           ValueOption.toDbNull (^a: (member ``Foo``: int voption) dto),
           ValueOption.toDbNull (^a: (member ``Bar``: string voption) dto)
@@ -1123,7 +1126,7 @@ module TableTypes =
         (
           ``Foo``: int
         ) =
-        let x = ``SingleColNonNull``(internalUseOnlyValue)
+        let x = ``SingleColNonNull``(InternalUseOnly.Value)
         x.SetValues(
           ``Foo``
         )
@@ -1131,7 +1134,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``SingleColNonNull``(internalUseOnlyValue)
+        let x = ``SingleColNonNull``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``Foo``: int) dto)
         )
@@ -1152,7 +1155,7 @@ module TableTypes =
         (
           ``Foo``: int option
         ) =
-        let x = ``SingleColNull``(internalUseOnlyValue)
+        let x = ``SingleColNull``(InternalUseOnly.Value)
         x.SetValues(
           Option.toDbNull ``Foo``
         )
@@ -1160,7 +1163,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``SingleColNull``(internalUseOnlyValue)
+        let x = ``SingleColNull``(InternalUseOnly.Value)
         x.SetValues(
           Option.toDbNull (^a: (member ``Foo``: int option) dto)
         )
@@ -1187,7 +1190,7 @@ module TableTypes =
           ``location``: Microsoft.SqlServer.Types.SqlGeography,
           ``nullableLocation``: Microsoft.SqlServer.Types.SqlGeography option
         ) =
-        let x = ``SpatialTypesTableType``(internalUseOnlyValue)
+        let x = ``SpatialTypesTableType``(InternalUseOnly.Value)
         x.SetValues(
           ``shape``,
           Option.toDbNull ``nullableShape``,
@@ -1198,7 +1201,7 @@ module TableTypes =
         x
 
       static member inline create (dto: ^a) =
-        let x = ``SpatialTypesTableType``(internalUseOnlyValue)
+        let x = ``SpatialTypesTableType``(InternalUseOnly.Value)
         x.SetValues(
           (^a: (member ``shape``: Microsoft.SqlServer.Types.SqlGeometry) dto),
           Option.toDbNull (^a: (member ``nullableShape``: Microsoft.SqlServer.Types.SqlGeometry option) dto),
@@ -15074,14 +15077,14 @@ module Procedures =
             ``col1`` |> box
             Option.toDbNull ``col2`` |> box
           |]
-          |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
+          |> fun fields -> ``tempTable``(InternalUseOnly.Value, fields)
 
         static member inline create (dto: ^a) : ``tempTable`` =
           [|
             (^a: (member ``Col1``: int) dto) |> box
             Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
           |]
-          |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
+          |> fun fields -> ``tempTable``(InternalUseOnly.Value, fields)
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -15300,14 +15303,14 @@ module Procedures =
             ``col1`` |> box
             Option.toDbNull ``col2`` |> box
           |]
-          |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
+          |> fun fields -> ``tempTable``(InternalUseOnly.Value, fields)
 
         static member inline create (dto: ^a) : ``tempTable`` =
           [|
             (^a: (member ``Col1``: int) dto) |> box
             Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
           |]
-          |> fun fields -> ``tempTable``(internalUseOnlyValue, fields)
+          |> fun fields -> ``tempTable``(InternalUseOnly.Value, fields)
 
 
     [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -16084,13 +16087,13 @@ WHERE
         [|
           ``key`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``key``: int) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -16507,7 +16510,7 @@ VALUES
           ``varchar`` |> box
           ``xml`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -16541,7 +16544,7 @@ VALUES
           (^a: (member ``varchar``: string) dto) |> box
           (^a: (member ``xml``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -17116,7 +17119,7 @@ WHEN NOT MATCHED THEN
           ``varchar`` |> box
           ``xml`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -17150,7 +17153,7 @@ WHEN NOT MATCHED THEN
           (^a: (member ``varchar``: string) dto) |> box
           (^a: (member ``xml``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -17665,7 +17668,7 @@ WHERE
           ``varchar`` |> box
           ``xml`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -17699,7 +17702,7 @@ WHERE
           (^a: (member ``varchar``: string) dto) |> box
           (^a: (member ``xml``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -18561,14 +18564,14 @@ WHERE
           ``key1`` |> box
           ``key2`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``key1``: int) dto) |> box
           (^a: (member ``key2``: int) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -18994,7 +18997,7 @@ VALUES
           Option.toDbNull ``varchar`` |> box
           Option.toDbNull ``xml`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -19029,7 +19032,7 @@ VALUES
           Option.toDbNull (^a: (member ``varchar``: string option) dto) |> box
           Option.toDbNull (^a: (member ``xml``: string option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -19616,7 +19619,7 @@ WHEN NOT MATCHED THEN
           Option.toDbNull ``varchar`` |> box
           Option.toDbNull ``xml`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -19651,7 +19654,7 @@ WHEN NOT MATCHED THEN
           Option.toDbNull (^a: (member ``varchar``: string option) dto) |> box
           Option.toDbNull (^a: (member ``xml``: string option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -20176,7 +20179,7 @@ WHERE
           Option.toDbNull ``varchar`` |> box
           Option.toDbNull ``xml`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -20211,7 +20214,7 @@ WHERE
           Option.toDbNull (^a: (member ``varchar``: string option) dto) |> box
           Option.toDbNull (^a: (member ``xml``: string option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -22081,14 +22084,14 @@ EXEC sp_executesql @sql, @paramList, @tvp"""
           ``path`` |> box
           Option.toDbNull ``nullablePath`` |> box
         |]
-        |> fun fields -> ``HierarchyIdTempTable``(internalUseOnlyValue, fields)
+        |> fun fields -> ``HierarchyIdTempTable``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``HierarchyIdTempTable`` =
         [|
           (^a: (member ``Path``: Microsoft.SqlServer.Types.SqlHierarchyId) dto) |> box
           Option.toDbNull (^a: (member ``NullablePath``: Microsoft.SqlServer.Types.SqlHierarchyId option) dto) |> box
         |]
-        |> fun fields -> ``HierarchyIdTempTable``(internalUseOnlyValue, fields)
+        |> fun fields -> ``HierarchyIdTempTable``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -22732,13 +22735,13 @@ WHERE
         [|
           ``key`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``key``: int) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -23001,7 +23004,7 @@ VALUES
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -23013,7 +23016,7 @@ VALUES
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -23324,7 +23327,7 @@ WHEN NOT MATCHED THEN
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -23336,7 +23339,7 @@ WHEN NOT MATCHED THEN
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -23631,7 +23634,7 @@ WHERE
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -23643,7 +23646,7 @@ WHERE
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -26996,13 +26999,13 @@ WHERE
         [|
           ``key`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``key``: int) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -27244,7 +27247,7 @@ VALUES
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -27253,7 +27256,7 @@ VALUES
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -27528,7 +27531,7 @@ WHEN NOT MATCHED THEN
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -27537,7 +27540,7 @@ WHEN NOT MATCHED THEN
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -27802,7 +27805,7 @@ WHERE
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -27811,7 +27814,7 @@ WHERE
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -27959,14 +27962,14 @@ INNER JOIN
           ``col1`` |> box
           Option.toDbNull ``col2`` |> box
         |]
-        |> fun fields -> ``tempTable1``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTable1``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``tempTable1`` =
         [|
           (^a: (member ``Col1``: int) dto) |> box
           Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
         |]
-        |> fun fields -> ``tempTable1``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTable1``(InternalUseOnly.Value, fields)
 
 
     type ``tempTable2`` (__: InternalUseOnly, fields: obj []) =
@@ -27983,14 +27986,14 @@ INNER JOIN
           ``col1`` |> box
           ``col3`` |> box
         |]
-        |> fun fields -> ``tempTable2``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTable2``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``tempTable2`` =
         [|
           (^a: (member ``Col1``: int) dto) |> box
           (^a: (member ``Col3``: string) dto) |> box
         |]
-        |> fun fields -> ``tempTable2``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTable2``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -29824,7 +29827,7 @@ SELECT
           ``location`` |> box
           Option.toDbNull ``nullableLocation`` |> box
         |]
-        |> fun fields -> ``SpatialTypesTempTable``(internalUseOnlyValue, fields)
+        |> fun fields -> ``SpatialTypesTempTable``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``SpatialTypesTempTable`` =
         [|
@@ -29833,7 +29836,7 @@ SELECT
           (^a: (member ``Location``: Microsoft.SqlServer.Types.SqlGeography) dto) |> box
           Option.toDbNull (^a: (member ``NullableLocation``: Microsoft.SqlServer.Types.SqlGeography option) dto) |> box
         |]
-        |> fun fields -> ``SpatialTypesTempTable``(internalUseOnlyValue, fields)
+        |> fun fields -> ``SpatialTypesTempTable``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -31395,14 +31398,14 @@ VALUES
           ``id`` |> box
           ``foo`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           (^a: (member ``Foo``: int64) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -31544,14 +31547,14 @@ FROM #args"""
           ``id`` |> box
           ``foo`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           (^a: (member ``Foo``: int64) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -31911,14 +31914,14 @@ WHEN NOT MATCHED THEN
           ``id`` |> box
           ``foo`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           (^a: (member ``Foo``: int64) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -32076,14 +32079,14 @@ WHEN NOT MATCHED THEN
           ``id`` |> box
           ``foo`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           (^a: (member ``Foo``: int64) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -32415,14 +32418,14 @@ WHERE
           ``id`` |> box
           ``foo`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           (^a: (member ``Foo``: int64) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -32566,14 +32569,14 @@ INNER JOIN
           ``id`` |> box
           ``foo`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           (^a: (member ``Foo``: int64) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -33943,13 +33946,13 @@ WHERE
         [|
           ``id`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -34358,14 +34361,14 @@ VALUES
           ``foo`` |> box
           Option.toDbNull ``bAR`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Foo``: int64) dto) |> box
           Option.toDbNull (^a: (member ``BAR``: DateTimeOffset option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -34799,7 +34802,7 @@ OUTPUT
           ``foo`` |> box
           Option.toDbNull ``bAR`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -34807,7 +34810,7 @@ OUTPUT
           (^a: (member ``Foo``: int64) dto) |> box
           Option.toDbNull (^a: (member ``BAR``: DateTimeOffset option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -35057,7 +35060,7 @@ OUTPUT
           ``foo`` |> box
           Option.toDbNull ``bAR`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -35065,7 +35068,7 @@ OUTPUT
           (^a: (member ``Foo``: int64) dto) |> box
           Option.toDbNull (^a: (member ``BAR``: DateTimeOffset option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -35520,7 +35523,7 @@ WHERE
           ``foo`` |> box
           Option.toDbNull ``bAR`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
@@ -35528,7 +35531,7 @@ WHERE
           (^a: (member ``Foo``: int64) dto) |> box
           Option.toDbNull (^a: (member ``BAR``: DateTimeOffset option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -35867,14 +35870,14 @@ WHEN NOT MATCHED THEN
           ``key1`` |> box
           ``key2`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Key1``: int) dto) |> box
           (^a: (member ``Key2``: int) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -36293,14 +36296,14 @@ VALUES
           ``id`` |> box
           Option.toDbNull ``data`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           Option.toDbNull (^a: (member ``Data``: string option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -36551,14 +36554,14 @@ WHEN NOT MATCHED THEN
           ``id`` |> box
           Option.toDbNull ``data`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           Option.toDbNull (^a: (member ``Data``: string option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -36803,14 +36806,14 @@ WHERE
           ``id`` |> box
           Option.toDbNull ``data`` |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``args`` =
         [|
           (^a: (member ``Id``: int) dto) |> box
           Option.toDbNull (^a: (member ``Data``: string option) dto) |> box
         |]
-        |> fun fields -> ``args``(internalUseOnlyValue, fields)
+        |> fun fields -> ``args``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -37006,7 +37009,7 @@ INNER JOIN
           ``varchar`` |> box
           ``xml`` |> box
         |]
-        |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNonNull``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``AllTypesNonNull`` =
         [|
@@ -37039,7 +37042,7 @@ INNER JOIN
           (^a: (member ``Varchar``: string) dto) |> box
           (^a: (member ``Xml``: string) dto) |> box
         |]
-        |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNonNull``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -37440,7 +37443,7 @@ SELECT * FROM #AllTypesNonNull"""
           ``varchar`` |> box
           ``xml`` |> box
         |]
-        |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNonNull``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``AllTypesNonNull`` =
         [|
@@ -37473,7 +37476,7 @@ SELECT * FROM #AllTypesNonNull"""
           (^a: (member ``Varchar``: string) dto) |> box
           (^a: (member ``Xml``: string) dto) |> box
         |]
-        |> fun fields -> ``AllTypesNonNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNonNull``(InternalUseOnly.Value, fields)
 
 
   type ``TempTableAllTypesNonNullNominalParams_Params`` =
@@ -37880,7 +37883,7 @@ SELECT * FROM #AllTypesNonNull"""
           Option.toDbNull ``varchar`` |> box
           Option.toDbNull ``xml`` |> box
         |]
-        |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNull``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``AllTypesNull`` =
         [|
@@ -37913,7 +37916,7 @@ SELECT * FROM #AllTypesNonNull"""
           Option.toDbNull (^a: (member ``Varchar``: string option) dto) |> box
           Option.toDbNull (^a: (member ``Xml``: string option) dto) |> box
         |]
-        |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNull``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -38314,7 +38317,7 @@ SELECT * FROM #AllTypesNull"""
           Option.toDbNull ``varchar`` |> box
           Option.toDbNull ``xml`` |> box
         |]
-        |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNull``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``AllTypesNull`` =
         [|
@@ -38347,7 +38350,7 @@ SELECT * FROM #AllTypesNull"""
           Option.toDbNull (^a: (member ``Varchar``: string option) dto) |> box
           Option.toDbNull (^a: (member ``Xml``: string option) dto) |> box
         |]
-        |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNull``(InternalUseOnly.Value, fields)
 
 
   type ``TempTableAllTypesNullNominalParams_Params`` =
@@ -38754,7 +38757,7 @@ SELECT * FROM #AllTypesNull"""
           ValueOption.toDbNull ``varchar`` |> box
           ValueOption.toDbNull ``xml`` |> box
         |]
-        |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNull``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``AllTypesNull`` =
         [|
@@ -38787,7 +38790,7 @@ SELECT * FROM #AllTypesNull"""
           ValueOption.toDbNull (^a: (member ``Varchar``: string voption) dto) |> box
           ValueOption.toDbNull (^a: (member ``Xml``: string voption) dto) |> box
         |]
-        |> fun fields -> ``AllTypesNull``(internalUseOnlyValue, fields)
+        |> fun fields -> ``AllTypesNull``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -39136,14 +39139,14 @@ SELECT * FROM #AllTypesNull"""
           ``col1`` |> box
           Option.toDbNull ``col2`` |> box
         |]
-        |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableInlined``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``tempTableInlined`` =
         [|
           (^a: (member ``Col1``: int) dto) |> box
           Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
         |]
-        |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableInlined``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -39358,14 +39361,14 @@ SELECT * FROM #tempTableInlined"""
           ``col1`` |> box
           Option.toDbNull ``col2`` |> box
         |]
-        |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableInlined``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``tempTableInlined`` =
         [|
           (^a: (member ``Col1``: int) dto) |> box
           Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
         |]
-        |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableInlined``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -39583,14 +39586,14 @@ EXEC sp_executesql @sql, N''"""
           ``col1`` |> box
           Option.toDbNull ``col2`` |> box
         |]
-        |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableInlined``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``tempTableInlined`` =
         [|
           (^a: (member ``Col1``: int) dto) |> box
           Option.toDbNull (^a: (member ``Col2``: string option) dto) |> box
         |]
-        |> fun fields -> ``tempTableInlined``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableInlined``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -39818,7 +39821,7 @@ SELECT * FROM #tempTableInlined"""
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``tempTableWithLengthTypes``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableWithLengthTypes``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``tempTableWithLengthTypes`` =
         [|
@@ -39829,7 +39832,7 @@ SELECT * FROM #tempTableInlined"""
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``tempTableWithLengthTypes``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableWithLengthTypes``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]
@@ -40070,7 +40073,7 @@ SELECT * FROM #tempTableWithLengthTypes"""
           ``varbinary`` |> box
           ``varchar`` |> box
         |]
-        |> fun fields -> ``tempTableWithMaxLengthTypes``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableWithMaxLengthTypes``(InternalUseOnly.Value, fields)
 
       static member inline create (dto: ^a) : ``tempTableWithMaxLengthTypes`` =
         [|
@@ -40078,7 +40081,7 @@ SELECT * FROM #tempTableWithLengthTypes"""
           (^a: (member ``varbinary``: byte []) dto) |> box
           (^a: (member ``varchar``: string) dto) |> box
         |]
-        |> fun fields -> ``tempTableWithMaxLengthTypes``(internalUseOnlyValue, fields)
+        |> fun fields -> ``tempTableWithMaxLengthTypes``(InternalUseOnly.Value, fields)
 
 
   [<EditorBrowsable(EditorBrowsableState.Never)>]

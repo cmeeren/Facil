@@ -3,8 +3,8 @@
 (*
 {
   "facil": {
-    "assemblyVersion": "3.2.0+585adb160b6b1e5eccb4f3d13dd671a49c9fa854",
-    "assemblyHash": "3f77108c0521dff2a955b04ef83bea75"
+    "assemblyVersion": "3.2.0+f201a25e3d111bffc43eef23e2f819021b8b9563",
+    "assemblyHash": "ad55ff8feb5e5a704622faf9e0a42fc9"
   },
   "config": {
     "path": "facil.yaml",
@@ -24,7 +24,7 @@
 }
 *)
 
-[<System.CodeDom.Compiler.GeneratedCode("Facil", "3.2.0+585adb160b6b1e5eccb4f3d13dd671a49c9fa854")>]
+[<System.CodeDom.Compiler.GeneratedCode("Facil", "3.2.0+f201a25e3d111bffc43eef23e2f819021b8b9563")>]
 module IncludeDbGen
 
 #nowarn "49"
@@ -41,9 +41,12 @@ open Facil.Runtime.GeneratedCodeUtils
 
 
 [<EditorBrowsable(EditorBrowsableState.Never)>]
-type InternalUseOnly = private | InternalUseOnly
-[<EditorBrowsable(EditorBrowsableState.Never)>]
-let internalUseOnlyValue = InternalUseOnly
+type InternalUseOnly =
+  private
+  | InternalUseOnly
+
+  [<EditorBrowsable(EditorBrowsableState.Never)>]
+  static member Value = InternalUseOnly
 
 
 module Scripts =

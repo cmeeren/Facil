@@ -634,6 +634,22 @@ rulesets:
       - include: '^dbo\.AllTypesNonNull$'
 
   - connectionString: $(connectionString)
+    filename: NamespaceDbGen.fs
+    namespaceOrModuleDeclaration: namespace NamespaceDbGen
+    scriptBasePath: SQL
+
+    procedures:
+      - include: '^dbo\.ProcWithMultipleColumnsAndTvpParams$'
+
+    scripts:
+      - include: TempTableInlined.sql
+        tempTables:
+          - definition: 'CREATE TABLE #tempTableInlined (Col1 INT NOT NULL, Col2 NVARCHAR(42) NULL)'
+
+    tableDtos:
+      - include: '^dbo\.Table1$'
+
+  - connectionString: $(connectionString)
     filename: IncludeDbGen.fs
     namespaceOrModuleDeclaration: module IncludeDbGen
     scriptBasePath: IncludeFixtures

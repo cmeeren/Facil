@@ -181,7 +181,7 @@ let private renderTableType cfg (t: TableType) =
                                     |> List.mapAllExceptLast (fun s -> s + ",")
                             ]
                         ") ="
-                        $"let x = ``{t.Name}``(internalUseOnlyValue)"
+                        $"let x = ``{t.Name}``(InternalUseOnly.Value)"
                         "x.SetValues("
                         yield!
                             indent [
@@ -202,7 +202,7 @@ let private renderTableType cfg (t: TableType) =
 
                     yield!
                         indent [
-                            $"let x = ``{t.Name}``(internalUseOnlyValue)"
+                            $"let x = ``{t.Name}``(InternalUseOnly.Value)"
                             "x.SetValues("
                             yield!
                                 indent [
@@ -767,7 +767,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                     )
                                             ]
                                         "|]"
-                                        $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
+                                        $"|> fun fields -> ``{tt.FSharpName}``(InternalUseOnly.Value, fields)"
                                     ]
                                 if rule.ParamDto <> Skip then
                                     ""
@@ -796,7 +796,7 @@ let private renderProcOrScript (cfg: RuleSet) (tableDtos: TableDto list) (execut
                                                         )
                                                 ]
                                             "|]"
-                                            $"|> fun fields -> ``{tt.FSharpName}``(internalUseOnlyValue, fields)"
+                                            $"|> fun fields -> ``{tt.FSharpName}``(InternalUseOnly.Value, fields)"
                                         ]
                             ]
                     ]
@@ -1490,10 +1490,26 @@ let renderManifestHeader version assemblyHash yamlFileName configsHash rulesetsH
 
 
 let renderDocument (cfg: RuleSet) (headerLines: string list) (everything: Everything) =
+    let generatedCodeAttribute =
+        $"[<System.CodeDom.Compiler.GeneratedCode(\"Facil\", \"{(getFacilVersion ())}\")>]"
+
+    // Namespaces can't have attributes, so namespace output puts the attribute on each top-level declaration instead.
+    let isNamespace =
+        cfg.NamespaceOrModuleDeclaration.Split([| ' '; '\t' |], StringSplitOptions.RemoveEmptyEntries)
+        |> Array.tryHead
+        |> (=) (Some "namespace")
+
+    let withTopLevelAttribute (lines: string list) =
+        if isNamespace && not lines.IsEmpty then
+            generatedCodeAttribute :: lines
+        else
+            lines
+
     [
         yield! headerLines
         ""
-        $"[<System.CodeDom.Compiler.GeneratedCode(\"Facil\", \"{(getFacilVersion ())}\")>]"
+        if not isNamespace then
+            generatedCodeAttribute
         cfg.NamespaceOrModuleDeclaration
         ""
         "#nowarn \"49\""
@@ -1515,15 +1531,26 @@ let renderDocument (cfg: RuleSet) (headerLines: string list) (everything: Everyt
             yield! lines
             ""
             ""
-        "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-        "type InternalUseOnly = private | InternalUseOnly"
-        "[<EditorBrowsable(EditorBrowsableState.Never)>]"
-        "let internalUseOnlyValue = InternalUseOnly"
+        // A static member rather than a top-level value, which namespaces can't contain
+        yield!
+            withTopLevelAttribute [
+                "[<EditorBrowsable(EditorBrowsableState.Never)>]"
+                "type InternalUseOnly ="
+                "  private"
+                "  | InternalUseOnly"
+                ""
+                "  [<EditorBrowsable(EditorBrowsableState.Never)>]"
+                "  static member Value = InternalUseOnly"
+            ]
         ""
         ""
-        yield! renderTableDtos cfg everything.TableDtos
-        yield! renderTableTypes cfg everything.TableTypes
-        yield! renderProcs cfg everything.TableDtos everything.StoredProcedures
-        yield! renderScripts cfg everything.TableDtos everything.Scripts
+        yield! renderTableDtos cfg everything.TableDtos |> withTopLevelAttribute
+        yield! renderTableTypes cfg everything.TableTypes |> withTopLevelAttribute
+        yield!
+            renderProcs cfg everything.TableDtos everything.StoredProcedures
+            |> withTopLevelAttribute
+        yield!
+            renderScripts cfg everything.TableDtos everything.Scripts
+            |> withTopLevelAttribute
     ]
     |> List.map (fun s -> if String.IsNullOrWhiteSpace s then "" else s)

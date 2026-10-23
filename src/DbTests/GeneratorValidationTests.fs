@@ -1,6 +1,7 @@
 module GeneratorValidationTests
 
 open System
+open System.CodeDom.Compiler
 open System.IO
 open System.Text.Json
 open System.Text.RegularExpressions
@@ -891,5 +892,48 @@ let tests =
 
             Expect.equal tvpRes.date expectedDate "dateType: dateTime should keep table-type DATE values as DateTime"
             Expect.equal tvpRes.datetime expectedDateTime "dateType: dateTime should not affect DATETIME"
+
+        testCase "Generated code can be declared in a namespace"
+        <| fun () ->
+            let procRes =
+                NamespaceDbGen.Procedures.dbo.ProcWithMultipleColumnsAndTvpParams
+                    .WithConnection(Config.connStr)
+                    .WithParameters(
+                        single = [ NamespaceDbGen.TableTypes.dbo.SingleColNonNull.create (Foo = 1) ],
+                        multi = [
+                            NamespaceDbGen.TableTypes.dbo.MultiColNonNull.create {| Foo = 1; Bar = "test" |}
+                        ]
+                    )
+                    .ExecuteSingle()
+                    .Value
+
+            Expect.equal procRes.Bar "test" "Table-type rows should work in namespace-declared code"
+
+            let tempTableRes =
+                NamespaceDbGen.Scripts.TempTableInlined
+                    .WithConnection(Config.connStr)
+                    .WithParameters(
+                        tempTableInlined = [
+                            NamespaceDbGen.Scripts.TempTableInlined.tempTableInlined.create (
+                                col1 = 1,
+                                col2 = Some "test"
+                            )
+                        ]
+                    )
+                    .ExecuteSingle()
+                    .Value
+
+            Expect.equal tempTableRes.Col2 (Some "test") "Temp-table rows should work in namespace-declared code"
+
+            let topLevelTypes =
+                typeof<NamespaceDbGen.InternalUseOnly>.Assembly.GetTypes()
+                |> Array.filter (fun t -> t.Namespace = "NamespaceDbGen" && not t.IsNested)
+
+            Expect.isNonEmpty topLevelTypes "Expected top-level types in the generated namespace"
+
+            for t in topLevelTypes do
+                Expect.isTrue
+                    (t.IsDefined(typeof<GeneratedCodeAttribute>, false))
+                    $"Expected %s{t.FullName} to be marked as generated code"
 
     ]

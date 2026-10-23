@@ -1,4 +1,5 @@
 DbGen.fs
 DateOnlyDbGen.fs
 IncludeDbGen.fs
+NamespaceDbGen.fs
 packages/
