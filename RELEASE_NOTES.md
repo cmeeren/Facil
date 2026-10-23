@@ -1,7 +1,7 @@
 Release notes
 ==============
 
-### Unreleased
+### 3.3.0 (2026-10-23)
 
 * Generated code now compiles when `namespaceOrModuleDeclaration` declares a namespace, such as `namespace MyApp.DbGen`.
 * The package now includes an agent skill that helps coding agents configure Facil and use the generated code. See
