@@ -40,7 +40,7 @@ Use this skill to release Facil through the repo's normal tag-driven NuGet flow,
 ````powershell
 $env:FACIL_FORCE_REGENERATE = "1"
 $env:FACIL_FAIL_ON_CHANGED_OUTPUT = "1"
-$env:connectionString = "<connectionString>"
+$env:connectionString = (Get-Content src/DbTests.DbGen/appsettings.json -Raw | ConvertFrom-Json).connectionString
 
 dotnet tool restore
 dotnet fantomas --check .
@@ -55,7 +55,7 @@ dotnet build src/DbTests -c Release
 dotnet src/DbTests/bin/Release/net10.0/DbTests.dll --fail-on-focused-tests
 ````
 
-   Require each command to succeed before continuing. Use the SDK selected by `global.json`. If a local SQL Server or connection string is unavailable, stop and report which CI-equivalent checks could not be run instead of replacing them with weaker `dotnet test` runs. Local success does not replace the tag's CI results.
+   Run the block in one shell session so the environment variables apply to every command, and require each command to succeed before continuing. Use the SDK selected by `global.json`. The connection string is the local test database's, which test generation and the package tests also read from `src/DbTests.DbGen/appsettings.json`. If that SQL Server is unavailable, stop and report which CI-equivalent checks could not be run instead of replacing them with weaker `dotnet test` runs. Local success does not replace the tag's CI results.
 
    The `DbTests` build regenerates the test project, which updates the Facil version recorded in the generated files in `src/DbTests.DbGen`. Include those changes in the release commit.
 
@@ -73,8 +73,9 @@ dotnet src/DbTests/bin/Release/net10.0/DbTests.dll --fail-on-focused-tests
 ````powershell
 $tag = "v/<Version>"
 $repo = "cmeeren/Facil"
-$run = @(gh run list --repo $repo --workflow ci.yml --branch $tag --event push --limit 1 --json databaseId,headBranch,headSha,status,conclusion,url | ConvertFrom-Json)
-if (-not $run) { throw "No CI run found for tag $tag" }
+$sha = git rev-parse "$tag^{commit}"
+$run = @(gh run list --repo $repo --workflow ci.yml --branch $tag --event push --limit 10 --json databaseId,headBranch,headSha,status,conclusion,url | ConvertFrom-Json | Where-Object headSha -eq $sha)
+if (-not $run) { throw "No CI run found for tag $tag at $sha" }
 $runId = $run[0].databaseId
 gh run watch $runId --repo $repo --exit-status
 ````
@@ -118,6 +119,6 @@ gh release view $tag --repo $repo --json tagName,name,url
 - Do not create the GitHub Release before the tag CI has successfully pushed to NuGet and the exact version is available.
 - Use `gh release create --verify-tag` so GitHub does not auto-create or retarget the release tag.
 - Use `--repo cmeeren/Facil` for `gh` release and run commands; do not rely on implicit repository context.
-- Do not create duplicate releases or move an existing release tag.
+- Do not create duplicate releases. Do not move a release tag once its CI's `Push` step has started, even if it failed, since NuGet never reuses a version. If the tag CI fails earlier, rerun the failed jobs when the failure is transient; if it needs a fix, ask whether to move the tag to the fixed commit, repeating steps 4–8 for it, or release a new version.
 - Refresh release notes from tagged content after NuGet publication; do not reuse an older temp file.
 - Do not treat the versioned `PackageReleaseNotes` URL as fully verified until the matching GitHub Release exists.
