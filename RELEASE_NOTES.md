@@ -1,6 +1,11 @@
 Release notes
 ==============
 
+### Unreleased
+
+* The bundled agent skill no longer tells agents to commit the generated file, and no longer discourages using a
+  generated module that the project's own `namespaceOrModuleDeclaration` hides from the IDE.
+
 ### 3.3.0 (2026-10-23)
 
 * Generated code now compiles when `namespaceOrModuleDeclaration` declares a namespace, such as `namespace MyApp.DbGen`.

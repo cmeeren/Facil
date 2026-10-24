@@ -13,9 +13,9 @@ Facil generates F# code for SQL scripts and stored procedures by asking SQL Serv
 
 Facil regenerates its output file, such as `DbGen.fs`, before compilation when `facil.yaml`, an included script or SQL fragment, the generated file's header, or Facil itself changes, or when the `FACIL_FORCE_REGENERATE` environment variable is set. It does not notice database schema changes: after changing the schema, set `FACIL_FORCE_REGENERATE` for that build or delete the generated file's first line. If the project doesn't rebuild after changing only `facil.yaml` or SQL files, add them as `UpToDateCheckInput` items (see the README).
 
-Regeneration reads the schema of the database in the ruleset's `connectionString`, so that database must have the schema the code targets. Review the regenerated diff: changes you didn't intend usually mean that database differs from the intended schema. Commit the generated file.
+Regeneration reads the schema of the database in the ruleset's `connectionString`, so that database must have the schema the code targets. Review the regenerated diff: changes you didn't intend usually mean that database differs from the intended schema. Keep the generated file in source control.
 
-Never edit generated code; change the SQL or `facil.yaml` instead. Don't reference generated members hidden with `[<EditorBrowsable(EditorBrowsableState.Never)>]`; they are implementation details that can change in any release.
+Never edit generated code; change the SQL or `facil.yaml` instead. Don't reference code that Facil itself marks with `[<EditorBrowsable(EditorBrowsableState.Never)>]`; it is an implementation detail that can change in any release. The same attribute on a module that the project's own `namespaceOrModuleDeclaration` declares doesn't make that module off-limits.
 
 ## Configuration
 
@@ -35,7 +35,7 @@ Prefer configuration that keeps Facil inferring what it can:
 
 ## Calling generated code
 
-Generated types live under the ruleset's module, by default `DbGen`: `DbGen.Scripts`, in modules nested by the scripts' folders under `scriptBasePath`, and `DbGen.Procedures.<schema>`, `DbGen.TableDtos.<schema>` and `DbGen.TableTypes.<schema>`. A call chains `WithConnection`, optionally `ConfigureCommand`, `WithParameters` and an execution method:
+Generated types live under the ruleset's module or namespace, by default `DbGen`: `DbGen.Scripts`, in modules nested by the scripts' folders under `scriptBasePath`, and `DbGen.Procedures.<schema>`, `DbGen.TableDtos.<schema>` and `DbGen.TableTypes.<schema>`. A call chains `WithConnection`, optionally `ConfigureCommand`, `WithParameters` and an execution method:
 
 ```fsharp
 open DbGen.Scripts
