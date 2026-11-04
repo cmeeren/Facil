@@ -50,7 +50,7 @@
     </None>
     <None Include="..\..\.agents\skills\facil\SKILL.md">
       <Pack>True</Pack>
-      <PackagePath>skills/SKILL.md</PackagePath>
+      <PackagePath>skills/facil/SKILL.md</PackagePath>
     </None>
   </ItemGroup>
 

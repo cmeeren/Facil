@@ -252,8 +252,8 @@ let tests =
             runProcess repoRoot [] "dotnet" $"pack \"{packageProjectPath}\" -c Release"
 
             use package = ZipFile.OpenRead packagePath
-            let entry = package.GetEntry "skills/SKILL.md"
-            Expect.isNotNull entry "Expected skills/SKILL.md in the package"
+            let entry = package.GetEntry "skills/facil/SKILL.md"
+            Expect.isNotNull entry "Expected skills/facil/SKILL.md in the package"
 
             use entryStream = entry.Open()
             use packagedSkill = new MemoryStream()

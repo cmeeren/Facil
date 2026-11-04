@@ -3,6 +3,8 @@ Release notes
 
 ### Unreleased
 
+* The bundled agent skill is now at `skills/facil/SKILL.md` in the package instead of `skills/SKILL.md`, the layout
+  that the Agent Skills specification and .NET package-skill tools expect. Update anything that reads the old path.
 * The bundled agent skill no longer tells agents to commit the generated file, and no longer discourages using a
   generated module that the project's own `namespaceOrModuleDeclaration` hides from the IDE.
 
