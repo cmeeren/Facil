@@ -436,9 +436,10 @@ need separate configuration per temp table.
 Note that if a **procedure** uses a **global** temp table (a temp table that starts with two `##` instead of one `#`),
 that temp table needs to exist at build-time. (This limitation does not apply to scripts.)
 
-Note also that if you plan to use the same temp table name in another command with the same connection, you need to drop
-it. The easiest way to do this is to use `DROP TABLE #myTempTable` as the first line in the temp table definition. (This
-is automatically done for Facil-generated `tableScripts` that use temp tables).
+Facil drops the temp tables it loads once the call completes or fails (for lazy and reader methods, once enumeration
+ends or the reader wrapper is disposed), so you can call the same script or procedure several times on the same
+connection. This also means that later commands can't read these temp tables; if you need data from them, return it
+from the script or procedure.
 
 ### How do I use the `SqlDataReader` APIs?
 

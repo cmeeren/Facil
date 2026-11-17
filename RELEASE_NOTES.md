@@ -7,6 +7,9 @@ Release notes
   that the Agent Skills specification and .NET package-skill tools expect. Update anything that reads the old path.
 * The bundled agent skill no longer tells agents to commit the generated file, and no longer discourages using a
   generated module that the project's own `namespaceOrModuleDeclaration` hides from the IDE.
+* The README and bundled agent skill now say that Facil drops the temp tables it loads after each call (since 3.0.0),
+  so later commands can't read them. The README no longer advises dropping these temp tables yourself. See
+  [Can I use temp tables?](README.md#can-i-use-temp-tables).
 
 ### 3.3.0 (2026-10-23)
 
